@@ -11,20 +11,9 @@ dmc.libs <- function() {
               "caret",
               "RWeka",
               "klaR",
-              "e1071",
-              "earth",
               "plyr",
-              "party",
-              "elasticnet",
-              "evtree",
-              "C50",
-              "extraTrees",
-              "gam",
               "MASS",
-              "kernlab",
-              "rpart",
-              "ggplot2",
-              "Cubist")
+              "ggplot2")
     for (lib in libs) {
         library(lib, logical.return=TRUE,
                 character.only=TRUE) || install.packages(lib)
