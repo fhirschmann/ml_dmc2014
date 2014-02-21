@@ -10,6 +10,8 @@ dmc.libs <- function() {
               "doMC",
               "caret",
               "RWeka",
+              "klaR",
+              "e1071",
               "earth",
               "plyr",
               "party",
@@ -30,3 +32,4 @@ dmc.libs <- function() {
     library("Metrics", 
             logical.return=TRUE) || install_github("Metrics", "fhirschmann", subdir="R")
 }
+
