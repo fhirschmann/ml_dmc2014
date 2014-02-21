@@ -7,6 +7,8 @@ options(
 
 dmc.libs <- function() {
     libs <- c("devtools",
+              "Metrics",
+              "ellipse",
               "pROC",
               "data.table",
               "knitr",
@@ -21,7 +23,5 @@ dmc.libs <- function() {
         library(lib, logical.return=TRUE,
                 character.only=TRUE) || install.packages(lib)
     }
-    library("Metrics", 
-            logical.return=TRUE) || install_github("Metrics", "fhirschmann", subdir="R")
 }
 
