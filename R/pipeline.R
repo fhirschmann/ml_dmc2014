@@ -1,6 +1,5 @@
-dmc.libs()
-
 source("R/common.R")
+dmc.libs()
 source("R/caret.R")
 
 # Be deterministic
@@ -8,12 +7,11 @@ set.seed(42)
 
 # Train control. We use 10-fold Cross-Validation and a custom summary
 # function (see R/caret.R) that provides a variety of metrics.
-ctrl <- trainControl(method="cv", savePredictions=TRUE, summaryFunction=mysummary)
+ctrl <- trainControl(method="cv", savePredictions=TRUE) #, summaryFunction=mysummary)
 
-# We do GridSearch using the MAE as determining metric and set the control
-# parameters (CV, ...) specified above.
-mytrain <- function(form, method, ...) {
-    train(form, method=method, metric="MAE", maximize=F, trControl=ctrl, ...)
+# Use the control parameters defined above
+mytrain <- function(form, method=method, ...) {
+    train(form, method=method, trControl=ctrl, ...)
 }
 
 # Read in some data
