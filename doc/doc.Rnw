@@ -1,0 +1,26 @@
+\documentclass[twoside]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[ngerman]{babel}
+\usepackage{fancyhdr,lastpage}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{geometry}
+\geometry{hmargin={2cm,2cm},vmargin={2.4cm,3cm}}
+\usepackage{comment}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,matrix}
+\setlength{\headheight}{20pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Fabian Hirschmann (1573963) }
+\fancyhead[R]{\today}
+\fancyfoot[C]{Page \thepage\ von \pageref{LastPage}}
+<<setup, echo=TRUE, include=FALSE>>=
+source("R/startup.R")
+opts_chunk$set(echo=T, breaklines=T)
+@
+\begin{document}
+DMC
+\end{document}

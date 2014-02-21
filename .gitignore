@@ -1,0 +1,3 @@
+doc/*.tex
+.RData
+.Rhistory
