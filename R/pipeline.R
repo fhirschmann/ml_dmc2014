@@ -41,7 +41,7 @@ trainers$rda <- function(form, ...) mytrain(form, method="rda", ...)
 
 for (name in names(trainers)) {
     # Learn the attribute `voucher` using the domain and the paymenttype
-    fit <- trainers[[name]](voucher ~ ., data=dt[c("voucher", "domain", "gift")])
+    fit <- trainers[[name]](voucher ~ ., data=dt[c("voucher", "domain", "paymenttype")])
 
     # Save model to a file.
     fname <- file.path("models", paste(name, ".RData", sep=""))
