@@ -5,4 +5,4 @@ doc.pdf: doc.tex
 	latexmk -c doc.tex
 
 doc.tex: doc.Rnw
-	Rscript -e "source('../R/startup.R'); knit('doc.Rnw')"
+	Rscript -e "library(knitr); knit('doc.Rnw')"
