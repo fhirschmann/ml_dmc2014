@@ -19,11 +19,14 @@ dt <- read.csv("task2010/dmc2010_train.txt", sep=";")
 
 ## Nominal Columns (factors)
 dt.factors <- c("customernumber", "salutation", "title",
-                "domain", "model", "paymenttype", "deliverytype",
+                "domain", "model", "newsletter", "paymenttype", "deliverytype",
                 "invoicepostcode", "delivpostcode", "voucher",
                 "advertisingdatacode", "case", "numberitems",
                 "gift", "entry", "points", "shippingcosts", "target90")
 dt[dt.factors] <- lapply(dt[dt.factors], as.factor)
+## Dates
+dt.dates <- c("date", "datecreated", "deliverydatepromised", "deliverydatereal")
+dt[dt.dates] <- lapply(dt[dt.dates], as.Date)
 
 # TODO: Read date and time columns as POSIX timestamps etc...
 
