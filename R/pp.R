@@ -19,11 +19,14 @@ dt[dt_dates] <- lapply(dt[dt_dates], as.Date)
 dt[dt$delivpostcode == "", ]$delivpostcode <- NA
 dt[dt$advertisingdatacode == "", ]$advertisingdatacode <- NA
 
-# If somebody wants to try Weka
-#write.arff(dt, "task2010/dmc2010_train.arff")
-
 # Attributes to use
 # It does not work when using all attributes yet, have to find out which of
 # the attributes is causing the problems. We should probably do some analysis
 # as to which attributes to use first anyway
 dt2 <- dt[c("voucher", "salutation", "title", "domain", "model", "newsletter")]
+
+# Add some features
+dt2$deliverydatediff <- dt$deliverydatepromised - dt$deliverydatereal
+
+# If somebody wants to try Weka
+#write.arff(dt, "task2010/dmc2010_train.arff")
