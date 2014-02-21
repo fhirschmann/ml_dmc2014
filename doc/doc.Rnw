@@ -2,7 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\usepackage[ngerman]{babel}
+\usepackage[english]{babel}
 \usepackage{fancyhdr,lastpage}
 \usepackage{hyperref}
 \usepackage{amsmath}
@@ -14,13 +14,16 @@
 \setlength{\headheight}{20pt}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{Fabian Hirschmann (1573963) }
+\fancyhead[L]{Data Mining Cup 2014}
 \fancyhead[R]{\today}
-\fancyfoot[C]{Page \thepage\ von \pageref{LastPage}}
+\fancyfoot[L]{Page \thepage\ of \pageref{LastPage}}
+\fancyfoot[R]{Fabian Hirschmann, Michael Markert, Simon Holthausen, Christoph Schatton}
+\renewcommand{\footrulewidth}{0.4pt}
 <<setup, echo=TRUE, include=FALSE>>=
-source("R/startup.R")
+source("../R/common.R")
 opts_chunk$set(echo=T, breaklines=T)
 @
 \begin{document}
-DMC
+\section{Introduction}
+The Data Mining Cup is cute.
 \end{document}
