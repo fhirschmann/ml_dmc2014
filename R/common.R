@@ -22,7 +22,7 @@ dmc.libs <- function() {
     for (lib in libs) {
         library(lib, logical.return=TRUE,
                 character.only=TRUE) || install.packages(lib)
-        library(lib, logical.return=TRUE)
+        library(lib, character.only=TRUE)
     }
 }
 
