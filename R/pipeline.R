@@ -30,18 +30,18 @@ dt.dates <- c("date", "datecreated", "deliverydatepromised", "deliverydatereal")
 dt[dt.dates] <- lapply(dt[dt.dates], as.Date)
 
 # Use a subset for testing
-dt <- head(dt, 2000)
+dt <- head(dt, 500)
 
 # If somebody wants to try Weka
 #write.arff(dt, "task2010/dmc2010_train.arff")
 
 # The list of training functions
 trainers <- list()
-trainers$rda <- function(form, ...) mytrain(form, method="rda", ...)
+trainers$nb <- function(form, ...) mytrain(form, method="nb", ...)
 
 for (name in names(trainers)) {
-    # Learn the attribute `voucher` using the domain and the paymenttype
-    fit <- trainers[[name]](voucher ~ ., data=dt[c("voucher", "domain", "paymenttype")])
+    # Learn the attribute `voucher` using the domain and the salutation
+    fit <- trainers[[name]](voucher ~ ., data=dt[c("voucher", "domain", "salutation")])
 
     # Save model to a file.
     fname <- file.path("models", paste(name, ".RData", sep=""))
