@@ -5,6 +5,7 @@ options(
 
 dmc.libs <- function() {
     libs <- c("devtools",
+              "pROC",
               "data.table",
               "knitr",
               "doMC",
