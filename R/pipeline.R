@@ -10,11 +10,15 @@ set.seed(42)
 # function (see R/caret.R) that provides a variety of metrics.
 ctrl <- trainControl(method="cv", savePredictions=TRUE, summaryFunction=mysummary)
 
-# RWeka doesn't do multiprocessing, so this disables multiprocessing when
-# using any algorithms provided by Weka.
+# We do GridSearch using the MAE as determining metric and set the control
+# parameters (CV, ...) specified above.
 mytrain <- function(form, method, ...) {
     train(form, method=method, metric="MAE", maximize=F, trControl=ctrl, ...)
 }
+
+# Read in some data
+dt <- read.csv("task2010/dmc2010_train.txt", sep=";")
+# TODO: Read date and time columns as POSIX timestamps etc...
 
 # The list of training functions
 trainers <- list()
