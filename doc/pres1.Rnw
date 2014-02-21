@@ -1,0 +1,56 @@
+\documentclass{beamer}
+\usetheme{Amsterdam}
+
+\usepackage{amsmath}
+\usepackage[mathletters]{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage{tikz}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{pifont}
+\usepackage{bibentry}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{caption}
+
+\title{Data Mining Cup 2014}
+\subtitle{Group \texttt{R} Report}
+\author{Fabian Hirschmann, Michael Markert, Simon Holthausen, Christoph Schatton}
+\institute{Technische Universität Darmstadt}
+\date{April 2014}
+\newcommand{\gcheck}{\textcolor{green}{\ding{52}}}
+\newcommand{\rballot}{\textcolor{red}{\ding{55}}}
+
+\setbeamercovered{transparent}
+\setbeamertemplate{navigation symbols}{}
+
+<<setup, echo=F, include=FALSE>>=
+source("../R/common.R")
+opts_chunk$set(echo=F, breaklines=T)
+@
+
+\begin{document}
+\begin{frame}{}
+  \titlepage
+\end{frame}
+
+%\begin{frame}
+%\frametitle{Table of Contents}
+%\tableofcontents
+%\end{frame}
+
+\section{Hello}
+\begin{frame}{Hello}
+    \vspace{-2cm}
+    <<heart, warning=F, fig.height=4.5, fig.width=5, fig.cap="R needs more love">>=
+    plot(seq(-2, 2, 0.001), (function(x) (sqrt(cos(x)) * cos(200 * x) + sqrt(abs(x)) - 
+        0.7) * (4 - x * x)^0.01)(seq(-2, 2, 0.001)), type = "l", ylab="", xlab="")
+    @
+\end{frame}
+
+\section{Questions}
+\begin{frame}{Questions}
+    Questions?
+\end{frame}
+
+\end{document}

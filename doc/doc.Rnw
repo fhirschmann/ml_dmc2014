@@ -27,15 +27,20 @@
 \renewcommand{\footrulewidth}{0.4pt}
 <<setup, echo=F, include=FALSE>>=
 source("../R/common.R")
+library(xtable)
 opts_chunk$set(echo=F, breaklines=T)
 @
 \begin{document}
 \section{Introduction}
 The Data Mining Cup is cute.
 
-<<heart, fig.cap="R needs more love", fig.height=5, figh.width=6, fig.pos="H">>=
+<<heart, warning=F, fig.cap="R needs more love", fig.height=5, figh.width=6, fig.pos="H">>=
 plot(seq(-2, 2, 0.001), (function(x) (sqrt(cos(x)) * cos(200 * x) + sqrt(abs(x)) - 
     0.7) * (4 - x * x)^0.01)(seq(-2, 2, 0.001)), type = "l")
 @
 In \cref{fig:heart} you can see that R needs more love.
+
+<<foo, results="asis">>=
+print(xtable(head(iris, 10), label="tbl:foo"), table.placement="H", booktabs=T)
+@
 \end{document}
