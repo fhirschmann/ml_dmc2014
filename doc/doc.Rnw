@@ -2,10 +2,16 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\usepackage[english]{babel}
+\usepackage[ngerman,english]{babel}
 \usepackage{fancyhdr,lastpage}
 \usepackage{hyperref}
 \usepackage{amsmath}
+\usepackage{float}
+\usepackage[noabbrev,capitalise]{cleveref}
+\crefname{subsection}{Subsection}{Subsections}
+\usepackage{booktabs}
+\usepackage[section]{placeins}
+\usepackage{graphicx}
 \usepackage{geometry}
 \geometry{hmargin={2cm,2cm},vmargin={2.4cm,3cm}}
 \usepackage{comment}
@@ -19,11 +25,17 @@
 \fancyfoot[L]{Page \thepage\ of \pageref{LastPage}}
 \fancyfoot[R]{Fabian Hirschmann, Michael Markert, Simon Holthausen, Christoph Schatton}
 \renewcommand{\footrulewidth}{0.4pt}
-<<setup, echo=TRUE, include=FALSE>>=
+<<setup, echo=F, include=FALSE>>=
 source("../R/common.R")
-opts_chunk$set(echo=T, breaklines=T)
+opts_chunk$set(echo=F, breaklines=T)
 @
 \begin{document}
 \section{Introduction}
 The Data Mining Cup is cute.
+
+<<heart, fig.cap="R needs more love", fig.height=5, figh.width=6, fig.pos="H">>=
+plot(seq(-2, 2, 0.001), (function(x) (sqrt(cos(x)) * cos(200 * x) + sqrt(abs(x)) - 
+    0.7) * (4 - x * x)^0.01)(seq(-2, 2, 0.001)), type = "l")
+@
+In \cref{fig:heart} you can see that R needs more love.
 \end{document}
