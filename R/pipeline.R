@@ -16,6 +16,15 @@ mytrain <- function(form, method=method, ...) {
 
 # Read in some data
 dt <- read.csv("task2010/dmc2010_train.txt", sep=";")
+
+## Nominal Columns (factors)
+dt.factors <- c("customernumber", "salutation", "title",
+                "domain", "model", "paymenttype", "deliverytype",
+                "invoicepostcode", "delivpostcode", "voucher",
+                "advertisingdatacode", "case", "numberitems",
+                "gift", "entry", "points", "shippingcosts", "target90")
+dt[dt.factors] <- lapply(dt[dt.factors], as.factor)
+
 # TODO: Read date and time columns as POSIX timestamps etc...
 
 # The list of training functions

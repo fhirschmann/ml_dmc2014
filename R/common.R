@@ -1,10 +1,11 @@
 options(
-        stringAsFactor=F,
+        stringAsFactor=T,
         repos=structure(c(CRAN="http://cran.r-mirror.de"))
 )
 
 dmc.libs <- function() {
     libs <- c("devtools",
+              "data.table",
               "knitr",
               "doMC",
               "caret",
