@@ -3,9 +3,7 @@ options(
         repos=structure(c(CRAN="http://cran.r-mirror.de"))
 )
 
-.env <- new.env()
-
-.env$dmc.libs <- function() {
+dmc.libs <- function() {
     libs <- c("devtools",
               "knitr",
               "caret",
@@ -30,5 +28,3 @@ options(
     library("Metrics", 
             logical.return=TRUE) || install_github("Metrics", "fhirschmann", subdir="R")
 }
-
-attach(.env)
