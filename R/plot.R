@@ -1,5 +1,4 @@
 ### Plotting Functions ###
-library(ellipse)
 source("R/lib/plotcorr.R")
 source("R/pp.R")
 
