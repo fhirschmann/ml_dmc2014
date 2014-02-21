@@ -5,12 +5,29 @@ options(
 
 .env <- new.env()
 
-.env$dmc.inst <- function() {
-    install.packages(c("caret", "Cubist", "RWeka", "earth",
-                       "plyr", "party", "elasticnet", "evtree",
-                       "C50", "extraTrees", "gam", "MASS",
-                       "kernlab", "rpart", "kohonen", "lars",
-                       "class", "nnet", "neuralnet", "ggplot2"))
+.env$dmc.libs <- function() {
+    libs <- c("devtools",
+              "caret",
+              "RWeka",
+              "earth",
+              "plyr",
+              "party",
+              "elasticnet",
+              "evtree",
+              "C50",
+              "extraTrees",
+              "gam",
+              "MASS",
+              "kernlab",
+              "rpart",
+              "ggplot2",
+              "Cubist")
+    for (lib in libs) {
+        library(lib, logical.return=TRUE,
+                character.only=TRUE) || install.packages(lib)
+    }
+    library("Metrics", 
+            logical.return=TRUE) || install_github("Metrics", "fhirschmann", subdir="R")
 }
 
 attach(.env)
