@@ -6,6 +6,7 @@ options(
 dmc.libs <- function() {
     libs <- c("devtools",
               "knitr",
+              "doMC",
               "caret",
               "RWeka",
               "earth",
