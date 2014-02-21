@@ -24,11 +24,13 @@ dt.factors <- c("customernumber", "salutation", "title",
                 "advertisingdatacode", "case", "numberitems",
                 "gift", "entry", "points", "shippingcosts", "target90")
 dt[dt.factors] <- lapply(dt[dt.factors], as.factor)
+
 ## Dates
 dt.dates <- c("date", "datecreated", "deliverydatepromised", "deliverydatereal")
 dt[dt.dates] <- lapply(dt[dt.dates], as.Date)
 
-# TODO: Read date and time columns as POSIX timestamps etc...
+# If somebody wants to try Weka
+#write.arff(dt, "task2010/dmc2010_train.arff")
 
 # The list of training functions
 trainers <- list()
