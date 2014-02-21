@@ -42,7 +42,7 @@ opts_chunk$set(echo=F, breaklines=T)
 \section{Hello}
 \begin{frame}{Hello}
     \vspace{-2cm}
-    <<heart, warning=F, fig.height=4.5, fig.width=5, fig.cap="R needs more love">>=
+    <<heart2, warning=F, fig.height=4.5, fig.width=5, fig.cap="R needs more love">>=
     plot(seq(-2, 2, 0.001), (function(x) (sqrt(cos(x)) * cos(200 * x) + sqrt(abs(x)) - 
         0.7) * (4 - x * x)^0.01)(seq(-2, 2, 0.001)), type = "l", ylab="", xlab="")
     @
