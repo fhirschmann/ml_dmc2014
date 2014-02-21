@@ -1,7 +1,5 @@
 ### This file defines the training functions ###
 
-source("R/common.R")
-dmc.libs()
 source("R/caret.R")
 source("R/pp.R")
 
@@ -20,14 +18,3 @@ mytrain <- function(form, method=method, ...) {
 # The list of training functions
 trainers <- list()
 trainers$nb <- function(form, ...) mytrain(form, method="nb", ...)
-
-for (name in names(trainers)) {
-    # Learn the attribute `voucher` using the domain and the salutation
-    fit <- trainers[[name]](voucher ~ ., data=dt2)
-
-    # Save model to a file.
-    fname <- file.path("models", paste(name, ".RData", sep=""))
-    save(fit, file=fname)
-
-    print(fit)
-}
