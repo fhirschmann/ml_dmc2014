@@ -4,8 +4,9 @@
 dt <- read.csv("task2010/dmc2010_train.txt", sep=";")
 dt <- head(dt, 1000)
 
-## Rename class labels
-dt$voucher <- ifelse(dt$voucher == 1, "yes", "no")
+## Binary variables
+dt_binary <- c("voucher", "title", "newsletter", "gift", "points", "shippingcosts")
+dt[dt_binary] <- lapply(dt[dt_binary], function(x) ifelse(x == 1, "yes", "no"))
 
 ## Nominal Columns (factors)
 dt_factors <- c("customernumber", "salutation", "title",
