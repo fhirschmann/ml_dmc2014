@@ -1,19 +1,21 @@
-### Data Preprocessing goes here ###
+# Data Preprocessing goes here
+
+source("R/utils.R")
 
 # Read in some data
 dt <- read.csv("task2010/dmc2010_train.txt", sep=";")
 dt <- head(dt, 1000)
 
 ## Binary variables
-dt_binary <- c("voucher", "title", "newsletter", "gift", "points", "shippingcosts")
-dt[dt_binary] <- lapply(dt[dt_binary], function(x) ifelse(x == 1, "yes", "no"))
+dt_binary <- c("voucher", "title", "newsletter", "gift", "shippingcosts")
+dt[dt_binary] <- lapply(dt[dt_binary], as.binary)
 
 ## Nominal Columns (factors)
-dt_factors <- c("customernumber", "salutation", "title",
-                "domain", "model", "newsletter", "paymenttype", "deliverytype",
-                "invoicepostcode", "delivpostcode", "voucher",
+dt_factors <- c("customernumber", "salutation",
+                "domain", "model", "paymenttype", "deliverytype",
+                "invoicepostcode", "delivpostcode",
                 "advertisingdatacode", "case", "numberitems",
-                "gift", "entry", "points", "shippingcosts", "target90")
+                "entry", "points", "target90")
 dt[dt_factors] <- lapply(dt[dt_factors], as.factor)
 
 ## Dates
