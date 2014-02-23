@@ -1,9 +1,7 @@
 ### This file defines the training functions ###
-source("R/caret.R")
 source("R/pp.R")
 
-library(caret)
-library(ROCR)
+suppressPackageStartupMessages(library(caret))
 
 # Be deterministic
 set.seed(42)

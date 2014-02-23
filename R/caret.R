@@ -1,5 +1,4 @@
-library(caret)
-library(doMC)
+suppressMessages(library(caret))
 
 # Support for custom metrics. Add any additional metrics you'd like
 # to be computed to this function.
