@@ -1,4 +1,5 @@
-### This file defines the training functions ###
+# Training function definition
+
 source("R/pp.R")
 
 suppressPackageStartupMessages(library(caret))
