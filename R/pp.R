@@ -4,6 +4,9 @@
 dt <- read.csv("task2010/dmc2010_train.txt", sep=";")
 dt <- head(dt, 1000)
 
+## Rename class labels
+dt$voucher <- ifelse(dt$voucher == 1, "yes", "no")
+
 ## Nominal Columns (factors)
 dt_factors <- c("customernumber", "salutation", "title",
                 "domain", "model", "newsletter", "paymenttype", "deliverytype",
