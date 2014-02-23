@@ -2,6 +2,6 @@
 #
 # Installs the required dependencies
 
-source("R/common.R")
+source("R/utils.R")
 
 dmc.inst("-f" %in% c(commandArgs()))
