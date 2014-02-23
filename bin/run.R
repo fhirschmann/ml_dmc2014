@@ -1,5 +1,7 @@
 #!/usr/bin/env Rscript
-### This runs the pipeline ###
+#
+# This runs the pipeline
+
 library(caret)
 library(ROCR)
 
