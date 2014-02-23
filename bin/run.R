@@ -2,18 +2,29 @@
 #
 # This runs the pipeline
 
-library(caret)
-library(ROCR)
-
 source("R/common.R")
 source("R/pipeline.R")
 
-for (name in names(trainers)) {
-    fit <- trainers[[name]](voucher ~ ., data=dt2)
-    
-    # Save model to a file.
+args <- commandArgs(T)
+
+run <- function(name) {
+    fit <- trainers[[name]]()
+        
     fname <- file.path("models", paste(name, ".RData", sep=""))
     save(fit, file=fname)
     
+    cat("Wrote model for", name, "to", fname, "\n")
     print(fit)
+}
+
+if (length(args) == 0) {
+    totrain <- names(trainers)
+} else {
+    totrain <- args
+}
+
+cat("Training the following models:", totrain, "\n")
+
+for (name in totrain) {
+    run(name)
 }

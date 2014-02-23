@@ -2,18 +2,20 @@
 source("R/caret.R")
 source("R/pp.R")
 
+library(caret)
+library(ROCR)
+
 # Be deterministic
 set.seed(42)
 
 # Train control. Use 2-fold CV for testing.
-ctrl <- trainControl(method="cv", number=2, classProbs=T, savePredictions=T,
-                     summaryFunction=twoClassSummary)
+ctrl <- trainControl(method="cv", number=2, classProbs=T, savePredictions=T)
 
 # Use the control parameters defined above
-mytrain <- function(form, method=method, ...) {
-    train(form, method=method, trControl=ctrl, ...)
+mytrain <- function(...) {
+    train(voucher ~ ., trControl=ctrl, ...)
 }
 
 # The list of training functions
 trainers <- list()
-trainers$nb <- function(form, ...) mytrain(form, method="nb", ...)
+trainers$nb <- function() mytrain(method="nb", data=dt2)
