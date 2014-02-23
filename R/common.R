@@ -5,13 +5,13 @@ options(
         repos=structure(c(CRAN="http://cran.r-mirror.de"))
 )
 
-dmc.libs <- function() {
+dmc.inst <- function(upgrade=F) {
     libs <- c("devtools",
               "Metrics",
               "ellipse",
-              "pROC",
               "data.table",
               "knitr",
+              "ROCR",
               "doMC",
               "caret",
               "RWeka",
@@ -19,10 +19,10 @@ dmc.libs <- function() {
               "plyr",
               "MASS",
               "ggplot2")
-    for (lib in libs) {
-        library(lib, logical.return=TRUE,
-                character.only=TRUE) || install.packages(lib)
-        library(lib, character.only=TRUE)
+    if (upgrade) {
+        install.packages(libs)
+    } else {
+        install.packages(setdiff(libs, rownames(installed.packages())))
     }
 }
 

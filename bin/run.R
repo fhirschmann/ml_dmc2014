@@ -1,7 +1,9 @@
 #!/usr/bin/env Rscript
 ### This runs the pipeline ###
+library(caret)
+library(ROCR)
+
 source("R/common.R")
-dmc.libs()
 source("R/pipeline.R")
 
 for (name in names(trainers)) {
