@@ -27,6 +27,8 @@ dt2 <- dt[c("voucher", "salutation", "title", "domain", "model", "newsletter")]
 
 # Add some features
 dt2$deliverydatediff <- dt$deliverydatepromised - dt$deliverydatereal
+dt2$allbuys <- dt$w0 + dt$w1 + dt$w2 + dt$w3 + dt$w4 + dt$w5 + dt$w6 + dt$w7 + dt$w8 + dt$w9 + dt$w10
+
 
 # If somebody wants to try Weka
 #write.arff(dt, "task2010/dmc2010_train.arff")
