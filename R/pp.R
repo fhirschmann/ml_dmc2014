@@ -6,7 +6,7 @@ suppressPackageStartupMessages(library(caret))
 
 # Read in some data
 dt <- read.csv("task2010/dmc2010_train.txt", sep=";")
-#dt <- head(dt, 1000)
+dt <- head(dt, 1000)
 
 ## Binary variables
 dt_binary <- c("voucher", "title", "newsletter", "gift", "shippingcosts", "target90")
@@ -32,7 +32,7 @@ dt[dt$advertisingdatacode == "", ]$advertisingdatacode <- NA
 # It does not work when using all attributes yet, have to find out which of
 # the attributes is causing the problems. We should probably do some analysis
 # as to which attributes to use first anyway
-dt2 <- dt[c("voucher", "salutation", "title", "domain", "model", "newsletter")]
+dt2 <- dt[c("target90", "voucher", "salutation", "title", "domain", "model", "newsletter")]
 
 # Add some features
 dt2$deliverydatediff <- dt$deliverydatepromised - dt$deliverydatereal
