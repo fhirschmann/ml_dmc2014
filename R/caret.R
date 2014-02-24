@@ -1,5 +1,12 @@
 suppressMessages(library(caret))
 
+
+dmc.points <- function(dt) {
+    ifelse(dt$target90 == "no", 
+           ifelse(dt$voucher == "no", 0, 1.5), 
+           ifelse(dt$voucher == "no", 1.5, -5))
+}
+
 # Support for custom metrics. Add any additional metrics you'd like
 # to be computed to this function.
 #
