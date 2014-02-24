@@ -2,12 +2,14 @@
 
 source("R/utils.R")
 
+suppressPackageStartupMessages(library(caret))
+
 # Read in some data
 dt <- read.csv("task2010/dmc2010_train.txt", sep=";")
-dt <- head(dt, 1000)
+#dt <- head(dt, 1000)
 
 ## Binary variables
-dt_binary <- c("voucher", "title", "newsletter", "gift", "shippingcosts")
+dt_binary <- c("voucher", "title", "newsletter", "gift", "shippingcosts", "target90")
 dt[dt_binary] <- lapply(dt[dt_binary], as.binary)
 
 ## Nominal Columns (factors)
@@ -15,7 +17,7 @@ dt_factors <- c("customernumber", "salutation",
                 "domain", "model", "paymenttype", "deliverytype",
                 "invoicepostcode", "delivpostcode",
                 "advertisingdatacode", "case", "numberitems",
-                "entry", "points", "target90")
+                "entry", "points")
 dt[dt_factors] <- lapply(dt[dt_factors], as.factor)
 
 ## Dates
