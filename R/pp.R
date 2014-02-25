@@ -6,7 +6,6 @@ suppressPackageStartupMessages(library(caret))
 
 # Read in some data
 dt <- read.csv("task2010/dmc2010_train.txt", sep=";")
-dt <- head(dt, 1000)
 
 ## Binary variables
 dt_binary <- c("voucher", "title", "newsletter", "gift", "shippingcosts", "target90")
@@ -27,6 +26,10 @@ dt[dt_dates] <- lapply(dt[dt_dates], as.Date)
 # Set empty strings to NA
 dt[dt$delivpostcode == "", ]$delivpostcode <- NA
 dt[dt$advertisingdatacode == "", ]$advertisingdatacode <- NA
+
+# Work on 10% of the original data
+dt <- dt[createDataPartition(dt$voucher, p=0.1, list=FALSE),]
+
 
 # Attributes to use
 # It does not work when using all attributes yet, have to find out which of
