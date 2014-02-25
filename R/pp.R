@@ -1,8 +1,9 @@
 # Data Preprocessing goes here
 
+suppressPackageStartupMessages(library(caret))
+
 source("R/utils.R")
 
-suppressPackageStartupMessages(library(caret))
 
 # Read in some data
 dt <- read.csv("task2010/dmc2010_train.txt", sep=";")

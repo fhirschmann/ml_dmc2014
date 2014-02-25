@@ -15,6 +15,7 @@ dmc.inst <- function(upgrade=F) {
               "knitr",
               "mda",
               "earth",
+              "pROC",
               "C50",
               "ROCR",
               "doMC",
