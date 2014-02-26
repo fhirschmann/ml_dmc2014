@@ -5,8 +5,8 @@ suppressPackageStartupMessages(library(caret))
 
 dmc.points <- function(pred, obs) {
     voucher <- ifelse(pred == "yes", "no", "yes")
-    sum(ifelse(obs == "yes",
-               ifelse(voucher == "yes", -5, 1.5),
+    sum(ifelse(voucher == "yes",
+               ifelse(obs == "yes", -5, 1.5),
                0))
 }
 
