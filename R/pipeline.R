@@ -14,12 +14,12 @@ ctrl <- trainControl(method="cv", number=2, classProbs=T, savePredictions=T,
 
 # Use the control parameters defined above
 mytrain <- function(...) {
-    train(target90 ~ ., maximize=T, trControl=ctrl, ...)
+    train(target90 ~ ., maximize=T, metric="Points", trControl=ctrl, ...)
 }
 
 weights <- ifelse(dt$voucher == "yes", -1, 5)
 
 # The list of training functions
 trainers <- list()
-trainers$nb <- function() mytrain(method="nb", data=dt2, weights=weights)
-trainers$c50 <- function() mytrain(method="C5.0", data=dt2, weights=weights)
+#trainers$nb <- function() mytrain(method="nb", data=dt2, weights=weights)
+trainers$c50 <- function() mytrain(method="C5.0Cost", data=dt2, costs=dmc.cost)
