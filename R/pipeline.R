@@ -14,7 +14,7 @@ ctrl <- trainControl(method="cv", number=2, classProbs=T, savePredictions=T,
 
 # Use the control parameters defined above
 mytrain <- function(...) {
-    train(voucher ~ ., maximize=T, trControl=ctrl, ...)
+    train(target90 ~ ., maximize=T, trControl=ctrl, ...)
 }
 
 weights <- ifelse(dt$voucher == "yes", -1, 5)
