@@ -46,3 +46,13 @@ dmc.load <- function(mdir="models") {
     setwd(cwd)
     models
 }
+
+dmc.run <- function(name) {
+    fit <- trainers[[name]]()
+    
+    fname <- file.path("models", paste(name, ".RData", sep=""))
+    save(fit, file=fname)
+    
+    cat("Wrote model for", name, "to", fname, "\n")
+    fit
+}

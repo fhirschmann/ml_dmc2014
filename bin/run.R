@@ -9,6 +9,7 @@ args <- commandArgs(T)
 
 
 if (length(args) == 0) {
+    # Train all models
     totrain <- names(trainers)
 } else {
     totrain <- args
@@ -17,5 +18,5 @@ if (length(args) == 0) {
 cat("Training the following models:", totrain, "\n")
 
 for (name in totrain) {
-    print(run(name))
+    print(dmc.run(name))
 }

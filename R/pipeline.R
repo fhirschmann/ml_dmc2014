@@ -27,14 +27,3 @@ trainers$cart <- function() mytrain(method="rpart", data=dt2,
                                     # rpart wants the matrix to have true classes
                                     # in rows, so we transpose
                                     parms=list(loss=t(dmc.cost)))
-
-
-run <- function(name) {
-    fit <- trainers[[name]]()
-    
-    fname <- file.path("models", paste(name, ".RData", sep=""))
-    save(fit, file=fname)
-    
-    cat("Wrote model for", name, "to", fname, "\n")
-    fit
-}
