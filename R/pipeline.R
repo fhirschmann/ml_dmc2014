@@ -9,7 +9,7 @@ suppressPackageStartupMessages(library(caret))
 set.seed(42)
 
 # Train control. Use 2-fold CV for testing.
-ctrl <- trainControl(method="cv", number=2, classProbs=T, savePredictions=T,
+ctrl <- trainControl(method="cv", number=10, classProbs=T, savePredictions=T,
                      summaryFunction=dmc.summary)
 
 # Use the control parameters defined above
@@ -22,8 +22,8 @@ weights <- ifelse(dt$voucher == "yes", -1, 5)
 # The list of training functions
 trainers <- list()
 #trainers$nb <- function() mytrain(method="nb", data=dt2, weights=weights)
-#trainers$c50 <- function() mytrain(method="C5.0Cost", data=dt2, costs=dmc.cost)
-trainers$cart <- function() mytrain(method="rpart", data=dt2, tuneLength=40,
+trainers$c50 <- function() mytrain(method="C5.0Cost", data=dt2, cost=dmc.cost)
+trainers$cart <- function() mytrain(method="rpart", data=dt2,
                                     # rpart wants the matrix to have true classes
                                     # in rows, so we transpose
                                     parms=list(loss=t(dmc.cost)))
