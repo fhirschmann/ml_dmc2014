@@ -4,9 +4,11 @@ suppressPackageStartupMessages(library(caret))
 
 source("R/utils.R")
 
-
 # Read in some data
 dt <- read.csv("task2010/dmc2010_train.txt", sep=";")
+
+## Remove Zero-Variance Predictors
+dt$points <- NULL
 
 ## Binary variables
 dt_binary <- c("voucher", "title", "newsletter", "gift", "shippingcosts", "target90")
@@ -17,7 +19,7 @@ dt_factors <- c("customernumber", "salutation",
                 "domain", "model", "paymenttype", "deliverytype",
                 "invoicepostcode", "delivpostcode",
                 "advertisingdatacode", "case", "numberitems",
-                "entry", "points")
+                "entry")
 dt[dt_factors] <- lapply(dt[dt_factors], as.factor)
 
 ## Dates
@@ -28,10 +30,10 @@ dt[dt_dates] <- lapply(dt[dt_dates], as.Date)
 dt[dt$delivpostcode == "", ]$delivpostcode <- NA
 dt[dt$advertisingdatacode == "", ]$advertisingdatacode <- NA
 
+
 # Work on 10% of the original data
 set.seed(42)
 dt <- dt[createDataPartition(dt$voucher, p=0.1, list=FALSE),]
-
 
 # Attributes to use
 # It does not work when using all attributes yet, have to find out which of
