@@ -5,10 +5,10 @@ source("R/dmc2010.R")
 
 suppressPackageStartupMessages(library(caret))
 
+# Create folds explicitly
 set.seed(42)
 indx <- createFolds(dt2, k=10, returnTrain=TRUE)
 
-# Train control. Use 2-fold CV for testing.
 ctrl <- trainControl(classProbs=T, savePredictions=T,
                      summaryFunction=dmc.summary, index=indx)
 
