@@ -29,6 +29,7 @@ dt[dt$delivpostcode == "", ]$delivpostcode <- NA
 dt[dt$advertisingdatacode == "", ]$advertisingdatacode <- NA
 
 # Work on 10% of the original data
+set.seed(42)
 dt <- dt[createDataPartition(dt$voucher, p=0.1, list=FALSE),]
 
 

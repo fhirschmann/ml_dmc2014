@@ -5,12 +5,12 @@ source("R/dmc2010.R")
 
 suppressPackageStartupMessages(library(caret))
 
-# Be deterministic
 set.seed(42)
+indx <- createFolds(dt2, k=10, returnTrain=TRUE)
 
 # Train control. Use 2-fold CV for testing.
-ctrl <- trainControl(method="cv", number=10, classProbs=T, savePredictions=T,
-                     summaryFunction=dmc.summary)
+ctrl <- trainControl(classProbs=T, savePredictions=T,
+                     summaryFunction=dmc.summary, index=indx)
 
 # Use the control parameters defined above
 mytrain <- function(...) {
