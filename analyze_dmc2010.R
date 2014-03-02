@@ -8,18 +8,20 @@ source("R/pp.R")
 source("R/plot.R")
 library(psych)
 library(caret)
-nums <- colnames(dt[sapply(dt, is.numeric)])
-facs <- colnames(dt[sapply(dt, is.factor)])
 
 dt.test$target90 <- NA
 cmb <- rbind(data.frame(dt, group="train"), data.frame(dt.test, group="test"))
 
-#' Factor Plots (make numeric attributes a factor, too = discretize)
+#' Factor Plots
+
+#' Discretize numeric
 cmb2 <- cmb
+nums <- colnames(cmb2[sapply(cmb2, is.numeric)])
 cmb2[nums] <- lapply(cmb2[nums], as.factor)
+facs <- colnames(cmb2[sapply(cmb2, is.factor)])
 
 for (f in setdiff(facs, c("customernumber"))) {
-    print(qplot(cmb[[f]], data=cmb, fill=cmb$group, geom="bar", position="dodge",
+    print(qplot(cmb2[[f]], data=cmb2, fill=cmb$group, geom="bar", position="dodge",
                 xlab=f, ylab="count"))
 }
 
