@@ -9,6 +9,7 @@ dt <- read.csv("task2010/dmc2010_train.txt", sep=";")
 
 ## Remove Zero-Variance Predictors
 dt$points <- NULL
+dt <- droplevels(dt)
 
 ## Binary variables
 dt_binary <- c("voucher", "title", "newsletter", "gift", "shippingcosts", "target90")
