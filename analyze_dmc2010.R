@@ -9,13 +9,14 @@ source("R/plot.R")
 library(psych)
 library(caret)
 nums <- colnames(dt[sapply(dt, is.numeric)])
+facs <- colnames(dt[sapply(dt, is.factor)])
 
 #' Describe Data
 #+ desc, cache=TRUE
 prettyR::describe(dt)
 
 #' Factor Plots
-for (f in setdiff(dt_factors, c("customernumber"))) {
+for (f in setdiff(facs, c("customernumber"))) {
     plot(dt[[f]], main=f)
 }
 
