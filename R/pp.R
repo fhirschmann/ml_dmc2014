@@ -1,6 +1,7 @@
 # Data Preprocessing goes here
 
 suppressPackageStartupMessages(library(caret))
+library(lubridate)
 
 source("R/utils.R")
 
@@ -29,6 +30,8 @@ dt[dt$advertisingdatacode == "", ]$advertisingdatacode <- NA
 
 # Add some features
 dt$deliverydatediff <- dt$deliverydatepromised - dt$deliverydatereal
+dt$month <- as.factor(month(dt$date))
+dt$weekday <- as.factor(wday(dt$date))
 
 # Work on 10% of the original data
 set.seed(42)
