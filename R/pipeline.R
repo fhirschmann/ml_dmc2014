@@ -5,6 +5,10 @@ source("R/dmc2010.R")
 
 suppressPackageStartupMessages(library(caret))
 
+# Work on 10% of the original data
+set.seed(42)
+dt2 <- dt[createDataPartition(dt$voucher, p=0.1, list=FALSE),]
+
 # Create folds explicitly
 set.seed(42)
 indx <- createFolds(dt2, k=10, returnTrain=TRUE)
