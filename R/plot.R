@@ -2,6 +2,20 @@
 
 source("R/lib/plotcorr.R")
 source("R/pp.R")
+library(lubridate)
+
+# Usage: dmc.plotpurch(dt)
+dmc.plotpurch <- function(dt) {
+    dtx <- dt
+    dtx$month <- month(dt$date)
+    freq.all <- table(dtx$month)
+    freq.pur <- table(dtx[dtx$target90 == "yes",]$month)
+    plot(freq.all, type="l", col="blue", xlab="Month", ylab="Number of Customers",
+         main="Customer Sessions vs Purchases")
+    lines(freq.pur, type="l", col="red")
+    legend("topleft", c("All Sessions", "Purchases"), col=c("blue", "red"),
+           bty="n", lty=1, cex=.75)
+}
 
 # Usage: dmc.plotcorr(dt)
 dmc.plotcorr <- function(dt) {
