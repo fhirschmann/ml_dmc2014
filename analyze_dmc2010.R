@@ -11,26 +11,24 @@ library(caret)
 nums <- colnames(dt[sapply(dt, is.numeric)])
 facs <- colnames(dt[sapply(dt, is.factor)])
 
-#' Describe Data
-#+ desc, cache=TRUE
-prettyR::describe(dt)
+dt.test$target90 <- NA
+cmb <- rbind(data.frame(dt, group="train"), data.frame(dt.test, group="test"))
 
-#' Factor Plots
+#' Factor Plots (make numeric attributes a factor, too = discretize)
+cmb2 <- cmb
+cmb2[nums] <- lapply(cmb2[nums], as.factor)
+
 for (f in setdiff(facs, c("customernumber"))) {
-    plot(dt[[f]], main=f)
-}
-
-#' Binary Factor Plots
-for (f in dt_binary) {
-    plot(dt[[f]], main=f)
+    print(qplot(cmb[[f]], data=cmb, fill=cmb$group, geom="bar", position="dodge",
+                xlab=f, ylab="count"))
 }
 
 #' Numeric Plots
-for (f in setdiff(nums, c("customernumber", "datecreated", "points",
-                          "deliverydatepromised", "deliverydatereal",
-                          dt_binary))) {
-    dmc.hist(dt[[f]], main=f)
-}
+#for (f in setdiff(nums, c("customernumber", "datecreated", "points",
+#                          "deliverydatepromised", "deliverydatereal",
+#                          dt_binary))) {
+#    dmc.hist(dt[[f]], main=f)
+#}
 
 #' Correlation Plot
 #+ corrplot, fig.width=10, fig.height=10
