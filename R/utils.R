@@ -14,6 +14,7 @@ dmc.inst <- function(upgrade=F) {
               "data.table",
               "knitr",
               "mda",
+              "Hmisc",
               "earth",
               "pROC",
               "C50",
