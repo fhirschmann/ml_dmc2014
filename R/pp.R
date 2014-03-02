@@ -11,11 +11,11 @@ dt <- read.csv("task2010/dmc2010_train.txt", sep=";")
 dt$points <- NULL
 dt <- droplevels(dt)
 
-## Binary variables
+## Binary Predictors
 dt_binary <- c("voucher", "title", "newsletter", "gift", "shippingcosts", "target90")
 dt[dt_binary] <- lapply(dt[dt_binary], as.binary)
 
-## Nominal Columns (factors)
+## Nominal Predictors (factors)
 dt_factors <- c("customernumber", "salutation",
                 "domain", "model", "paymenttype", "deliverytype",
                 "invoicepostcode", "delivpostcode",
@@ -23,7 +23,7 @@ dt_factors <- c("customernumber", "salutation",
                 "entry")
 dt[dt_factors] <- lapply(dt[dt_factors], as.factor)
 
-## Dates
+## Date Predictors
 dt_dates <- c("date", "datecreated", "deliverydatepromised", "deliverydatereal")
 dt[dt_dates] <- lapply(dt[dt_dates], as.Date)
 
