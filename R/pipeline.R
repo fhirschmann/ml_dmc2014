@@ -21,8 +21,6 @@ mytrain <- function(...) {
     train(target90 ~ ., maximize=T, metric="Points", trControl=ctrl, ...)
 }
 
-weights <- ifelse(dt$voucher == "yes", -1, 5)
-
 # The list of training functions
 trainers <- list()
 #trainers$nb <- function() mytrain(method="nb", data=dt2, weights=weights)
