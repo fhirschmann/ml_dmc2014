@@ -4,6 +4,7 @@ fs.all <- function(dt) {
     dt$deliverydatereal <- NULL
     dt$deliverydatepromised <- NULL
     dt$datecreated <- NULL
+    dt$points <- NULL
 }
 
 fs.c50 <- function(dt) {
