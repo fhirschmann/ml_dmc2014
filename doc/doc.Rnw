@@ -26,10 +26,18 @@
 \fancyfoot[R]{Fabian Hirschmann, Michael Markert, Simon Holthausen, Christoph Schatton}
 \renewcommand{\footrulewidth}{0.4pt}
 <<setup, echo=F, include=FALSE>>=
-source("../R/common.R")
 library(xtable)
 opts_chunk$set(echo=F, breaklines=T)
+opts_knit$set(fig.path="figure-pres1/", root.dir="../")
 @
+<<load, echo=F,message=F>>=
+library(caret)
+library(C50)
+library(rpart)
+source("R/pp.R")
+@
+
+
 \begin{document}
 \section{Introduction}
 The Data Mining Cup is cute.
@@ -42,5 +50,12 @@ In \cref{fig:heart} you can see that R needs more love.
 
 <<foo, results="asis">>=
 print(xtable(head(iris, 10), label="tbl:foo"), table.placement="H", booktabs=T)
+@
+\newpage
+\appendix
+\section{Session Information}
+What follows is the \texttt{R} session information for reproducibility.
+<<essinfo, echo=T>>=
+sessionInfo()
 @
 \end{document}
