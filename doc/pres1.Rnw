@@ -9,8 +9,10 @@
 \usepackage{listings}
 \usepackage{pifont}
 \usepackage{bibentry}
+\usepackage{longtable}
 \usepackage{listings}
 \usepackage{color}
+\usepackage{multicol}
 \usepackage{caption}
 
 \title{Data Mining Cup 2014}
@@ -25,8 +27,12 @@
 \setbeamertemplate{navigation symbols}{}
 
 <<setup, echo=F, include=FALSE>>=
-source("../R/common.R")
 opts_chunk$set(echo=F, breaklines=T)
+opts_knit$set(fig.path="figure-pres1/", root.dir="../")
+@
+
+<<load, echo=F>>=
+source("R/pp.R")
 @
 
 \begin{document}
@@ -46,6 +52,19 @@ opts_chunk$set(echo=F, breaklines=T)
     plot(seq(-2, 2, 0.001), (function(x) (sqrt(cos(x)) * cos(200 * x) + sqrt(abs(x)) - 
         0.7) * (4 - x * x)^0.01)(seq(-2, 2, 0.001)), type = "l", ylab="", xlab="")
     @
+\end{frame}
+
+\begin{frame}{Predictors}
+    \vspace{-1cm}
+    \hspace{-1cm}
+    \scriptsize
+    \begin{multicols}{2}
+    <<predictors, results="asis">>=
+    print(xtable(t(data.frame(lapply(dt, class))), align="r|l"), floating=F, booktabs=F,
+          tabular.environment="longtable", include.colnames=F, hline.after=c(0),
+          hline.before=NULL, sanitize.rownames.function=function(x) paste("\\texttt{", x, "}"))
+    @
+    \end{multicols}
 \end{frame}
 
 \section{Questions}
