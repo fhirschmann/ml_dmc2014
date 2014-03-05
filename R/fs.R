@@ -15,10 +15,10 @@ fs.c50 <- function(dt) {
     dt2
 }
 
-fs.rpart <- function(dt) {
+fs.cart <- function(dt) {
     dt2 <- fs.all(dt)
     
-    # rpart specific features
+    # cart specific features
     
     dt2
 }
