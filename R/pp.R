@@ -26,7 +26,16 @@ pp <- function(dt) {
                     "advertisingdatacode", "case",
                     "entry")
     dt[dt_factors] <- lapply(dt[dt_factors], as.factor)
-    
+
+    # Use labels instead of numeric values
+    levels(dt$salutation) <- c("Ms.", "Mr.", "Company")
+    levels(dt$paymenttype) <- c("invoice", "cash", "transfer", "transfer_cc")
+    levels(dt$domain) <- c("aol.com", "arcor.de", "freenet.de", "gmail.com", "gmx.de",
+                           "hotmail.de", "online.de", "onlinehome.de", "t-online.de",
+                           "web.de", "yahoo.com", "yahoo.de", "other")
+    levels(dt$deliverytype) <- c("dispatch", "collection")
+    levels(dt$entry) <- c("shop", "partner")
+        
     ## Date Predictors
     dt_dates <- c("date", "datecreated", "deliverydatepromised", "deliverydatereal")
     dt[dt_dates] <- lapply(dt[dt_dates], as.Date)
