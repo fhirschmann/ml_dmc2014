@@ -19,13 +19,17 @@ pp <- function(dt) {
     dt[dt_binary] <- lapply(dt[dt_binary], as.binary)
     if ("target90" %in% names(dt)) dt$target90 <- as.binary(dt$target90)
     
-    ## Nominal Predictors (factors)
+    ## Nominal Predictors
     dt_factors <- c("customernumber", "salutation",
                     "domain", "model", "paymenttype", "deliverytype",
                     "invoicepostcode", "delivpostcode",
-                    "advertisingdatacode", "case",
+                    "advertisingdatacode",
                     "entry")
     dt[dt_factors] <- lapply(dt[dt_factors], as.factor)
+
+    ## Ordered Predictors
+    dt_ordinal <- c("case")
+    dt[dt_ordinal] <- lapply(dt[dt_ordinal], as.ordered)
 
     # Use labels instead of numeric values
     levels(dt$salutation) <- c("Ms.", "Mr.", "Company")
