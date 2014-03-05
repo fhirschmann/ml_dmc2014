@@ -23,7 +23,7 @@ pp <- function(dt) {
     dt_factors <- c("customernumber", "salutation",
                     "domain", "model", "paymenttype", "deliverytype",
                     "invoicepostcode", "delivpostcode",
-                    "advertisingdatacode", "case", "numberitems",
+                    "advertisingdatacode", "case",
                     "entry")
     dt[dt_factors] <- lapply(dt[dt_factors], as.factor)
     
