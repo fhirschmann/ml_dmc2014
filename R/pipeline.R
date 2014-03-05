@@ -9,7 +9,7 @@ suppressPackageStartupMessages(library(caret))
 # Create folds explicitly
 set.seed(42)
 ctrl <- trainControl(method="cv", classProbs=F, savePredictions=T,
-                     summaryFunction=dmc.summary, index=indx)
+                     summaryFunction=dmc.summary)
 
 # Use the control parameters defined above
 mytrain <- function(...) {
