@@ -1,7 +1,9 @@
 fs.all <- function(dt) {
     # Remove features not required at all
     dt$customernumber <- NULL
-    dt
+    dt$deliverydatereal <- NULL
+    dt$deliverydatepromised <- NULL
+    dt$datecreated <- NULL
 }
 
 fs.c50 <- function(dt) {
