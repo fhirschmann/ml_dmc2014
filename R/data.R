@@ -1,5 +1,5 @@
 source("R/pp.R")
-source("R/data.R")
+source("R/fs.R")
 
 # Lazy evaluation: dt and dt.test get constructed when needed
 delayedAssign("dt", pp(read.csv("task2010/dmc2010_train.txt", sep=";")))

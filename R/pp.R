@@ -4,7 +4,7 @@ suppressPackageStartupMessages(library(caret))
 library(lubridate)
 
 source("R/utils.R")
-source("R/fs.R")
+
 pp <- function(dt) {
     # Preprocesses DMC2010 data, i.e. cleaning, creating features, etc...
     #
