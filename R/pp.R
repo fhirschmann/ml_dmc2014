@@ -50,8 +50,22 @@ pp <- function(dt) {
     
     # Add some features
     dt$deliverydatediff <- as.numeric(dt$deliverydatepromised - dt$deliverydatereal)
-    dt$month <- ordered(as.factor(month(dt$date)))
-    dt$weekday <- ordered(as.factor(wday(dt$date, label=T, abbr=F)))
+    dt$month <- as.factor(month(dt$date))
+    dt$weekday <- as.factor(wday(dt$date, label=T, abbr=F))
     
     dt
+}
+
+cl <- function(dt) {
+    # Cleans DMC2010 data, i.e. outlier removal
+    #
+    # Args:
+    #   dt: A data frame
+    #
+    # Returns:
+    #   A preprocessed data frame
+    dt2 <- dt
+    dt2[dt2$deliverydatepromised > as.Date("2011-01-01"),]$deliverydatepromised <- NA
+
+    dt2
 }
