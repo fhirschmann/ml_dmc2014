@@ -7,6 +7,12 @@ as.binary <- function(x) {
     as.factor(ifelse(x == 1, "yes", "no"))
 }
 
+df.classes <- function(dt) {
+    df <- t(data.frame(lapply(dt, function(x) paste(class(x), collapse="/"))))
+    colnames(df) <- c("class")
+    df
+}
+
 dmc.inst <- function(upgrade=F) {
     libs <- c("devtools",
               "Metrics",
