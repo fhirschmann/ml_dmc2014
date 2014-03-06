@@ -1,5 +1,5 @@
-# This document gets compiled automatically with each svn commit and is available at:
-# http://dmc.0x0b.de
+This document gets compiled automatically with each svn commit and is available at:
+[http://dmc.0x0b.de](http://dmc.0x0b.de).
 
 ```{r setup, echo=F}
 library(knitr)
