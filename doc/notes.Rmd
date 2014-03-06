@@ -1,0 +1,31 @@
+```{r setup, echo=F}
+library(knitr)
+opts_chunk$set(echo=F, breaklines=T)
+opts_knit$set(fig.path="figure-notes/", root.dir="../")
+```
+```{r echo=F}
+source("R/data.R")
+source("R/dmc2010.R")
+```
+# DMC 2010 Notes
+
+The task is to classify the target attribute ``target90`` (binary classification). If this
+attribute is ``yes``, then no vouchers are given out and vice versa. So, the decision to
+give out vouchers really is the inverse of ``target90``.
+
+## Baseline
+
+The baseline can be constructed by giving out a voucher all the time:
+
+```{r baseline}
+dmc.points(rep("no", nrow(dt)), dt$target90)
+```
+
+## Cost-Sensitivity
+
+The problem at hand is a cost-sensitive classification problem, and
+the cost matrix is given by
+
+```{r cost}
+dmc.cost
+```
