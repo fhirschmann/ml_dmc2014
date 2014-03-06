@@ -50,8 +50,8 @@ pp <- function(dt) {
     
     # Add some features
     dt$deliverydatediff <- as.numeric(dt$deliverydatepromised - dt$deliverydatereal)
-    dt$month <- as.factor(month(dt$date))
-    dt$weekday <- as.factor(wday(dt$date))
+    dt$month <- ordered(as.factor(month(dt$date)))
+    dt$weekday <- ordered(as.factor(wday(dt$date, label=T, abbr=F)))
     
     dt
 }
