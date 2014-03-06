@@ -13,6 +13,12 @@ df.classes <- function(dt) {
     df
 }
 
+df.nas <- function(dt) {
+    df <- t(data.frame(lapply(dt, function(x) sum(is.na(x)))))
+    colnames(df) <- c("NAs")
+    df
+}
+
 dmc.inst <- function(upgrade=F) {
     libs <- c("devtools",
               "Metrics",
