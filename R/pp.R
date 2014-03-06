@@ -64,8 +64,9 @@ cl <- function(dt) {
     #
     # Returns:
     #   A preprocessed data frame
+
     dt2 <- dt
     dt2[dt2$deliverydatepromised > as.Date("2011-01-01"),]$deliverydatepromised <- NA
-
+    dt2[dt2$deliverydatediff < -15 | dt2$deliverydatediff > 21 | is.na(dt2$deliverydatediff),]$deliverydatediff <- NA
     dt2
 }
