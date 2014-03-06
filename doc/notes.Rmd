@@ -3,7 +3,7 @@ This document gets compiled automatically with each svn commit and is available 
 
 ```{r setup, echo=F}
 library(knitr)
-opts_chunk$set(echo=F, breaklines=T)
+opts_chunk$set(echo=T, breaklines=T)
 opts_knit$set(fig.path="figure-notes/", root.dir="../")
 ```
 ```{r echo=F}
