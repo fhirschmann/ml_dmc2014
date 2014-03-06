@@ -8,7 +8,9 @@ opts_knit$set(fig.path="figure-notes/", root.dir="../")
 ```
 ```{r echo=F}
 source("R/data.R")
+source("R/utils.R")
 source("R/dmc2010.R")
+library(xtable)
 ```
 # DMC 2010 Notes
 
@@ -53,3 +55,13 @@ dmc.cost
 
 where columns correspond to the true classes and rows are the predicted class.
 Diagonal elements are ignored, so it needs to be normalized.
+
+## Data Analytics
+
+### Data types
+
+After preprocessing, the predictors have the following types:
+
+```{r types}
+df.classes(dt)
+```
