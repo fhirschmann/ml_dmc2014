@@ -11,6 +11,7 @@ source("R/data.R")
 source("R/utils.R")
 source("R/dmc2010.R")
 library(xtable)
+library(ggplot2)
 ```
 # DMC 2010 Notes
 
@@ -64,4 +65,32 @@ After preprocessing, the predictors have the following types:
 
 ```{r types}
 df.classes(dt)
+```
+
+### Data Summary
+
+```{r summary}
+summary(pp(read.csv("task2010/dmc2010_train.txt", sep=";")))
+```
+
+Observations:
+
+- ``gift`` has very few yes cases, as does ``title``
+- ``points`` is useless
+- ``deliverydatepromises`` has at least one outlier (mean vs median!)
+- ``deliverydatediff`` is affected by this obviously
+- ``weight`` probably has at least one outlier too (mean vs median!)
+
+After cleaning the data, it looks as follows:
+
+```{r summary2}
+summary(dt)
+```
+
+## Visual Analytics
+
+```{r barplots, fig.width=11}
+toplot <- c("weekday", "dom")
+qplot(domain, fill=group, data=dt.merged, position="dodge") + theme(axis.text.x = element_text(angle=90))
+
 ```
