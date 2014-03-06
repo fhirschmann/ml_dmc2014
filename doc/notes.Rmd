@@ -16,13 +16,31 @@ The task is to classify the target attribute ``target90`` (binary classification
 attribute is ``yes``, then no vouchers are given out and vice versa. So, the decision to
 give out vouchers really is the inverse of ``target90``.
 
-## Baseline
+## Basic Numbers
+
+### Maximum Points
+
+The maximum achievable points:
+```{r max}
+points.max <- dmc.points(dt$target90, dt$target90)
+points.max
+```
+
+### Baseline
 
 The baseline can be constructed by giving out a voucher all the time:
 
 ```{r baseline}
-dmc.points(rep("no", nrow(dt)), dt$target90)
+points.baseline <- dmc.points(rep("no", nrow(dt)), dt$target90)
+points.baseline
 ```
+
+In terms of ratio:
+
+```{r baseliner}
+points.baseline / points.max
+```
+
 
 ## Cost-Sensitivity
 
