@@ -29,3 +29,6 @@ the cost matrix is given by
 ```{r cost}
 dmc.cost
 ```
+
+where columns correspond to the true classes and rows are the predicted class.
+Diagonal elements are ignored, so it needs to be normalized.
