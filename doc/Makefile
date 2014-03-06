@@ -19,6 +19,9 @@ pres1.tex: pres1.Rnw
 analyze_dmc2010.html: analyze_dmc2010.Rmd
 	Rscript -e "library(knitr); knit2html('analyze_dmc2010.Rmd')"
 
+notes.html: notes.Rmd
+	Rscript -e "library(knitr); knit2html('notes.Rmd')"
+
 clean:
 	rm *.tex
 	rm *.pdf
