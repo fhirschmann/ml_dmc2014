@@ -4,7 +4,7 @@ suppressPackageStartupMessages(library(caret))
 library(lubridate)
 
 source("R/utils.R")
-
+source("R/fs.R")
 pp <- function(dt) {
     # Preprocesses DMC2010 data, i.e. cleaning, creating features, etc...
     #
@@ -49,13 +49,9 @@ pp <- function(dt) {
     dt[dt$advertisingdatacode == "", ]$advertisingdatacode <- NA
     
     # Add some features
-    dt$deliverydatediff <- dt$deliverydatepromised - dt$deliverydatereal
+    dt$deliverydatediff <- as.numeric(dt$deliverydatepromised - dt$deliverydatereal)
     dt$month <- as.factor(month(dt$date))
     dt$weekday <- as.factor(wday(dt$date))
     
     dt
 }
-
-# Lazy evaluation: dt and dt.test get constructed when needed
-delayedAssign("dt", pp(read.csv("task2010/dmc2010_train.txt", sep=";")))
-delayedAssign("dt.test", pp(read.csv("task2010/dmc2010_class.txt", sep=";")))
