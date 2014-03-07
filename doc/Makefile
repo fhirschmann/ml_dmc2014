@@ -11,7 +11,6 @@ doc.tex: doc.Rnw
 
 pres1.pdf: pres1.tex
 	latexmk $(TEXFLAGS) pres1.tex
-	latexmk -c pres1.tex
 
 pres1.tex: pres1.Rnw
 	Rscript -e "library(knitr); knit('pres1.Rnw')"
@@ -23,5 +22,5 @@ notes.html: notes.Rmd
 	Rscript -e "library(knitr); knit2html('notes.Rmd')"
 
 clean:
-	rm *.tex
-	rm *.pdf
+	latexmk -c -f pres1.tex
+	latexmk -c -f doc.tex
