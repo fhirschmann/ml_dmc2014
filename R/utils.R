@@ -19,6 +19,19 @@ df.nas <- function(dt) {
     df
 }
 
+caret.bestidx <- function(fit) {
+    params <- colnames(fit$bestTune)
+    Reduce('&', lapply(params, function(y) fit$pred[[y]] == fit$bestTune[[y]]))
+}
+
+caret.pred <- function(fit) {
+    fit$pred$pred[caret.bestidx(fit)]
+}
+
+caret.obs <- function(fit) {
+    fit$pred$obs[caret.bestidx(fit)]
+}
+
 dmc.inst <- function(upgrade=F) {
     libs <- c("devtools",
               "Metrics",
