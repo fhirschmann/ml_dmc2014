@@ -1,4 +1,5 @@
 # DMC2010 Specific Stuff
+source("R/utils.R")
 
 suppressPackageStartupMessages(library(caret))
 
@@ -10,7 +11,7 @@ dmc.points <- function(pred, obs) {
                0))
 }
 
-dmc.summary <- function (data, lev = NULL, model = NULL) {
+dmc.summary <- function(data, lev = NULL, model = NULL) {
     out <- twoClassSummary(data, lev, model)
     points <- dmc.points(data$pred, data$obs)
     maxpoints <- dmc.points(data$obs, data$obs)
@@ -18,6 +19,15 @@ dmc.summary <- function (data, lev = NULL, model = NULL) {
       PointsP=points / maxpoints,
       out)
 }
+
+dmc.evaluate <- function(mds) {
+    df <- data.frame(lapply(mds, function(x) dmc.points(caret.pred(x), caret.obs(x))))
+    df$baseline <- dmc.points(rep("no", length(caret.obs(mds[[1]]))), caret.obs(mds[[1]]))
+    df$maximum <- dmc.points(caret.obs(mds[[1]]), caret.obs(mds[[1]]))
+    rownames(df) <- c("Points")
+    t(df)
+}
+
 #Kostenmatrix:
 #ursprünglich:
 #			obs=1	obs=0
