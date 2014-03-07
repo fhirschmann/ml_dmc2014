@@ -11,3 +11,6 @@ delayedAssign("dt.cart", fs.cart(dt))
 # Merged Train/Test Data; this is mostly useful for plotting
 delayedAssign("dt.merged", rbind(data.frame(dt, group="train"),
                                  data.frame(dt.test, group="test", target90=NA)))
+
+# Serialized Models
+delayedAssign("mds", dmc.load())
