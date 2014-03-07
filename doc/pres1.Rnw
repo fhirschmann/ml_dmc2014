@@ -58,13 +58,11 @@ source("R/pp.R")
     \vspace{-1cm}
     \hspace{-1cm}
     \scriptsize
-    \begin{multicols}{2}
     <<predictors, results="asis">>=
     print(xtable(t(data.frame(lapply(dt, class))), align="r|l"), floating=F, booktabs=F,
           tabular.environment="longtable", include.colnames=F, hline.after=c(0),
           hline.before=NULL, sanitize.rownames.function=function(x) paste("\\texttt{", x, "}"))
     @
-    \end{multicols}
 \end{frame}
 
 \section{Questions}
