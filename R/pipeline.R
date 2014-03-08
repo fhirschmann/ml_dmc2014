@@ -16,7 +16,7 @@ descs <- list(
     cart=list(
         train.args=list(
             method="rpart",
-            data=head(dt.c50, 2000),
+            data=dt.cart,
             # rpart wants the matrix to have true classes
             # in rows, so we transpose
             parms=list(loss=t(dmc.cost))))
