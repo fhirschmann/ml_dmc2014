@@ -14,7 +14,7 @@ To be more specific:
 - R/data.R: lazy evaluation for all data frames (dt, dt.c50, dt.cart, ...)
 - R/fs.R: feature selection (per model)
 - R/pipeline.R: the the model fitting stuff
-- R/pp.R: preprocessing and outlier removal
+- R/pp.R: preprocessing, outlier removal, missing data imputation
 - R/utils.R: utility functions
 
 As far as documentation is concerned:
