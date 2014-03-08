@@ -29,10 +29,19 @@
 <<setup, echo=F, include=FALSE>>=
 opts_chunk$set(echo=F, breaklines=T)
 opts_knit$set(fig.path="figure-pres1/", root.dir="../")
+library(xtable)
+library(stats)
+
+# Bug in xtable: doesn't print dates correctly
+xtable <- function(x, ...) {
+   for (i in which(sapply(x, function(y) !all(is.na(match(c("POSIXt","Date"),class(y))))))) x[[i]] <- as.character(x[[i]])
+   xtable::xtable(x, ...)
+}
 @
 
 <<load, echo=F>>=
-source("R/pp.R")
+source("R/data.R")
+source("R/utils.R")
 @
 
 \begin{document}
@@ -45,23 +54,84 @@ source("R/pp.R")
 %\tableofcontents
 %\end{frame}
 
-\section{Hello}
-\begin{frame}{Hello}
-    \vspace{-2cm}
-    <<heart2, warning=F, fig.height=4.5, fig.width=5, fig.cap="R needs more love">>=
-    plot(seq(-2, 2, 0.001), (function(x) (sqrt(cos(x)) * cos(200 * x) + sqrt(abs(x)) - 
-        0.7) * (4 - x * x)^0.01)(seq(-2, 2, 0.001)), type = "l", ylab="", xlab="")
+\section{Description}
+
+\section{Data Cleaning}
+
+\begin{frame}{Data Cleaning: Promised Delivery Date}
+    <<ddbefore, results="asis">>=
+    outliers <- dt.unclean$deliverydatepromised > as.Date("2011-01-01")
+    tbl2 <- dt.unclean[outliers,c("date", "deliverydatereal", "deliverydatepromised")]
+    tbl2$promised.fixed <- dt[outliers,]$deliverydatepromised
+    colnames(tbl2) <- c("date", "real", "promised", "\\textcolor{red}{promised.fix?}")
+
+    print(xtable(tbl2), size="\\scriptsize", sanitize.text.function = function(x){x})
     @
 \end{frame}
 
+\begin{frame}{Promised - Real Delivery Date Outliers (Before)}
+    \vspace{-0.8cm}
+    <<ddobefore, echo=F, message=F, warning=F, fig.height=5.5>>=
+    dt2 <- dt.unclean
+    dt2[outliers,]$deliverydatediff <- NA
+    smoothScatter(dt2$date, dt2$deliverydatediff, ylab="Delivery Date Difference (days)", xlab="Date")
+    abline(h=340, lty=2, col="red")
+    abline(h=-340, lty=2, col="red")
+    @
+\end{frame}
+
+\begin{frame}{Promised - Real Delivery Date Outliers (After)}
+    \vspace{-0.8cm}
+    <<ddoafter, echo=F, message=F, warning=F, fig.height=5.5>>=
+    dt2 <- dt
+    smoothScatter(dt2$date, dt2$deliverydatediff, ylab="Delivery Date Difference (days)", xlab="Date")
+    @
+\end{frame}
+
+\begin{frame}{Promised - Real Delivery Date}
+    <<fig.height=5>>=
+    dens.after <- density(dt$deliverydatediff, na.rm=T)
+    dens.before <- density(dt.unclean[!outliers,]$deliverydatediff, na.rm=T)
+    plot(dens.after, main="Kernel Density Estimate", xlim=c(-50, 50))
+    @
+\end{frame}
+
+\begin{frame}[fragile]{Data Cleaning: Before and After}
+    Before Cleaning:
+    \footnotesize
+    <<echo=T>>=
+    summary(dt.unclean$deliverydatediff)
+    @
+    \normalsize
+    
+    After Cleaning:
+    \footnotesize
+    <<echo=T>>=
+    summary(dt$deliverydatediff)
+    @
+    \normalsize
+\end{frame}
+
 \begin{frame}{Predictors}
-    \vspace{-1cm}
-    \hspace{-1cm}
+    \vspace{-0.2cm}
     \scriptsize
+    \begin{minipage}[t]{0.49\columnwidth}
+    <<results="asis">>=
+    tbl <- df.classes(dt)
+    split <- nrow(tbl) / 2
+    print(xtable(head(tbl, split)))
+    @
+    \end{minipage}
+    \begin{minipage}[t]{0.49\columnwidth}
+    <<results="asis">>=
+    print(xtable(tail(tbl, split)))
+    @
+    \end{minipage}
+    
     <<predictors, results="asis">>=
-    print(xtable(t(data.frame(lapply(dt, class))), align="r|l"), floating=F, booktabs=F,
-          tabular.environment="longtable", include.colnames=F, hline.after=c(0),
-          hline.before=NULL, sanitize.rownames.function=function(x) paste("\\texttt{", x, "}"))
+    #print(xtable(t(data.frame(lapply(dt, class))), align="r|l"), floating=F, booktabs=F,
+    #      tabular.environment="longtable", include.colnames=F, hline.after=c(0),
+    #      hline.before=NULL, sanitize.rownames.function=function(x) paste("\\texttt{", x, "}"))
     @
 \end{frame}
 
