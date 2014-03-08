@@ -1,6 +1,5 @@
 # Utility functions
 suppressPackageStartupMessages(library(caret))
-suppressPackageStartupMessages(library(Hmisc))
 
 as.binary <- function(x, cond=1) {
     # Makes an observation pseudo-binary, by assigning "yes" to the
@@ -14,14 +13,14 @@ as.binary <- function(x, cond=1) {
     # Returns:
     #   a pseudo-binary factor
     
-    if (length(unique(x)) != 2) {
-        stop("The given variable is not binary.")
-    }
-    as.factor(ifelse(x == 1, "yes", "no"))
+    if (length(unique(x)) != 2) stop("The given variable is not binary.")
+    x2 <- as.factor(ifelse(x == cond, "yes", "no"))
+    if (length(unique(x2)) != 2) stop("The resulting variable is not binary")
+    x2
 }
 
 df.classes <- function(dt) {
-    # Prints a Data Frame's column classes
+    # Prints a Data Frame's column classes.
     #
     # Args:
     #   dt: a data frame
@@ -32,7 +31,7 @@ df.classes <- function(dt) {
 }
 
 df.nas <- function(dt) {
-    # Prints the number of NAs
+    # Prints the number of NAs.
     #
     # Args:
     #   dt: a data frame
@@ -101,7 +100,12 @@ caret.load <- function(mdir="models") {
 
 caret.bestidx <- function(fit) {
     # Returns the index of the best tune observations and predictions
-    # for a caret fit.
+    # for a caret fit. Don't think about what this function does too hard...
+    #
+    # The predictions are saved in fit$pred$pred, but this vector contains
+    # the predictions for *all* models across *all* tuning parameters, so this
+    # function returns a logical vector with the indices for the predictions
+    # for the best tune set to TRUE.
     #
     # Args:
     #   dt: a caret fit
