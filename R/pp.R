@@ -74,7 +74,7 @@ cl <- function(dt) {
     year(dt2[outliers,]$deliverydatepromised) <- year(dt[outliers,]$date)
     dt2$deliverydatediff <- as.numeric(dt2$deliverydatepromised - dt2$deliverydatereal)
     
-    ## When the deliverydatediff is off close to 1/2 year, it's very likely that 
+    ## When the deliverydatediff is off by close to 1/2 year, it's very likely that 
     ## deliverydatereal should be subtracted by 1/2 year. Please see doc/notes.Rmd
     
     t <- 340
