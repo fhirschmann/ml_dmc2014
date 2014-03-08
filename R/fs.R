@@ -7,8 +7,8 @@ fs.all <- function(dt) {
     dt2$deliverydatepromised <- NULL
     dt2$datecreated <- NULL
     dt2$points <- NULL
-    dt2$advertisingdatacode <- NULL
-    dt2$delivpostcode <- NULL
+    #dt2$advertisingdatacode <- NULL
+    #dt2$delivpostcode <- NULL
     #dt2$deliverydatediff <- NULL
     dt2
 }
