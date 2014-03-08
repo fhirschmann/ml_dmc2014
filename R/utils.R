@@ -1,4 +1,6 @@
 # Utility functions
+suppressPackageStartupMessages(library(caret))
+suppressPackageStartupMessages(library(Hmisc))
 
 as.binary <- function(x, cond=1) {
     # Makes an observation pseudo-binary, by assigning "yes" to the
@@ -38,6 +40,63 @@ df.nas <- function(dt) {
     df <- t(data.frame(lapply(dt, function(x) sum(is.na(x)))))
     colnames(df) <- c("NAs")
     df
+}
+
+caret.train <- function(descs, train.args=list(), serialize="models", verbose=F) {
+    # This is a wrapper around caret::train that allows
+    # to pass a list of learner descriptions.
+    #
+    # Args:
+    #   descs: learner descriptions
+    #   serialize: directory to serialize models to
+    #   train.args: common arguments to train used for all learners
+    fits = list()
+    
+    for (name in names(descs)) {
+        message("Learning model for ", name)
+        desc <- descs[[name]]
+
+        train.args <- c(opts$train.args[setdiff(names(opts$train.args),
+                                                names(desc$train.args))],
+                        desc$train.args)
+        if (verbose) {
+            message("Calling caret::train")
+            message(str(train.args))
+        }
+        
+        # Train the model
+        fit <- do.call(caret::train, train.args)
+    
+        # Serialize
+        if (!is.null(serialize)) {
+            fname <- file.path(serialize, paste(name, "RData", sep="."))
+            save(fit, file=fname)
+            message("Wrote model to: ", fname)
+        }
+        fits[[name]] <- fit
+    }
+    
+    fits
+}
+
+caret.load <- function(mdir="models") {
+    # Returns a list of serialized models.
+    #
+    # Args:
+    #   mdir: the directory to search for models in
+    
+    models <- list()
+    cwd <- getwd()
+    setwd(mdir)
+    
+    for (file in list.files(pattern=".RData")) {
+        name <- unlist(strsplit(file, "\\."))[1]
+        cat(paste("Loading model from", file, "\n"))
+        load(file)
+        models[[name]] <- fit
+    }
+    setwd(cwd)
+    models
 }
 
 caret.bestidx <- function(fit) {
@@ -86,26 +145,6 @@ dmc.inst <- function(upgrade=F) {
     }
 }
 
-dmc.load <- function(mdir="models") {
-    # Returns a list of serialized models.
-    #
-    # Args:
-    #   mdir: the directory to search for models in
-    
-    models <- list()
-    cwd <- getwd()
-    setwd(mdir)
-
-    for (file in list.files(pattern=".RData")) {
-        name <- unlist(strsplit(file, "\\."))[1]
-        cat(paste("Loading model from", file, "\n"))
-        load(file)
-        models[[name]] <- fit
-    }
-    setwd(cwd)
-    models
-}
-
 dmc.run <- function(name) {
     # Runs training for an algorithm and serializes the
     # fitted model.
@@ -113,11 +152,7 @@ dmc.run <- function(name) {
     # Args:
     #   name: the name of the training function
 
-    fit <- trainers[[name]]()
-    
-    fname <- file.path("models", paste(name, ".RData", sep=""))
-    save(fit, file=fname)
-    
-    cat("Wrote model for", name, "to", fname, "\n")
-    fit
+    source("R/pipeline.R")
+    fits <- caret.train(descs[name], opts)
+    fits[[name]]
 }

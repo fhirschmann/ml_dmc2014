@@ -1,26 +1,35 @@
 # Training function definition
-
 source("R/data.R")
 source("R/dmc2010.R")
 
 suppressPackageStartupMessages(library(caret))
+library(C50)
 
-# Create folds explicitly
-set.seed(42)
-ctrl <- trainControl(method="cv", classProbs=F, savePredictions=T,
-                     summaryFunction=dmc.summary)
+# List of stuff to learn
+descs <- list(
+    c50=list(
+        train.args=list(
+            method="C5.0",
+            data=dt.c50,
+            cost=dmc.cost,
+            control=C5.0Control(earlyStopping=F))),
+    cart=list(
+        train.args=list(
+            method="rpart",
+            data=head(dt.c50, 2000),
+            # rpart wants the matrix to have true classes
+            # in rows, so we transpose
+            parms=list(loss=t(dmc.cost))))
+)
 
-# Use the control parameters defined above
-mytrain <- function(...) {
-    train(target90 ~ ., maximize=T, metric="Points", trControl=ctrl, ...)
-}
-
-# The list of training functions
-trainers <- list()
-#trainers$nb <- function() mytrain(method="nb", data=dt2, weights=weights)
-trainers$c50 <- function() mytrain(method="C5.0Cost", data=dt.c50, cost=dmc.cost,
-                                   control=C5.0Control(earlyStopping=FALSE))
-trainers$cart <- function() mytrain(method="rpart", data=dt.c50,
-                                    # rpart wants the matrix to have true classes
-                                    # in rows, so we transpose
-                                    parms=list(loss=t(dmc.cost)))
+# Common arguments to caret::train
+train.args=list(
+    # Always learn target90 using all attributes
+    form=target90 ~ .,
+    # Maximize the metric
+    maximize=T,
+    # Use Points to select the best tuning parameters
+    metric="Points",
+    # Save the predictions (can be used to calculate metrics later)
+    trControl=trainControl(method="cv", classProbs=F, savePredictions=T,
+                           summaryFunction=dmc.summary))
