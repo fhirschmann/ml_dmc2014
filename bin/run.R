@@ -4,13 +4,14 @@
 
 source("R/common.R")
 source("R/pipeline.R")
+source("R/dmc.R")
 
 args <- commandArgs(T)
 
 
 if (length(args) == 0) {
     # Train all models
-    totrain <- names(trainers)
+    totrain <- names(descs)
 } else {
     totrain <- args
 }

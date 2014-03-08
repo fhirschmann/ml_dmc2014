@@ -55,8 +55,8 @@ caret.train <- function(descs, train.args=list(), serialize="models", verbose=F)
         message("Learning model for ", name)
         desc <- descs[[name]]
 
-        train.args <- c(opts$train.args[setdiff(names(opts$train.args),
-                                                names(desc$train.args))],
+        train.args <- c(train.args[setdiff(names(train.args),
+                                           names(desc$train.args))],
                         desc$train.args)
         if (verbose) {
             message("Calling caret::train")
@@ -130,33 +130,4 @@ caret.obs <- function(fit) {
     #   dt: a caret fit
 
     fit$pred$obs[caret.bestidx(fit)]
-}
-
-dmc.inst <- function(upgrade=F) {
-    # Installs the required dependencies.
-    #
-    # Args:
-    #   upgrade: force upgrade
-
-    libs <- c("devtools", "Metrics", "ellipse", "data.table", "knitr",
-              "mda", "Hmisc", "lubridate", "earth", "pROC", "C50",
-              "ROCR", "doMC", "caret", "chron", "RWeka", "klaR",
-              "plyr", "MASS", "ggplot2")
-    if (upgrade) {
-        install.packages(libs)
-    } else {
-        install.packages(setdiff(libs, rownames(installed.packages())))
-    }
-}
-
-dmc.run <- function(name) {
-    # Runs training for an algorithm and serializes the
-    # fitted model.
-    #
-    # Args:
-    #   name: the name of the training function
-
-    source("R/pipeline.R")
-    fits <- caret.train(descs[name], opts)
-    fits[[name]]
 }

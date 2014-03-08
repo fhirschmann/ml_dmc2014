@@ -28,6 +28,35 @@ dmc.evaluate <- function(mds) {
     t(df)
 }
 
+dmc.inst <- function(upgrade=F) {
+    # Installs the required dependencies.
+    #
+    # Args:
+    #   upgrade: force upgrade
+    
+    libs <- c("devtools", "Metrics", "ellipse", "data.table", "knitr",
+              "mda", "Hmisc", "lubridate", "earth", "pROC", "C50",
+              "ROCR", "doMC", "caret", "chron", "RWeka", "klaR",
+              "plyr", "MASS", "ggplot2")
+    if (upgrade) {
+        install.packages(libs)
+    } else {
+        install.packages(setdiff(libs, rownames(installed.packages())))
+    }
+}
+
+dmc.run <- function(name) {
+    # Runs training for an algorithm and serializes the
+    # fitted model.
+    #
+    # Args:
+    #   name: the name of the training function
+    
+    source("R/pipeline.R")
+    fits <- caret.train(descs[name], train.args)
+    fits[[name]]
+}
+
 #Kostenmatrix:
 #ursprünglich:
 #			obs=1	obs=0
