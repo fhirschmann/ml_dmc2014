@@ -116,7 +116,6 @@ im <- function(dt) {
     # Can't think of a reason to impute missing values for delivpostcode either
     levels(dt2$delivpostcode) <- c(levels(dt2$delivpostcode), "NA")
     dt2[is.na(dt2$delivpostcode),]$delivpostcode <- "NA"
-    dt2
     
     # Since this is just a warm-up, we'll use the median to impute the deliverydatediff
     dt2[is.na(dt2$deliverydatediff),]$deliverydatediff <- round(median(dt2$deliverydatediff, na.rm=T), 0)
