@@ -66,7 +66,35 @@ cl <- function(dt) {
     #   A preprocessed data frame
 
     dt2 <- dt
-    dt2[dt2$deliverydatepromised > as.Date("2011-01-01"),]$deliverydatepromised <- NA
-    dt2[dt2$deliverydatediff < -15 | dt2$deliverydatediff > 21 | is.na(dt2$deliverydatediff),]$deliverydatediff <- NA
+    #dt2[dt2$deliverydatepromised > as.Date("2011-01-01"),]$deliverydatepromised <- NA
+
+    # Outlier handling
+    ## Incorrect date in deliverydatepromised
+    outliers <- dt2$deliverydatepromised > as.Date("2011-01-01")
+    year(dt2[outliers,]$deliverydatepromised) <- year(dt[outliers,]$date)
+    dt2$deliverydatediff <- as.numeric(dt2$deliverydatepromised - dt2$deliverydatereal)
+    
+    ## When the deliverydatediff is off close to 1/2 year, it's very likely that 
+    ## deliverydatereal should be subtracted by 1/2 year. Please see doc/notes.Rmd
+    
+    t <- 280
+    
+    outliers <- dt2$deliverydatediff < -t & !is.na(dt2$deliverydatediff)
+    dt2[outliers,]$deliverydatereal <- dt2[outliers,]$deliverydatereal - years(1)
+
+    outliers <- dt2$deliverydatediff > t & !is.na(dt2$deliverydatediff)
+    dt2[outliers,]$deliverydatereal <- dt2[outliers,]$deliverydatereal + years(1)
+
+    dt2$deliverydatediff <- as.numeric(dt2$deliverydatepromised - dt2$deliverydatereal)
+    
+    # Some are off by two years, so we just do it again
+    outliers <- dt2$deliverydatediff < -t & !is.na(dt2$deliverydatediff)
+    dt2[outliers,]$deliverydatereal <- dt2[outliers,]$deliverydatereal - years(1)
+    
+    outliers <- dt2$deliverydatediff > t & !is.na(dt2$deliverydatediff)
+    dt2[outliers,]$deliverydatereal <- dt2[outliers,]$deliverydatereal + years(1)
+    
+    #dt2[dt2$deliverydatediff < -15 | dt2$deliverydatediff > 21 | is.na(dt2$deliverydatediff),]$deliverydatediff <- NA
+    dt2$deliverydatediff <- as.numeric(dt2$deliverydatepromised - dt2$deliverydatereal)
     dt2
 }

@@ -70,7 +70,7 @@ df.classes(dt)
 ### Data Summary
 
 ```{r summary}
-summary(pp(read.csv("task2010/dmc2010_train.txt", sep=";")))
+summary(dt.unclean)
 ```
 
 Observations:
@@ -81,13 +81,55 @@ Observations:
 - ``deliverydatediff`` is affected by this obviously
 - ``weight`` probably has at least one outlier too (mean vs median!)
 
-After cleaning the data, it looks as follows:
+## Outlier Handling
+Let's take a look at the date outliers. 
 
-```{r summary2}
-summary(dt)
+First, we'll look the date outliers:
+```{r dates}
+outliers <- dt.unclean$deliverydatepromised > as.Date("2011-01-01")
+of.interest <- c("date", "deliverydatepromised", "deliverydatereal",
+                 "deliverydatediff", "datecreated")
+options(width=160)
+dt.unclean[outliers, of.interest]
 ```
+- Assumption: Just the year is incorrect
+- Solution: replace the year in deliverydatepromised with the year in date
+```{r dates2}
+dt[outliers, of.interest]
+```
+Next, we'll look at outliers which were
+delivered more than one year after the purchase:
+```{r dates3}
+outliers <- dt.unclean$deliverydatediff < -350 & !is.na(dt.unclean$deliverydatediff)
+dt.unclean[outliers, of.interest]
+```
+- Assumption: the date in deliverydatereal is off by 1 year
+- Solution: Subtract 1 year from deliverydatereal
+```{r dates4}
+dt[outliers, of.interest]
+```
+What about the other way?
+```{r dates5}
+outliers <- dt.unclean$deliverydatediff > 350 & !is.na(dt.unclean$deliverydatediff)
+dt.unclean[outliers, of.interest]
+```
+Don't worry about the instances with deliverydatediff = 1000000. These are due to
+the instances with deliverydatepromised > 4000 and have already been handled.
 
-## Visual Analytics
+However, the same can be said about > 350 as with < -350. Let's fix it:
+```{r dates6}
+dt[outliers, of.interest]
+```
+Looks about right now, doesn't it?
+```{r datesm}
+summary(dt.unclean$deliverydatediff)
+summary(dt$deliverydatediff)
+```
+Still not perfect (black dots are outliers):
+```{r dateplot}
+smoothScatter(dt$deliverydatediff)
+```
+## Visual Stuff
 
 ```{r barplots, fig.width=11}
 toplot <- c("weekday", "dom")
