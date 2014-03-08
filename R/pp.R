@@ -77,7 +77,7 @@ cl <- function(dt) {
     ## When the deliverydatediff is off close to 1/2 year, it's very likely that 
     ## deliverydatereal should be subtracted by 1/2 year. Please see doc/notes.Rmd
     
-    t <- 280
+    t <- 340
     
     outliers <- dt2$deliverydatediff < -t & !is.na(dt2$deliverydatediff)
     dt2[outliers,]$deliverydatereal <- dt2[outliers,]$deliverydatereal - years(1)
