@@ -98,3 +98,32 @@ cl <- function(dt) {
     dt2$deliverydatediff <- as.numeric(dt2$deliverydatepromised - dt2$deliverydatereal)
     dt2
 }
+
+im <- function(dt) {
+    # Imputes missing values.
+    #
+    # Args:
+    #   dt: A data frame
+    
+    dt2 <- dt
+    
+    # Advertising Data Code: Just use the data code "NA" for missing values, because
+    # these values are probably missing because no advertising partner was used when
+    # making the purchases.
+    levels(dt2$advertisingdatacode) <- c(levels(dt2$advertisingdatacode), "NA")
+    dt2[is.na(dt2$advertisingdatacode),]$advertisingdatacode <- "NA"
+
+    # Can't think of a reason to impute missing values for delivpostcode either
+    levels(dt2$delivpostcode) <- c(levels(dt2$delivpostcode), "NA")
+    dt2[is.na(dt2$delivpostcode),]$delivpostcode <- "NA"
+    dt2
+    
+    # Since this is just a warm-up, we'll use the median to impute the deliverydatediff
+    dt2[is.na(dt2$deliverydatediff),]$deliverydatediff <- round(median(dt2$deliverydatediff, na.rm=T), 0)
+
+    # And set the deliverydatereal attribute accordingly
+    nas <- is.na(dt2$deliverydatereal)
+    dt2[nas,]$deliverydatereal <- dt2[nas,]$deliverydatepromised + days(dt2[nas,]$deliverydatediff)
+
+    dt2
+}
