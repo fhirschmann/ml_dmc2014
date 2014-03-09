@@ -19,6 +19,19 @@ as.binary <- function(x, cond=1) {
     x2
 }
 
+chisq.test2 <- function(v1, v2, ...) {
+    chisq.test(table(v1), p=prop.table(table(v2)))
+}
+
+table2 <- function(v1, v2, col.names=NULL) {
+    t1 <- table(v1)
+    t2 <- table(v2)
+    m <- matrix(c(t1, t2), 2, byrow=T)
+    colnames(m) <- levels(v1)
+    if (!is.null(row.names)) rownames(m) <- col.names
+    t(m)
+}
+
 df.classes <- function(dt) {
     # Prints a Data Frame's column classes.
     #
