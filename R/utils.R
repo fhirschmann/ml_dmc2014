@@ -19,17 +19,19 @@ as.binary <- function(x, cond=1) {
     x2
 }
 
-chisq.test2 <- function(v1, v2, ...) {
-    chisq.test(table(v1), p=prop.table(table(v2)))
-}
-
-table2 <- function(v1, v2, col.names=NULL) {
-    t1 <- table(v1)
-    t2 <- table(v2)
-    m <- matrix(c(t1, t2), 2, byrow=T)
-    colnames(m) <- levels(v1)
-    if (!is.null(row.names)) rownames(m) <- col.names
-    t(m)
+table2 <- function(v1, v2, row.names=c("train", "test")) {
+    # Frequency table for two factors with the same levels.
+    #
+    # Can be used for Chi-Sq test, e.g.:
+    #   chisq.test(table2(dt$domain, dt.test$domain))
+    #
+    # Args:
+    #   v1: first factor
+    #   v2: second factor
+    
+    tbl <- rbind(table(v1), table(v2))
+    rownames(tbl) <- row.names
+    tbl
 }
 
 df.classes <- function(dt) {
