@@ -19,6 +19,8 @@ dmc.summary <- function(data, lev = NULL, model = NULL) {
 }
 
 dmc.evaluate <- function(mds) {
+    if (length(unique(lapply(mds, function(x) length(caret.pred(x))))) != 1)
+        stop("Predictions are not of the same length. Different data sets?")
     df <- data.frame(lapply(mds, function(x) dmc.points(caret.pred(x), caret.obs(x))))
     df$baseline <- dmc.points(rep("no", length(caret.obs(mds[[1]]))), caret.obs(mds[[1]]))
     df$maximum <- dmc.points(caret.obs(mds[[1]]), caret.obs(mds[[1]]))
