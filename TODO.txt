@@ -1,0 +1,2 @@
+- Outlier Detection/Handling
+  w0-w10 probably have some, the `mvoutlier` package might be handy
