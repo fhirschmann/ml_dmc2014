@@ -14,4 +14,4 @@ delayedAssign("dt.merged", rbind(data.frame(dt, group="train"),
                                  data.frame(dt.test, group="test", target90=NA)))
 
 # Serialized Models
-delayedAssign("mds", dmc.load())
+delayedAssign("mds", caret.load())
