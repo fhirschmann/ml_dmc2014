@@ -42,5 +42,3 @@ common.desc <- list(
         trControl=trainControl(method="cv", savePredictions=T,
                                summaryFunction=dmc.summary, returnData=T))
 )
-
-
