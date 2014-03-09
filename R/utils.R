@@ -19,6 +19,10 @@ as.binary <- function(x, cond=1) {
     x2
 }
 
+norm.lin <- function(x, mi=min(x), ma=max(x)) {
+    (x - mi) / (ma - mi)
+}
+
 table2 <- function(v1, v2, row.names=c("train", "test")) {
     # Frequency table for two factors with the same levels.
     #
