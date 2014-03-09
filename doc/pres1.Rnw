@@ -31,6 +31,7 @@ opts_chunk$set(echo=F, breaklines=T)
 opts_knit$set(fig.path="figure-pres1/", root.dir="../")
 library(xtable)
 library(stats)
+library(vcd)
 
 # Bug in xtable: doesn't print dates correctly
 xtable <- function(x, ...) {
@@ -42,6 +43,7 @@ xtable <- function(x, ...) {
 <<load, echo=F>>=
 source("R/data.R")
 source("R/utils.R")
+source("R/lib/parallelsets.R")
 @
 
 \begin{document}
@@ -78,6 +80,14 @@ source("R/utils.R")
     #print(xtable(t(data.frame(lapply(dt, class))), align="r|l"), floating=F, booktabs=F,
     #      tabular.environment="longtable", include.colnames=F, hline.after=c(0),
     #      hline.before=NULL, sanitize.rownames.function=function(x) paste("\\texttt{", x, "}"))
+    @
+\end{frame}
+
+\begin{frame}{Nominal Predictors Analysis}
+    <<fig.height=4.5>>=
+    x <- as.data.frame(structable(target90 ~ model + voucher + shippingcosts, data=dt))
+    x$color <- ifelse(x$target90 == "yes", "#008888", "#330066")
+    with(x, parallelset(target90, voucher, model, shippingcosts, col=color, freq=Freq))
     @
 \end{frame}
 
