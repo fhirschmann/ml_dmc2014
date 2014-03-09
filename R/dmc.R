@@ -12,12 +12,10 @@ dmc.points <- function(pred, obs) {
 }
 
 dmc.summary <- function(data, lev = NULL, model = NULL) {
-    out <- twoClassSummary(data, lev, model)
     points <- dmc.points(data$pred, data$obs)
     maxpoints <- dmc.points(data$obs, data$obs)
     c(Points=points,
-      PointsP=points / maxpoints,
-      out)
+      PointsRatio=points / maxpoints)
 }
 
 dmc.evaluate <- function(mds) {

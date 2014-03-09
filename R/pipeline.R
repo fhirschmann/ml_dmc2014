@@ -17,6 +17,7 @@ descs <- list(
         train.args=list(
             method="rpart",
             data=dt.cart,
+            tuneGrid=expand.grid(.cp=1:3),
             # rpart wants the matrix to have true classes
             # in rows, so we transpose
             parms=list(loss=t(dmc.cost))))
@@ -29,7 +30,7 @@ train.args=list(
     # Maximize the metric
     maximize=T,
     # Use Points to select the best tuning parameters
-    metric="Points",
+    metric="PointsRatio",
     # Save the predictions (can be used to calculate metrics later)
-    trControl=trainControl(method="cv", classProbs=F, savePredictions=T,
-                           summaryFunction=dmc.summary))
+    trControl=trainControl(method="cv", savePredictions=T,
+                           summaryFunction=dmc.summary, returnData=T))
