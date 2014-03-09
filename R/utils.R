@@ -60,35 +60,50 @@ df.nas <- function(dt) {
     df
 }
 
-caret.train <- function(descs, train.args=list(), serialize="models", verbose=F) {
+list.update <- function(l1, l2) {
+    # Updates list l1 with the contents of l2 and returns
+    # the new list.
+    #
+    # Args:
+    #   l1: a list
+    #   l2: a list
+    
+    lr <- l1[setdiff(names(l1), names(l2))]
+    c(lr, l2)
+}
+
+caret.train.default.desc <- list(train.args=list(),
+                                 data.fun=identity,
+                                 serialize="models")
+
+caret.train <- function(descs, common.desc=(d <- caret.train.default.desc),
+                        verbose=FALSE) {
     # This is a wrapper around caret::train that allows
     # to pass a list of learner descriptions.
     #
     # Args:
     #   descs: learner descriptions
-    #   serialize: directory to serialize models to
-    #   train.args: common arguments to train used for all learners
-    fits = list()
+    #   common.desc: default description for all learners
+    #   verbose: be verbose
+
+    fits <- list()
     
     for (name in names(descs)) {
         message("Learning model for ", name)
-        desc <- descs[[name]]
-
-        train.args <- c(train.args[setdiff(names(train.args),
-                                           names(desc$train.args))],
-                        desc$train.args)
-        if (verbose) {
-            message("Calling caret::train")
-            message(str(train.args))
-        }
+        train.args <- list.update(common.desc$train.args, descs[[name]]$train.args)
+        desc <- list.update(common.desc, descs[[name]])
+        desc$train.args <- train.args
+        desc$train.args$data <- desc$data.fun(desc$train.args$data)
+        
+        if (verbose) message(str(desc))
         
         # Train the model
         fit <- do.call(caret::train, train.args)
     
         # Serialize
-        if (!is.null(serialize)) {
-            fname <- file.path(serialize, paste(name, "RData", sep="."))
-            save(fit, file=fname)
+        if (!is.null(desc$serialize)) {
+            fname <- file.path(desc$serialize, paste(name, "RData", sep="."))
+            #save(fit, file=fname)
             message("Wrote model to: ", fname)
         }
         fits[[name]] <- fit
