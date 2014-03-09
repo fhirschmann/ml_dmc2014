@@ -28,6 +28,13 @@ dmc.evaluate <- function(mds) {
     t(df)
 }
 
+dmc.reload <- function() {
+    rm(list=ls())
+    source("R/common.R")
+    source("R/data.R")
+    source("R/utils.R")
+}
+
 dmc.inst <- function(upgrade=F) {
     # Installs the required dependencies.
     #
