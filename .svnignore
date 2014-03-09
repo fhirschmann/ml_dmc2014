@@ -2,3 +2,13 @@
 .RData
 .Rhistory
 .Rproj.user
+*.nav
+*.synctex.gz
+*.toc
+*.vrb
+*.snm
+figure*/
+doc/notes.html
+doc/notes.md
+models/*.RData
+cache/
