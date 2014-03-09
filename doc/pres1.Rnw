@@ -91,14 +91,30 @@ source("R/lib/parallelsets.R")
     @
 \end{frame}
 
-\begin{frame}{$\chi^2$-Test of Train/Test Data}
-    <<chisq, fig.height=5>>=
+\begin{frame}{Class Frequency Equality of Train/Test Data}
+    <<results="asis">>=
+    tbl <- data.frame(table(dt$model), table(dt.test$model))
+    tbl$Var1.1 <- NULL
+    colnames(tbl) <- c("model", "Train Freq", "Test Freq")
+    print(xtable(tbl), include.rownames=F)
+    @
+    Null hypothesis: No (null) difference in the frequency distribution of classes in the
+    train and test set.
+    \begin{itemize}
+        \item $\chi^2$-Test: If $p > 0.05$: Accept null hypothesis.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{$\chi^2$-Test of Train/Test Data Frequency}
+    <<chisq, results="asis">>=
     ps <- sapply(c("domain", "voucher", "model", "salutation", "paymenttype", "case",
                    "month", "weekday"),
                  function(x) chisq.test(table2(dt[[x]], dt.test[[x]]))$p.value, simplify=F)
-    df <- t(data.frame(ps))
-    colnames(df) <- c("p-value")
-    dotplot(df[order(df),], xlim=c(0, 1), xlab="p-value")
+    df <- data.frame(t(data.frame(ps)))
+    colnames(df) <- c("p")
+    df$p2 <- df$p > 0.05
+    colnames(df) <- c("p", "$p > 0.05$")
+    print(xtable(df), sanitize.text.function = function(x){x})
     @
 \end{frame}
 
