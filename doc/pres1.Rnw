@@ -56,6 +56,42 @@ source("R/utils.R")
 
 \section{Description}
 
+\section{Data Analysis}
+
+\begin{frame}{Predictors}
+    \vspace{-0.2cm}
+    \scriptsize
+    \begin{minipage}[t]{0.49\columnwidth}
+    <<results="asis">>=
+    tbl <- df.classes(dt)
+    split <- nrow(tbl) / 2
+    print(xtable(head(tbl, split)))
+    @
+    \end{minipage}
+    \begin{minipage}[t]{0.49\columnwidth}
+    <<results="asis">>=
+    print(xtable(tail(tbl, split)))
+    @
+    \end{minipage}
+    
+    <<predictors, results="asis">>=
+    #print(xtable(t(data.frame(lapply(dt, class))), align="r|l"), floating=F, booktabs=F,
+    #      tabular.environment="longtable", include.colnames=F, hline.after=c(0),
+    #      hline.before=NULL, sanitize.rownames.function=function(x) paste("\\texttt{", x, "}"))
+    @
+\end{frame}
+
+\begin{frame}{$\chi^2$-Test of Train/Test Data}
+    <<chisq, results="asis">>=
+    ps <- sapply(c("domain", "voucher", "model", "salutation", "paymenttype", "case",
+                   "month", "weekday"),
+                 function(x) chisq.test(table2(dt[[x]], dt.test[[x]]))$p.value, simplify=F)
+    df <- t(data.frame(ps))
+    colnames(df) <- c("p-value")
+    print(xtable(df))
+    @
+\end{frame}
+
 \section{Data Cleaning}
 
 \begin{frame}{Data Cleaning: Promised Delivery Date}
@@ -110,29 +146,6 @@ source("R/utils.R")
     summary(dt$deliverydatediff)
     @
     \normalsize
-\end{frame}
-
-\begin{frame}{Predictors}
-    \vspace{-0.2cm}
-    \scriptsize
-    \begin{minipage}[t]{0.49\columnwidth}
-    <<results="asis">>=
-    tbl <- df.classes(dt)
-    split <- nrow(tbl) / 2
-    print(xtable(head(tbl, split)))
-    @
-    \end{minipage}
-    \begin{minipage}[t]{0.49\columnwidth}
-    <<results="asis">>=
-    print(xtable(tail(tbl, split)))
-    @
-    \end{minipage}
-    
-    <<predictors, results="asis">>=
-    #print(xtable(t(data.frame(lapply(dt, class))), align="r|l"), floating=F, booktabs=F,
-    #      tabular.environment="longtable", include.colnames=F, hline.after=c(0),
-    #      hline.before=NULL, sanitize.rownames.function=function(x) paste("\\texttt{", x, "}"))
-    @
 \end{frame}
 
 \section{Questions}
