@@ -92,13 +92,13 @@ source("R/lib/parallelsets.R")
 \end{frame}
 
 \begin{frame}{$\chi^2$-Test of Train/Test Data}
-    <<chisq, results="asis">>=
+    <<chisq, fig.height=5>>=
     ps <- sapply(c("domain", "voucher", "model", "salutation", "paymenttype", "case",
                    "month", "weekday"),
                  function(x) chisq.test(table2(dt[[x]], dt.test[[x]]))$p.value, simplify=F)
     df <- t(data.frame(ps))
     colnames(df) <- c("p-value")
-    print(xtable(df))
+    dotplot(df[order(df),], xlim=c(0, 1), xlab="p-value")
     @
 \end{frame}
 
