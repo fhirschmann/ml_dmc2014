@@ -2,6 +2,7 @@
 
 suppressPackageStartupMessages(library(caret))
 library(lubridate)
+library(plyr)
 
 source("R/utils.R")
 
@@ -32,6 +33,9 @@ pp <- function(dt) {
     dt[dt_ordinal] <- lapply(dt[dt_ordinal], as.ordered)
 
     # Use labels instead of numeric values
+    
+    # TODO: THIS IS NOT SAFE! USE plyr::revalue!
+    
     levels(dt$salutation) <- c("Ms.", "Mr.", "Company")
     levels(dt$paymenttype) <- c("invoice", "cash", "transfer", "transfer_cc")
     levels(dt$domain) <- c("aol.com", "arcor.de", "freenet.de", "gmail.com", "gmx.de",
