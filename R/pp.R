@@ -15,15 +15,17 @@ pp <- function(dt) {
     # Returns:
     #   A preprocessed data frame
     
+    dt2 <- dt
+    
     ## Binary Predictors
-    dt_binary <- c("voucher", "title", "newsletter", "gift", "shippingcosts")
-    if ("target90" %in% names(dt)) dt_binary <- c(dt_binary, "target90")
-    dt[dt_binary] <- lapply(dt[dt_binary],
+    dt2_binary <- c("voucher", "title", "newsletter", "gift", "shippingcosts")
+    if ("target90" %in% names(dt2)) dt2_binary <- c(dt2_binary, "target90")
+    dt2[dt2_binary] <- lapply(dt2[dt2_binary],
                             function(x) revalue(as.factor(x), c("1"="yes", "0"="no")))
 
     ## Nominal Predictors    
     # Use labels instead of numeric values
-    dt_factors <- list(
+    dt2_factors <- list(
         "customernumber"=NULL,
         "salutation"=c("0"="Ms.", "1"="Mr.", "2"="Company"),
         "domain"=c("0"="aol.com", "1"="arcor.de", "2"="freenet.de", "3"="gmail.com",
@@ -40,25 +42,25 @@ pp <- function(dt) {
     )
     
     ## Ordered Predictors
-    dt_ordinal <- c("case")
-    dt[dt_ordinal] <- lapply(dt[dt_ordinal], as.ordered)
+    dt2_ordinal <- c("case")
+    dt2[dt2_ordinal] <- lapply(dt2[dt2_ordinal], as.ordered)
     
-    for (name in names(dt_factors)) {
-        dt[[name]] <- as.factor(dt[[name]])
-        if (!is.null(dt_factors[[name]]))
-            dt[[name]] <- revalue(dt[[name]], dt_factors[[name]])
+    for (name in names(dt2_factors)) {
+        dt2[[name]] <- as.factor(dt2[[name]])
+        if (!is.null(dt2_factors[[name]]))
+            dt2[[name]] <- revalue(dt2[[name]], dt2_factors[[name]])
     }
         
     ## Date Predictors
-    dt_dates <- c("date", "datecreated", "deliverydatepromised", "deliverydatereal")
-    dt[dt_dates] <- lapply(dt[dt_dates], as.Date)
+    dt2_dates <- c("date", "datecreated", "deliverydatepromised", "deliverydatereal")
+    dt2[dt2_dates] <- lapply(dt2[dt2_dates], as.Date)
     
     # Add some features
-    dt$deliverydatediff <- as.numeric(dt$deliverydatepromised - dt$deliverydatereal)
-    dt$month <- as.factor(month(dt$date))
-    dt$weekday <- as.factor(wday(dt$date, label=T, abbr=F))
+    dt2$deliverydatediff <- as.numeric(dt2$deliverydatepromised - dt2$deliverydatereal)
+    dt2$month <- as.factor(month(dt2$date))
+    dt2$weekday <- as.factor(wday(dt2$date, label=T, abbr=F))
     
-    dt
+    dt2
 }
 
 cl <- function(dt) {
