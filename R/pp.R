@@ -53,10 +53,6 @@ pp <- function(dt) {
     dt_dates <- c("date", "datecreated", "deliverydatepromised", "deliverydatereal")
     dt[dt_dates] <- lapply(dt[dt_dates], as.Date)
     
-    # Set empty strings to NA
-    dt[dt$delivpostcode == "", ]$delivpostcode <- NA
-    dt[dt$advertisingdatacode == "", ]$advertisingdatacode <- NA
-    
     # Add some features
     dt$deliverydatediff <- as.numeric(dt$deliverydatepromised - dt$deliverydatereal)
     dt$month <- as.factor(month(dt$date))

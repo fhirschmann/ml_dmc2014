@@ -1,10 +1,14 @@
 source("R/pp.R")
 source("R/fs.R")
 
+na.strings <- c("NA", "", "??", "?")
+
 # Lazy evaluation: dt and dt.test get constructed when needed
-delayedAssign("dt.unclean", pp(read.csv("task2010/dmc2010_train.txt", sep=";")))
+delayedAssign("dt.unclean", pp(read.csv("task2010/dmc2010_train.txt",
+                                        sep=";", na.strings=na.strings)))
 delayedAssign("dt", im(cl(dt.unclean)))
-delayedAssign("dt.test", cl(pp(read.csv("task2010/dmc2010_class.txt", sep=";"))))
+delayedAssign("dt.test", cl(pp(read.csv("task2010/dmc2010_class.txt",
+                                        sep=";", na.strings=na.strings))))
 
 delayedAssign("dt.c50", fs.c50(dt))
 delayedAssign("dt.cart", fs.cart(dt))
