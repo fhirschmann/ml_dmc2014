@@ -28,8 +28,8 @@ common.desc <- list(
     # Serialize models to models/ directory
     serialize="models",
     # For testing on a smaller data set
-    #data.fun=identity,
-    data.fun=function(x) head(x, 1000),
+    data.fun=identity,
+    #data.fun=function(x) head(x, 1000),
     # Common arguments to caret::train
     train.args=list(
         # Always learn target90 using all attributes
