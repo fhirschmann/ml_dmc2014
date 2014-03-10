@@ -21,18 +21,7 @@ pp <- function(dt) {
     dt[dt_binary] <- lapply(dt[dt_binary],
                             function(x) revalue(as.factor(x), c("1"="yes", "0"="no")))
 
-    ## Nominal Predictors
-    dt_factors <- c("customernumber", "salutation",
-                    "domain", "model", "paymenttype", "deliverytype",
-                    "invoicepostcode", "delivpostcode",
-                    "advertisingdatacode",
-                    "entry")
-    dt[dt_factors] <- lapply(dt[dt_factors], as.factor)
-
-    ## Ordered Predictors
-    dt_ordinal <- c("case")
-    dt[dt_ordinal] <- lapply(dt[dt_ordinal], as.ordered)
-
+    ## Nominal Predictors    
     # Use labels instead of numeric values
     dt_factors <- list(
         "customernumber"=NULL,
@@ -49,6 +38,10 @@ pp <- function(dt) {
         "advertisingdatacode"=NULL,
         "entry"=c("0"="shop", "1"="partner")
     )
+    
+    ## Ordered Predictors
+    dt_ordinal <- c("case")
+    dt[dt_ordinal] <- lapply(dt[dt_ordinal], as.ordered)
     
     for (name in names(dt_factors)) {
         dt[[name]] <- as.factor(dt[[name]])
