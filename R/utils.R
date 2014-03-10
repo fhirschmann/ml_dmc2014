@@ -1,26 +1,19 @@
 # Utility functions
 suppressPackageStartupMessages(library(caret))
 
-as.binary <- function(x, cond=1) {
-    # Makes an observation pseudo-binary, by assigning "yes" to the
-    # observation that meets the given requirement, and "no" otherwise.
-    # This is useful where logicals are not supported.
-    #
-    # Args:
-    #   x: a vector
-    #   cond: the condition to meet
-    #
-    # Returns:
-    #   a pseudo-binary factor
-    
-    if (length(unique(x)) != 2) stop("The given variable is not binary.")
-    x2 <- as.factor(ifelse(x == cond, "yes", "no"))
-    if (length(unique(x2)) != 2) stop("The resulting variable is not binary")
-    x2
-}
-
 norm.lin <- function(x, mi=min(x), ma=max(x)) {
     (x - mi) / (ma - mi)
+}
+
+addlevels <- function (df1, df2) {
+    # Adds factors levels from df2 to df1 and returns a new Data Frame.
+
+    dfx <- df1
+    facs <- names(sapply(df1, is.factor))
+    for (fac in facs) {
+        levels(dfx[[fac]]) <- c(levels(dfx[[fac]]), levels(df2[[fac]]))
+    }
+    dfx
 }
 
 table2 <- function(v1, v2, row.names=c("train", "test")) {
