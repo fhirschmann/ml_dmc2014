@@ -17,9 +17,10 @@ pp <- function(dt) {
     
     ## Binary Predictors
     dt_binary <- c("voucher", "title", "newsletter", "gift", "shippingcosts")
-    dt[dt_binary] <- lapply(dt[dt_binary], as.binary)
-    if ("target90" %in% names(dt)) dt$target90 <- as.binary(dt$target90)
-    
+    if ("target90" %in% names(dt)) dt_binary <- c(dt_binary, "target90")
+    dt[dt_binary] <- lapply(dt[dt_binary],
+                            function(x) revalue(as.factor(x), c("1"="yes", "0"="no")))
+
     ## Nominal Predictors
     dt_factors <- c("customernumber", "salutation",
                     "domain", "model", "paymenttype", "deliverytype",
@@ -33,16 +34,27 @@ pp <- function(dt) {
     dt[dt_ordinal] <- lapply(dt[dt_ordinal], as.ordered)
 
     # Use labels instead of numeric values
+    dt_factors <- list(
+        "customernumber"=NULL,
+        "salutation"=c("0"="Ms.", "1"="Mr.", "2"="Company"),
+        "domain"=c("0"="aol.com", "1"="arcor.de", "2"="freenet.de", "3"="gmail.com",
+                   "4"="gmx.de", "5"="hotmail.de", "6"="online.de", "7"="onlinehome.de",
+                   "8"="t-online.de", "9"="web.de", "10"="yahoo.com", "11"="yahoo.de",
+                   "12"="other"),
+        "model"=NULL,
+        "paymenttype"=c("0"="invoice", "1"="cash", "2"="transfer_current", "3"="transfer_cc"),
+        "deliverytype"=c("0"="dispatch", "1"="collection"),
+        "invoicepostcode"=NULL,
+        "delivpostcode"=NULL,
+        "advertisingdatacode"=NULL,
+        "entry"=c("0"="shop", "1"="partner")
+    )
     
-    # TODO: THIS IS NOT SAFE! USE plyr::revalue!
-    
-    levels(dt$salutation) <- c("Ms.", "Mr.", "Company")
-    levels(dt$paymenttype) <- c("invoice", "cash", "transfer", "transfer_cc")
-    levels(dt$domain) <- c("aol.com", "arcor.de", "freenet.de", "gmail.com", "gmx.de",
-                           "hotmail.de", "online.de", "onlinehome.de", "t-online.de",
-                           "web.de", "yahoo.com", "yahoo.de", "other")
-    levels(dt$deliverytype) <- c("dispatch", "collection")
-    levels(dt$entry) <- c("shop", "partner")
+    for (name in names(dt_factors)) {
+        dt[[name]] <- as.factor(dt[[name]])
+        if (!is.null(dt_factors[[name]]))
+            dt[[name]] <- revalue(dt[[name]], dt_factors[[name]])
+    }
         
     ## Date Predictors
     dt_dates <- c("date", "datecreated", "deliverydatepromised", "deliverydatereal")
