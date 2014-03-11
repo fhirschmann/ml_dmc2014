@@ -217,6 +217,32 @@ source("R/lib/parallelsets.R")
     @
 \end{frame}
 
+\section{Results}
+\begin{frame}{}
+    \tiny
+    \begin{minipage}[t]{0.49\columnwidth}
+    <<results="asis">>=
+    tbl <- read.csv("task2010/points.txt", stringsAsFactors=F)
+    colnames(tbl) <- c("Team", "Points")
+
+    tbl <- rbind(tbl, c("R", 11480.5))
+    tbl$Points <- as.numeric(tbl$Points)
+
+    tbl <- tbl[order(tbl$Points, decreasing=T),]
+    row.names(tbl) <- 1:nrow(tbl)
+
+    split <- round(nrow(tbl) / 2)
+    print(xtable(head(tbl, split), digits=1),
+          sanitize.text.function = function(x){x}, hline.after=c(-1, 0, split, 11, 12))
+    @
+    \end{minipage}
+    \begin{minipage}[t]{0.49\columnwidth}
+    <<results="asis">>=
+    print(xtable(tail(tbl, split), digits=1), sanitize.text.function = function(x){x})
+    @
+    \end{minipage}
+\end{frame}
+
 
 \section{Questions}
 \begin{frame}{Questions}
