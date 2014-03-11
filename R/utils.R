@@ -96,7 +96,7 @@ caret.train <- function(descs, common.desc=(d <- caret.train.default.desc),
         # Serialize
         if (!is.null(desc$serialize)) {
             fname <- file.path(desc$serialize, paste(name, "RData", sep="."))
-            #save(fit, file=fname)
+            save(fit, file=fname)
             message("Wrote model to: ", fname)
         }
         fits[[name]] <- fit
