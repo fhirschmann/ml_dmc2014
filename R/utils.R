@@ -37,9 +37,7 @@ df.classes <- function(dt) {
     # Args:
     #   dt: a data frame
     
-    df <- t(data.frame(lapply(dt, function(x) paste(class(x), collapse="/"))))
-    colnames(df) <- c("class")
-    df
+    data.frame(class=unlist(lapply(dt, function(x) paste(class(x), collapse="/"))))
 }
 
 df.nas <- function(dt) {

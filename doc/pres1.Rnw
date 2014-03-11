@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[color=usenames,dvipsnames]{beamer}
 \usetheme{Amsterdam}
 
 \usepackage{amsmath}
@@ -11,11 +11,10 @@
 \usepackage{bibentry}
 \usepackage{longtable}
 \usepackage{listings}
-\usepackage{color}
 \usepackage{multicol}
 \usepackage{caption}
 
-\title{Data Mining Cup 2014}
+\title{Data Mining Cup 2010}
 \subtitle{Group \texttt{R} Report}
 \author{Fabian Hirschmann, Michael Markert, Simon Holthausen, Christoph Schatton}
 \institute{Technische Universität Darmstadt}
@@ -68,19 +67,27 @@ source("R/lib/parallelsets.R")
     \begin{minipage}[t]{0.49\columnwidth}
     <<results="asis">>=
     tbl <- df.classes(dt)
+
+    colors <- c()
+    colors[setdiff(names(dt), names(dt.c50))] <- "gray" # not used
+    colors[setdiff(names(dt.c50), names(dt.raw))] <- "OliveGreen" # added
+    colors[setdiff(names(dt.c50), names(colors))] <- "black" # used
+
+    tbl$class <- mapply(function(n, t) paste("\\color{", colors[[n]], "}{", t, "}", sep=""),
+                        rownames(tbl), tbl$class, USE.NAMES=F)
+
     split <- nrow(tbl) / 2
-    print(xtable(head(tbl, split)))
+    print(xtable(head(tbl, split)), include.colnames=F, hline.after=c(-1, split),
+          sanitize.text.function = function(x){x})
     @
     \end{minipage}
     \begin{minipage}[t]{0.49\columnwidth}
     <<results="asis">>=
-    print(xtable(tail(tbl, split)))
+    print(xtable(tail(tbl, split)), include.colnames=F, hline.after=c(-1, split),
+          sanitize.text.function = function(x){x})
     @
     \end{minipage}
 \end{frame}
-
-
-
 
 \begin{frame}{Nominal Predictors Analysis}
     <<fig.height=4.5>>=
@@ -137,7 +144,7 @@ source("R/lib/parallelsets.R")
     <<fig.height=5, warning=F, message=F>>=
     smoothScatter(dt.fix1$deliverydatereal, dt.fix1$deliverydatepromised,
                   xlab="Delivery Date Real", ylab="Delivery Date Promised",
-                  main="Delivery date Real vs Promised")
+                  main="Delivery Date Real vs Promised")
     abline(0, 1)
     @
 \end{frame}
@@ -146,7 +153,7 @@ source("R/lib/parallelsets.R")
     <<fig.height=5, warning=F, message=F>>=
     smoothScatter(dt.fix1$deliverydatereal, dt.fix1$deliverydatepromised,
                   xlab="Delivery Date Real", ylab="Delivery Date Promised",
-                  main="Delivery date Real vs Promised")
+                  main="Delivery Date Real vs Promised")
     abline(0, 1)
     abline(355, 1, col="red")
     @
@@ -159,18 +166,19 @@ source("R/lib/parallelsets.R")
     colnames(nas) <- c("Train", "Test")
     nas$Train <- nas$Train / nrow(dt) * 100
     nas$Test <- nas$Test / nrow(dt.test) * 100
-    print(xtable(nas[nas$Train > 0 | nas$Test > 0, ], digits=4,
-                 caption="Missing values in percent."))
+    nas <- nas[nas$Train > 0 | nas$Test > 0, ]
+    nas$Strategy <- c("Use invoicepostcode", "Pseudo class 'NA'", "Adjust", "Adjust")
+    print(xtable(nas, digits=4, caption="Missing values in percent. Predictors with no missing values are not shown."))
     @
 \end{frame}
 
-\begin{frame}{Class Frequency Equality}
-    \Large Question: Are class frequencies distributed equally in
+\begin{frame}{Class Freq Distribution}
+    \Large Are class frequencies distributed equally in
     the Train and Test set?
 \end{frame}
 
 
-\begin{frame}{Class Frequency Equality of Train/Test Data}
+\begin{frame}{Class Freq Distribution: Example}
     <<results="asis">>=
     tbl <- data.frame(table(dt$model), table(dt.test$model))
     tbl$Var1.1 <- NULL
@@ -184,16 +192,28 @@ source("R/lib/parallelsets.R")
     \end{itemize}
 \end{frame}
 
-\begin{frame}{$\chi^2$-Test of Train/Test Data Frequency}
+\begin{frame}{Class Freq Distribution: $\chi^2$-Test}
     <<chisq, results="asis">>=
     ps <- sapply(c("domain", "voucher", "model", "salutation", "paymenttype", "case",
-                   "month", "weekday", "deliverytype", "entry"),
+                   "month", "weekday", "deliverytype", "entry", "instantorder"),
                  function(x) chisq.test(table2(dt[[x]], dt.test[[x]]))$p.value, simplify=F)
     df <- data.frame(t(data.frame(ps)))
     colnames(df) <- c("p")
     df$p2 <- df$p > 0.05
     colnames(df) <- c("p", "$p > 0.05$")
     print(xtable(df), sanitize.text.function = function(x){x})
+    @
+\end{frame}
+
+\begin{frame}{Class Freq Distribution: 0-Probability Cases}
+    \large $\chi^2$-Test not appropriate where the expectation for one or
+    more category is $0$ (differing categories in Train/Test data).
+\end{frame}
+
+\begin{frame}{Class Frequency Distribution: advertisingdatacode}
+    <<fig.height=5>>=
+    qplot(advertisingdatacode, fill=group,
+          data=dt.merged[dt.merged$advertisingdatacode != "NA",], position="dodge")
     @
 \end{frame}
 
