@@ -34,6 +34,7 @@ dmc.reload <- function() {
     source("R/common.R")
     source("R/data.R")
     source("R/utils.R")
+    source("R/pipeline.R")
 }
 
 dmc.inst <- function(upgrade=F) {
