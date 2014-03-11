@@ -246,7 +246,7 @@ source("R/lib/parallelsets.R")
     more category is $0$ (differing categories in Train/Test data).
 \end{frame}
 
-\begin{frame}{Class Frequency Distribution: advertisingdatacode}
+\begin{frame}{Class Freq Distribution: advertisingdatacode}
     <<fig.height=5>>=
     qplot(advertisingdatacode, fill=group,
           data=dt.merged[dt.merged$advertisingdatacode != "NA",], position="dodge")
@@ -254,6 +254,19 @@ source("R/lib/parallelsets.R")
 \end{frame}
 
 \section{Results}
+
+\begin{frame}[fragile]{Results: C5.0}
+    \vspace{-0.8cm}
+    \hspace{-0.5cm}
+    <<message=F, warning=F, echo=F, fig.height=5>>=
+    sb <- trellis.par.get("strip.background")
+    sb[["col"]][1] <- "white"
+    trellis.par.set("strip.background", sb) 
+
+    plot(mds$c50)
+    @
+\end{frame}
+
 \begin{frame}{}
     \tiny
     \begin{minipage}[t]{0.49\columnwidth}

@@ -115,7 +115,7 @@ caret.load <- function(mdir="models") {
     
     for (file in list.files(pattern=".RData")) {
         name <- unlist(strsplit(file, "\\."))[1]
-        cat(paste("Loading model from", file, "\n"))
+        message(paste("Loading model from", file, "\n"))
         load(file)
         models[[name]] <- fit
     }
