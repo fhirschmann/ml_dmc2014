@@ -295,7 +295,7 @@ source("R/lib/parallelsets.R")
 
 \section{Questions}
 \begin{frame}{Questions}
-    Questions?
+    \Large Questions? Anyone?
 \end{frame}
 
 \end{document}
