@@ -2,9 +2,8 @@
 #
 # This runs the pipeline
 
-source("R/common.R")
-source("R/pipeline.R")
 source("R/dmc.R")
+dmc.reload()
 
 args <- commandArgs(T)
 
