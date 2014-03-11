@@ -32,6 +32,7 @@ library(xtable)
 library(stats)
 library(vcd)
 library(plyr)
+library(C50)
 library(lubridate)
 
 # Bug in xtable: doesn't print dates correctly
@@ -264,6 +265,12 @@ source("R/lib/parallelsets.R")
     trellis.par.set("strip.background", sb) 
 
     plot(mds$c50)
+    @
+\end{frame}
+
+\begin{frame}{Results: C5.0}
+    <<fig.height=5>>=
+    plot(varImp(mds$c50), top=20, main="Variable Importance")
     @
 \end{frame}
 
