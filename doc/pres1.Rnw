@@ -123,11 +123,32 @@ source("R/lib/parallelsets.R")
 \end{frame}
 
 \begin{frame}{Outlier: Real vs Promised Delivery Date}
+    <<echo=F, message=F, warning=F, fig.height=5>>=
+        plot(density(dt.fix1$deliverydatediff, na.rm=T), main="Kernel Density Estimate",
+             xlab="Delivery Date Promised - Real (days)", ylim=c(0, 0.05))
+        rug(dt.fix1$deliverydatediff)
+        text(260, 0.02, "cut off?", col="red")
+        abline(v=200, col="red")
+        abline(v=-200, col="red")
+    @
+\end{frame}
+
+\begin{frame}{Outlier: Real vs Promised Delivery Date}
     <<fig.height=5, warning=F, message=F>>=
     smoothScatter(dt.fix1$deliverydatereal, dt.fix1$deliverydatepromised,
                   xlab="Delivery Date Real", ylab="Delivery Date Promised",
                   main="Delivery date Real vs Promised")
-    abline(0, 1, col="red")
+    abline(0, 1)
+    @
+\end{frame}
+
+\begin{frame}{Outlier: Real vs Promised Delivery Date}
+    <<fig.height=5, warning=F, message=F>>=
+    smoothScatter(dt.fix1$deliverydatereal, dt.fix1$deliverydatepromised,
+                  xlab="Delivery Date Real", ylab="Delivery Date Promised",
+                  main="Delivery date Real vs Promised")
+    abline(0, 1)
+    abline(355, 1, col="red")
     @
 \end{frame}
 
