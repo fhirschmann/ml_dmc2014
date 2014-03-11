@@ -92,14 +92,21 @@ cl <- function(dt) {
     year(dt2[outliers,]$deliverydatepromised) <- year(dt[outliers,]$date)
     dt2$deliverydatediff <- as.numeric(dt2$deliverydatepromised - dt2$deliverydatereal)
     
-    ## See the slides for details
-    
+    ## Dates: See the slides for details
     t <- 250
     move <- dt2$deliverydatediff > t & !is.na(dt2$deliverydatediff)
     dt2[move,]$deliverydatepromised <- dt2[move,]$deliverydatepromised - years(1)
 
-    #dt2[dt2$deliverydatediff < -15 | dt2$deliverydatediff > 21 | is.na(dt2$deliverydatediff),]$deliverydatediff <- NA
     dt2$deliverydatediff <- as.numeric(dt2$deliverydatepromised - dt2$deliverydatereal)
+
+    ## wX: Slides, again
+    if (any(dt$w0 > 60))
+        dt2[dt2$w0 > 60,]$w0 <- mean(dt2[dt2$w0 < 60,]$w0)
+    if (any(dt$w1 > 60))
+    dt2[dt2$w1 > 60,]$w1 <- mean(dt2[dt2$w1 < 60,]$w1)
+    if (any(dt$w3) > 60)
+        dt2[dt2$w3 > 60,]$w3 <- mean(dt2[dt2$w3 < 60,]$w3)
+    
     dt2
 }
 

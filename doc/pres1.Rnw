@@ -172,6 +172,26 @@ source("R/lib/parallelsets.R")
     smoothScatter(dt.fix2$deliverydatereal, dt.fix2$deliverydatepromised,
                   xlab="Delivery Date Real", ylab="Delivery Date Promised",
                   main="Delivery Date Real vs Promised")
+    abline(0, 1)
+    @
+\end{frame}
+
+\begin{frame}{Outlier: w0}
+    <<echo=F, message=F, warning=F, fig.height=5>>=
+        plot(density(dt.fix1$w0, na.rm=T), main="Kernel Density Estimate",
+             xlab="Number of bound books ordered")
+        rug(dt.fix1$w0)
+        arrows(x0=99, y0=0.3, x1=99, y1=0.05, col="red")
+    @
+\end{frame}
+
+\begin{frame}{Outlier: w1}
+    <<echo=F, message=F, warning=F, fig.height=5>>=
+        plot(density(dt.fix1$w1, na.rm=T), main="Kernel Density Estimate",
+             xlab="Number of paperbacks ordered")
+        rug(dt.fix1$w1)
+        arrows(x0=70, y0=0.3, x1=70, y1=0.05, col="red")
+        arrows(x0=84, y0=0.3, x1=84, y1=0.05, col="red")
     @
 \end{frame}
 
@@ -183,7 +203,7 @@ source("R/lib/parallelsets.R")
     nas$Train <- nas$Train / nrow(dt) * 100
     nas$Test <- nas$Test / nrow(dt.test) * 100
     nas <- nas[nas$Train > 0 | nas$Test > 0, ]
-    nas$Strategy <- c("Use invoicepostcode", "Pseudo class 'NA'", "Adjust", "Adjust")
+    nas$Strategy <- c("Use invoicepostcode", "Pseudo class 'NA'", "Median", "Median")
     print(xtable(nas, digits=4, caption="Missing values in percent. Predictors with no missing values are not shown."))
     @
 \end{frame}
