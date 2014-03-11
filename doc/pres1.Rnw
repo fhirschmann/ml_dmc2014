@@ -131,6 +131,18 @@ source("R/lib/parallelsets.R")
     @
 \end{frame}
 
+\begin{frame}{Missing Values}
+    <<results="asis", warnings=F>>=
+    nas <- data.frame(cbind(df.nas(dt.unclean[, !names(dt.unclean) %in% c("target90"),]),
+                            df.nas(dt.test.unclean)))
+    colnames(nas) <- c("Train", "Test")
+    nas$Train <- nas$Train / nrow(dt) * 100
+    nas$Test <- nas$Test / nrow(dt.test) * 100
+    print(xtable(nas[nas$Train > 0 | nas$Test > 0, ], digits=4,
+                 caption="Missing values in percent."))
+    @
+\end{frame}
+
 \begin{frame}{Class Frequency Equality}
     \Large Question: Are class frequencies distributed equally in
     the Train and Test set?

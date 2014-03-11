@@ -30,6 +30,7 @@ dmc.evaluate <- function(mds) {
 
 dmc.reload <- function() {
     rm(list=ls())
+    source("R/dmc.R")
     source("R/common.R")
     source("R/data.R")
     source("R/utils.R")
