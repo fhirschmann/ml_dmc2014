@@ -54,6 +54,15 @@ pp <- function(dt) {
     ## Date Predictors
     dt2_dates <- c("date", "datecreated", "deliverydatepromised", "deliverydatereal")
     dt2[dt2_dates] <- lapply(dt2[dt2_dates], as.Date)
+
+    ## Fixes
+    # Because delivpostcode has strings in it (EN, Nl, NW) it gets read as factor.
+    # invoicepostcode has no strings it it, so it gets read as numeric. However,
+    # this causes the leading 0s from invoicepostcode to be removed, which is problematic
+    # later when we impute missing values in delivpostcode with invoicepostcode. So
+    # we add leading zeros in invoicepostcode
+    dt2$invoicepostcode <- as.factor(formatC(as.numeric(dt2$invoicepostcode),
+                                             width=2, format="d", flag="0"))
     
     # Add some features
     dt2$deliverydatediff <- as.numeric(dt2$deliverydatepromised - dt2$deliverydatereal)
@@ -120,9 +129,11 @@ im <- function(dt) {
     levels(dt2$advertisingdatacode) <- c(levels(dt2$advertisingdatacode), "NA")
     dt2[is.na(dt2$advertisingdatacode),]$advertisingdatacode <- "NA"
 
-    # Can't think of a reason to impute missing values for delivpostcode either
-    levels(dt2$delivpostcode) <- c(levels(dt2$delivpostcode), "NA")
-    dt2[is.na(dt2$delivpostcode),]$delivpostcode <- "NA"
+    # Impute missing values for delivpostcode with invoicepostcode
+    nas <- is.na(dt2$delivpostcode)
+    levels(dt2$delivpostcode) <- c(levels(dt2$delivpostcode),
+                                   levels(dt2$invoicepostcode))
+    dt2[nas,]$delivpostcode <- dt2[nas,]$invoicepostcode
     
     # Since this is just a warm-up, we'll use the median to impute the deliverydatediff
     dt2[is.na(dt2$deliverydatediff),]$deliverydatediff <- round(median(dt2$deliverydatediff, na.rm=T), 0)
