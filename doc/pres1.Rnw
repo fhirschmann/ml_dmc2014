@@ -146,16 +146,32 @@ source("R/lib/parallelsets.R")
                   xlab="Delivery Date Real", ylab="Delivery Date Promised",
                   main="Delivery Date Real vs Promised")
     abline(0, 1)
+    abline(365, 1, col="red")
+    text(14100, 14545, "One year sooner than promised", col="red", srt=26)
     @
 \end{frame}
 
 \begin{frame}{Outlier: Real vs Promised Delivery Date}
     <<fig.height=5, warning=F, message=F>>=
+    t <- 250
+    move <- dt.fix1$deliverydatediff > t & !is.na(dt.fix1$deliverydatediff)
     smoothScatter(dt.fix1$deliverydatereal, dt.fix1$deliverydatepromised,
                   xlab="Delivery Date Real", ylab="Delivery Date Promised",
                   main="Delivery Date Real vs Promised")
+    abline(t, 1, col="darkolivegreen4")
     abline(0, 1)
-    abline(355, 1, col="red")
+    text(14100, 14400, paste(t, "days sooner than promised"), col="darkolivegreen4", srt=26)
+    text(14090, 14600, paste(length(which(move)), "outliers"), col="darkolivegreen4")
+    @
+\end{frame}
+
+\begin{frame}{Outlier: Real vs Promised Delivery Date}
+    <<fig.height=5, warning=F, message=F>>=
+    dt.fix2 <- dt.fix1
+    dt.fix2[move,]$deliverydatepromised <- dt.fix2[move,]$deliverydatepromised - years(1)
+    smoothScatter(dt.fix2$deliverydatereal, dt.fix2$deliverydatepromised,
+                  xlab="Delivery Date Real", ylab="Delivery Date Promised",
+                  main="Delivery Date Real vs Promised")
     @
 \end{frame}
 

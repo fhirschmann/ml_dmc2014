@@ -92,26 +92,12 @@ cl <- function(dt) {
     year(dt2[outliers,]$deliverydatepromised) <- year(dt[outliers,]$date)
     dt2$deliverydatediff <- as.numeric(dt2$deliverydatepromised - dt2$deliverydatereal)
     
-    ## When the deliverydatediff is off by close to 1/2 year, it's very likely that 
-    ## deliverydatereal should be subtracted by 1/2 year. Please see doc/notes.Rmd
+    ## See the slides for details
     
-    t <- 340
-    
-    outliers <- dt2$deliverydatediff < -t & !is.na(dt2$deliverydatediff)
-    dt2[outliers,]$deliverydatereal <- dt2[outliers,]$deliverydatereal - years(1)
+    t <- 250
+    move <- dt2$deliverydatediff > t & !is.na(dt2$deliverydatediff)
+    dt2[move,]$deliverydatepromised <- dt2[move,]$deliverydatepromised - years(1)
 
-    outliers <- dt2$deliverydatediff > t & !is.na(dt2$deliverydatediff)
-    dt2[outliers,]$deliverydatereal <- dt2[outliers,]$deliverydatereal + years(1)
-
-    dt2$deliverydatediff <- as.numeric(dt2$deliverydatepromised - dt2$deliverydatereal)
-    
-    # Some are off by two years, so we just do it again
-    outliers <- dt2$deliverydatediff < -t & !is.na(dt2$deliverydatediff)
-    dt2[outliers,]$deliverydatereal <- dt2[outliers,]$deliverydatereal - years(1)
-    
-    outliers <- dt2$deliverydatediff > t & !is.na(dt2$deliverydatediff)
-    dt2[outliers,]$deliverydatereal <- dt2[outliers,]$deliverydatereal + years(1)
-    
     #dt2[dt2$deliverydatediff < -15 | dt2$deliverydatediff > 21 | is.na(dt2$deliverydatediff),]$deliverydatediff <- NA
     dt2$deliverydatediff <- as.numeric(dt2$deliverydatepromised - dt2$deliverydatereal)
     dt2
