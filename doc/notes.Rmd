@@ -3,13 +3,13 @@ This document gets compiled automatically with each svn commit and is available 
 
 ```{r setup, echo=F}
 library(knitr)
-opts_chunk$set(echo=T, breaklines=T)
-opts_knit$set(fig.path="figure-notes/", root.dir="../")
+opts_chunk$set(echo=T, breaklines=T, fig.path="figure-notes/")
+opts_knit$set(root.dir="../")
 ```
 ```{r echo=F}
 source("R/data.R")
 source("R/utils.R")
-source("R/dmc2010.R")
+source("R/dmc.R")
 library(xtable)
 library(ggplot2)
 ```
@@ -44,6 +44,13 @@ In terms of ratio:
 points.baseline / points.max
 ```
 
+However, this highly depends on the data set in question. It might be
+a better idea to, as baseline, not give out any vouchers:
+
+```{r baseline2}
+points.baseline <- dmc.points(rep("yes", nrow(dt)), dt$target90)
+points.baseline
+```
 
 ## Cost-Sensitivity
 
@@ -84,7 +91,7 @@ Observations:
 ## Outlier Handling
 Let's take a look at the date outliers. 
 
-First, we'll look the date outliers:
+First, we'll look the extreme date outliers:
 ```{r dates}
 outliers <- dt.unclean$deliverydatepromised > as.Date("2011-01-01")
 of.interest <- c("date", "deliverydatepromised", "deliverydatereal",
@@ -95,8 +102,17 @@ dt.unclean[outliers, of.interest]
 - Assumption: Just the year is incorrect
 - Solution: replace the year in deliverydatepromised with the year in date
 ```{r dates2}
-dt[outliers, of.interest]
+dt.fix1 <- dt.unclean
+year(dt.fix1[outliers,]$deliverydatepromised) <- year(dt.fix1[outliers,]$date)
+dt.fix1[outliers, of.interest]
 ```
+Unfortunately, this can't be correct since the deliverydatepromised is often
+before the actual date. Solution for now: Remove it, since it's only a handful
+of instances.
+```{r dates2.2}
+dt.fix1 <- dt.fix1[!outliers, ]
+```
+
 Next, we'll look at outliers which were
 delivered more than one year after the purchase:
 ```{r dates3}
@@ -108,27 +124,56 @@ dt.unclean[outliers, of.interest]
 ```{r dates4}
 dt[outliers, of.interest]
 ```
+It's not that far off.
+
 What about the other way?
 ```{r dates5}
 outliers <- dt.unclean$deliverydatediff > 350 & !is.na(dt.unclean$deliverydatediff)
-dt.unclean[outliers, of.interest]
+head(dt.unclean[outliers, of.interest], 50)
 ```
-Don't worry about the instances with deliverydatediff = 1000000. These are due to
-the instances with deliverydatepromised > 4000 and have already been handled.
 
 However, the same can be said about > 350 as with < -350. Let's fix it:
 ```{r dates6}
-dt[outliers, of.interest]
+head(dt[outliers, of.interest], 50)
 ```
 Looks about right now, doesn't it?
-```{r datesm}
-summary(dt.unclean$deliverydatediff)
-summary(dt$deliverydatediff)
+
+Still not quite sure if this is the right way to handle it. There are a lot of these
+outliers... wait, how many?
+```{r dates7.1}
+outliers <- dt.unclean$deliverydatediff > 350 & !is.na(dt.unclean$deliverydatediff)
+nrow(dt[outliers,]) / nrow(dt)
 ```
-Still not perfect (black dots are outliers):
-```{r dateplot}
-smoothScatter(dt$deliverydatediff)
+and
+```{r dates7.2}
+outliers <- dt.unclean$deliverydatediff < -350 & !is.na(dt.unclean$deliverydatediff)
+nrow(dt[outliers,]) / nrow(dt)
 ```
+
+Maybe they are not outliers after all? Or they are outliers, but we only
+have the choice to 
+
+- remove them
+- use regression
+
+Let's analyze it a little further:
+
+```{r}
+plot(density(dt.fix1$deliverydatediff, na.rm=T))
+```
+Let's adjust the scale
+```{r}
+plot(density(dt.fix1$deliverydatediff, na.rm=T), ylim=c(0, 0.06))
+rug(dt.fix1$deliverydatediff)
+```
+So, let's try something else:
+```{r}
+smoothScatter(dt.fix1$deliverydatereal, dt.fix1$deliverydatepromised)
+abline(0, 1, col="red")
+```
+I think here it becomes quite obvious that there is some kind of pattern
+in the outlier cloud on the left hand side.
+
 ## Visual Stuff
 
 ```{r barplots, fig.width=11}

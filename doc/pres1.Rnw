@@ -26,12 +26,14 @@
 \setbeamercovered{transparent}
 \setbeamertemplate{navigation symbols}{}
 
-<<setup, echo=F, include=FALSE>>=
-opts_chunk$set(echo=F, breaklines=T)
-opts_knit$set(fig.path="figure-pres1/", root.dir="../")
+<<setup, echo=F, message=F, include=FALSE>>=
+opts_chunk$set(echo=F, breaklines=T, fig.path="figure-pres1/")
+opts_knit$set(root.dir="../")
 library(xtable)
 library(stats)
 library(vcd)
+library(plyr)
+library(lubridate)
 
 # Bug in xtable: doesn't print dates correctly
 xtable <- function(x, ...) {
@@ -75,13 +77,10 @@ source("R/lib/parallelsets.R")
     print(xtable(tail(tbl, split)))
     @
     \end{minipage}
-    
-    <<predictors, results="asis">>=
-    #print(xtable(t(data.frame(lapply(dt, class))), align="r|l"), floating=F, booktabs=F,
-    #      tabular.environment="longtable", include.colnames=F, hline.after=c(0),
-    #      hline.before=NULL, sanitize.rownames.function=function(x) paste("\\texttt{", x, "}"))
-    @
 \end{frame}
+
+
+
 
 \begin{frame}{Nominal Predictors Analysis}
     <<fig.height=4.5>>=
@@ -90,6 +89,53 @@ source("R/lib/parallelsets.R")
     with(x, parallelset(target90, voucher, model, shippingcosts, col=color, freq=Freq))
     @
 \end{frame}
+
+\begin{frame}{Outlier: Promised Delivery Date}
+    <<ddbefore, results="asis">>=
+    outliers <- dt.unclean$deliverydatepromised > as.Date("2011-01-01")
+    tbl2 <- dt.unclean[outliers,c("date", "deliverydatereal", "deliverydatepromised")]
+    tbl2$promised.fixed <- dt[outliers,]$deliverydatepromised
+    colnames(tbl2) <- c("date", "real", "promised", "\\textcolor{red}{promised.fix?}")
+
+    print(xtable(tbl2), size="\\scriptsize", sanitize.text.function = function(x){x})
+    dt.fix1 <- dt.unclean[!outliers,]
+    @
+    \pause
+    \begin{center}
+        \Large Not really
+    \end{center}
+\end{frame}
+
+\begin{frame}{Outlier: Real vs Promised Delivery Date}
+    <<echo=F, message=F, warning=F, fig.height=5>>=
+        plot(density(dt.fix1$deliverydatediff, na.rm=T), main="Kernel Density Estimate",
+             xlab="Delivery Date Promised - Real (days)")
+        rug(dt.fix1$deliverydatediff)
+    @
+\end{frame}
+
+\begin{frame}{Outlier: Real vs Promised Delivery Date}
+    <<echo=F, message=F, warning=F, fig.height=5>>=
+        plot(density(dt.fix1$deliverydatediff, na.rm=T), main="Kernel Density Estimate",
+             xlab="Delivery Date Promised - Real (days)", ylim=c(0, 0.05))
+        rug(dt.fix1$deliverydatediff)
+    @
+\end{frame}
+
+\begin{frame}{Outlier: Real vs Promised Delivery Date}
+    <<fig.height=5, warning=F, message=F>>=
+    smoothScatter(dt.fix1$deliverydatereal, dt.fix1$deliverydatepromised,
+                  xlab="Delivery Date Real", ylab="Delivery Date Promised",
+                  main="Delivery date Real vs Promised")
+    abline(0, 1, col="red")
+    @
+\end{frame}
+
+\begin{frame}{Class Frequency Equality}
+    \Large Question: Are class frequencies distributed equally in
+    the Train and Test set?
+\end{frame}
+
 
 \begin{frame}{Class Frequency Equality of Train/Test Data}
     <<results="asis">>=
@@ -108,7 +154,7 @@ source("R/lib/parallelsets.R")
 \begin{frame}{$\chi^2$-Test of Train/Test Data Frequency}
     <<chisq, results="asis">>=
     ps <- sapply(c("domain", "voucher", "model", "salutation", "paymenttype", "case",
-                   "month", "weekday"),
+                   "month", "weekday", "deliverytype", "entry"),
                  function(x) chisq.test(table2(dt[[x]], dt.test[[x]]))$p.value, simplify=F)
     df <- data.frame(t(data.frame(ps)))
     colnames(df) <- c("p")
@@ -118,61 +164,6 @@ source("R/lib/parallelsets.R")
     @
 \end{frame}
 
-\section{Data Cleaning}
-
-\begin{frame}{Data Cleaning: Promised Delivery Date}
-    <<ddbefore, results="asis">>=
-    outliers <- dt.unclean$deliverydatepromised > as.Date("2011-01-01")
-    tbl2 <- dt.unclean[outliers,c("date", "deliverydatereal", "deliverydatepromised")]
-    tbl2$promised.fixed <- dt[outliers,]$deliverydatepromised
-    colnames(tbl2) <- c("date", "real", "promised", "\\textcolor{red}{promised.fix?}")
-
-    print(xtable(tbl2), size="\\scriptsize", sanitize.text.function = function(x){x})
-    @
-\end{frame}
-
-\begin{frame}{Promised - Real Delivery Date Outliers (Before)}
-    \vspace{-0.8cm}
-    <<ddobefore, echo=F, message=F, warning=F, fig.height=5.5>>=
-    dt2 <- dt.unclean
-    dt2[outliers,]$deliverydatediff <- NA
-    smoothScatter(dt2$date, dt2$deliverydatediff, ylab="Delivery Date Difference (days)", xlab="Date")
-    abline(h=340, lty=2, col="red")
-    abline(h=-340, lty=2, col="red")
-    @
-\end{frame}
-
-\begin{frame}{Promised - Real Delivery Date Outliers (After)}
-    \vspace{-0.8cm}
-    <<ddoafter, echo=F, message=F, warning=F, fig.height=5.5>>=
-    dt2 <- dt
-    smoothScatter(dt2$date, dt2$deliverydatediff, ylab="Delivery Date Difference (days)", xlab="Date")
-    @
-\end{frame}
-
-\begin{frame}{Promised - Real Delivery Date}
-    <<fig.height=5>>=
-    dens.after <- density(dt$deliverydatediff, na.rm=T)
-    dens.before <- density(dt.unclean[!outliers,]$deliverydatediff, na.rm=T)
-    plot(dens.after, main="Kernel Density Estimate", xlim=c(-50, 50))
-    @
-\end{frame}
-
-\begin{frame}[fragile]{Data Cleaning: Before and After}
-    Before Cleaning:
-    \footnotesize
-    <<echo=T>>=
-    summary(dt.unclean$deliverydatediff)
-    @
-    \normalsize
-    
-    After Cleaning:
-    \footnotesize
-    <<echo=T>>=
-    summary(dt$deliverydatediff)
-    @
-    \normalsize
-\end{frame}
 
 \section{Questions}
 \begin{frame}{Questions}
