@@ -270,7 +270,7 @@ source("R/lib/parallelsets.R")
 
 \begin{frame}{Results: C5.0}
     <<fig.height=5>>=
-    plot(varImp(mds$c50), top=20, main="Variable Importance")
+    plot(varImp(mds$c50), top=30, main="Top 30 Variable Importance")
     @
 \end{frame}
 
@@ -299,6 +299,18 @@ source("R/lib/parallelsets.R")
     \end{minipage}
 \end{frame}
 
+\begin{frame}{Conclusion}
+    \begin{itemize}
+        \item Understanding data is key (and not necessarily the best algorithm)
+        \item Use Domain Specific Knowledge (Proximity to point of sale?)
+        \item Removing outliers isn't the only strategy available
+        \item C5.0 provides reasonable results
+        \item Some of the groups even lost money in the process
+        \begin{itemize}
+            \item Overfitting?
+        \end{itemize}
+    \end{itemize}
+\end{frame}
 
 \section{Questions}
 \begin{frame}{Questions}
