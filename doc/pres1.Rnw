@@ -13,7 +13,13 @@
 \usepackage{listings}
 \usepackage{multicol}
 \usepackage{caption}
-
+\newcommand{\neutranie}{\tikz[baseline=-0.75ex,black]{
+    \draw circle (2mm);
+\node[fill,circle,inner sep=0.5pt] (left eye) at (135:0.8mm) {};
+\node[fill,circle,inner sep=0.5pt] (right eye) at (45:0.8mm) {};
+\draw (-135:0.9mm) -- (-45:0.9mm);
+    }
+}
 \title{Data Mining Cup 2010}
 \subtitle{Group \texttt{R} Report}
 \author{Fabian Hirschmann, Michael Markert, Simon Holthausen, Christoph Schatton}
@@ -209,6 +215,18 @@ source("R/lib/parallelsets.R")
     @
 \end{frame}
 
+\begin{frame}{Attribute Selection}
+    \begin{itemize}
+        \item Not using \texttt{deliverydatediff} yields better results!
+        \pause
+        \item Same is true for \texttt{advertisingdatacode}
+        \item And \texttt{delivpostcode}...
+        \item And \texttt{invoicepostcode}...
+        \item And \texttt{domain}...
+        \item And ...
+    \end{itemize}
+\end{frame}
+
 \begin{frame}{Class Freq Distribution}
     \Large Are class frequencies distributed equally in
     the Train and Test set?
@@ -281,7 +299,7 @@ source("R/lib/parallelsets.R")
     tbl <- read.csv("task2010/points.txt", stringsAsFactors=F)
     colnames(tbl) <- c("Team", "Points")
 
-    tbl <- rbind(tbl, c("R", 11480.5))
+    tbl <- rbind(tbl, c("R", 11900.5))
     tbl$Points <- as.numeric(tbl$Points)
 
     tbl <- tbl[order(tbl$Points, decreasing=T),]
@@ -289,7 +307,7 @@ source("R/lib/parallelsets.R")
 
     split <- round(nrow(tbl) / 2)
     print(xtable(head(tbl, split), digits=1),
-          sanitize.text.function = function(x){x}, hline.after=c(-1, 0, split, 11, 12))
+          sanitize.text.function = function(x){x}, hline.after=c(-1, 0, split, 9, 10))
     @
     \end{minipage}
     \begin{minipage}[t]{0.49\columnwidth}
@@ -302,6 +320,7 @@ source("R/lib/parallelsets.R")
 \begin{frame}{Conclusion}
     \begin{itemize}
         \item Understanding data is key (and not necessarily the best algorithm)
+        \item As is attribute selection
         \item Use Domain Specific Knowledge (Proximity to point of sale?)
         \item Removing outliers isn't the only strategy available
         \item C5.0 provides reasonable results
