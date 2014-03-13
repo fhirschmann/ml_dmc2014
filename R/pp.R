@@ -71,7 +71,6 @@ pp <- function(dt) {
     # Add some features
     dt2$deliverydatediff <- as.numeric(dt2$deliverydatepromised - dt2$deliverydatereal)
     dt2$month <- as.factor(month(dt2$date))
-    dt2$week <- as.factor(week(dt2$date))
     dt2$weekday <- as.factor(wday(dt2$date, label=T, abbr=F))
 
     dt2$instantorder <- as.factor(ifelse(dt2$datecreated == dt2$date, "yes", "no"))
