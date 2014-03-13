@@ -310,7 +310,7 @@ source("R/lib/parallelsets.R")
 
 \begin{frame}{Results: C5.0}
     <<fig.height=5>>=
-    plot(varImp(mds$c50), top=30, main="Top 30 Variable Importance")
+    plot(varImp(mds$c50), top=20, main="Variable Importance (Top 20)")
     @
 \end{frame}
 

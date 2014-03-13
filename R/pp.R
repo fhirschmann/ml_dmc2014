@@ -75,7 +75,7 @@ pp <- function(dt) {
     
     dt2$instantorder <- as.factor(ifelse(dt2$datecreated == dt2$date, "yes", "no"))
 
-    dt2$w0all <- Reduce("+", lapply(0:10, function(x) dt2[[paste("w", x, sep="")]]))
+    #dt2$w0all <- Reduce("+", lapply(0:10, function(x) dt2[[paste("w", x, sep="")]]))
     
     dt2
 }
