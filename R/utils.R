@@ -65,7 +65,8 @@ list.update <- function(l1, l2) {
 
 caret.train.default.desc <- list(train.args=list(),
                                  data.fun=identity,
-                                 serialize="models")
+                                 serialize="models",
+                                 hist=T)
 
 caret.train <- function(descs, common.desc=(d <- caret.train.default.desc),
                         verbose=FALSE) {
@@ -94,10 +95,21 @@ caret.train <- function(descs, common.desc=(d <- caret.train.default.desc),
     
         # Serialize
         if (!is.null(desc$serialize)) {
+            dir.create(desc$serialize)
             fname <- file.path(desc$serialize, paste(name, "RData", sep="."))
             save(fit, file=fname)
             message("Wrote model to: ", fname)
+            
+            if (desc$hist) {
+                dir.create(file.path(desc$serialize, "hist"))
+                fname <- file.path(desc$serialize, "hist",
+                                   paste(name, format(Sys.time(), "%Y-%m-%d_%H:%M:%S"), 
+                                         "RData", sep="."))
+                save(fit, file=fname)
+                message("Wrote model to: ", fname)
+            }
         }
+
         fits[[name]] <- fit
     }
     

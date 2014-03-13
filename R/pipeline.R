@@ -24,6 +24,8 @@ descs <- list(
 common.desc <- list(
     # Serialize models to models/ directory
     serialize="models",
+    # Keep a history of trained serialized models
+    hist=T,
     # For testing on a smaller data set
     data.fun=identity,
     #data.fun=function(x) head(x, 1000),
