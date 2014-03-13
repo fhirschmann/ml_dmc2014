@@ -16,6 +16,7 @@ fs.all <- function(dt) {
     dt2$gift <- NULL
     dt2$deliverytype <- NULL
     dt2$w8 <- NULL
+    dt2$w0all <- NULL
     dt2$week <- NULL
     
     dt2

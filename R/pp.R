@@ -72,9 +72,11 @@ pp <- function(dt) {
     dt2$deliverydatediff <- as.numeric(dt2$deliverydatepromised - dt2$deliverydatereal)
     dt2$month <- as.factor(month(dt2$date))
     dt2$weekday <- as.factor(wday(dt2$date, label=T, abbr=F))
-
+    
     dt2$instantorder <- as.factor(ifelse(dt2$datecreated == dt2$date, "yes", "no"))
-        
+
+    dt2$w0all <- Reduce("+", lapply(0:10, function(x) dt2[[paste("w", x, sep="")]]))
+    
     dt2
 }
 
@@ -100,8 +102,6 @@ cl <- function(dt) {
     t <- 250
     move <- dt2$deliverydatediff > t & !is.na(dt2$deliverydatediff)
     dt2[move,]$deliverydatepromised <- dt2[move,]$deliverydatepromised - years(1)
-
-    dt2$deliverydatediff <- as.numeric(dt2$deliverydatepromised - dt2$deliverydatereal)
 
     ## wX: Slides, again
     if (any(dt$w0 > 60))
