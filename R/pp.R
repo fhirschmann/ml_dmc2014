@@ -16,12 +16,6 @@ pp <- function(dt) {
     #   A preprocessed data frame
     
     dt2 <- dt
-    
-    ## Binary Predictors
-    dt2_binary <- c("voucher", "title", "newsletter", "gift", "shippingcosts")
-    if ("target90" %in% names(dt2)) dt2_binary <- c(dt2_binary, "target90")
-    dt2[dt2_binary] <- lapply(dt2[dt2_binary],
-                            function(x) revalue(as.factor(x), c("1"="yes", "0"="no")))
 
     ## Nominal Predictors    
     # Use labels instead of numeric values
@@ -38,18 +32,27 @@ pp <- function(dt) {
         "invoicepostcode"=NULL,
         "delivpostcode"=NULL,
         "advertisingdatacode"=NULL,
-        "entry"=c("0"="shop", "1"="partner")
+        "entry"=c("0"="shop", "1"="partner"),
+        "voucher"=c("0"="no", "1"="yes"),
+        "title"=c("0"="no", "1"="yes"),
+        "newsletter"=c("0"="no", "1"="yes"),
+        "gift"=c("0"="no", "1"="yes"),
+        "shippingcosts"=c("0"="no", "1"="yes")
     )
-    
-    ## Ordered Predictors
-    dt2_ordinal <- c("case")
-    dt2[dt2_ordinal] <- lapply(dt2[dt2_ordinal], as.ordered)
-    
+
     for (name in names(dt2_factors)) {
         dt2[[name]] <- as.factor(dt2[[name]])
         if (!is.null(dt2_factors[[name]]))
             dt2[[name]] <- revalue(dt2[[name]], dt2_factors[[name]])
     }
+    
+    if ("target90" %in% colnames(dt2)) {
+        dt2$target90 <- revalue(as.factor(dt2$target90), c("0"="no", "1"="yes"))
+    }
+        
+    ## Ordered Predictors
+    dt2_ordinal <- c("case")
+    dt2[dt2_ordinal] <- lapply(dt2[dt2_ordinal], as.ordered)
         
     ## Date Predictors
     dt2_dates <- c("date", "datecreated", "deliverydatepromised", "deliverydatereal")
