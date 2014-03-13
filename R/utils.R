@@ -157,3 +157,10 @@ caret.obs <- function(fit) {
 
     fit$pred$obs[caret.bestidx(fit)]
 }
+
+xtable <- function(x, ...) {
+    # Bug in xtable: doesn't print dates correctly
+    for (i in which(sapply(x, function(y) !all(is.na(match(c("POSIXt","Date"), 
+                                                           class(y))))))) x[[i]] <- as.character(x[[i]])
+    xtable::xtable(x, ...)
+}
