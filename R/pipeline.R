@@ -12,15 +12,12 @@ descs <- list(
             method="C5.0",
             data=dt.c50,
             cost=dmc.cost,
-            control=C5.0Control(earlyStopping=F))),
-    cart=list(
-        train.args=list(
-            method="rpart",
-            data=dt.cart,
-            tuneGrid=expand.grid(.cp=1:10),
-            # rpart wants the matrix to have true classes
-            # in rows, so we transpose
-            parms=list(loss=t(dmc.cost))))
+            tuneGrid=expand.grid(
+                .winnow=c(FALSE),
+                .model=c("rules"),
+                .trials=c(1)
+                ),
+            control=C5.0Control(earlyStopping=F)))
 )
 
 # Common description
