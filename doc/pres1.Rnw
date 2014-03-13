@@ -24,7 +24,7 @@
 \subtitle{Group \texttt{R} Report}
 \author{Fabian Hirschmann, Michael Markert, Simon Holthausen, Christoph Schatton}
 \institute{Technische Universität Darmstadt}
-\date{April 2014}
+\date{April 1\textsuperscript{st} 2014}
 \newcommand{\gcheck}{\textcolor{green}{\ding{52}}}
 \newcommand{\rballot}{\textcolor{red}{\ding{55}}}
 
@@ -41,11 +41,6 @@ library(plyr)
 library(C50)
 library(lubridate)
 
-# Bug in xtable: doesn't print dates correctly
-xtable <- function(x, ...) {
-   for (i in which(sapply(x, function(y) !all(is.na(match(c("POSIXt","Date"),class(y))))))) x[[i]] <- as.character(x[[i]])
-   xtable::xtable(x, ...)
-}
 @
 
 <<load, echo=F>>=
@@ -66,7 +61,11 @@ source("R/lib/parallelsets.R")
 
 \section{Description}
 
-\section{Data Analysis}
+\begin{frame}{Problem Description}
+\end{frame}
+
+\begin{frame}{Cost Matrix}
+\end{frame}
 
 \begin{frame}{Predictors}
     \vspace{-0.2cm}
@@ -76,7 +75,7 @@ source("R/lib/parallelsets.R")
     tbl <- df.classes(dt)
 
     colors <- c()
-    colors[setdiff(names(dt), names(dt.c50))] <- "gray" # not used
+    colors[setdiff(names(dt), names(dt.c50))] <- "black" # not used
     colors[setdiff(names(dt.c50), names(dt.raw))] <- "OliveGreen" # added
     colors[setdiff(names(dt.c50), names(colors))] <- "black" # used
 
@@ -96,13 +95,7 @@ source("R/lib/parallelsets.R")
     \end{minipage}
 \end{frame}
 
-\begin{frame}{Nominal Predictors Analysis}
-    <<fig.height=4.5>>=
-    x <- as.data.frame(structable(target90 ~ model + voucher + shippingcosts, data=dt))
-    x$color <- ifelse(x$target90 == "yes", "#008888", "#330066")
-    with(x, parallelset(target90, voucher, model, shippingcosts, col=color, freq=Freq))
-    @
-\end{frame}
+\section{Data Analysis}
 
 \begin{frame}{Outlier: Promised Delivery Date}
     <<ddbefore, results="asis">>=
@@ -210,28 +203,15 @@ source("R/lib/parallelsets.R")
     nas$Train <- nas$Train / nrow(dt) * 100
     nas$Test <- nas$Test / nrow(dt.test) * 100
     nas <- nas[nas$Train > 0 | nas$Test > 0, ]
-    nas$Strategy <- c("Use invoicepostcode", "Pseudo class 'NA'", "Median", "Median")
+    nas$Strategy <- c("Use invoicepostcode", "Pseudo class 'NA'", "Adjust", "Adjust")
     print(xtable(nas, digits=4, caption="Missing values in percent. Predictors with no missing values are not shown."))
     @
-\end{frame}
-
-\begin{frame}{Attribute Selection}
-    \begin{itemize}
-        \item Not using \texttt{deliverydatediff} yields better results!
-        \pause
-        \item Same is true for \texttt{advertisingdatacode}
-        \item And \texttt{delivpostcode}...
-        \item And \texttt{invoicepostcode}...
-        \item And \texttt{domain}...
-        \item And ...
-    \end{itemize}
 \end{frame}
 
 \begin{frame}{Class Freq Distribution}
     \Large Are class frequencies distributed equally in
     the Train and Test set?
 \end{frame}
-
 
 \begin{frame}{Class Freq Distribution: Example}
     <<results="asis">>=
@@ -270,6 +250,48 @@ source("R/lib/parallelsets.R")
     qplot(advertisingdatacode, fill=group,
           data=dt.merged[dt.merged$advertisingdatacode != "NA",], position="dodge")
     @
+\end{frame}
+
+\section{Feature Selection}
+
+\begin{frame}{Feature Selection}
+    \begin{itemize}
+        \item Not using \texttt{deliverydatediff} yields better results!
+        \pause
+        \item Same is true for \texttt{advertisingdatacode}
+        \item And \texttt{delivpostcode}...
+        \item And \texttt{invoicepostcode}...
+        \item And \texttt{domain}...
+        \item And ...
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Feature Selection: Selected Predictors}
+    \vspace{-0.2cm}
+    \scriptsize
+    \begin{minipage}[t]{0.49\columnwidth}
+    <<results="asis">>=
+    tbl <- df.classes(dt)
+
+    colors <- c()
+    colors[setdiff(names(dt), names(dt.c50))] <- "gray" # not used
+    colors[setdiff(names(dt.c50), names(dt.raw))] <- "OliveGreen" # added
+    colors[setdiff(names(dt.c50), names(colors))] <- "black" # used
+
+    tbl$class <- mapply(function(n, t) paste("\\color{", colors[[n]], "}{", t, "}", sep=""),
+                        rownames(tbl), tbl$class, USE.NAMES=F)
+
+    split <- nrow(tbl) / 2
+    print(xtable(head(tbl, split)), include.colnames=F, hline.after=c(-1, split),
+          sanitize.text.function = function(x){x})
+    @
+    \end{minipage}
+    \begin{minipage}[t]{0.49\columnwidth}
+    <<results="asis">>=
+    print(xtable(tail(tbl, split)), include.colnames=F, hline.after=c(-1, split),
+          sanitize.text.function = function(x){x})
+    @
+    \end{minipage}
 \end{frame}
 
 \section{Results}
