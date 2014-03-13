@@ -45,6 +45,7 @@ library(lubridate)
 
 <<load, echo=F>>=
 source("R/data.R")
+source("R/dmc.R")
 source("R/utils.R")
 source("R/lib/parallelsets.R")
 @
@@ -64,8 +65,6 @@ source("R/lib/parallelsets.R")
 \begin{frame}{Problem Description}
 \end{frame}
 
-\begin{frame}{Cost Matrix}
-\end{frame}
 
 \begin{frame}{Predictors}
     \vspace{-0.2cm}
@@ -93,6 +92,29 @@ source("R/lib/parallelsets.R")
           sanitize.text.function = function(x){x})
     @
     \end{minipage}
+\end{frame}
+
+\begin{frame}{Remedies for Severe Class Imbalance}
+    \begin{minipage}[t]{0.54\columnwidth}
+    \begin{itemize}
+        \item Imbalance causes some models to always predict \texttt{no}
+        \item Several counter-strategies available. Amongst others:
+            \begin{itemize}
+                \item Unequal Case Weights
+                \item Adjusting Prior Probabilities
+                \item \textbf{Cost-Sensitive Training}
+            \end{itemize}
+    \end{itemize}
+    \vspace{0.5cm}
+    \end{minipage}
+    \begin{minipage}[t]{0.44\columnwidth}
+        <<fig.height=10>>=
+        plot(dt$target90, main="Target Attribute", xlab="Class", ylab="Count")
+        @
+    \end{minipage}
+\end{frame}
+
+\begin{frame}{Cost Matrix}
 \end{frame}
 
 \section{Data Analysis}
@@ -208,12 +230,12 @@ source("R/lib/parallelsets.R")
     @
 \end{frame}
 
-\begin{frame}{Class Freq Distribution}
-    \Large Are class frequencies distributed equally in
+\begin{frame}{Category Freq Distribution}
+    \Large Are category frequencies distributed equally in
     the Train and Test set?
 \end{frame}
 
-\begin{frame}{Class Freq Distribution: Example}
+\begin{frame}{Category Freq Distribution: Example}
     <<results="asis">>=
     tbl <- data.frame(table(dt$model), table(dt.test$model))
     tbl$Var1.1 <- NULL
@@ -227,7 +249,7 @@ source("R/lib/parallelsets.R")
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Class Freq Distribution: $\chi^2$-Test}
+\begin{frame}{Category Freq Distribution: $\chi^2$-Test}
     <<chisq, results="asis">>=
     ps <- sapply(c("domain", "voucher", "model", "salutation", "paymenttype", "case",
                    "month", "weekday", "deliverytype", "entry", "instantorder"),
@@ -240,12 +262,12 @@ source("R/lib/parallelsets.R")
     @
 \end{frame}
 
-\begin{frame}{Class Freq Distribution: 0-Probability Cases}
+\begin{frame}{Category Freq Distribution: 0-Probability Cases}
     \large $\chi^2$-Test not appropriate where the expectation for one or
     more category is $0$ (differing categories in Train/Test data).
 \end{frame}
 
-\begin{frame}{Class Freq Distribution: advertisingdatacode}
+\begin{frame}{Category Freq Distribution: advertisingdatacode}
     <<fig.height=5>>=
     qplot(advertisingdatacode, fill=group,
           data=dt.merged[dt.merged$advertisingdatacode != "NA",], position="dodge")
