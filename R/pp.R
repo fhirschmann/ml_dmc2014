@@ -63,10 +63,15 @@ pp <- function(dt) {
     # we add leading zeros in invoicepostcode
     dt2$invoicepostcode <- as.factor(formatC(as.numeric(dt2$invoicepostcode),
                                              width=2, format="d", flag="0"))
+
+    #dt2$invoiceeqdeliv <- ifelse(as.character(dt$invoicepostcode) == 
+    #                                 as.character(dt$delivpostcode) |
+    #                                 is.na(dt$delivpostcode), "yes", "no")
     
     # Add some features
     dt2$deliverydatediff <- as.numeric(dt2$deliverydatepromised - dt2$deliverydatereal)
     dt2$month <- as.factor(month(dt2$date))
+    dt2$week <- as.factor(week(dt2$date))
     dt2$weekday <- as.factor(wday(dt2$date, label=T, abbr=F))
 
     dt2$instantorder <- as.factor(ifelse(dt2$datecreated == dt2$date, "yes", "no"))
