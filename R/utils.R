@@ -168,6 +168,23 @@ caret.obs <- function(fit) {
     fit$pred$obs[caret.bestidx(fit)]
 }
 
+try.mp <- function() {
+    if ("doMC" %in% rownames(installed.packages())) {
+        if ("parallel" %in% rownames(installed.packages())) {
+            library(parallel)
+            cores <- parallel::detectCores()
+        } else {
+            cores <- 4
+        }
+        
+        library(doMC)
+        doMC::registerDoMC(cores=cores)
+        message("Enabled parallel processing with ", cores, " cores.")
+    } else {
+        message("Disabled parallel processing.")
+    }
+}
+
 xtable <- function(x, ...) {
     # Bug in xtable: doesn't print dates correctly
     for (i in which(sapply(x, function(y) !all(is.na(match(c("POSIXt","Date"), 

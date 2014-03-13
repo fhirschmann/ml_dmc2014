@@ -4,6 +4,7 @@
 
 source("R/dmc.R")
 dmc.reload()
+try.mp()
 
 args <- commandArgs(T)
 
