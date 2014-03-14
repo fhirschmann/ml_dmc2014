@@ -363,9 +363,9 @@ source("R/lib/parallelsets.R")
 
 \begin{frame}{Conclusion}
     \begin{itemize}
-        \item Understanding data is key (and not necessarily the best algorithm)
-        \item As is attribute selection
-        \item Use Domain Specific Knowledge (Proximity to point of sale?)
+        \item Understanding data is key (and not necessarily the best algorithm; but in a competition, it actually is)
+        \item Do Attribute Selection
+        \item Use Domain Specific Knowledge (proximity to point of sale?)
         \item Removing outliers isn't the only strategy available
         \item C5.0 provides reasonable results
         \item Some of the groups even lost money in the process
