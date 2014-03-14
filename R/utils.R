@@ -173,6 +173,10 @@ caret.obs <- function(fit) {
     fit$pred$obs[caret.bestidx(fit)]
 }
 
+caret.missidx <- function(fit) {
+    caret.pred(fit) != caret.obs(fit)
+}
+
 try.mp <- function() {
     if ("doMC" %in% rownames(installed.packages())) {
         if ("parallel" %in% rownames(installed.packages())) {
