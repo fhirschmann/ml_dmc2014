@@ -146,8 +146,13 @@ caret.bestidx <- function(fit) {
     # Args:
     #   dt: a caret fit
     
-    params <- colnames(fit$bestTune)
-    Reduce('&', lapply(params, function(y) fit$pred[[y]] == fit$bestTune[[y]]))
+    if (nrow(fit$bestTune == 1)) {
+        # Only one parameter configuration
+        rep(TRUE, nrow(fit$pred))
+    } else {
+        params <- colnames(fit$bestTune)
+        Reduce('&', lapply(params, function(y) fit$pred[[y]] == fit$bestTune[[y]]))    
+    }
 }
 
 caret.pred <- function(fit) {
