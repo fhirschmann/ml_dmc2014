@@ -5,11 +5,50 @@ source("R/dmc.R")
 suppressPackageStartupMessages(library(caret))
 library(C50)
 
+
+ctrl <- trainControl(method="cv", savePredictions=T,
+                     summaryFunction=dmc.summary, returnData=T)
+
+# Don't pass this to classifiers who do not return class probabilities
+ctrl.probs <- ctrl
+ctrl$classProbs <- TRUE
+
 # List of stuff to learn
 descs <- list(
     nb=list(
         train.args=list(
             method="nb",
+            data=dt.c50)
+    ),
+    ada=list(
+        train.args=list(
+            method="ada",
+            data=dt.c50)
+    ),
+    rf=list(
+        train.args=list(
+            method="rf",
+            trControl=ctrl.probs,
+            data=dt.c50)
+    ),
+    gcvEarth=list(
+        train.args=list(
+            method="gcvEarth",
+            data=dt.c50)
+    ),
+    lda=list(
+        train.args=list(
+            method="lda",
+            data=dt.c50)
+    ),
+    OneR=list(
+        train.args=list(
+            method="OneR",
+            data=dt.c50)
+    ),
+    bdk=list(
+        train.args=list(
+            method="bdk",
             data=dt.c50)
     ),
     c50=list(
@@ -43,6 +82,5 @@ common.desc <- list(
         # Use Points to select the best tuning parameters
         metric="PointsRatio",
         # Save the predictions (can be used to calculate metrics later)
-        trControl=trainControl(method="cv", savePredictions=T,
-                               summaryFunction=dmc.summary, returnData=T))
+        trControl=ctrl)
 )
