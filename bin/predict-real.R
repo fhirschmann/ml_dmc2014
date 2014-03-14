@@ -3,6 +3,7 @@ source("R/dmc.R")
 dmc.reload()
 library(plyr)
 library(C50)
+library(klaR)
 
 real <- read.csv("task2010/dmc2010_real.txt", sep=";")
 colnames(real) <- c("customernumber", "target90")

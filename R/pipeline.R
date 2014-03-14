@@ -7,6 +7,11 @@ library(C50)
 
 # List of stuff to learn
 descs <- list(
+    nb=list(
+        train.args=list(
+            method="nb",
+            data=dt.c50)
+    ),
     c50=list(
         train.args=list(
             method="C5.0",
