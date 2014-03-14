@@ -146,7 +146,7 @@ caret.bestidx <- function(fit) {
     # Args:
     #   dt: a caret fit
     
-    if (nrow(fit$bestTune == 1)) {
+    if (nrow(fit$results) == 1) {
         # Only one parameter configuration
         rep(TRUE, nrow(fit$pred))
     } else {
