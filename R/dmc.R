@@ -46,7 +46,7 @@ dmc.inst <- function(upgrade=F) {
     libs <- c("devtools", "Metrics", "ellipse", "data.table", "knitr",
               "mda", "Hmisc", "lubridate", "earth", "pROC", "C50",
               "ROCR", "doMC", "caret", "chron", "RWeka", "klaR",
-              "plyr", "MASS", "ggplot2")
+              "plyr", "MASS", "ggplot2", "ada", "earth", "kohonen",)
     if (upgrade) {
         install.packages(libs)
     } else {
