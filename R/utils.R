@@ -164,7 +164,12 @@ caret.best <- function(fit, sort=F) {
     #   sort: sort to match the input data
     
     best <- fit$pred[caret.bestidx(fit),]
-    ifelse(sort, x[order(x$rowIndex),], x)
+    
+    if (sort) {
+        x[order(x$rowIndex),]
+    } else {
+        x
+    }
 }
 
 caret.pred <- function(fit) {
@@ -191,7 +196,7 @@ caret.missidx <- function(fit) {
     # Args:
     #   fit: a caret fit
     
-    caret.best(fit) != caret.obs(fit)
+    caret.pred(fit) != caret.obs(fit)
 }
 
 try.mp <- function() {
