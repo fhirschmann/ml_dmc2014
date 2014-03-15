@@ -32,12 +32,18 @@ dmc.tunecut <- function(fit, steps=1:40 * 0.025) {
     res    
 }
 
+dmc.ensemble.pred <- function(rf.probs, c50.preds) {
+    as.factor(ifelse(rf.probs$no > 0.96 | c50.preds == "no", "no", "yes"))
+}
+
 dmc.evaluate <- function(mds) {
     if (length(unique(lapply(mds, function(x) length(caret.pred(x))))) != 1)
         stop("Predictions are not of the same length. Different data sets?")
     df <- data.frame(lapply(mds, function(x) dmc.points(caret.pred(x), caret.obs(x))))
     df$baseline <- dmc.points(rep("no", length(caret.obs(mds[[1]]))), caret.obs(mds[[1]]))
     df$maximum <- dmc.points(caret.obs(mds[[1]]), caret.obs(mds[[1]]))
+    df$ensemble <- dmc.points(dmc.ensemble.pred(caret.prob(mds$rf), caret.pred(mds$c50)),
+                              caret.obs(mds$c50))
     rownames(df) <- c("Points")
     t(df)
 }
