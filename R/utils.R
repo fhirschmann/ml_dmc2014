@@ -190,6 +190,30 @@ caret.obs <- function(fit) {
     caret.best(fit, sort=T)$obs
 }
 
+caret.prob <- function(fit, fix.nas=NULL) {
+    # Extracts the probabilty for each class from a caret fit.
+    #
+    # Args:
+    #   dt: a caret fit
+    #   fix.nas: fix NAs in class probabilities by using the given
+    #            probabilities
+    
+    best <- caret.best(fit, sort=T)
+    ret <- best[levels(fit$pred$pred)]
+    nas <- any(sapply(levels(fit$pred$pred),
+                      function(x) any(is.na(fit$pred[[x]]))))
+    
+    if (nas) {
+        if (!is.null(fix.nas)) {
+            ret[is.na(ret)] <- fix.nas
+        } else {
+            warning("Class probabilities contain NAs.")
+        }
+    }
+    
+    as.data.frame(ret)
+}
+
 caret.missidx <- function(fit) {
     # Returns the indices of the elements that were missclassified
     # 
