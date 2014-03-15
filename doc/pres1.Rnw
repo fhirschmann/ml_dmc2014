@@ -13,6 +13,8 @@
 \usepackage{listings}
 \usepackage{multicol}
 \usepackage{caption}
+\usepackage{wasysym}
+
 \newcommand{\neutranie}{\tikz[baseline=-0.75ex,black]{
     \draw circle (2mm);
 \node[fill,circle,inner sep=0.5pt] (left eye) at (135:0.8mm) {};
@@ -211,7 +213,7 @@ source("R/lib/parallelsets.R")
     @
 \end{frame}
 
-\begin{frame}{Missing Values}
+\begin{frame}{Dealing with Missing Values}
     <<results="asis", warnings=F>>=
     nas <- data.frame(cbind(df.nas(dt.unclean[, !names(dt.unclean) %in% c("target90"),]),
                             df.nas(dt.test.unclean)))
@@ -331,7 +333,7 @@ source("R/lib/parallelsets.R")
 \end{frame}
 
 \begin{frame}{Results: Random Forest}
-    <<fig.height=4>>=
+    <<fig.height=4.7>>=
     p <- dmc.tunecut(mds$rf)
     plot(names(p), p / dmc.points(dt$target90, dt$target90),
          type="l", main="Cutoff vs PointsRatio",
@@ -366,17 +368,54 @@ source("R/lib/parallelsets.R")
     \end{minipage}
 \end{frame}
 
+\begin{frame}{Results: Top 15}
+    \footnotesize
+    <<results="asis">>=
+    tbl$Difference <- tbl$Points - 12545.5
+    tbl[["Difference (%)"]] <- - (1 - tbl$Points / 12545.5) * 100
+    print(xtable(head(tbl, 15)))
+    @
+\end{frame}
+
 \begin{frame}{Conclusion}
     \begin{itemize}
-        \item Understanding data is key (and not necessarily the best algorithm; but in a competition, it actually is)
-        \item Do Attribute Selection
-        \item Use Domain Specific Knowledge (proximity to point of sale?)
+        \item Most important steps:
+        \begin{itemize}
+            \item Understanding the data
+            \item Domain Specific Knowledge
+            \item Feature Engineering
+            \item Attribute Selection
+            \item In a competition, the algorithm \emph{is} important
+        \end{itemize}
         \item Removing outliers isn't the only strategy available
-        \item C5.0 provides reasonable results
         \item Some of the groups even lost money in the process
         \begin{itemize}
             \item Overfitting?
         \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Interesting Observation}
+    <<echo=F>>=
+    real <- read.csv("task2010/dmc2010_real.txt", sep=";")
+    colnames(real) <- c("customernumber", "target90")
+    real$target90 <- revalue(as.factor(real$target90), c("1"="yes", "0"="no"))
+    @
+    <<pttest, echo=T>>=
+    dmc.points(rep("no", nrow(dt)), dt$target90)
+    @
+    <<pt, echo=T>>=
+    dmc.points(rep("no", nrow(real)), real$target90)
+    @
+    $\rightarrow$ Place 37 (of 60) \smiley
+\end{frame}
+
+\begin{frame}{Outlook}
+    Things not (really) done:
+    \begin{itemize}
+        \item Cross-model Ensembles/Stacking
+        \item Per-model Feature Selection
+        \item Serious Feature Engineering mindstorming thing
     \end{itemize}
 \end{frame}
 
