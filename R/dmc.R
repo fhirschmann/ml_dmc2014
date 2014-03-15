@@ -22,6 +22,16 @@ dmc.summary <- function(data, lev = NULL, model = NULL) {
       PointsRatio=points / maxpoints)
 }
 
+
+dmc.tunecut <- function(fit, steps=1:40 * 0.025) {
+    res <- sapply(steps,
+                  function(x) dmc.points(
+                      as.factor(with(caret.prob(fit), ifelse(no > x, "no", "yes"))),
+                      caret.obs(fit)))
+    names(res) <- steps
+    res    
+}
+
 dmc.evaluate <- function(mds) {
     if (length(unique(lapply(mds, function(x) length(caret.pred(x))))) != 1)
         stop("Predictions are not of the same length. Different data sets?")

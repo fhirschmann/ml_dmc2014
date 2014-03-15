@@ -98,12 +98,6 @@ source("R/lib/parallelsets.R")
     \begin{minipage}[t]{0.54\columnwidth}
     \begin{itemize}
         \item Imbalance causes some models to always predict \texttt{no}
-        \item Several counter-strategies available. Amongst others:
-            \begin{itemize}
-                \item Unequal Case Weights
-                \item Adjusting Prior Probabilities
-                \item \textbf{Cost-Sensitive Training}
-            \end{itemize}
     \end{itemize}
     \vspace{0.5cm}
     \end{minipage}
@@ -333,6 +327,17 @@ source("R/lib/parallelsets.R")
 \begin{frame}{Results: C5.0}
     <<fig.height=5>>=
     plot(varImp(mds$c50), top=20, main="Variable Importance (Top 20)")
+    @
+\end{frame}
+
+\begin{frame}{Results: Random Forest}
+    <<fig.height=4>>=
+    p <- dmc.tunecut(mds$rf)
+    plot(names(p), p / dmc.points(dt$target90, dt$target90),
+         type="l", main="Cutoff vs PointsRatio",
+         xlab="Cutoff Point", ylab="PointsRatio")
+    grid()
+    abline(v=0.65, col="red")
     @
 \end{frame}
 
