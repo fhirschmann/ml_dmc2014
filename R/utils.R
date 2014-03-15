@@ -166,9 +166,9 @@ caret.best <- function(fit, sort=F) {
     best <- fit$pred[caret.bestidx(fit),]
     
     if (sort) {
-        x[order(x$rowIndex),]
+        best[order(best$rowIndex),]
     } else {
-        x
+        best
     }
 }
 
