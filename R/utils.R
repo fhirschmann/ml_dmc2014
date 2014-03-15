@@ -135,7 +135,7 @@ caret.load <- function(mdir="models") {
 }
 
 caret.bestidx <- function(fit) {
-    # Returns the index of the best tune observations and predictions
+    # Returns the indices of the best tune observations and predictions
     # for a caret fit. Don't think about what this function does too hard...
     #
     # The predictions are saved in fit$pred$pred, but this vector contains
@@ -155,13 +155,29 @@ caret.bestidx <- function(fit) {
     }
 }
 
+caret.best <- function(fit, sort=F) {
+    # Returns a Data Frame with predictions, observations,
+    # and the fold for the best tune.
+    #
+    # Args:
+    #   fit: a caret fit
+    #   sort: sort to match the input data
+    
+    best <- fit$pred[caret.bestidx(fit),]
+    if (sort) {
+        x[order(x$rowIndex),]
+    } else {
+        x
+    }
+}
+
 caret.pred <- function(fit) {
     # Extracts the predictions from a caret fit.
     #
     # Args:
     #   dt: a caret fit
     
-    fit$pred$pred[caret.bestidx(fit)]
+    caret.best(fit, sort=T)$pred
 }
 
 caret.obs <- function(fit) {
@@ -170,11 +186,16 @@ caret.obs <- function(fit) {
     # Args:
     #   dt: a caret fit
 
-    fit$pred$obs[caret.bestidx(fit)]
+    caret.best(fit, sort=T)$obs
 }
 
 caret.missidx <- function(fit) {
-    caret.pred(fit) != caret.obs(fit)
+    # Returns the indices of the elements that were missclassified
+    # 
+    # Args:
+    #   fit: a caret fit
+    
+    caret.best(fit) != caret.obs(fit)
 }
 
 try.mp <- function() {
