@@ -62,7 +62,7 @@ dmc.run <- function(name) {
     #   name: the name of the training function
     
     source("R/pipeline.R")
-    fits <- caret.train(descs[name], common.desc)
+    fits <- caret.train(descs[name], common.desc, verbose=T)
     fits[[name]]
 }
 

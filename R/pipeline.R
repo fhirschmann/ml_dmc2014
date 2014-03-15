@@ -11,13 +11,14 @@ ctrl <- trainControl(method="cv", savePredictions=T,
 
 # Don't pass this to classifiers who do not return class probabilities
 ctrl.probs <- ctrl
-ctrl$classProbs <- TRUE
+ctrl.probs$classProbs <- TRUE
 
 # List of stuff to learn
 descs <- list(
     nb=list(
         train.args=list(
             method="nb",
+            trControl=ctrl.probs,
             data=dt.c50)
     ),
     ada=list(
