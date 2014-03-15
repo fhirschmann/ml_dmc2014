@@ -4,11 +4,15 @@ source("R/utils.R")
 suppressPackageStartupMessages(library(caret))
 
 
-dmc.points <- function(pred, obs) {
+dmc.points.each <- function(pred, obs) {
     voucher <- ifelse(pred == "yes", "no", "yes")
-    sum(ifelse(voucher == "yes",
-               ifelse(obs == "yes", -5, 1.5),
-               0))
+    ifelse(voucher == "yes",
+           ifelse(obs == "yes", -5, 1.5),
+           0)
+}
+
+dmc.points <- function(pred, obs) {
+    sum(dmc.points.each(pred, obs))
 }
 
 dmc.summary <- function(data, lev = NULL, model = NULL) {
