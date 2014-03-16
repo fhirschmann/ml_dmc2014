@@ -1,5 +1,6 @@
 # Training function definition
 source("R/dmc.R")
+source("R/fs.R")
 
 suppressPackageStartupMessages(library(caret))
 library(C50)

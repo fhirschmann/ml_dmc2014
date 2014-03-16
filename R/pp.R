@@ -1,8 +1,8 @@
 # Data Preprocessing goes here
 
 suppressPackageStartupMessages(library(caret))
-library(lubridate)
-library(plyr)
+suppressPackageStartupMessages(library(lubridate))
+suppressPackageStartupMessages(library(plyr))
 
 source("R/utils.R")
 

@@ -1,13 +1,24 @@
 #!/usr/bin/env Rscript
 #
-# This runs the pipeline
+# This runs the pipeline.
+#
+# You can give specify the models to train by giving
+# its names as arguments, e.g. ./bin/run.R c50 rf
+#
+# To get a list of available models try ./bin/run.R -l
+
+source("R/pipeline.R")
+
+args <- commandArgs(T)
+
+if ("-l" %in% args) {
+    message(paste(names(descs), collapse=", "))
+    quit()
+}
 
 source("R/dmc.R")
 dmc.reload()
 try.mp()
-
-args <- commandArgs(T)
-
 
 if (length(args) == 0) {
     # Train all models
