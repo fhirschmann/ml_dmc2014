@@ -33,7 +33,7 @@ dmc.tunecut <- function(fit, steps=1:40 * 0.025) {
 }
 
 dmc.ensemble.pred <- function(rf.probs, c50.preds) {
-    as.factor(ifelse(rf.probs$no > 0.96 | c50.preds == "no", "no", "yes"))
+    as.factor(ifelse(rf.probs$no > 0.9999 | c50.preds == "no", "no", "yes"))
 }
 
 dmc.evaluate <- function(mds) {
@@ -45,7 +45,8 @@ dmc.evaluate <- function(mds) {
     df$ensemble <- dmc.points(dmc.ensemble.pred(caret.prob(mds$rf), caret.pred(mds$c50)),
                               caret.obs(mds$c50))
     rownames(df) <- c("Points")
-    t(df)
+    df <- data.frame(t(df))
+    df[order(df$Points, decreasing=T), , drop=F]
 }
 
 dmc.reload <- function() {
