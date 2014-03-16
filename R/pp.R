@@ -3,8 +3,6 @@
 suppressPackageStartupMessages(library(lubridate))
 suppressPackageStartupMessages(library(plyr))
 
-source("R/utils.R")
-
 pp <- function(dt) {
     # Preprocesses DMC2010 data, i.e. cleaning, creating features, etc...
     #
@@ -15,6 +13,7 @@ pp <- function(dt) {
     #   A preprocessed data frame
     
     dt2 <- dt
+    message("Preprocessing Data Frame")
 
     ## Nominal Predictors    
     # Use labels instead of numeric values

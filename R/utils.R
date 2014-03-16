@@ -97,6 +97,7 @@ caret.train <- function(descs, common.desc=(d <- caret.train.default.desc),
         # Train the model
         set.seed(42)
         fit <- do.call(caret::train, desc$train.args)
+        if (verbose) message(fit)
     
         # Serialize
         if (!is.null(desc$serialize)) {

@@ -1,4 +1,5 @@
 source("R/pp.R")
+source("R/utils.R")
 
 na.strings <- c("NA", "", "??", "?")
 
@@ -20,3 +21,10 @@ delayedAssign("dt.merged", rbind(data.frame(dt, group="train"),
 
 # Serialized Models
 delayedAssign("mds", caret.load())
+
+
+clear <- function() {
+    rm(list=c(dt.raw, dt, dt.unclean,
+              dt.test.raw, dt.test, dt.test.unclean,
+              dt.merged, mds))
+}

@@ -1,8 +1,7 @@
-source("R/data.R")
 source("R/pp.R")
 source("R/dmc.R")
+source("R/data.R")
 
-rm(list=ls())
 
 options(
     stringAsFactor=T,
