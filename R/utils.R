@@ -85,6 +85,9 @@ caret.train <- function(descs, common.desc=(d <- caret.train.default.desc),
         train.args <- list.update(common.desc$train.args, descs[[name]]$train.args)
         desc <- list.update(common.desc, descs[[name]])
         desc$train.args <- train.args
+        if (typeof(desc$train.args$data) == "character")
+            desc$train.args$data <- get(desc$train.args$data)
+            
         desc$train.args$data <- desc$data.fun(desc$train.args$data)
         
         if (verbose) message(str(desc))

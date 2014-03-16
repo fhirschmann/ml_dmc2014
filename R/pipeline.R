@@ -38,6 +38,10 @@ descs <- list(
         train.args=list(
             method="lda")
     ),
+    svmPoly=list(
+        train.args=list(
+            method="svmPoly")
+    ),
     OneR=list(
         train.args=list(
             method="OneR")
@@ -73,7 +77,7 @@ common.desc <- list(
         # Always learn target90 using all attributes
         form=target90 ~ .,
         # Data to Train on
-        data=dt,
+        data="dt",  # pass as string for lazy evaluation
         # Maximize the metric
         maximize=T,
         # Use Points to select the best tuning parameters
