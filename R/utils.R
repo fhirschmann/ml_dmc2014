@@ -91,7 +91,7 @@ caret.train <- function(descs, common.desc=(d <- caret.train.default.desc),
         
         # Train the model
         set.seed(42)
-        fit <- do.call(caret::train, train.args)
+        fit <- do.call(caret::train, desc$train.args)
     
         # Serialize
         if (!is.null(desc$serialize)) {

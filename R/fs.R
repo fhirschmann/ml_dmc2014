@@ -21,19 +21,3 @@ fs.all <- function(dt) {
     
     dt2
 }
-
-fs.c50 <- function(dt) {
-    dt2 <- fs.all(dt)
-
-    # C50 specific features
-    
-    dt2
-}
-
-fs.cart <- function(dt) {
-    dt2 <- fs.all(dt)
-    
-    # cart specific features
-    
-    dt2
-}

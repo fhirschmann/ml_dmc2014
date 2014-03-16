@@ -4,6 +4,7 @@ source("R/dmc.R")
 
 suppressPackageStartupMessages(library(caret))
 library(C50)
+library(functional)
 
 
 ctrl <- trainControl(method="cv", savePredictions=T,
@@ -18,44 +19,36 @@ descs <- list(
     nb=list(
         train.args=list(
             method="nb",
-            trControl=ctrl.probs,
-            data=dt.c50)
+            trControl=ctrl.probs)
     ),
     ada=list(
         train.args=list(
-            method="ada",
-            data=dt.c50)
+            method="ada")
     ),
     rf=list(
         train.args=list(
             method="rf",
-            trControl=ctrl.probs,
-            data=dt.c50)
+            trControl=ctrl.probs)
     ),
     gcvEarth=list(
         train.args=list(
-            method="gcvEarth",
-            data=dt.c50)
+            method="gcvEarth")
     ),
     lda=list(
         train.args=list(
-            method="lda",
-            data=dt.c50)
+            method="lda")
     ),
     OneR=list(
         train.args=list(
-            method="OneR",
-            data=dt.c50)
+            method="OneR")
     ),
     bdk=list(
         train.args=list(
-            method="bdk",
-            data=dt.c50)
+            method="bdk")
     ),
     c50=list(
         train.args=list(
             method="C5.0",
-            data=dt.c50,
             cost=dmc.cost,
             tuneGrid=expand.grid(
                 .winnow=c(FALSE, TRUE),
@@ -71,13 +64,16 @@ common.desc <- list(
     serialize="models",
     # Keep a history of trained serialized models
     hist=T,
+    # Function to apply to the data frame
+    data.fun=fs.all,
     # For testing on a smaller data set
-    data.fun=identity,
-    #data.fun=function(x) head(x, 1000),
+    #data.fun=Compose(fs.all, function(x) head(x, 1000)),
     # Common arguments to caret::train
     train.args=list(
         # Always learn target90 using all attributes
         form=target90 ~ .,
+        # Data to Train on
+        data=dt,
         # Maximize the metric
         maximize=T,
         # Use Points to select the best tuning parameters

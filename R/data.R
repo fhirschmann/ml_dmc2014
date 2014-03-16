@@ -15,9 +15,6 @@ delayedAssign("dt.test.raw", read.csv("task2010/dmc2010_class.txt",
 delayedAssign("dt.test.unclean", pp(dt.test.raw))
 delayedAssign("dt.test", addlevels(im(cl(dt.test.unclean)), dt.unclean))
 
-delayedAssign("dt.c50", fs.c50(dt))
-delayedAssign("dt.cart", fs.cart(dt))
-
 # Merged Train/Test Data; this is mostly useful for plotting
 delayedAssign("dt.merged", rbind(data.frame(dt, group="train"),
                                  data.frame(dt.test, group="test", target90=NA)))
