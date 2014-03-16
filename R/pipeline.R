@@ -1,5 +1,4 @@
 # Training function definition
-source("R/data.R")
 source("R/dmc.R")
 
 suppressPackageStartupMessages(library(caret))
