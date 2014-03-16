@@ -50,7 +50,6 @@ dmc.evaluate <- function(mds) {
 }
 
 dmc.reload <- function() {
-    rm(list=ls())
     source("R/dmc.R")
     source("R/data.R")
     source("R/utils.R")
@@ -73,18 +72,6 @@ dmc.inst <- function(upgrade=F) {
     } else {
         install.packages(setdiff(libs, rownames(installed.packages())))
     }
-}
-
-dmc.run <- function(name) {
-    # Runs training for an algorithm and serializes the
-    # fitted model.
-    #
-    # Args:
-    #   name: the name of the training function
-    
-    source("R/pipeline.R")
-    fits <- caret.train(descs[name], common.desc, verbose=T)
-    fits[[name]]
 }
 
 #Kostenmatrix:

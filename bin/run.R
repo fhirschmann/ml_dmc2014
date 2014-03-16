@@ -16,19 +16,11 @@ if ("-l" %in% args) {
     quit()
 }
 
+source("R/data.R")
 source("R/dmc.R")
-dmc.reload()
 try.mp()
 
-if (length(args) == 0) {
-    # Train all models
-    totrain <- names(descs)
-} else {
-    totrain <- args
-}
+cat("Training the following models:",
+    (if (length(args) == 0) "all" else args), "\n")
 
-cat("Training the following models:", totrain, "\n")
-
-for (name in totrain) {
-    print(dmc.run(name))
-}
+caret.train(descs, common.desc, train.only=args)

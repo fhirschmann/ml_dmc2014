@@ -2,10 +2,8 @@
 source("R/dmc.R")
 source("R/fs.R")
 
-suppressPackageStartupMessages(library(caret))
-library(C50)
 library(functional)
-
+library(C50)
 
 ctrl <- trainControl(method="cv", savePredictions=T,
                      summaryFunction=dmc.summary, returnData=T)

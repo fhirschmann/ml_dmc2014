@@ -1,5 +1,4 @@
 # Utility functions
-suppressPackageStartupMessages(library(caret))
 
 norm.lin <- function(x, mi=min(x), ma=max(x)) {
     (x - mi) / (ma - mi)
@@ -66,21 +65,24 @@ list.update <- function(l1, l2) {
 caret.train.default.desc <- list(train.args=list(),
                                  data.fun=identity,
                                  serialize="models",
-                                 hist=T)
+                                 hist=TRUE)
 
 caret.train <- function(descs, common.desc=(d <- caret.train.default.desc),
-                        verbose=FALSE) {
+                        train.only=NULL, verbose=TRUE) {
     # This is a wrapper around caret::train that allows
     # to pass a list of learner descriptions.
     #
     # Args:
     #   descs: learner descriptions
     #   common.desc: default description for all learners
+    #   train.only: train only these models from descs
     #   verbose: be verbose
 
+    require(caret)
+    
     fits <- list()
     
-    for (name in names(descs)) {
+    for (name in (if (length(train.only) == 0) names(descs) else train.only)) {
         message("Learning model for ", name)
         train.args <- list.update(common.desc$train.args, descs[[name]]$train.args)
         desc <- list.update(common.desc, descs[[name]])
@@ -227,15 +229,17 @@ caret.missidx <- function(fit) {
 }
 
 try.mp <- function() {
+    # Enables multi-processing if available
+    
     if ("doMC" %in% rownames(installed.packages())) {
         if ("parallel" %in% rownames(installed.packages())) {
-            library(parallel)
+            require(parallel)
             cores <- parallel::detectCores()
         } else {
             cores <- 4
         }
         
-        library(doMC)
+        require(doMC)
         doMC::registerDoMC(cores=cores)
         message("Enabled parallel processing with ", cores, " cores.")
     } else {
@@ -244,6 +248,8 @@ try.mp <- function() {
 }
 
 xtable <- function(x, ...) {
+    require(xtable)
+
     # Bug in xtable: doesn't print dates correctly
     for (i in which(sapply(x, function(y) !all(is.na(match(c("POSIXt","Date"), 
                                                            class(y))))))) x[[i]] <- as.character(x[[i]])

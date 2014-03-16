@@ -1,6 +1,5 @@
 # Data Preprocessing goes here
 
-suppressPackageStartupMessages(library(caret))
 suppressPackageStartupMessages(library(lubridate))
 suppressPackageStartupMessages(library(plyr))
 
