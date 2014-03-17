@@ -54,7 +54,7 @@ descs <- list(
             cost=dmc.cost,
             tuneGrid=expand.grid(
                 .winnow=c(FALSE, TRUE),
-                .model=c("rules", "trees"),
+                .model=c("rules", "tree"),
                 .trials=c(1:30)
                 ),
             control=C5.0Control(earlyStopping=F)))
