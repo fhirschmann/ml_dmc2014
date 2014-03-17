@@ -48,6 +48,7 @@ library(lubridate)
 <<load, echo=F>>=
 source("R/data.R")
 source("R/dmc.R")
+source("R/fs.R")
 source("R/utils.R")
 source("R/lib/parallelsets.R")
 @
@@ -74,11 +75,12 @@ source("R/lib/parallelsets.R")
     \begin{minipage}[t]{0.49\columnwidth}
     <<results="asis">>=
     tbl <- df.classes(dt)
+    dt2 <- fs.all(dt)
 
     colors <- c()
-    colors[setdiff(names(dt), names(dt.c50))] <- "black" # not used
-    colors[setdiff(names(dt.c50), names(dt.raw))] <- "OliveGreen" # added
-    colors[setdiff(names(dt.c50), names(colors))] <- "black" # used
+    colors[setdiff(names(dt), names(dt2))] <- "black" # not used
+    colors[setdiff(names(dt2), names(dt.raw))] <- "OliveGreen" # added
+    colors[setdiff(names(dt2), names(colors))] <- "black" # used
 
     tbl$class <- mapply(function(n, t) paste("\\color{", colors[[n]], "}{", t, "}", sep=""),
                         rownames(tbl), tbl$class, USE.NAMES=F)
@@ -292,9 +294,9 @@ source("R/lib/parallelsets.R")
     tbl <- df.classes(dt)
 
     colors <- c()
-    colors[setdiff(names(dt), names(dt.c50))] <- "gray" # not used
-    colors[setdiff(names(dt.c50), names(dt.raw))] <- "OliveGreen" # added
-    colors[setdiff(names(dt.c50), names(colors))] <- "black" # used
+    colors[setdiff(names(dt), names(dt2))] <- "gray" # not used
+    colors[setdiff(names(dt2), names(dt.raw))] <- "OliveGreen" # added
+    colors[setdiff(names(dt2), names(colors))] <- "black" # used
 
     tbl$class <- mapply(function(n, t) paste("\\color{", colors[[n]], "}{", t, "}", sep=""),
                         rownames(tbl), tbl$class, USE.NAMES=F)
