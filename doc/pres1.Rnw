@@ -15,6 +15,14 @@
 \usepackage{caption}
 \usepackage{wasysym}
 
+% frame numbers in short title
+\newcommand*{\oldshorttitle}{}
+\let\oldshorttitle\insertshorttitle
+\renewcommand*{\insertshorttitle}{
+  \oldshorttitle\hfill
+  \insertframenumber\,/\,\inserttotalframenumber
+}
+
 \newcommand{\neutranie}{\tikz[baseline=-0.75ex,black]{
     \draw circle (2mm);
 \node[fill,circle,inner sep=0.5pt] (left eye) at (135:0.8mm) {};
