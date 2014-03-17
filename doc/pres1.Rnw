@@ -349,7 +349,20 @@ source("R/lib/parallelsets.R")
          type="l", main="Cutoff vs PointsRatio",
          xlab="Cutoff Point", ylab="PointsRatio")
     grid()
-    abline(v=0.65, col="red")
+    abline(v=0.5, col="grey")
+    abline(v=names(which(p == max(p))), col="red")
+    @
+\end{frame}
+
+\begin{frame}{Results: Naive Bayes}
+    <<fig.height=4.7>>=
+    p <- dmc.tunecut(mds$nb)
+    plot(names(p), p / dmc.points(dt$target90, dt$target90),
+         type="l", main="Cutoff vs PointsRatio",
+         xlab="Cutoff Point", ylab="PointsRatio")
+    abline(v=0.5, col="grey")
+    abline(v=names(which(p == max(p))), col="red")
+    grid()
     @
 \end{frame}
 
