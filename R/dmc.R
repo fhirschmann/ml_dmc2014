@@ -23,13 +23,17 @@ dmc.summary <- function(data, lev = NULL, model = NULL) {
 }
 
 
-dmc.tunecut <- function(fit, steps=1:40 * 0.025) {
+dmc.tunecut <- function(fit, steps=1:40 * 0.025, return.best=F) {
     res <- sapply(steps,
                   function(x) dmc.points(
-                      as.factor(with(caret.prob(fit), ifelse(no > x, "no", "yes"))),
+                      as.factor(with(caret.prob(fit, fix.nas=c(0.81, 0.19)), ifelse(no > x, "no", "yes"))),
                       caret.obs(fit)))
     names(res) <- steps
-    res    
+    if (return.best) {
+        as.numeric(names(which(res == max(res))))
+    } else {
+        res
+    }
 }
 
 dmc.ensemble.pred <- function(rf.probs, c50.preds) {
@@ -40,12 +44,16 @@ dmc.evaluate <- function(mds) {
     if (length(unique(lapply(mds, function(x) length(caret.pred(x))))) != 1)
         stop("Predictions are not of the same length. Different data sets?")
     df <- data.frame(lapply(mds, function(x) dmc.points(caret.pred(x), caret.obs(x))))
-    df$baseline <- dmc.points(rep("no", length(caret.obs(mds[[1]]))), caret.obs(mds[[1]]))
-    df$maximum <- dmc.points(caret.obs(mds[[1]]), caret.obs(mds[[1]]))
-    df$ensemble <- dmc.points(dmc.ensemble.pred(caret.prob(mds$rf), caret.pred(mds$c50)),
-                              caret.obs(mds$c50))
-    rownames(df) <- c("Points")
-    df <- data.frame(t(df))
+
+    # Probabilistic methods
+    p <- sapply(mds, function(x) x$control$classProbs)
+    tuned <- as.data.frame(lapply(mds[p], function(x) dmc.points(
+        as.factor(ifelse(caret.prob(x, fix.nas=c(0.2, 0.8))$no > dmc.tunecut(x, return.best=T), "no", "yes")),
+        caret.obs(x))))
+    
+    colnames(tuned) <- paste(colnames(tuned), "t", sep="_")
+    rownames(df) <- rownames(tuned) <- c("Points")
+    df <- rbind(data.frame(t(df)), data.frame(t(tuned)))
     df[order(df$Points, decreasing=T), , drop=F]
 }
 
