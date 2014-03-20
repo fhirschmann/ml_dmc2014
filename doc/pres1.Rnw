@@ -339,6 +339,7 @@ source("R/lib/parallelsets.R")
 \begin{frame}{Tuning: C5.0}
     <<fig.height=5>>=
     plot(varImp(mds$c50), top=20, main="Variable Importance (Top 20)")
+    grid()
     @
 \end{frame}
 
