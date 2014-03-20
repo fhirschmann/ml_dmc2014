@@ -28,6 +28,14 @@ descs <- list(
             method="rf",
             trControl=ctrl.probs)
     ),
+    olf=list(
+        train.args=list(
+            method="ORFpls")
+    ),
+    evtree=list(
+        train.args=list(
+            method="evtree")
+    ),
     gcvEarth=list(
         train.args=list(
             method="gcvEarth")
@@ -40,6 +48,14 @@ descs <- list(
         train.args=list(
             method="svmPoly")
     ),
+    svmLinear=list(
+        train.args=list(
+            method="svmLinear")
+    ),
+    svmRadial=list(
+        train.args=list(
+            method="svmRadial")
+    ),
     OneR=list(
         train.args=list(
             method="OneR")
@@ -47,6 +63,10 @@ descs <- list(
     bdk=list(
         train.args=list(
             method="bdk")
+    ),
+    nnet=list(
+        train.args=list(
+            method="nnet")
     ),
     c50=list(
         train.args=list(
