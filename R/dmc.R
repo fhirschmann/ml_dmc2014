@@ -80,7 +80,7 @@ dmc.evaluate.test <- function(mds, cuts=list(nb=0.675, rf=0.65)) {
         r[[name]] <- dmc.points(predict(mds[[name]], m), m$target90)
     }
 
-    r2 <- t(data.frame(x))
+    r2 <- t(data.frame(r))
     colnames(r2) <- c("Points")
     r2
 }
