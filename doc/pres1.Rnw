@@ -81,7 +81,7 @@ source("R/lib/parallelsets.R")
     \vspace{-0.2cm}
     \scriptsize
     \begin{minipage}[t]{0.49\columnwidth}
-    <<results="asis">>=
+    <<results="asis", message=F>>=
     tbl <- df.classes(dt)
     dt2 <- fs.all(dt)
 
@@ -106,7 +106,7 @@ source("R/lib/parallelsets.R")
     \end{minipage}
 \end{frame}
 
-\begin{frame}{Remedies for Severe Class Imbalance}
+\begin{frame}{Severe Class Imbalance}
     \begin{minipage}[t]{0.54\columnwidth}
     \begin{itemize}
         \item Imbalance causes some models to always predict \texttt{no}
@@ -236,14 +236,14 @@ source("R/lib/parallelsets.R")
     @
 \end{frame}
 
-\begin{frame}{Category Freq Distribution}
-    \Large Are category frequencies distributed equally in
-    the Train and Test set?
+\begin{frame}{Label Freq Distribution}
+    \Large Are labels distributed equally in the Train and Test Set
+    for nominal predictors?
 \end{frame}
 
-\begin{frame}{Category Freq Distribution: Example}
+\begin{frame}{Label Freq Distribution: Example}
     <<results="asis">>=
-    tbl <- data.frame(table(dt$model), table(dt.test$model))
+    tbl <- data.frame(table(dt$salutation), table(dt.test$salutation))
     tbl$Var1.1 <- NULL
     colnames(tbl) <- c("model", "Train Freq", "Test Freq")
     print(xtable(tbl), include.rownames=F)
@@ -255,7 +255,7 @@ source("R/lib/parallelsets.R")
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Category Freq Distribution: $\chi^2$-Test}
+\begin{frame}{Label Freq Distribution: $\chi^2$-Test}
     <<chisq, results="asis">>=
     ps <- sapply(c("domain", "voucher", "model", "salutation", "paymenttype", "case",
                    "month", "weekday", "deliverytype", "entry", "instantorder"),
@@ -268,12 +268,12 @@ source("R/lib/parallelsets.R")
     @
 \end{frame}
 
-\begin{frame}{Category Freq Distribution: 0-Probability Cases}
+\begin{frame}{Label Freq Distribution: 0-Probability Cases}
     \large $\chi^2$-Test not appropriate where the expectation for one or
-    more category is $0$ (differing categories in Train/Test data).
+    more label is $0$ (differing labels in Train/Test data).
 \end{frame}
 
-\begin{frame}{Category Freq Distribution: advertisingdatacode}
+\begin{frame}{Label Freq Distribution: advertisingdatacode}
     <<fig.height=5>>=
     qplot(advertisingdatacode, fill=group,
           data=dt.merged[dt.merged$advertisingdatacode != "NA",], position="dodge")
@@ -322,9 +322,9 @@ source("R/lib/parallelsets.R")
     \end{minipage}
 \end{frame}
 
-\section{Results}
+\section{Tuning}
 
-\begin{frame}[fragile]{Results: C5.0}
+\begin{frame}[fragile]{Tuning: C5.0}
     \vspace{-0.8cm}
     \hspace{-0.5cm}
     <<message=F, warning=F, echo=F, fig.height=5>>=
@@ -336,13 +336,13 @@ source("R/lib/parallelsets.R")
     @
 \end{frame}
 
-\begin{frame}{Results: C5.0}
+\begin{frame}{Tuning: C5.0}
     <<fig.height=5>>=
     plot(varImp(mds$c50), top=20, main="Variable Importance (Top 20)")
     @
 \end{frame}
 
-\begin{frame}{Results: Random Forest}
+\begin{frame}{Tuning: Random Forest}
     <<fig.height=4.7>>=
     p <- dmc.tunecut(mds$rf)
     plot(names(p), p / dmc.points(dt$target90, dt$target90),
@@ -354,7 +354,7 @@ source("R/lib/parallelsets.R")
     @
 \end{frame}
 
-\begin{frame}{Results: Naive Bayes}
+\begin{frame}{Tuning: Naive Bayes}
     <<fig.height=4.7>>=
     p <- dmc.tunecut(mds$nb)
     plot(names(p), p / dmc.points(dt$target90, dt$target90),
@@ -365,6 +365,17 @@ source("R/lib/parallelsets.R")
     grid()
     @
 \end{frame}
+
+\begin{frame}{Model Selection}
+    \footnotesize
+    <<results="asis">>=
+    res.train <- dmc.evaluate(mds)
+
+    print(xtable(res.train))
+    @
+\end{frame}
+
+\section{Results}
 
 \begin{frame}{}
     \tiny
