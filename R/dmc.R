@@ -57,6 +57,32 @@ dmc.evaluate <- function(mds) {
     df[order(df$Points, decreasing=T), , drop=F]
 }
 
+dmc.evaluate.test <- function(mds, cuts=list(nb=0.675, rf=0.65)) {
+    require(kohonen)
+    require(klaR)
+    require(C50)
+    require(randomForest)
+    
+    real <- read.csv("task2010/dmc2010_real.txt", sep=";")
+    colnames(real) <- c("customernumber", "target90")
+    real$target90 <- revalue(as.factor(real$target90), c("1"="yes", "0"="no"))
+    m <- merge(dt.test, real, by="customernumber")
+
+    r <- list()
+
+    for (name in names(mds)) {
+        if (name %in% names(cuts)) {
+            p <- predict(mds[[name]], m, type="prob")
+            r[[paste(name, "t", sep="_")]] <- dmc.points(
+                ifelse(is.na(p$no) | p$no > cuts[[name]], "no", "yes"),
+                m$target90)
+        }
+        r[[name]] <- dmc.points(predict(mds[[name]], m), m$target90)
+    }
+
+    r
+}
+
 dmc.reload <- function() {
     source("R/dmc.R")
     source("R/data.R")
