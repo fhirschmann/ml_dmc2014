@@ -2,6 +2,6 @@
 source("R/dmc.R")
 
 eva <- dmc.evaluate(mds)
-write.csv(eva, file="doc/results.csv")
+write.csv(eva, file="doc/results_test.csv")
 
 eva
