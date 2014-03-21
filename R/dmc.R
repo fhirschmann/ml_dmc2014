@@ -57,7 +57,7 @@ dmc.evaluate <- function(mds) {
     df[order(df$Points, decreasing=T), , drop=F]
 }
 
-dmc.evaluate.test <- function(mds, cuts=list(nb=0.675, rf=0.65)) {
+dmc.predict <- function(mds, newdata, cuts=list(nb=0.675, rf=0.65)) {
     require(kohonen)
     require(klaR)
     require(C50)
@@ -66,24 +66,33 @@ dmc.evaluate.test <- function(mds, cuts=list(nb=0.675, rf=0.65)) {
     require(MASS)
     library(nnet)
     
+    preds <- list()
+    
+    for (name in names(mds)) {
+        if (name %in% names(cuts)) {
+            p <- predict(mds[[name]], newdata, type="prob")
+            preds[[paste(name, "t", sep="_")]] <- ifelse(
+                !is.na(p$no) | p$no > cuts[[name]], "no", "yes")
+        }
+        preds[[name]] <- predict(mds[[name]], newdata)
+    }
+
+    preds    
+}
+
+dmc.evaluate.test <- function(preds, dt.test) {
+    require(plyr)
+    
     real <- read.csv("task2010/dmc2010_real.txt", sep=";")
     colnames(real) <- c("customernumber", "target90")
     real$target90 <- revalue(as.factor(real$target90), c("1"="yes", "0"="no"))
-    m <- merge(dt.test, real, by="customernumber")
+    m <- join(dt.test, real, by="customernumber")
 
-    r <- list()
+    # There are more instances in "real" than there are in the test set...
+    m[is.na(m$target90),]$target90 <- "yes"
 
-    for (name in names(mds)) {
-        if (name %in% names(cuts)) {
-            p <- predict(mds[[name]], m, type="prob")
-            r[[paste(name, "t", sep="_")]] <- dmc.points(
-                ifelse(is.na(p$no) | p$no > cuts[[name]], "no", "yes"),
-                m$target90)
-        }
-        r[[name]] <- dmc.points(predict(mds[[name]], m), m$target90)
-    }
-
-    r2 <- t(data.frame(r))
+    r2 <- data.frame(t(data.frame(
+        lapply(preds, function(x) dmc.points(x, m$target90)))))
     colnames(r2) <- c("Points")
     r2[order(r2$Points, decreasing=T), , drop=F]
 }
