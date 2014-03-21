@@ -11,4 +11,6 @@ figure*/
 doc/notes.html
 doc/notes.md
 models/*.RData
+models/hist/*.RData
+models/*.csv
 cache/
