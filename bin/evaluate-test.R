@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 source("R/dmc.R")
 
-eva <- dmc.evaluate(mds)
+eva <- dmc.evaluate.test(mds)
 write.csv(eva, file="doc/results_test.csv")
 
 eva
