@@ -101,23 +101,29 @@ caret.train <- function(descs, common.desc=(d <- caret.train.default.desc),
     
         # Serialize
         if (!is.null(desc$serialize)) {
-            fname <- file.path(desc$serialize, paste(name, "RData", sep="."))
-            save(fit, file=fname)
-            message("Wrote model to: ", fname)
-            
-            if (desc$hist) {
-                fname <- file.path(desc$serialize, "hist",
-                                   paste(name, format(Sys.time(), "%Y-%m-%d_%H:%M:%S"), 
-                                         "RData", sep="."))
-                save(fit, file=fname)
-                message("Wrote model to: ", fname)
-            }
+            caret.save(fit, name, desc$serialize, desc$hist)
         }
 
         fits[[name]] <- fit
     }
     
     fits
+}
+
+caret.save <- function(fit, name, path, hist=T) {
+    fname <- file.path(path, paste(name, "RData", sep="."))
+    save(fit, file=fname)
+    message("Saved model to: ", fname)
+
+    write.csv(fit$results, file=file.path(path, paste(name, "csv", sep=".")),
+              row.names=FALSE)
+
+    if (hist) {
+        fname <- file.path(path, "hist",
+                           paste(name, format(Sys.time(), "%Y-%m-%d_%H:%M:%S"), 
+                                 "RData", sep="."))
+        message("Saved model to: ", fname)
+    }
 }
 
 caret.load <- function(mdir="models") {
