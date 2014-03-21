@@ -371,6 +371,7 @@ source("R/lib/parallelsets.R")
     \footnotesize
     <<results="asis">>=
     res.train <- dmc.evaluate(mds)
+    res.test <- read.csv("doc/results_test.csv", row.names=1)
 
     print(xtable(res.train))
     @
