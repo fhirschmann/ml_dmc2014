@@ -85,7 +85,7 @@ dmc.evaluate.test <- function(mds, cuts=list(nb=0.675, rf=0.65)) {
 
     r2 <- t(data.frame(r))
     colnames(r2) <- c("Points")
-    r2
+    r2[order(r2$Points, decreasing=T), , drop=F]
 }
 
 dmc.reload <- function() {
