@@ -62,6 +62,9 @@ dmc.evaluate.test <- function(mds, cuts=list(nb=0.675, rf=0.65)) {
     require(klaR)
     require(C50)
     require(randomForest)
+    require(elmNN)
+    require(MASS)
+    library(nnet)
     
     real <- read.csv("task2010/dmc2010_real.txt", sep=";")
     colnames(real) <- c("customernumber", "target90")
