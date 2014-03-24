@@ -22,7 +22,6 @@ dmc.summary <- function(data, lev = NULL, model = NULL) {
       PointsRatio=points / maxpoints)
 }
 
-
 dmc.tunecut <- function(fit, steps=1:40 * 0.025, return.best=F) {
     res <- sapply(steps,
                   function(x) dmc.points(
@@ -36,25 +35,47 @@ dmc.tunecut <- function(fit, steps=1:40 * 0.025, return.best=F) {
     }
 }
 
-dmc.ensemble.pred <- function(rf.probs, c50.preds) {
-    as.factor(ifelse(rf.probs$no > 0.9999 | c50.preds == "no", "no", "yes"))
+dmc.ensemble <- function(preds) {
+    as.factor(ifelse(Reduce("+",lapply(preds[c("rf_t")],
+                                       function(x) ifelse(x == "yes", 1, -1))) > 0,
+                     "yes", "no"))
 }
 
-dmc.evaluate <- function(mds) {
-    if (length(unique(lapply(mds, function(x) length(caret.pred(x))))) != 1)
+dmc.evaluate <- function(preds, actual) {
+    if(!all(lapply(preds, length) == length(actual)))
         stop("Predictions are not of the same length. Different data sets?")
     df <- data.frame(lapply(mds, function(x) dmc.points(caret.pred(x), caret.obs(x))))
 
-    # Probabilistic methods
-    p <- sapply(mds, function(x) x$control$classProbs)
-    tuned <- as.data.frame(lapply(mds[p], function(x) dmc.points(
-        as.factor(ifelse(caret.prob(x, fix.nas=c(0.2, 0.8))$no > dmc.tunecut(x, return.best=T), "no", "yes")),
-        caret.obs(x))))
+    res <- data.frame(t(data.frame(lapply(preds, function(x) dmc.points(x, actual)))))
+    colnames(res) <- "Points"
     
-    colnames(tuned) <- paste(colnames(tuned), "t", sep="_")
-    rownames(df) <- rownames(tuned) <- c("Points")
-    df <- rbind(data.frame(t(df)), data.frame(t(tuned)))
-    df[order(df$Points, decreasing=T), , drop=F]
+    res[order(res$Points, decreasing=T), , drop=F]
+}
+
+dmc.evaluate.train <- function() {
+    preds <- lapply(mds, caret.pred)
+    probs <- lapply(mds[c("rf", "nb")], function(x) caret.prob(x, fix.nas=c(0.8, 0.2)))
+    preds[c("rf_t", "nb_t")] <- dmc.tune(probs)
+    dmc.evaluate(preds, dt$target90)
+}
+
+dmc.evaluate.test <- function() {
+    require(plyr)
+    
+    real <- read.csv("task2010/dmc2010_real.txt", sep=";")
+    colnames(real) <- c("customernumber", "target90")
+    real$target90 <- revalue(as.factor(real$target90), c("1"="yes", "0"="no"))
+    m <- join(dt.test, real, by="customernumber")
+    
+    # There are more instances in "real" than there are in the test set...
+    m[is.na(m$target90),]$target90 <- "yes"
+    
+    preds <- dmc.predict(mds, m)
+    dmc.evaluate(preds, m$target90)
+}
+
+dmc.tune <- function(probs, cuts=list(nb=0.675, rf=0.65)) {
+    lapply(names(probs), function(x) as.factor(ifelse(probs[[x]]$no > cuts[[x]], "no", "yes")))
 }
 
 dmc.predict <- function(mds, newdata, cuts=list(nb=0.675, rf=0.65)) {
@@ -71,30 +92,13 @@ dmc.predict <- function(mds, newdata, cuts=list(nb=0.675, rf=0.65)) {
     for (name in names(mds)) {
         if (name %in% names(cuts)) {
             p <- predict(mds[[name]], newdata, type="prob")
-            preds[[paste(name, "t", sep="_")]] <- ifelse(
-                !is.na(p$no) | p$no > cuts[[name]], "no", "yes")
+            preds[[paste(name, "t", sep="_")]] <- as.factor(ifelse(
+                is.na(p$no) | p$no > cuts[[name]], "no", "yes"))
         }
         preds[[name]] <- predict(mds[[name]], newdata)
     }
 
     preds    
-}
-
-dmc.evaluate.test <- function(preds, dt.test) {
-    require(plyr)
-    
-    real <- read.csv("task2010/dmc2010_real.txt", sep=";")
-    colnames(real) <- c("customernumber", "target90")
-    real$target90 <- revalue(as.factor(real$target90), c("1"="yes", "0"="no"))
-    m <- join(dt.test, real, by="customernumber")
-
-    # There are more instances in "real" than there are in the test set...
-    m[is.na(m$target90),]$target90 <- "yes"
-
-    r2 <- data.frame(t(data.frame(
-        lapply(preds, function(x) dmc.points(x, m$target90)))))
-    colnames(r2) <- c("Points")
-    r2[order(r2$Points, decreasing=T), , drop=F]
 }
 
 dmc.reload <- function() {
