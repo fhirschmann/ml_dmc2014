@@ -32,7 +32,7 @@
 }
 \title{Data Mining Cup 2010}
 \subtitle{Group \texttt{R} Report}
-\author{Fabian Hirschmann, Michael Markert, Simon Holthausen, Christoph Schatton}
+\author{Fabian Hirschmann, Michael Markert, Simon Holthausen}
 \institute{Technische Universität Darmstadt}
 \date{April 1\textsuperscript{st} 2014}
 \newcommand{\gcheck}{\textcolor{green}{\ding{52}}}
@@ -370,8 +370,9 @@ source("R/lib/parallelsets.R")
 \begin{frame}{Model Selection}
     \footnotesize
     <<results="asis">>=
+    of.interest <- c("c50", "nb_t", "nb", "rf_t", "rf")
     res.train <- dmc.evaluate.train()
-    res.test <- read.csv("doc/results_test.csv", row.names=1)
+    #res.test <- read.csv("doc/results_test.csv", row.names=1)
 
     print(xtable(res.train))
     @
