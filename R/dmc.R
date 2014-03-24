@@ -22,11 +22,11 @@ dmc.summary <- function(data, lev = NULL, model = NULL) {
       PointsRatio=points / maxpoints)
 }
 
-dmc.tunecut <- function(fit, steps=1:40 * 0.025, return.best=F) {
+dmc.tunecut <- function(prob, actual, steps=1:40 * 0.025, return.best=F) {
     res <- sapply(steps,
                   function(x) dmc.points(
-                      as.factor(with(caret.prob(fit, fix.nas=c(0.81, 0.19)), ifelse(no > x, "no", "yes"))),
-                      caret.obs(fit)))
+                      as.factor(with(prob, ifelse(no > x, "no", "yes"))),
+                      actual))
     names(res) <- steps
     if (return.best) {
         as.numeric(names(which(res == max(res))))

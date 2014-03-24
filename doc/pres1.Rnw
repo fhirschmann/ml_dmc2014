@@ -345,7 +345,7 @@ source("R/lib/parallelsets.R")
 
 \begin{frame}{Tuning: Random Forest}
     <<fig.height=4.7>>=
-    p <- dmc.tunecut(mds$rf)
+    p <- dmc.tunecut(caret.prob(mds$rf, fix.nas=c(0.81, 0.19)), caret.obs(mds$rf))
     plot(names(p), p / dmc.points(dt$target90, dt$target90),
          type="l", main="Cutoff vs PointsRatio",
          xlab="Cutoff Point", ylab="PointsRatio")
@@ -357,7 +357,7 @@ source("R/lib/parallelsets.R")
 
 \begin{frame}{Tuning: Naive Bayes}
     <<fig.height=4.7>>=
-    p <- dmc.tunecut(mds$nb)
+    p <- dmc.tunecut(caret.prob(mds$nb, fix.nas=c(0.81, 0.19)), caret.obs(mds$nb))
     plot(names(p), p / dmc.points(dt$target90, dt$target90),
          type="l", main="Cutoff vs PointsRatio",
          xlab="Cutoff Point", ylab="PointsRatio")
@@ -370,7 +370,7 @@ source("R/lib/parallelsets.R")
 \begin{frame}{Model Selection}
     \footnotesize
     <<results="asis">>=
-    res.train <- dmc.evaluate(mds)
+    res.train <- dmc.evaluate.train()
     res.test <- read.csv("doc/results_test.csv", row.names=1)
 
     print(xtable(res.train))
