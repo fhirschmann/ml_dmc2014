@@ -387,7 +387,7 @@ source("R/lib/parallelsets.R")
     tbl <- read.csv("task2010/points.txt", stringsAsFactors=F)
     colnames(tbl) <- c("Team", "Points")
 
-    tbl <- rbind(tbl, c("R", 11900.5))
+    tbl <- rbind(tbl, c("R", 11895.5))
     tbl$Points <- as.numeric(tbl$Points)
 
     tbl <- tbl[order(tbl$Points, decreasing=T),]
