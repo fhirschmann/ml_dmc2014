@@ -85,7 +85,9 @@ dmc.predict <- function(mds, newdata, cuts=list(nb=0.675, rf=0.65)) {
     require(randomForest)
     require(elmNN)
     require(MASS)
-    library(nnet)
+    require(nnet)
+    require(gbm)
+    require(hda)
     
     preds <- list()
     
