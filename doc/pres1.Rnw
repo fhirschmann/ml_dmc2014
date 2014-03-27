@@ -98,7 +98,6 @@ source("R/lib/parallelsets.R")
 \end{itemize}
 \end{frame}
 
-
 \begin{frame}{Predictors}
     \vspace{-0.2cm}
     \scriptsize
@@ -387,7 +386,7 @@ source("R/lib/parallelsets.R")
 \end{frame}
 
 \begin{frame}{Model Selection}
-    \vspace{-0.5cm}
+    \vspace{-0.7cm}
     \footnotesize
     <<results="asis", fig.height=5.5>>=
     res.train <- dmc.evaluate.train()
@@ -447,7 +446,7 @@ source("R/lib/parallelsets.R")
     <<results="asis">>=
     tbl$Difference <- tbl$Points - 12545.5
     tbl[["Difference (%)"]] <- - (1 - tbl$Points / 12545.5) * 100
-    print(xtable(head(tbl, 15)))
+    print(xtable(head(tbl, 15)), hline.after=c(-1, 0, 9, 10, 15))
     @
 \end{frame}
 
