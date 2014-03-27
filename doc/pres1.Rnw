@@ -74,6 +74,24 @@ source("R/lib/parallelsets.R")
 \section{Description}
 
 \begin{frame}{Problem Description}
+\begin{itemize}
+    \item DMC 2010: Revenue maximisation by intelligent couponing
+    \item Onlineshop wants to give coupon to customers who would not buy again otherwise    
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Problem Description}
+\begin{itemize}
+    \item To learn: target90 - 1 if customer buys again in max 90 days, 0 if not
+    \item If target90 is 0, we want to give the customer a coupon worth 5€
+    \item Results in a costmatrix:
+    \begin{tabular}{l c r}
+     & target90=1 & target90=0 \\
+    coupon=1 & -5 & 1.5 \\
+    coupon=0 & 0 & 0 \\
+    \end{tabular}
+    \item Achieved revenue calculated out of costmatrix = number of points for the DMC
+\end{itemize}
 \end{frame}
 
 
