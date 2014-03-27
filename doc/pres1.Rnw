@@ -387,13 +387,31 @@ source("R/lib/parallelsets.R")
 \end{frame}
 
 \begin{frame}{Model Selection}
+    \vspace{-0.5cm}
     \footnotesize
-    <<results="asis">>=
-    of.interest <- c("c50", "nb_t", "nb", "rf_t", "rf")
+    <<results="asis", fig.height=5.5>>=
     res.train <- dmc.evaluate.train()
-    #res.test <- read.csv("doc/results_test.csv", row.names=1)
+    res.test <- read.csv("doc/results_test.csv", row.names=1)
+    res.train <- res.train[order(res.train$Points), , drop=F]
+    of.interest <- c(
+        "c50"="C5.0",
+        "nb_t"="Naive Bayes (t)",
+        "nb"="Naive Bayes",
+        "rf_t"="Random Forest (t)",
+        "rf"="Random Forest",
+        "hda"="Heteroscedastic DA",
+        "knn"="K-Nearest Neighbors",
+        "rda"="Regularized DA",
+        "gbm"="Stoch. Grad. Boost.",
+        "nnet"="Single layer FF NNet")
+    p <- merge(res.train, res.test, by=0, all=T)
+    p$Row.names <- revalue(p$Row.names, of.interest)
+    colnames(p) <- c("Model", "Train", "Test")
 
-    print(xtable(res.train))
+    p <- p[p$Model %in% of.interest,]
+
+    dotplot(reorder(Model, Train) ~ Train + Test, data=p, auto.key=T,
+            xlab="Points")
     @
 \end{frame}
 
