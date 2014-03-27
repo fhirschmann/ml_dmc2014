@@ -73,7 +73,7 @@ descs <- list(
             method="C5.0",
             cost=dmc.cost,
             tuneGrid=expand.grid(
-                .winnow=c(FALSE, TRUE),
+                .winnow=c(FALSE),
                 .model=c("rules", "tree"),
                 .trials=c(1:30)
                 ),
