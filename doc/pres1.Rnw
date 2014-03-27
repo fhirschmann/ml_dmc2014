@@ -266,7 +266,7 @@ source("R/lib/parallelsets.R")
     colnames(tbl) <- c("model", "Train Freq", "Test Freq")
     print(xtable(tbl), include.rownames=F)
     @
-    Null hypothesis: No (null) difference in the frequency distribution of classes in the
+    Null hypothesis: No (null) difference in the frequency distribution of labels in the
     train and test set.
     \begin{itemize}
         \item $\chi^2$-Test: If $p > 0.05$: Accept null hypothesis.
@@ -402,7 +402,7 @@ source("R/lib/parallelsets.R")
         "knn"="K-Nearest Neighbors",
         "rda"="Regularized DA",
         "gbm"="Stoch. Grad. Boost.",
-        "nnet"="Single layer FF NNet")
+        "nnet"="Single Layer FF NNet")
     p <- merge(res.train, res.test, by=0, all=T)
     p$Row.names <- revalue(p$Row.names, of.interest)
     colnames(p) <- c("Model", "Train", "Test")
