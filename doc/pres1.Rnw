@@ -263,7 +263,7 @@ source("R/lib/parallelsets.R")
     <<results="asis">>=
     tbl <- data.frame(table(dt$salutation), table(dt.test$salutation))
     tbl$Var1.1 <- NULL
-    colnames(tbl) <- c("model", "Train Freq", "Test Freq")
+    colnames(tbl) <- c("Salutation", "Train Freq", "Test Freq")
     print(xtable(tbl), include.rownames=F)
     @
     Null hypothesis: No (null) difference in the frequency distribution of labels in the
