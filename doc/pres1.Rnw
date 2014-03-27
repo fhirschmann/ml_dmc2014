@@ -38,7 +38,7 @@
 \newcommand{\gcheck}{\textcolor{green}{\ding{52}}}
 \newcommand{\rballot}{\textcolor{red}{\ding{55}}}
 
-\setbeamercovered{transparent}
+%\setbeamercovered{transparent}
 \setbeamertemplate{navigation symbols}{}
 
 <<setup, echo=F, message=F, include=FALSE>>=
