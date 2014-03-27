@@ -82,15 +82,19 @@ source("R/lib/parallelsets.R")
 
 \begin{frame}{Problem Description}
 \begin{itemize}
-    \item To learn: target90 - 1 if customer buys again in max 90 days, 0 if not
-    \item If target90 is 0, we want to give the customer a coupon worth 5€
-    \item Results in a costmatrix:
-    \begin{tabular}{l c r}
-     & target90=1 & target90=0 \\
-    coupon=1 & -5 & 1.5 \\
-    coupon=0 & 0 & 0 \\
+    \item Learn \texttt{target90}: Does the customer buy again in the next 90 days?
+    \item If target90 is \texttt{no}, give the customer a coupon worth 5€
+    \item Results in a cost matrix:
+    \begin{table}
+    \begin{tabular}{l|c|r}
+     & target90=\texttt{yes} & target90=\texttt{no} \\
+     \hline
+    coupon=\texttt{yes} & -5 & 1.5 \\
+    coupon=\texttt{no} & 0 & 0 \\
     \end{tabular}
-    \item Achieved revenue calculated out of costmatrix = number of points for the DMC
+    \end{table}
+    \item Achieved revenue calculated from the cost matrix, which
+    corresponds to number of points for the DMC
 \end{itemize}
 \end{frame}
 
@@ -136,9 +140,6 @@ source("R/lib/parallelsets.R")
         plot(dt$target90, main="Target Attribute", xlab="Class", ylab="Count")
         @
     \end{minipage}
-\end{frame}
-
-\begin{frame}{Cost Matrix}
 \end{frame}
 
 \section{Data Analysis}
