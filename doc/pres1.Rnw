@@ -294,7 +294,8 @@ source("R/lib/parallelsets.R")
 \begin{frame}{Label Freq Distribution: advertisingdatacode}
     <<fig.height=5>>=
     qplot(advertisingdatacode, fill=group,
-          data=dt.merged[dt.merged$advertisingdatacode != "NA",], position="dodge")
+          data=dt.merged[dt.merged$advertisingdatacode != "NA",], position="dodge") +
+    scale_x_discrete(breaks = 1:5, names(dt.merged$advertisingdatacode))
     @
 \end{frame}
 
