@@ -32,9 +32,8 @@ pp <- function(dt) {
         }
     }
     
-    ## Ordered Predictors
-    #dt2_ordinal <- c("size")
-    #dt2[dt2_ordinal] <- lapply(dt2[dt2_ordinal], as.ordered)
+    dt2$size <- as.factor(toupper(dt2$size))
+    
         
     ## Date Predictors
     dt2_dates <- c("dateOfBirth", "creationDate", "orderDate", "deliveryDate")
@@ -66,9 +65,6 @@ cl <- function(dt) {
 
     dt2 <- dt
     
-    # Size: This needs more fixing!
-    dt2$size <- as.factor(toupper(dt2$size))
-
     # Incorrect Dates:
     outliers <- !is.na(dt2$deliveryTime) & dt2$deliveryTime < 0
     dt2[outliers, ]$deliveryTime <- NA

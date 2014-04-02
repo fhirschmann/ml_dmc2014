@@ -98,12 +98,12 @@ length(unique(dt$orderItemID)) / length(dt$orderItemID)
 The size attribute is pretty broken:
 
 ```{r}
-levels(dt.unclean$size)
+levels(dt.raw$size)
 ```
 
 Fix case:
 ```{r}
-levels(as.factor(toupper(dt.unclean$size)))
+levels(as.factor(toupper(dt.raw$size)))
 ```
 
 We might be able to convert German clothing sizes to S/M/L/XL or vice verca.
