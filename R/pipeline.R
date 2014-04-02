@@ -3,6 +3,7 @@ source("R/dmc.R")
 source("R/fs.R")
 
 library(functional)
+library(caret)
 library(C50)
 
 ctrl <- trainControl(method="cv", savePredictions=T,
@@ -19,59 +20,9 @@ descs <- list(
             method="nb",
             trControl=ctrl.probs)
     ),
-    ada=list(
-        train.args=list(
-            method="ada")
-    ),
-    rf=list(
-        train.args=list(
-            method="rf",
-            trControl=ctrl.probs)
-    ),
-    olf=list(
-        train.args=list(
-            method="ORFpls")
-    ),
-    evtree=list(
-        train.args=list(
-            method="evtree")
-    ),
-    gcvEarth=list(
-        train.args=list(
-            method="gcvEarth")
-    ),
-    lda=list(
-        train.args=list(
-            method="lda")
-    ),
-    svmPoly=list(
-        train.args=list(
-            method="svmPoly")
-    ),
-    svmLinear=list(
-        train.args=list(
-            method="svmLinear")
-    ),
-    svmRadial=list(
-        train.args=list(
-            method="svmRadial")
-    ),
-    OneR=list(
-        train.args=list(
-            method="OneR")
-    ),
-    bdk=list(
-        train.args=list(
-            method="bdk")
-    ),
-    nnet=list(
-        train.args=list(
-            method="nnet")
-    ),
     c50=list(
         train.args=list(
             method="C5.0",
-            cost=dmc.cost,
             tuneGrid=expand.grid(
                 .winnow=c(FALSE),
                 .model=c("rules", "tree"),
@@ -93,13 +44,13 @@ common.desc <- list(
     # Common arguments to caret::train
     train.args=list(
         # Always learn target90 using all attributes
-        form=target90 ~ .,
+        form=returnShipment ~ .,
         # Data to Train on
         data="dt",  # pass as string for lazy evaluation
         # Maximize the metric
-        maximize=T,
+        maximize=F,
         # Use Points to select the best tuning parameters
-        metric="PointsRatio",
+        metric="Score",
         # Save the predictions (can be used to calculate metrics later)
         trControl=ctrl)
 )
