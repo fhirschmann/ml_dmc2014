@@ -1,5 +1,15 @@
 # DMC2014 Specific Stuff
 
+dmc.points <- function(pred, obs) {
+    sum(abs(obs - pred))
+}
+
+# Summary function for caret
+dmc.summary <- function(data, lev=NULL, model=NULL) {
+    score <- dmc.points(data$pred, data$obs)
+    c(Score=score)
+}
+
 dmc.inst <- function(upgrade=F) {
     # Installs the required dependencies.
     #
