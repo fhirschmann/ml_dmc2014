@@ -26,8 +26,9 @@ descs <- list(
             tuneGrid=expand.grid(
                 .winnow=c(FALSE),
                 .model=c("rules", "tree"),
-                .trials=c(1:30)
+                .trials=1
                 ),
+            trControl=ctrl.probs,
             control=C5.0Control(earlyStopping=F)))
 )
 
@@ -38,9 +39,9 @@ common.desc <- list(
     # Keep a history of trained serialized models
     hist=T,
     # Function to apply to the data frame
-    #data.fun=fs.all,
+    data.fun=fs.all,
     # For testing on a smaller data set
-    data.fun=Compose(fs.all, function(x) head(x, 2000)),
+    #data.fun=Compose(fs.all, function(x) head(x, 2000)),
     # Common arguments to caret::train
     train.args=list(
         # Always learn target90 using all attributes

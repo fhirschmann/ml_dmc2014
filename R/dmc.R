@@ -1,7 +1,21 @@
 # DMC2014 Specific Stuff
 
 dmc.points <- function(pred, obs) {
-    sum(abs(obs - pred))
+    require(plyr)
+
+    if (is.factor(pred)) {
+        pred2 <- as.numeric(revalue(pred, c("no"="0", "yes"="1")))
+    } else {
+        pred2 <- as.numeric(pred)
+    }
+    
+    if (is.factor(obs)) {
+        obs2 <- as.numeric(revalue(obs, c("no"="0", "yes"="1")))
+    } else {
+        obs2 <- as.numeric(obs)
+    }
+
+    sum(abs(obs2 - pred2))
 }
 
 # Summary function for caret

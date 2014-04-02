@@ -21,7 +21,7 @@ pp <- function(dt) {
         "customerID"=NULL,
         "manufacturerID"=NULL,
         "itemID"=NULL,
-        "returnShipment"=NULL
+        "returnShipment"=c("0"="no", "1"="yes")
     )
 
     for (name in names(dt2_factors)) {

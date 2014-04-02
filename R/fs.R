@@ -6,6 +6,8 @@ fs.all <- function(dt) {
     dt2$deliveryDate <- NULL
     dt2$dateOfBirth <- NULL
     dt2$creationDate <- NULL
+    dt2$itemID <- NULL
+    dt2$manufacturerID <- NULL
     
     dt2
 }
