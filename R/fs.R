@@ -9,5 +9,7 @@ fs.all <- function(dt) {
     dt2$itemID <- NULL
     dt2$manufacturerID <- NULL
     
+    dt2$orderItemID <- NULL  # This attribute is useless
+    
     dt2
 }
