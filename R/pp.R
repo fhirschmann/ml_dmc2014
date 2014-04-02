@@ -87,7 +87,8 @@ im <- function(dt) {
 
     # Color: set to "other"
     levels(dt2$color) <- c(levels(dt2$color), "other")
-    dt2[is.na(dt2$color), ]$color <- "other"
+    if (any(is.na(dt2$color)))  # test set doesn't have NAs
+        dt2[is.na(dt2$color), ]$color <- "other"
     
     # Deliverytime: mean
     dt2[is.na(dt2$deliveryTime), ]$deliveryTime <- round(mean(dt2$deliveryTime, na.rm=T), 0)
