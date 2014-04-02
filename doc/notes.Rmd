@@ -111,7 +111,7 @@ ht(dt.unclean[outliers, ][c("deliveryDate", "deliveryTime", "orderDate")], 20)
 It's always 1990-12-31:
 
 ```{r}
-unique(dt[outliers, ]$deliveryDate)
+unique(dt.unclean[outliers, ]$deliveryDate)
 ```
 
 1990-12-31 is incorrect. 
