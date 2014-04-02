@@ -1,7 +1,0 @@
-voucher: weniger als 20% kriegen eines
-paymenttype: die meisten zahlen cash
-deliverydatereal: ein sechstel nicht angegeben (vlt storno?)
-arten von kauf: am ehesten w0 (gebundenes buch) gekauft
-kauf: es scheint, je mehr man kauft auf einmal desto unwahrscheinlicher voucher
-kauf: 0 kaufen = geringe voucherwschkt
-kauf -> voucher: von 0 nach 10 sieht es entfernt wie eine normalverteilung aus
