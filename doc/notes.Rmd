@@ -153,13 +153,14 @@ So we shouldn't use the month as attribute!
 ## dateOfBirth
 
 ```{r}
-barplot(table(dt$customerAge), main="Customer Age")
+barplot(table(dt.unclean$customerAge), main="Customer Age (Train)")
+barplot(table(dt.test.unclean$customerAge), main="Customer Age (Test)")
 ```
 
 There's something wrong!
 
 ```{r}
-outliers <- !is.na(dt.unclean$customerAge) & dt.unclean$customerAge > 100
+outliers <- !is.na(dt.unclean$customerAge) & dt.unclean$customerAge > 85
 
 ```
 
