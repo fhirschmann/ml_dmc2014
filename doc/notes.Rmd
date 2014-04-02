@@ -100,6 +100,10 @@ We might be able to convert German clothing sizes to S/M/L/XL or vice verca.
 ## deliveryTime: Outlier
 
 ```{r}
+hist(dt.unclean$deliveryTime)
+```
+
+```{r}
 outliers <- !is.na(dt.unclean$deliveryTime) & dt.unclean$deliveryTime < 0
 ht(dt.unclean[outliers, ][c("deliveryDate", "deliveryTime", "orderDate")], 20)
 ```
@@ -116,7 +120,13 @@ Fix:
 Set them to NA (missing) for now and deal with it later.
 
 ```{r}
-dt.unclean[outliers, ] <- NA
+dt.unclean[outliers, ]$deliveryTime <- NA
+dt.unclean[outliers, ]$deliveryDate <- NA
+```
+
+There might still be some outliers on the other end:
+```{r}
+hist(dt.unclean$deliveryTime)
 ```
 
 ## Does it make sense to include customerID as attribute?

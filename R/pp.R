@@ -64,8 +64,13 @@ cl <- function(dt) {
 
     dt2 <- dt
     
-    ## Size: This needs more fixing!
+    # Size: This needs more fixing!
     dt2$size <- as.factor(toupper(dt2$size))
+
+    # Incorrect Dates:
+    outliers <- !is.na(dt2$deliveryTime) & dt2$deliveryTime < 0
+    dt2[outliers, ]$deliveryTime <- NA
+    dt2[outliers, ]$deliveryDate <- NA
     
     dt2
 }
