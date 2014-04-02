@@ -31,7 +31,7 @@ pp <- function(dt) {
                 dt2[[name]] <- revalue(dt2[[name]], dt2_factors[[name]])
         }
     }
-        
+    
     ## Ordered Predictors
     #dt2_ordinal <- c("size")
     #dt2[dt2_ordinal] <- lapply(dt2[dt2_ordinal], as.ordered)
@@ -39,6 +39,11 @@ pp <- function(dt) {
     ## Date Predictors
     dt2_dates <- c("dateOfBirth", "creationDate", "orderDate", "deliveryDate")
     dt2[dt2_dates] <- lapply(dt2[dt2_dates], as.Date)
+    
+    ## Size: This needs more fixing!
+    dt2$size <- as.factor(toupper(dt$size))
+
+    dt2$instantorder <- as.factor(ifelse(dt2$orderDate == dt2$creationDate, "yes", "no"))
     
     # Add some features
     #dt2$month <- as.factor(month(dt2$date))
