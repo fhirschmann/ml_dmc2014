@@ -15,169 +15,28 @@ library(ggplot2)
 ```
 # DMC 2010 Notes
 
-The task is to classify the target attribute ``target90`` (binary classification). If this
-attribute is ``yes``, then no vouchers are given out and vice versa. So, the decision to
-give out vouchers really is the inverse of ``target90``.
+Goal is to predict whether a customer will return an item. Predictions
+can be probabilities between 0 and 1.
 
-## Basic Numbers
+There is probably much potential for tuning the probabilities, i.e.
+when the classifier thinks the probability is 0.8, saying 0.8 will yield
+an error of 0.2 according to the score used. So instead of using the plain
+probabilities, we should probably round up/down at some point.
 
-### Maximum Points
+It should also be possible to use a classifier that does not output
+probabilities like C5.0. The drawback is that if the prediction is incorrect,
+the error measure rises by 1.
 
-The maximum achievable points:
-```{r max}
-points.max <- dmc.points(dt$target90, dt$target90)
-points.max
-```
-
-### Baseline
-
-The baseline can be constructed by giving out a voucher all the time:
-
-```{r baseline}
-points.baseline <- dmc.points(rep("no", nrow(dt)), dt$target90)
-points.baseline
-```
-
-In terms of ratio:
-
-```{r baseliner}
-points.baseline / points.max
-```
-
-However, this highly depends on the data set in question. It might be
-a better idea to, as baseline, not give out any vouchers:
-
-```{r baseline2}
-points.baseline <- dmc.points(rep("yes", nrow(dt)), dt$target90)
-points.baseline
-```
-
-## Cost-Sensitivity
-
-The problem at hand is a cost-sensitive classification problem, and
-the cost matrix is given by
-
-```{r cost}
-dmc.cost
-```
-
-where columns correspond to the true classes and rows are the predicted class.
-Diagonal elements are ignored, so it needs to be normalized.
-
-## Data Analytics
-
-### Data types
-
-After preprocessing, the predictors have the following types:
-
-```{r types}
-df.classes(dt)
-```
-
-### Data Summary
-
-```{r summary}
-summary(dt.unclean)
-```
-
-Observations:
-
-- ``gift`` has very few yes cases, as does ``title``
-- ``points`` is useless
-- ``deliverydatepromises`` has at least one outlier (mean vs median!)
-- ``deliverydatediff`` is affected by this obviously
-- ``weight`` probably has at least one outlier too (mean vs median!)
-
-## Outlier Handling
-Let's take a look at the date outliers. 
-
-First, we'll look the extreme date outliers:
-```{r dates}
-outliers <- dt.unclean$deliverydatepromised > as.Date("2011-01-01")
-of.interest <- c("date", "deliverydatepromised", "deliverydatereal",
-                 "deliverydatediff", "datecreated")
-options(width=160)
-dt.unclean[outliers, of.interest]
-```
-- Assumption: Just the year is incorrect
-- Solution: replace the year in deliverydatepromised with the year in date
-```{r dates2}
-dt.fix1 <- dt.unclean
-year(dt.fix1[outliers,]$deliverydatepromised) <- year(dt.fix1[outliers,]$date)
-dt.fix1[outliers, of.interest]
-```
-Unfortunately, this can't be correct since the deliverydatepromised is often
-before the actual date. Solution for now: Remove it, since it's only a handful
-of instances.
-```{r dates2.2}
-dt.fix1 <- dt.fix1[!outliers, ]
-```
-
-Next, we'll look at outliers which were
-delivered more than one year after the purchase:
-```{r dates3}
-outliers <- dt.unclean$deliverydatediff < -350 & !is.na(dt.unclean$deliverydatediff)
-dt.unclean[outliers, of.interest]
-```
-- Assumption: the date in deliverydatereal is off by 1 year
-- Solution: Subtract 1 year from deliverydatereal
-```{r dates4}
-dt[outliers, of.interest]
-```
-It's not that far off.
-
-What about the other way?
-```{r dates5}
-outliers <- dt.unclean$deliverydatediff > 350 & !is.na(dt.unclean$deliverydatediff)
-head(dt.unclean[outliers, of.interest], 50)
-```
-
-However, the same can be said about > 350 as with < -350. Let's fix it:
-```{r dates6}
-head(dt[outliers, of.interest], 50)
-```
-Looks about right now, doesn't it?
-
-Still not quite sure if this is the right way to handle it. There are a lot of these
-outliers... wait, how many?
-```{r dates7.1}
-outliers <- dt.unclean$deliverydatediff > 350 & !is.na(dt.unclean$deliverydatediff)
-nrow(dt[outliers,]) / nrow(dt)
-```
-and
-```{r dates7.2}
-outliers <- dt.unclean$deliverydatediff < -350 & !is.na(dt.unclean$deliverydatediff)
-nrow(dt[outliers,]) / nrow(dt)
-```
-
-Maybe they are not outliers after all? Or they are outliers, but we only
-have the choice to 
-
-- remove them
-- use regression
-
-Let's analyze it a little further:
+# Data Analysis
 
 ```{r}
-plot(density(dt.fix1$deliverydatediff, na.rm=T))
+str(dt)
 ```
-Let's adjust the scale
+
+## The size attribute
+
+The size attribute is pretty broken:
+
 ```{r}
-plot(density(dt.fix1$deliverydatediff, na.rm=T), ylim=c(0, 0.06))
-rug(dt.fix1$deliverydatediff)
-```
-So, let's try something else:
-```{r}
-smoothScatter(dt.fix1$deliverydatereal, dt.fix1$deliverydatepromised)
-abline(0, 1, col="red")
-```
-I think here it becomes quite obvious that there is some kind of pattern
-in the outlier cloud on the left hand side.
-
-## Visual Stuff
-
-```{r barplots, fig.width=11}
-toplot <- c("weekday", "dom")
-qplot(domain, fill=group, data=dt.merged, position="dodge") + theme(axis.text.x = element_text(angle=90))
-
+levels(dt$size)
 ```
