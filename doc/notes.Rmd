@@ -86,6 +86,13 @@ Observation: Women! Mostly! That's gotta be a clothing store.
 str(fs.all(dt))
 ```
 
+## orderItemID
+
+It's useless, remove:
+```{r}
+length(unique(dt$orderItemID)) / length(dt$orderItemID)
+```
+
 ## size
 
 The size attribute is pretty broken:
