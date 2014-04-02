@@ -3,7 +3,7 @@ This document gets compiled automatically with each svn commit and is available 
 
 ```{r setup, echo=F}
 library(knitr)
-opts_chunk$set(echo=T, breaklines=T, fig.path="figure-notes/")
+opts_chunk$set(echo=T, breaklines=T, fig.width=10, fig.path="figure-notes/")
 opts_knit$set(root.dir="../")
 ```
 ```{r echo=F, message=F, warning=F}
@@ -59,13 +59,17 @@ rate changes when calculating it with different hold-old folds.
 
 # Data Analysis
 
-## Before 
+## Before Preprocessing/Cleaning/...
 
 ```{r}
 str(dt.raw)
 ```
 
-## After Preprocessing/Feature Engineering
+```{r}
+summary(dt.raw)
+```
+
+## After Preprocessing/Cleaning/Feature Engineering/...
 
 ```{r}
 str(dt)
@@ -96,6 +100,10 @@ levels(as.factor(toupper(dt.unclean$size)))
 ```
 
 We might be able to convert German clothing sizes to S/M/L/XL or vice verca.
+
+Another interesting idea: Infer the item type from its size, i.e.
+
+- 3434 has got to be pants of size 34/34
 
 ## deliveryTime
 
@@ -134,6 +142,27 @@ on stock:
 
 ```{r}
 tail(sort(dt$deliveryTime), 400)
+```
+
+```{r}
+plot(density(dt$deliveryTime), col="blue", main="deliveryTime (Density Estimate)",
+     xlab="Time (days)")
+lines(density(dt.test$deliveryTime), col="red")
+legend("topright", c("Train", "Test"), col=c("blue", "red"), lty=1)
+```
+
+## price
+
+```{r}
+plot(density(dt$price), col="blue", main="price (Density Estimate)",
+     xlab="price (EUR)")
+lines(density(dt.test$price), col="red")
+legend("topright", c("Train", "Test"), col=c("blue", "red"), lty=1)
+
+plot(density(dt$price), col="blue", main="price (Density Estimate)",
+     xlab="price (EUR)", xlim=c(0, 400))
+lines(density(dt.test$price), col="red")
+legend("topright", c("Train", "Test"), col=c("blue", "red"), lty=1)
 ```
 
 ## orderDate
@@ -186,4 +215,4 @@ nrow(dt)
 nrow(dt.test)
 ```
 
-So it does make sense to use it in some sense.
+So it does make sense to use it in some form.
