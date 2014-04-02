@@ -84,5 +84,16 @@ im <- function(dt) {
     #   dt: A data frame
     
     dt2 <- dt
+
+    # Color: set to "other"
+    levels(dt2$color) <- c(levels(dt2$color), "other")
+    dt2[is.na(dt2$color), ]$color <- "other"
+    
+    # Deliverytime: mean
+    dt2[is.na(dt2$deliveryTime), ]$deliveryTime <- round(mean(dt2$deliveryTime, na.rm=T), 0)
+
+    # customerAge: mean
+    dt2[is.na(dt2$customerAge), ]$customerAge <- round(mean(dt2$customerAge, na.rm=T), 0)
+    
     dt2
 }
