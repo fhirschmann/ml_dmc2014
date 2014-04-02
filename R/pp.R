@@ -20,8 +20,7 @@ pp <- function(dt) {
     dt2_factors <- list(
         "customerID"=NULL,
         "manufacturerID"=NULL,
-        "itemID"=NULL,
-        "returnShipment"=c("0"="no", "1"="yes")
+        "itemID"=NULL
     )
 
     for (name in names(dt2_factors)) {
