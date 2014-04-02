@@ -38,9 +38,9 @@ common.desc <- list(
     # Keep a history of trained serialized models
     hist=T,
     # Function to apply to the data frame
-    data.fun=fs.all,
+    #data.fun=fs.all,
     # For testing on a smaller data set
-    #data.fun=Compose(fs.all, function(x) head(x, 1000)),
+    data.fun=Compose(fs.all, function(x) head(x, 2000)),
     # Common arguments to caret::train
     train.args=list(
         # Always learn target90 using all attributes
