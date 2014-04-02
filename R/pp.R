@@ -40,8 +40,7 @@ pp <- function(dt) {
     dt2_dates <- c("dateOfBirth", "creationDate", "orderDate", "deliveryDate")
     dt2[dt2_dates] <- lapply(dt2[dt2_dates], as.Date)
     
-    ## Size: This needs more fixing!
-    dt2$size <- as.factor(toupper(dt$size))
+    dt2$deliveryTime <- as.numeric(dt2$deliveryDate - dt2$orderDate)
 
     dt2$instantorder <- as.factor(ifelse(dt2$orderDate == dt2$creationDate, "yes", "no"))
     
@@ -64,6 +63,10 @@ cl <- function(dt) {
     #   A preprocessed data frame
 
     dt2 <- dt
+    
+    ## Size: This needs more fixing!
+    dt2$size <- as.factor(toupper(dt2$size))
+    
     dt2
 }
 

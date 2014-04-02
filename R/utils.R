@@ -4,6 +4,8 @@ norm.lin <- function(x, mi=min(x), ma=max(x)) {
     (x - mi) / (ma - mi)
 }
 
+ht <- function(d, n=10) rbind(head(d, n), tail(d, n))
+
 addlevels <- function (df1, df2) {
     # Adds factors levels from df2 to df1 and returns a new Data Frame.
 

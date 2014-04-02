@@ -65,11 +65,17 @@ rate changes when calculating it with different hold-old folds.
 str(dt.raw)
 ```
 
-## After Preprocessing
+## After Preprocessing/Feature Engineering
 
 ```{r}
 str(dt)
 ```
+
+```{r}
+summary(dt)
+```
+
+Observation: Women! Mostly! That's gotta be a clothing store.
 
 ## After general feature selection
 ```{r}
@@ -81,5 +87,58 @@ str(fs.all(dt))
 The size attribute is pretty broken:
 
 ```{r}
-levels(dt$size)
+levels(dt.unclean$size)
 ```
+
+Fix case:
+```{r}
+levels(as.factor(toupper(dt.unclean$size)))
+```
+
+We might be able to convert German clothing sizes to S/M/L/XL or vice verca.
+
+## deliveryTime: Outlier
+
+```{r}
+outliers <- !is.na(dt.unclean$deliveryTime) & dt.unclean$deliveryTime < 0
+ht(dt.unclean[outliers, ][c("deliveryDate", "deliveryTime", "orderDate")], 20)
+```
+
+It's always 1990-12-31:
+
+```{r}
+unique(dt[outliers, ]$deliveryDate)
+```
+
+1990-12-31 is incorrect. 
+
+Fix: 
+Set them to NA (missing) for now and deal with it later.
+
+```{r}
+dt.unclean[outliers, ] <- NA
+```
+
+## Does it make sense to include customerID as attribute?
+
+Is customerID unique?
+
+```{r}
+length(unique(dt$customerID)) / length(dt$customerID)
+```
+
+Not at all.
+
+How large is the intersection?
+
+```{r}
+length(intersect(dt$customerID, dt.test$customerID))
+```
+
+Out of how many instances:
+```{r}
+nrow(dt)
+nrow(dt.test)
+```
+
+So it does make sense to use it in some sense.
