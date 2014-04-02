@@ -18,6 +18,10 @@ dmc.points <- function(pred, obs) {
     sum(abs(obs2 - pred2))
 }
 
+dmc.evaluate.model <- function(md) {
+    sum(md$resample$Score)
+}
+
 # Summary function for caret
 dmc.summary <- function(data, lev=NULL, model=NULL) {
     score <- dmc.points(data$pred, data$obs)
