@@ -82,7 +82,7 @@ Observation: Women! Mostly! That's gotta be a clothing store.
 str(fs.all(dt))
 ```
 
-## The size attribute
+## size
 
 The size attribute is pretty broken:
 
@@ -97,7 +97,7 @@ levels(as.factor(toupper(dt.unclean$size)))
 
 We might be able to convert German clothing sizes to S/M/L/XL or vice verca.
 
-## deliveryTime: Outlier
+## deliveryTime
 
 ```{r}
 hist(dt.unclean$deliveryTime)
@@ -140,6 +140,19 @@ tail(sort(dt$deliveryTime), 400)
 ```{r}
 barplot(table(dt$orderMonth), main="Order Month")
 barplot(table(dt$orderWeekday), main="Order Weekday")
+```
+
+## dateOfBirth
+
+```{r}
+barplot(table(dt$customerAge), main="Customer Age")
+```
+
+There's something wrong!
+
+```{r}
+outliers <- !is.na(dt.unclean$customerAge) & dt.unclean$customerAge > 100
+
 ```
 
 ## Does it make sense to include customerID as attribute?

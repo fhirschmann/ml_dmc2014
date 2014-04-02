@@ -47,6 +47,8 @@ pp <- function(dt) {
     # Add some features
     dt2$orderMonth <- as.ordered(as.factor(month(dt2$orderDate)))
     dt2$orderWeekday <- as.ordered(as.factor(wday(dt2$orderDate, label=T, abbr=F)))
+
+    dt2$customerAge <- as.numeric(2013 - year(dt2$dateOfBirth))
     
     #dt2$w0all <- Reduce("+", lapply(0:10, function(x) dt2[[paste("w", x, sep="")]]))
     
