@@ -129,6 +129,13 @@ There might still be some outliers on the other end:
 hist(dt.unclean$deliveryTime)
 ```
 
+But I don't think they are outliers. Some items may not be
+on stock:
+
+```{r}
+tail(sort(dt$deliveryTime), 400)
+```
+
 ## Does it make sense to include customerID as attribute?
 
 Is customerID unique?
