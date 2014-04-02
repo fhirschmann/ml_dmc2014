@@ -6,10 +6,11 @@ library(knitr)
 opts_chunk$set(echo=T, breaklines=T, fig.path="figure-notes/")
 opts_knit$set(root.dir="../")
 ```
-```{r echo=F}
+```{r echo=F, message=F, warning=F}
 source("R/data.R")
 source("R/utils.R")
 source("R/dmc.R")
+source("R/fs.R")
 library(xtable)
 library(ggplot2)
 ```
@@ -17,6 +18,15 @@ library(ggplot2)
 
 Goal is to predict whether a customer will return an item. Predictions
 can be probabilities between 0 and 1.
+
+# The Error Measure
+
+The error measure is given by
+```{r}
+dmc.points <- function(pred, obs) {
+    sum(abs(obs - pred))
+}
+```
 
 There is probably much potential for tuning the probabilities, i.e.
 when the classifier thinks the probability is 0.8, saying 0.8 will yield
@@ -26,6 +36,16 @@ probabilities, we should probably round up/down at some point.
 It should also be possible to use a classifier that does not output
 probabilities like C5.0. The drawback is that if the prediction is incorrect,
 the error measure rises by 1.
+
+The following example illustrates this:
+```{r}
+obs <- c(1, 1, 0, 0, 1)
+pred <- c(0.8, 0.9, 0.2, 0.2, 0.4)
+d <- data.frame(pred=pred, obs=obs, error1=abs(pred - obs), error2=round(abs(pred - obs)))
+d
+sum(d$error1)
+sum(d$error2)
+```
 
 # Points to consider
 
@@ -39,8 +59,21 @@ rate changes when calculating it with different hold-old folds.
 
 # Data Analysis
 
+## Before 
+
+```{r}
+str(dt.raw)
+```
+
+## After Preprocessing
+
 ```{r}
 str(dt)
+```
+
+## After general feature selection
+```{r}
+str(fs.all(dt))
 ```
 
 ## The size attribute
