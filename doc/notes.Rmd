@@ -13,7 +13,7 @@ source("R/dmc.R")
 library(xtable)
 library(ggplot2)
 ```
-# DMC 2010 Notes
+# DMC 2010
 
 Goal is to predict whether a customer will return an item. Predictions
 can be probabilities between 0 and 1.
@@ -26,6 +26,16 @@ probabilities, we should probably round up/down at some point.
 It should also be possible to use a classifier that does not output
 probabilities like C5.0. The drawback is that if the prediction is incorrect,
 the error measure rises by 1.
+
+# Points to consider
+
+When making attributes such as `number of purchases per customer` or
+`return rate for an item`, you're implicitly using information that
+would otherwise not be available in the cross validation fold. So
+we should be extremely careful with that.
+
+As far as the return rate is concerned, we should check if the return
+rate changes when calculating it with different hold-old folds.
 
 # Data Analysis
 
