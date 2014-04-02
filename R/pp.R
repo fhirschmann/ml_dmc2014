@@ -45,8 +45,8 @@ pp <- function(dt) {
     dt2$instantorder <- as.factor(ifelse(dt2$orderDate == dt2$creationDate, "yes", "no"))
     
     # Add some features
-    #dt2$month <- as.factor(month(dt2$date))
-    #dt2$weekday <- as.factor(wday(dt2$date, label=T, abbr=F))
+    dt2$orderMonth <- as.ordered(as.factor(month(dt2$orderDate)))
+    dt2$orderWeekday <- as.ordered(as.factor(wday(dt2$orderDate, label=T, abbr=F)))
     
     #dt2$w0all <- Reduce("+", lapply(0:10, function(x) dt2[[paste("w", x, sep="")]]))
     

@@ -136,6 +136,12 @@ on stock:
 tail(sort(dt$deliveryTime), 400)
 ```
 
+## orderDate
+```{r}
+barplot(table(dt$orderMonth), main="Order Month")
+barplot(table(dt$orderWeekday), main="Order Weekday")
+```
+
 ## Does it make sense to include customerID as attribute?
 
 Is customerID unique?
