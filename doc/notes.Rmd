@@ -142,6 +142,14 @@ barplot(table(dt$orderMonth), main="Order Month")
 barplot(table(dt$orderWeekday), main="Order Weekday")
 ```
 
+But watch out! The test set contains only 1 month:
+
+```{r}
+qplot(orderMonth, fill=group, data=dt.merged, position="dodge")
+```
+
+So we shouldn't use the month as attribute!
+
 ## dateOfBirth
 
 ```{r}
