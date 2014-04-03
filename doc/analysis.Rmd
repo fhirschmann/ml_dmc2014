@@ -32,11 +32,11 @@ dt.merged <- rbind(data.frame(dt.train, group="train"),
 
 ## General data Analysis
 
-### Number of instances
+### Attribute #, Types, Factor Levels, ...
 
 ```{r}
-nrow(dt.train)
-nrow(dt.test)
+str(dt.train)
+str(dt.test)
 ```
 
 ### Missing Values
@@ -47,13 +47,6 @@ nas.test <- as.data.frame(apply(dt.test, 2, function(x) sum(is.na(x)) / length(x
 nas <- merge(nas.train, nas.test, by="row.names")
 colnames(nas) <- c("Attribute", "Train (missing %)", "Test (missing %)")
 kable(nas)
-```
-
-### Attribute Type and # of Factor Levels
-
-```{r}
-str(dt.train)
-str(dt.test)
 ```
 
 ## Individual Attribute Analysis
