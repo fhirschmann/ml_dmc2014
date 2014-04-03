@@ -130,7 +130,7 @@ plot.ddens(dt.train$deliveryTime, dt.test$deliveryTime, xlim=c(0, 40),
 ```
 
 This is interesting because the second spike in the red line is different from
-the second spice in the blue line. The current working thesis is: Easter 2013
+the second spike in the blue line. The current working thesis is: Easter 2013
 caused the delay in the test set.
 
 ### itemID
