@@ -6,9 +6,10 @@ na.strings <- c("NA", "", "??", "?")
 # Lazy evaluation: dt and dt.test get constructed when needed
 delayedAssign("dt.train.raw", read.csv("task/orders_train.txt",
                                        sep=";", na.strings=na.strings))
-delayedAssign("dt.train.pp", pp(dt.raw))
+delayedAssign("dt.train.pp", pp(dt.train.raw))
 delayedAssign("dt.train", addlevels(im(cl(dt.train.pp)), dt.test.pp))
 
+delayedAssign("dt.june", subset(dt.train, month(orderDate) == 6))
 
 delayedAssign("dt.test.raw", read.csv("task/orders_class.txt",
                                       sep=";", na.strings=na.strings))
