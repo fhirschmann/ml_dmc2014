@@ -3,7 +3,7 @@ source("R/utils.R")
 
 na.strings <- c("NA", "", "??", "?")
 
-# Lazy evaluation: dt and dt.test get constructed when needed
+# Lazy evaluation: dt.train and dt.test get constructed when needed
 delayedAssign("dt.train.raw", read.csv("task/orders_train.txt",
                                        sep=";", na.strings=na.strings))
 delayedAssign("dt.train.pp", pp(dt.train.raw))
