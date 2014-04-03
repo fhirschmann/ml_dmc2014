@@ -18,6 +18,9 @@ pres1.tex: pres1.Rnw
 notes.html: notes.Rmd
 	Rscript -e "library(knitr); knit2html('notes.Rmd')"
 
+analysis.html: analysis.Rmd
+	Rscript -e "library(knitr); knit2html('analysis.Rmd')"
+
 clean:
 	latexmk -c -f pres1.tex
 	latexmk -c -f doc.tex
