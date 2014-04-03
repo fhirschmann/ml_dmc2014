@@ -4,16 +4,16 @@ source("R/utils.R")
 na.strings <- c("NA", "", "??", "?")
 
 # Lazy evaluation: dt and dt.test get constructed when needed
-delayedAssign("dt.raw", read.csv("task/orders_train.txt",
-                                 sep=";", na.strings=na.strings))
-delayedAssign("dt.unclean", pp(dt.raw))
-delayedAssign("dt", addlevels(im(cl(dt.unclean)), dt.test.unclean))
+delayedAssign("dt.train.raw", read.csv("task/orders_train.txt",
+                                       sep=";", na.strings=na.strings))
+delayedAssign("dt.train.pp", pp(dt.raw))
+delayedAssign("dt.train", addlevels(im(cl(dt.train.pp)), dt.test.pp))
 
 
 delayedAssign("dt.test.raw", read.csv("task/orders_class.txt",
                                       sep=";", na.strings=na.strings))
-delayedAssign("dt.test.unclean", pp(dt.test.raw))
-delayedAssign("dt.test", addlevels(im(cl(dt.test.unclean)), dt.unclean))
+delayedAssign("dt.test.pp", pp(dt.test.raw))
+delayedAssign("dt.test", addlevels(im(cl(dt.test.pp)), dt.train.pp))
 
 # Merged Train/Test Data; this is mostly useful for plotting
 delayedAssign("dt.merged", rbind(data.frame(dt, group="train"),
