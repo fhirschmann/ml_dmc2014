@@ -4,11 +4,18 @@ opts_chunk$set(echo=T, breaklines=T, fig.width=10, fig.path="figure-analysis/")
 opts_knit$set(root.dir="../")
 options(width=140)         
 ```
-```{r echo=F, message=F, warning=F}
+# Helper functions/libraries needed for this Notebook
+```{r echo=R, message=F, warning=F}
 library(xtable)
 library(ggplot2)
 library(knitr)
 library(lubridate)
+
+plot.ddens <- function(v1, v2, ...) {
+    plot(density(v1), col="blue", ...)
+    lines(density(v2), col="red")
+    legend("topright", c("Train", "Test"), col = c("blue", "red"), lty = 1)
+}
 ```
 
 # DMC2014 Data Analysis
@@ -113,6 +120,19 @@ hist(dt.train$deliveryTime, main="Histogram of deliveryTime (Train)", xlab="Time
 hist(dt.test$deliveryTime, main="Histogram of deliveryTime (Test)", xlab="Time (days)")
 ```
 
+A kernel density estimate is probably better:
+
+```{r}
+plot.ddens(dt.train$deliveryTime, dt.test$deliveryTime,
+           main="Kernel Density Estimate of Delivery Time", xlab="price (EUR)")
+plot.ddens(dt.train$deliveryTime, dt.test$deliveryTime, xlim=c(0, 40),
+           main="Kernel Density Estimate of Delivery Time", xlab="price (EUR)")
+```
+
+This is interesting because the second spike in the red line is different from
+the second spice in the blue line. The current working thesis is: Easter 2013
+caused the delay in the test set.
+
 ### itemID
 
 ### size
@@ -124,17 +144,13 @@ hist(dt.test$deliveryTime, main="Histogram of deliveryTime (Test)", xlab="Time (
 ### price
 
 ```{r}
-plot(density(dt.train$price), col="blue", main="Density Estimate of Price",
-     xlab="price (EUR)")
-lines(density(dt.test$price), col="red")
-legend("topright", c("Train", "Test"), col=c("blue", "red"), lty=1)
+plot.ddens(dt.train$price, dt.test$price, main="Kernel Density Estimate of Price",
+           xlab="price (EUR)")
 ```
 
 ```{r}
-plot(density(dt.train$price), col="blue", main="Density Estimate of Price",
-     xlab="price (EUR)", xlim=c(0, 300))
-lines(density(dt.test$price), col="red")
-legend("topright", c("Train", "Test"), col=c("blue", "red"), lty=1)
+plot.ddens(dt.train$price, dt.test$price, main="Kernel Density Estimate of Price",
+           xlab="price (EUR)", xlim=c(0, 300))
 ```
 
 ### customerID
