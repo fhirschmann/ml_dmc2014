@@ -1,0 +1,115 @@
+```{r setup, echo=F}
+library(knitr)
+opts_chunk$set(echo=T, breaklines=T, fig.width=10, fig.path="figure-analysis/")
+opts_knit$set(root.dir="../")
+options(width=140)         
+```
+```{r echo=F, message=F, warning=F}
+library(xtable)
+library(ggplot2)
+library(knitr)
+```
+
+# DMC2014 Data Analysis
+
+## Read in the Data
+```{r}
+dt.train <- read.csv("task/orders_train.txt", sep=";", na.strings=c("?", "??", "NA", ""))
+dt.test <- read.csv("task/orders_class.txt", sep=";", na.strings=c("?", "??", "NA", ""))
+
+dt.dates <- c("dateOfBirth", "creationDate", "orderDate", "deliveryDate")
+dt.train[dt.dates] <- lapply(dt.train[dt.dates], as.Date)
+dt.test[dt.dates] <- lapply(dt.test[dt.dates], as.Date)
+```
+
+## General data Analysis
+
+### Number of instances
+
+```{r}
+nrow(dt.train)
+nrow(dt.test)
+```
+
+### Missing Values
+
+```{r}
+nas.train <- as.data.frame(apply(dt.train, 2, function(x) sum(is.na(x)) / length(x) * 100))
+nas.test <- as.data.frame(apply(dt.test, 2, function(x) sum(is.na(x)) / length(x) * 100))
+nas <- merge(nas.train, nas.test, by="row.names")
+colnames(nas) <- c("Attribute", "Train (missing %)", "Test (missing %)")
+kable(nas)
+```
+
+## Individual Attribute Analysis
+
+### orderItemID
+
+This item is unique and thus serves no purpose in the Machine Learning process:
+
+```{r}
+with(dt.train, length(unique(orderItemID)) / length(orderItemID))
+with(dt.test, length(unique(orderItemID)) / length(orderItemID))
+```
+
+### orderDate
+
+### deliveryDate
+
+### itemID
+
+## size
+
+## color
+
+## manufacturerID
+
+## price
+
+## customerID
+
+## salutation
+
+## dateOfBirth
+
+We'll take a look at the histograms first:
+```{r}
+par(mfrow=c(1, 2))
+barplot(table(dt.train$dateOfBirth), main="Histogram of dateOfBirth (Train)")
+barplot(table(dt.test$dateOfBirth), main="Histogram of dateOfBirth (Test)")
+```
+
+Two points become obvious:
+- Nobody lives that long.
+- There is one DOB that appears unusually often in the two sets.
+
+Which DOB appears that often?
+
+```{r}
+tail(sort(table(dt.train$dateOfBirth)))
+tail(sort(table(dt.test$dateOfBirth)))
+```
+
+Set the dateOfBirth Attribute of these outliers to NA:
+
+```{r}
+outl.train <- with(dt.train, !is.na(dateOfBirth) & dateOfBirth %in% c(as.Date("1900-11-19"), as.Date("1949-11-19")))
+outl.test <- with(dt.test, !is.na(dateOfBirth) & dateOfBirth %in% c(as.Date("1900-11-19"), as.Date("1949-11-19")))
+
+dt.train[outl.train, ]$dateOfBirth <- NA
+dt.test[outl.test, ]$dateOfBirth <- NA
+```
+
+Let's take a look again:
+
+```{r}
+par(mfrow=c(1, 2))
+barplot(table(dt.train$dateOfBirth), main="Histogram of dateOfBirth (Train)")
+barplot(table(dt.test$dateOfBirth), main="Histogram of dateOfBirth (Test)")
+```
+
+## state
+
+## creationDate
+
+## returnShipment
