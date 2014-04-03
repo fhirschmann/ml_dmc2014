@@ -72,13 +72,13 @@ qplot(month(orderDate, label=T), fill=group, data=dt.merged, position="dodge", b
 
 ### itemID
 
-## size
+### size
 
-## color
+### color
 
-## manufacturerID
+### manufacturerID
 
-## price
+### price
 
 ```{r}
 plot(density(dt.train$price), col="blue", main="Density Estimate of Price",
@@ -94,7 +94,7 @@ lines(density(dt.test$price), col="red")
 legend("topright", c("Train", "Test"), col=c("blue", "red"), lty=1)
 ```
 
-## customerID
+### customerID
 
 Is customerID unique?
 
@@ -118,9 +118,9 @@ nrow(dt.test)
 
 So it does make sense to use it in some form.
 
-## salutation
+### salutation
 
-## dateOfBirth
+### dateOfBirth
 
 We'll take a look at the histograms first:
 ```{r}
@@ -214,8 +214,8 @@ qqnorm(dt.test$customerAge, main="Customer Age Normal Q-Q Plot (Test)")
 On the extremes, they are are not really normally distributed, but this will
 have to do for now.
 
-## state
+### state
 
-## creationDate
+### creationDate
 
-## returnShipment
+### returnShipment
