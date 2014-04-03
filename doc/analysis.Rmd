@@ -21,6 +21,9 @@ dt.test <- read.csv("task/orders_class.txt", sep=";", na.strings=c("?", "??", "N
 dt.dates <- c("dateOfBirth", "creationDate", "orderDate", "deliveryDate")
 dt.train[dt.dates] <- lapply(dt.train[dt.dates], as.Date)
 dt.test[dt.dates] <- lapply(dt.test[dt.dates], as.Date)
+
+dt.merged <- rbind(data.frame(dt.train, group="train"),
+                   data.frame(dt.test, group="test", returnShipment=NA))
 ```
 
 ## General data Analysis
@@ -55,6 +58,12 @@ with(dt.test, length(unique(orderItemID)) / length(orderItemID))
 
 ### orderDate
 
+#### orderMonth
+```{r}
+qplot(month(orderDate, label=T), fill=group, data=dt.merged, position="dodge", binwidth=1)
+```
+
+
 ### deliveryDate
 
 ### itemID
@@ -67,7 +76,43 @@ with(dt.test, length(unique(orderItemID)) / length(orderItemID))
 
 ## price
 
+```{r}
+plot(density(dt.train$price), col="blue", main="Density Estimate of Price",
+     xlab="price (EUR)")
+lines(density(dt.test$price), col="red")
+legend("topright", c("Train", "Test"), col=c("blue", "red"), lty=1)
+```
+
+```{r}
+plot(density(dt.train$price), col="blue", main="Density Estimate of Price",
+     xlab="price (EUR)", xlim=c(0, 300))
+lines(density(dt.test$price), col="red")
+legend("topright", c("Train", "Test"), col=c("blue", "red"), lty=1)
+```
+
 ## customerID
+
+Is customerID unique?
+
+```{r}
+length(unique(dt$customerID)) / length(dt$customerID)
+```
+
+Not at all.
+
+How large is the intersection?
+
+```{r}
+length(intersect(dt$customerID, dt.test$customerID))
+```
+
+Out of how many instances:
+```{r}
+nrow(dt)
+nrow(dt.test)
+```
+
+So it does make sense to use it in some form.
 
 ## salutation
 
