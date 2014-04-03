@@ -13,6 +13,10 @@ library(lubridate)
 
 # DMC2014 Data Analysis
 
+This document is available at
+[http://dwxput6p.0x0b.de/analysis.html](http://dwxput6p.0x0b.de/analysis.html)
+and is hooked onto the SVN. So please don't break my server.
+
 ## Read in the Data
 ```{r}
 dt.train <- read.csv("task/orders_train.txt", sep=";", na.strings=c("?", "??", "NA", ""))
