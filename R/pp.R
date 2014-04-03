@@ -65,10 +65,20 @@ cl <- function(dt) {
 
     dt2 <- dt
     
-    # Incorrect Dates:
+    # deliveryDate/Time
     outliers <- !is.na(dt2$deliveryTime) & dt2$deliveryTime < 0
     dt2[outliers, ]$deliveryTime <- NA
     dt2[outliers, ]$deliveryDate <- NA
+    
+    # dateOfBirth/Age
+    outliers <- with(dt2,
+                     !is.na(dateOfBirth) 
+                     & (dateOfBirth == as.Date("1949-11-19")
+                        | customerAge > 85
+                        | customerAge < 19))
+
+    dt2[outliers, ]$dateOfBirth <- NA
+    dt2[outliers, ]$customerAge <- NA
     
     dt2
 }
