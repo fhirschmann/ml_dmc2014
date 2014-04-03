@@ -8,6 +8,7 @@ options(width=140)
 library(xtable)
 library(ggplot2)
 library(knitr)
+library(lubridate)
 ```
 
 # DMC2014 Data Analysis
@@ -81,7 +82,7 @@ barplot(table(dt.test$dateOfBirth), main="Histogram of dateOfBirth (Test)")
 
 Two points become obvious:
 - Nobody lives that long.
-- There is one DOB that appears unusually often in the two sets.
+- There is at least one DOB that appears unusually often in the two sets.
 
 Which DOB appears that often?
 
@@ -107,6 +108,62 @@ par(mfrow=c(1, 2))
 barplot(table(dt.train$dateOfBirth), main="Histogram of dateOfBirth (Train)")
 barplot(table(dt.test$dateOfBirth), main="Histogram of dateOfBirth (Test)")
 ```
+
+Looks alright.
+
+But... what about the superhumans?
+
+```{r}
+head(sort(dt.test$dateOfBirth))
+head(sort(dt.train$dateOfBirth))
+```
+
+Only three in the train set, so let's set them to NA as well:
+
+```{r}
+outl.train <- with(dt.train, !is.na(dateOfBirth) & dateOfBirth == as.Date("1655-04-19"))
+
+dt.train[outl.train, ]$dateOfBirth <- NA
+```
+
+Let's compute an age attribute:
+
+```{r}
+dt.train$customerAge <- as.numeric(2013 - year(dt.train$dateOfBirth))
+dt.test$customerAge <- as.numeric(2013 - year(dt.test$dateOfBirth))
+```
+
+And plot it:
+```{r}
+par(mfrow=c(1, 2))
+
+hist(dt.train$customerAge, main="Customer Age (Train)")
+hist(dt.test$customerAge, main="Customer Age (Test)")
+```
+
+There are still some outliers on both ends, so we set them to NA as well:
+
+```{r}
+outl.train <- with(dt.train, !is.na(customerAge) & (customerAge > 85 | customerAge < 19))
+outl.test <- with(dt.test, !is.na(customerAge) & (customerAge > 85 | customerAge < 19))
+
+dt.train[outl.train, ]$dateOfBirth <- NA
+dt.train[outl.train, ]$customerAge <- NA
+
+dt.test[outl.test, ]$dateOfBirth <- NA
+dt.test[outl.test, ]$customerAge <- NA
+```
+
+Then we do a Quantile-Quantile plot against the normal distribution:
+```{r}
+par(mfrow=c(1, 2))
+
+qqnorm(dt.train$customerAge, main="Customer Age Normal Q-Q Plot (Train)")
+qqnorm(dt.test$customerAge, main="Customer Age Normal Q-Q Plot (Test)")
+```
+
+On the extremes, they are are not really normally distributed, but this will
+have to do for now.
 
 ## state
 
