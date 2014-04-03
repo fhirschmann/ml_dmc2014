@@ -1,22 +1,20 @@
 # Data Preprocessing goes here
 
-suppressPackageStartupMessages(library(lubridate))
-suppressPackageStartupMessages(library(plyr))
-
 pp <- function(dt) {
-    # Preprocesses DMC2010 data, i.e. cleaning, creating features, etc...
+    # Preprocesses DMC2014 data, i.e. cleaning, creating features, etc...
     #
     # Args:
     #   dt: A data frame
     #
     # Returns:
     #   A preprocessed data frame
+    require(lubridate)
+    require(plyr)
     
     dt2 <- dt
     message("Preprocessing Data Frame")
 
-    ## Nominal Predictors    
-    # Use labels instead of numeric values
+    # Nominal Predictors    
     dt2_factors <- list(
         "customerID"=NULL,
         "manufacturerID"=NULL,
@@ -33,20 +31,19 @@ pp <- function(dt) {
     }
     
     dt2$size <- as.factor(toupper(dt2$size))
-    
         
-    ## Date Predictors
+    # Date Predictors
     dt2_dates <- c("dateOfBirth", "creationDate", "orderDate", "deliveryDate")
     dt2[dt2_dates] <- lapply(dt2[dt2_dates], as.Date)
     
-    dt2$deliveryTime <- as.numeric(dt2$deliveryDate - dt2$orderDate)
+    dt2$deliveryTime <- as.integer(dt2$deliveryDate - dt2$orderDate)
 
     dt2$instantorder <- as.factor(ifelse(dt2$orderDate == dt2$creationDate, "yes", "no"))
     
     # Add some features
     dt2$orderWeekday <- as.ordered(as.factor(wday(dt2$orderDate, label=T, abbr=F)))
 
-    dt2$customerAge <- as.numeric(2013 - year(dt2$dateOfBirth))
+    dt2$customerAge <- as.integer(2013 - year(dt2$dateOfBirth))
     
     #dt2$w0all <- Reduce("+", lapply(0:10, function(x) dt2[[paste("w", x, sep="")]]))
     
