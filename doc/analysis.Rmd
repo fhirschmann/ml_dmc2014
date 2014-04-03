@@ -74,8 +74,8 @@ First, let's infer an attribute delivery time, which describes the time (in days
 the delivery has taken:
 
 ```{r}
-dt.train$deliveryTime <- as.numeric(dt.train$deliveryDate - dt.train$orderDate)
-dt.test$deliveryTime <- as.numeric(dt.test$deliveryDate - dt.test$orderDate)
+dt.train$deliveryTime <- as.integer(dt.train$deliveryDate - dt.train$orderDate)
+dt.test$deliveryTime <- as.integer(dt.test$deliveryDate - dt.test$orderDate)
 ```
 
 And look for the obvious outliers:
@@ -221,8 +221,8 @@ dt.train[outl.train, ]$dateOfBirth <- NA
 Let's compute an age attribute:
 
 ```{r}
-dt.train$customerAge <- as.numeric(2013 - year(dt.train$dateOfBirth))
-dt.test$customerAge <- as.numeric(2013 - year(dt.test$dateOfBirth))
+dt.train$customerAge <- as.integer(2013 - year(dt.train$dateOfBirth))
+dt.test$customerAge <- as.integer(2013 - year(dt.test$dateOfBirth))
 ```
 
 And plot it:
