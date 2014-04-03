@@ -99,7 +99,7 @@ legend("topright", c("Train", "Test"), col=c("blue", "red"), lty=1)
 Is customerID unique?
 
 ```{r}
-length(unique(dt$customerID)) / length(dt$customerID)
+length(unique(dt.train$customerID)) / length(dt.train$customerID)
 ```
 
 Not at all.
@@ -107,12 +107,12 @@ Not at all.
 How large is the intersection?
 
 ```{r}
-length(intersect(dt$customerID, dt.test$customerID))
+length(intersect(dt.train$customerID, dt.test$customerID))
 ```
 
 Out of how many instances:
 ```{r}
-nrow(dt)
+nrow(dt.train)
 nrow(dt.test)
 ```
 
@@ -215,6 +215,10 @@ On the extremes, they are are not really normally distributed, but this will
 have to do for now.
 
 ### state
+
+```{r}
+load(url("http://gadm.org/data/rda/DEU_adm1.RData"))
+```
 
 ### creationDate
 
