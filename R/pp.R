@@ -93,10 +93,10 @@ im <- function(dt) {
         dt2[is.na(dt2$color), ]$color <- "other"
     
     # Deliverytime: mean
-    dt2[is.na(dt2$deliveryTime), ]$deliveryTime <- round(mean(dt2$deliveryTime, na.rm=T), 0)
+    dt2[is.na(dt2$deliveryTime), ]$deliveryTime <- as.integer(mean(dt2$deliveryTime, na.rm=T))
 
     # customerAge: mean
-    dt2[is.na(dt2$customerAge), ]$customerAge <- round(mean(dt2$customerAge, na.rm=T), 0)
+    dt2[is.na(dt2$customerAge), ]$customerAge <- as.integer(mean(dt2$customerAge, na.rm=T))
     
     dt2
 }
