@@ -17,7 +17,7 @@ delayedAssign("dt.test.pp", pp(dt.test.raw))
 delayedAssign("dt.test", addlevels(im(cl(dt.test.pp)), dt.train.pp))
 
 # Merged Train/Test Data; this is mostly useful for plotting
-delayedAssign("dt.merged", rbind(data.frame(dt, group="train"),
+delayedAssign("dt.merged", rbind(data.frame(dt.train, group="train"),
                                  data.frame(dt.test, group="test", returnShipment=NA)))
 
 # Serialized Models
@@ -25,7 +25,7 @@ delayedAssign("mds", caret.load())
 
 
 clear <- function() {
-    rm(list=c(dt.raw, dt, dt.unclean,
-              dt.test.raw, dt.test, dt.test.unclean,
+    rm(list=c(dt.train.raw, dt.train.pp, dt.train, dt.june,
+              dt.test.raw, dt.test.pp, dt.test,
               dt.merged, mds))
 }
