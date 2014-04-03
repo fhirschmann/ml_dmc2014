@@ -49,6 +49,13 @@ colnames(nas) <- c("Attribute", "Train (missing %)", "Test (missing %)")
 kable(nas)
 ```
 
+### Attribute Type and # of Factor Levels
+
+```{r}
+str(dt.train)
+str(dt.test)
+```
+
 ## Individual Attribute Analysis
 
 ### orderItemID
@@ -69,6 +76,49 @@ qplot(month(orderDate, label=T), fill=group, data=dt.merged, position="dodge", b
 
 
 ### deliveryDate
+
+First, let's infer an attribute delivery time, which describes the time (in days)
+the delivery has taken:
+
+```{r}
+dt.train$deliveryTime <- as.numeric(dt.train$deliveryDate - dt.train$orderDate)
+dt.test$deliveryTime <- as.numeric(dt.test$deliveryDate - dt.test$orderDate)
+```
+
+And look for the obvious outliers:
+
+```{r}
+outl.train <- !is.na(dt.train$deliveryTime) & dt.train$deliveryTime < 0
+outl.test <- !is.na(dt.test$deliveryTime) & dt.test$deliveryTime < 0
+
+head(dt.train[outl.train, ])
+```
+
+Thesis: 1990-12-31 as deliveryDate for these outliers means that the delivery date
+is not known.
+
+```{r}
+unique(dt.train[outl.train, ]$deliveryDate)
+unique(dt.test[outl.test, ]$deliveryDate)
+```
+
+That's corret. So set them to NA:
+
+```{r}
+dt.train[outl.train, ]$deliveryDate <- NA
+dt.train[outl.train, ]$deliveryTime <- NA
+dt.test[outl.test, ]$deliveryDate <- NA
+dt.test[outl.test, ]$deliveryTime <- NA
+```
+
+Plot it:
+
+```{r}
+par(mfrow=c(1, 2))
+
+hist(dt.train$deliveryTime, main="Histogram of deliveryTime (Train)", xlab="Time (days)")
+hist(dt.test$deliveryTime, main="Histogram of deliveryTime (Test)", xlab="Time (days)")
+```
 
 ### itemID
 
