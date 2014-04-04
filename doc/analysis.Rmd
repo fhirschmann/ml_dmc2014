@@ -185,6 +185,8 @@ colnames(p) <- c("Contingency (Train)", "Contingency (Test)")
 kable(p)
 ```
 
+There are more women in the test set.
+
 ### dateOfBirth
 
 We'll take a look at the histograms first:
