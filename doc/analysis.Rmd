@@ -276,8 +276,21 @@ qqnorm(dt.train$customerAge, main="Customer Age Normal Q-Q Plot (Train)")
 qqnorm(dt.test$customerAge, main="Customer Age Normal Q-Q Plot (Test)")
 ```
 
-On the extremes, they are are not really normally distributed, but this will
-have to do for now.
+On the extremes, they are are not really normally distributed, but very close!
+
+
+#### Customer Age vs returnShipment
+
+First, let's create a high-dimensional contingency table:
+
+```{r}
+x <- structable(returnShipment ~ customerAge, data=dt.train)
+x[1:10, ]  # first 10 elements
+
+r <- x[, 2] / (x[, 1] + x[, 2])  # ratio of returned items for each age
+plot(rownames(r), r, type="l", main="Ratio of Returned Items vs Age",
+     xlab="Age", ylab="Returned Items (Ratio)")
+```
 
 ### state
 
