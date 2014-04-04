@@ -17,6 +17,7 @@ library(xtable)
 library(ggplot2)
 library(knitr)
 library(lubridate)
+library(vcd)
 
 plot.ddens <- function(v1, v2, ...) {
     plot(density(v1, na.rm=T), col="blue", ...)
@@ -125,9 +126,9 @@ A kernel density estimate is probably better:
 
 ```{r}
 plot.ddens(dt.train$deliveryTime, dt.test$deliveryTime,
-           main="Kernel Density Estimate of Delivery Time", xlab="price (EUR)")
+           main="Kernel Density Estimate of Delivery Time", xlab="Time (days)")
 plot.ddens(dt.train$deliveryTime, dt.test$deliveryTime, xlim=c(0, 40),
-           main="Kernel Density Estimate of Delivery Time", xlab="price (EUR)")
+           main="Kernel Density Estimate of Delivery Time", xlab="Time (days)")
 ```
 
 ### itemID
