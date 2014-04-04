@@ -3,7 +3,12 @@
 # (due to performance reasons or the reliance on both the train and test set).
 source("R/data.R")
 
+# Frequency of the customer ID (corresponds to the number of items ordered per customer)
+write.csv(data.frame(Freq=sort(table(c(dt.train$customerID, dt.test$customerID)),
+                               decreasing=T)),
+          file="task/customerid_freq.csv", quote=F)
 
+# Attribute itemType
 train.shoeIDs <- unique(dt.train[with(dt.train,
                                        str_sub(size, start=-1, end=-1) == "+"), ]$itemID)
 test.shoeIDs <- unique(dt.test[with(dt.test,
