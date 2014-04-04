@@ -7,6 +7,8 @@
 *.toc
 *.vrb
 *.snm
+*.html
+*.md
 figure*/
 doc/notes.html
 doc/notes.md
