@@ -156,6 +156,16 @@ plot.ddens(dt.train$price, dt.test$price, main="Kernel Density Estimate of Price
            xlab="price (EUR)", xlim=c(0, 300))
 ```
 
+Particularly interesting is the fact that the density is highest around prices
+of 9.99, 19.99 and lowest around prices of 10, 20. This might give you an appropriate
+clue as to what breakpoints to use when discretizing the price.
+
+For example:
+```{r}
+barplot(table(with(dt.train, cut(price, 0:20 * 10 - 0.001))), las=2,
+        main="Histogram of Prices")
+```
+
 ### customerID
 
 Is customerID unique?
