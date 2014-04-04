@@ -176,7 +176,7 @@ barplot(table(with(dt.test, cut(price, c(0, 1:20 * 10 - 0.001, Inf)))), las=2,
 
 ### customerID
 
-Is customerID unique?
+#### Is customerID unique?
 
 ```{r}
 length(unique(dt.train$customerID)) / length(dt.train$customerID)
@@ -184,7 +184,7 @@ length(unique(dt.train$customerID)) / length(dt.train$customerID)
 
 Not at all.
 
-How large is the intersection?
+#### How large is the intersection between the train and test set?
 
 ```{r}
 length(intersect(dt.train$customerID, dt.test$customerID))
@@ -198,6 +198,14 @@ nrow(dt.test)
 
 So it does make sense to use it in some form.
 
+#### Is there a customer ID that appears unusually often?
+
+```{r}
+tail(sort(table(c(dt.train$customerID, dt.test$customerID))), 10)
+```
+
+No.
+
 ### salutation
 
 It's a women store:
@@ -208,7 +216,7 @@ colnames(p) <- c("Contingency (Train)", "Contingency (Test)")
 kable(p)
 ```
 
-There are more women in the test set.
+There are even more women (relatively) in the test set.
 
 ### dateOfBirth
 
