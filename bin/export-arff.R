@@ -4,8 +4,7 @@
 
 library(foreign)
 
-source("R/pp.R")
 source("R/data.R")
 source("R/fs.R")
 
-write.arff(fs.all(dt), "task2010/dmc2010_train.arff")
+write.arff(fs.all(dt.train), "task/orders_train.arff")
