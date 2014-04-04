@@ -300,4 +300,16 @@ load(url("http://gadm.org/data/rda/DEU_adm1.RData"))
 
 ### creationDate
 
+```{r}
+tail(sort(table(dt.train$creationDate)))
+```
+
+The last date appears unusually often. Let's plot the number of accounts opened,
+neglecting the date that appears unusually often:
+
+```{r}
+counts <- head(sort(table(dt.train$creationDate)), -1)
+plot(counts, type="l", xaxt="n")
+```
+
 ### returnShipment
