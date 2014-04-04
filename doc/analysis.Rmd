@@ -2,7 +2,7 @@
 library(knitr)
 opts_chunk$set(echo=T, breaklines=T, fig.width=10, fig.path="figure-analysis/")
 opts_knit$set(root.dir="../")
-options(width=140)         
+options(width=120)         
 ```
 
 # DMC2014 Data Analysis
@@ -50,10 +50,10 @@ str(dt.test)
 ### Missing Values
 
 ```{r}
-nas.train <- as.data.frame(apply(dt.train, 2, function(x) sum(is.na(x)) / length(x) * 100))
-nas.test <- as.data.frame(apply(dt.test, 2, function(x) sum(is.na(x)) / length(x) * 100))
+nas.train <- as.data.frame(apply(dt.train, 2, function(x) sum(is.na(x)) / length(x)))
+nas.test <- as.data.frame(apply(dt.test, 2, function(x) sum(is.na(x)) / length(x)))
 nas <- merge(nas.train, nas.test, by="row.names")
-colnames(nas) <- c("Attribute", "Train (missing %)", "Test (missing %)")
+colnames(nas) <- c("Attribute", "Missing (Train)", "Missing (Test)")
 kable(nas)
 ```
 
@@ -175,6 +175,14 @@ nrow(dt.test)
 So it does make sense to use it in some form.
 
 ### salutation
+
+It's a women store:
+```{r}
+p <- t(rbind(prop.table(table(dt.train$salutation)),
+             prop.table(table(dt.test$salutation))))
+colnames(p) <- c("Contingency (Train)", "Contingency (Test)")
+kable(p)
+```
 
 ### dateOfBirth
 
