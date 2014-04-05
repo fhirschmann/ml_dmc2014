@@ -41,7 +41,7 @@ pp <- function(dt) {
     dt2$instantorder <- as.factor(ifelse(dt2$orderDate == dt2$creationDate, "yes", "no"))
     
     # Add some features
-    dt2$orderWeekday <- as.ordered(as.factor(wday(dt2$orderDate, label=T, abbr=F)))
+    dt2$orderWeekday <- as.ordered(as.factor(lubridate::wday(dt2$orderDate, label=T, abbr=F)))
 
     dt2$customerAge <- as.integer(2013 - year(dt2$dateOfBirth))
     
