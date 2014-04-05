@@ -18,11 +18,16 @@ library(ggplot2)
 library(knitr)
 library(lubridate)
 library(vcd)
+library(data.table)
 
 plot.ddens <- function(v1, v2, ...) {
     plot(density(v1, na.rm=T), col="blue", ...)
     lines(density(v2, na.rm=T), col="red")
     legend("topright", c("Train", "Test"), col = c("blue", "red"), lty = 1)
+}
+
+norm.lin <- function(x, mi=min(x), ma=max(x)) {
+    (x - mi) / (ma - mi)
 }
 ```
 
@@ -184,6 +189,17 @@ length(unique(dt.train$customerID)) / length(dt.train$customerID)
 
 Not at all.
 
+#### Is the same customerID used for more than one person?
+
+```{r}
+dt <- data.table(dt.merged)
+
+nrow(dt[, c("customerID"), by=list(customerID, salutation, dateOfBirth)])
+length(unique(dt$customerID))
+```
+
+No.
+
 #### How large is the intersection between the train and test set?
 
 ```{r}
@@ -336,14 +352,20 @@ load(url("http://gadm.org/data/rda/DEU_adm1.RData"))
 
 ```{r}
 tail(sort(table(dt.train$creationDate)))
+tail(sort(table(dt.test$creationDate)))
 ```
 
-The last date appears unusually often. Let's plot the number of accounts opened,
-neglecting the date that appears unusually often:
+The last date appears unusually often. Remove it:
 
 ```{r}
-counts <- head(sort(table(dt.train$creationDate)), -1)
-plot(counts, type="l", xaxt="n")
+outl.train <- with(dt.train, creationDate == as.Date("2011-02-16"))
+outl.test <- with(dt.test, creationDate == as.Date("2011-02-16"))
+
+dt.train[outl.train, ]$creationDate <- NA
+dt.test[outl.test, ]$creationDate <- NA
+```
+
+```{r}
 ```
 
 ### returnShipment
