@@ -37,7 +37,9 @@ common.desc <- list(
     # Serialize models to models/ directory
     serialize="models",
     # Keep a history of trained serialized models
-    hist=T,
+    save.hist=T,
+    # Keep a history of the data frame that was used for training
+    save.data=T,
     # Function to apply to the data frame
     data.fun=fs.all,
     # Common arguments to caret::train
@@ -45,7 +47,7 @@ common.desc <- list(
         # Always learn returnShipment using all attributes
         form=returnShipment ~ .,
         # Data to Train on
-        data="dt.june",  # pass as string for lazy evaluation
+        data="dt.tiny",  # pass as string for lazy evaluation
         # Maximize the metric
         maximize=F,
         # Use Points to select the best tuning parameters
