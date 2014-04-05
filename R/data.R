@@ -10,6 +10,7 @@ delayedAssign("dt.train.pp", pp(dt.train.raw))
 delayedAssign("dt.train", addlevels(im(cl(dt.train.pp)), dt.test.pp))
 
 delayedAssign("dt.june", subset(dt.train, month(orderDate) == 6))
+delayedAssign("dt.mini", subset(dt.train, week(orderDate) == 6))
 
 delayedAssign("dt.test.raw", read.csv("task/orders_class.txt",
                                       sep=";", na.strings=na.strings))
