@@ -7,7 +7,7 @@ opts_knit$set(root.dir="../")
 
 # DMC2014 Data Analysis
 
-[https://www.ke.informatik.tu-darmstadt.de/svn/DMC14/R/trunk/doc/analysis.Rmd](This document)
+[This document](https://www.ke.informatik.tu-darmstadt.de/svn/DMC14/R/trunk/doc/analysis.Rmd)
 is available at [http://dwxput6p.0x0b.de/analysis.html](http://dwxput6p.0x0b.de/analysis.html)
 in its compiled form and is hooked onto the SVN. Please don't break the server.
 
