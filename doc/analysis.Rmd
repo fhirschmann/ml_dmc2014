@@ -22,6 +22,7 @@ library(vcd)
 
 plot.ddens <- function(v1, v2, ...) {
     plot(density(v1, na.rm=T), col="blue", ...)
+    grid()
     lines(density(v2, na.rm=T), col="red")
     legend("topright", c("Train", "Test"), col = c("blue", "red"), lty = 1)
 }
