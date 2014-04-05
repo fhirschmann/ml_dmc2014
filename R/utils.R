@@ -106,7 +106,7 @@ caret.train <- function(descs, common.desc=(d <- caret.train.default.desc),
         if (!is.null(desc$serialize)) {
             caret.save(fit, name, desc$serialize,
                        if (desc$save.data) desc$train.args$data else NA)
-            if (save.hist) {
+            if (desc$save.hist) {
                 datestr <- format(Sys.time(), "%Y-%m-%d_%H:%M:%S")
                 caret.save(fit, paste(name, datestr, sep="."),
                            file.path(desc$serialize, "hist"),
@@ -138,6 +138,9 @@ caret.save <- function(fit, name, path, dt=NA) {
     }
 }
 
+caret.evaluate <- function(mdir="models") {
+    
+}
 
 caret.load <- function(mdir="models") {
     # Returns a list of serialized models.
