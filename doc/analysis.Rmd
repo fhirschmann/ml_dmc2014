@@ -367,6 +367,13 @@ dt.test[outl.test, ]$creationDate <- NA
 ```
 
 ```{r}
+accsum <- cumsum(table(data.table(dt.merged)[,c("creationDate"),
+                                            by=list(customerID, creationDate)
+                                            ]$creationDate))
+plot(as.Date(names(accsum)), accsum, type="l", main="Number of Registered Accounts",
+     xlab="Date", ylab="# of Accounts", xaxt="n")
+axis(1, as.Date(names(accsum)), format(as.Date(names(accsum)), "%b %y"))
+grid()
 ```
 
 ### returnShipment
