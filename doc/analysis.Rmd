@@ -178,7 +178,7 @@ steps <- c(1:100 * 2, 300)
 ret <- t(sapply(steps, function(x) table(dt.train[with(dt.train, price < x), ]$returnShipment)))
 head(ret)
 plot(steps, ret[, 2] / (ret[, 1] + ret[, 2]), type="l",
-     xlab="Maximum Price (€) in 2€ steps", ylab="Ratio of returnShipment",
+     xlab="Maximum Price (EUR) in 2 EUR steps", ylab="Ratio of returnShipment",
      main="Maximum Price vs returnShipment")
 ```
 
@@ -189,7 +189,7 @@ kable(describe2(dt.train$price, dt.test$price))
 
 ```{r}
 plot.ddens(dt.train$price, dt.test$price, main="Kernel Density Estimate of Price",
-           xlab="price (€)")
+           xlab="price (EUR)")
 ```
 
 Both are positively skewed and thus have a long tail on the right. The kurtosis is
@@ -199,7 +199,7 @@ Zoom in:
 
 ```{r}
 plot.ddens(dt.train$price, dt.test$price, main="Kernel Density Estimate of Price",
-           xlab="price (€)", xlim=c(0, 300))
+           xlab="price (EUR)", xlim=c(0, 300))
 ```
 
 Particularly interesting is the fact that the density is highest around prices
