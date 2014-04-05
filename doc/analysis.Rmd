@@ -146,7 +146,7 @@ sort(table(dt.train$color))
 ### price
 
 ```{r}
-mosaic(returnShipment ~ cut(price, c(10, 20, 30, 40, 50, 60, 1000)),
+mosaic(returnShipment ~ cut(price, c(0, 20, 39, 40, 50, 60, 1000)),
        data=dt.train, main="Mosaic Plot of Price vs returnShipment")
 ```
 
@@ -166,12 +166,12 @@ clue as to what breakpoints to use when discretizing the price.
 
 For example:
 ```{r}
-par(mfrow=c(1, 2))
+par(mfrow=c(1, 2), mar=c(5.1, 5.1, 4.1, 2.1))
 
-barplot(table(with(dt.train, cut(price, c(0, 1:20 * 10 - 0.001, Inf)))), las=2,
-        main="Histogram of Prices (Train)")
-barplot(table(with(dt.test, cut(price, c(0, 1:20 * 10 - 0.001, Inf)))), las=2,
-        main="Histogram of Prices (Test)")
+barplot(table(with(dt.train, cut(price, c(0, 1:20 * 10, Inf), left=T, right=F))), las=1,
+        main="Histogram of Prices (Train)", horiz=T)
+barplot(table(with(dt.test, cut(price, c(0, 1:20 * 10, Inf), left=T, right=F))), las=1,
+        main="Histogram of Prices (Train)", horiz=T)
 ```
 
 ### customerID
