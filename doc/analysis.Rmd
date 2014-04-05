@@ -169,9 +169,9 @@ For example:
 par(mfrow=c(1, 2), mar=c(5.1, 5.1, 4.1, 2.1))
 
 barplot(table(with(dt.train, cut(price, c(0, 1:20 * 10, Inf), left=T, right=F))), las=1,
-        main="Histogram of Prices (Train)", horiz=T)
+        main="Histogram of Discretized Prices (Train)", horiz=T)
 barplot(table(with(dt.test, cut(price, c(0, 1:20 * 10, Inf), left=T, right=F))), las=1,
-        main="Histogram of Prices (Train)", horiz=T)
+        main="Histogram of Discretized Prices (Train)", horiz=T)
 ```
 
 ### customerID
