@@ -58,15 +58,18 @@ cl <- function(dt) {
     #
     # Returns:
     #   A preprocessed data frame
-
-    dt2 <- dt
+    require(plyr)
     
-    # deliveryDate/Time
+    dt2 <- dt
+
+    # Outlier Removal
+    
+    ## deliveryDate/Time
     outliers <- !is.na(dt2$deliveryTime) & dt2$deliveryTime < 0
     dt2[outliers, ]$deliveryTime <- NA
     dt2[outliers, ]$deliveryDate <- NA
     
-    # dateOfBirth/Age
+    ## dateOfBirth/Age
     outliers <- with(dt2,
                      !is.na(dateOfBirth) 
                      & (dateOfBirth == as.Date("1949-11-19")
@@ -75,6 +78,14 @@ cl <- function(dt) {
 
     dt2[outliers, ]$dateOfBirth <- NA
     dt2[outliers, ]$customerAge <- NA
+
+    ## creationDate
+    outliers <- with(dt2, creationDate == as.Date("2011-02-16"))
+    dt2[outliers, ]$creationDate <- NA
+    
+    # Discretization
+    
+    ## TODO
     
     dt2
 }
