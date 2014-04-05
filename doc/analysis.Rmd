@@ -16,9 +16,9 @@ and is hooked onto the SVN. Please don't break the server.
 library(xtable)
 library(ggplot2)
 library(knitr)
+library(data.table)
 library(lubridate)
 library(vcd)
-library(data.table)
 
 plot.ddens <- function(v1, v2, ...) {
     plot(density(v1, na.rm=T), col="blue", ...)
