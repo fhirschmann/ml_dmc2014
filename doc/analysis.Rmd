@@ -165,9 +165,6 @@ sort(table(dt.train$color))
 
 ### price
 
-Let's compare train vs test set using descriptive statistics (first row
-corresponds to the train set):
-
 ```{r}
 mosaic(returnShipment ~ cut(price, c(0, 20, 39, 40, 50, 60, 1000)),
        data=dt.train, main="Mosaic Plot of Price vs returnShipment")
@@ -182,6 +179,8 @@ plot(steps, ret[, 2] / (ret[, 1] + ret[, 2]), type="l",
      main="Maximum Price vs returnShipment")
 ```
 
+Let's compare train vs test set using descriptive statistics (first row
+corresponds to the train set):
 
 ```{r}
 kable(describe2(dt.train$price, dt.test$price))
