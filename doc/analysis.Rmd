@@ -104,7 +104,7 @@ unique(dt.train[outl.train, ]$deliveryDate)
 unique(dt.test[outl.test, ]$deliveryDate)
 ```
 
-That's corret. So set them to NA:
+That's correct. So set them to NA:
 
 ```{r}
 dt.train[outl.train, ]$deliveryDate <- NA
@@ -138,7 +138,7 @@ plot.ddens(dt.train$deliveryTime, dt.test$deliveryTime, xlim=c(0, 40),
 ### color
 
 ```{r}
-table(dt.train$color)
+sort(table(dt.train$color))
 ```
 
 ### manufacturerID
