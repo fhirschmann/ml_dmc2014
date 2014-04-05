@@ -67,7 +67,8 @@ list.update <- function(l1, l2) {
 caret.train.default.desc <- list(train.args=list(),
                                  data.fun=identity,
                                  serialize="models",
-                                 hist=TRUE)
+                                 save.hist=TRUE,
+                                 save.data=TRUE)
 
 caret.train <- function(descs, common.desc=(d <- caret.train.default.desc),
                         train.only=NULL, verbose=TRUE) {
@@ -103,7 +104,14 @@ caret.train <- function(descs, common.desc=(d <- caret.train.default.desc),
     
         # Serialize
         if (!is.null(desc$serialize)) {
-            caret.save(fit, name, desc$serialize, desc$hist)
+            caret.save(fit, name, desc$serialize,
+                       if (desc$save.data) desc$train.args$data else NA)
+            if (save.hist) {
+                datestr <- format(Sys.time(), "%Y-%m-%d_%H:%M:%S")
+                caret.save(fit, paste(name, datestr, sep="."),
+                           file.path(desc$serialize, "hist"),
+                           if (desc$save.data) desc$train.args$data else NA)
+            }
         }
 
         fits[[name]] <- fit
@@ -112,21 +120,24 @@ caret.train <- function(descs, common.desc=(d <- caret.train.default.desc),
     fits
 }
 
-caret.save <- function(fit, name, path, hist=T) {
+caret.save <- function(fit, name, path, dt=NA) {
     fname <- file.path(path, paste(name, "RData", sep="."))
     save(fit, file=fname)
     message("Saved model to: ", fname)
 
     write.csv(fit$results, file=file.path(path, paste(name, "csv", sep=".")),
               row.names=FALSE)
-
-    if (hist) {
-        fname <- file.path(path, "hist",
-                           paste(name, format(Sys.time(), "%Y-%m-%d_%H:%M:%S"), 
-                                 "RData", sep="."))
-        message("Saved model to: ", fname)
+    
+    if (is.data.frame(dt)) {
+        fname <- file.path(path, "data", paste(name, "RData", sep="."))
+        save(dt, file=fname)
+        message("Saved data to: ", fname)
+        
+        write.table(colnames(dt), file=file.path(path, "data", paste(name, "txt", sep=".")),
+                    quote=F, row.names=F, col.names=F)
     }
 }
+
 
 caret.load <- function(mdir="models") {
     # Returns a list of serialized models.
