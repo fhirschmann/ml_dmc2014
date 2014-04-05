@@ -19,6 +19,7 @@ library(knitr)
 library(data.table)
 library(lubridate)
 library(vcd)
+library(psych)
 
 plot.ddens <- function(v1, v2, ...) {
     plot(density(v1, na.rm=T), col="blue", ...)
@@ -29,6 +30,10 @@ plot.ddens <- function(v1, v2, ...) {
 
 norm.lin <- function(x, mi=min(x), ma=max(x)) {
     (x - mi) / (ma - mi)
+}
+
+describe2 <- function(train, test) {
+    rbind(psych::describe(train), psych::describe(test))[, 3:13]
 }
 ```
 
@@ -128,6 +133,12 @@ hist(dt.train$deliveryTime, main="Histogram of deliveryTime (Train)", xlab="Time
 hist(dt.test$deliveryTime, main="Histogram of deliveryTime (Test)", xlab="Time (days)")
 ```
 
+Do some descriptive statistics:
+
+```{r}
+kable(describe2(dt.train$price, dt.test$price))
+```
+
 A kernel density estimate is probably better:
 
 ```{r}
@@ -136,6 +147,9 @@ plot.ddens(dt.train$deliveryTime, dt.test$deliveryTime,
 plot.ddens(dt.train$deliveryTime, dt.test$deliveryTime, xlim=c(0, 40),
            main="Kernel Density Estimate of Delivery Time", xlab="Time (days)")
 ```
+
+Both are positively skewed and thus have a long tail on the right. The kurtosis is
+much higher for the train set, hence the higher peak.
 
 ### itemID
 
@@ -151,6 +165,9 @@ sort(table(dt.train$color))
 
 ### price
 
+Let's compare train vs test set using descriptive statistics (first row
+corresponds to the train set):
+
 ```{r}
 mosaic(returnShipment ~ cut(price, c(0, 20, 39, 40, 50, 60, 1000)),
        data=dt.train, main="Mosaic Plot of Price vs returnShipment")
@@ -165,10 +182,20 @@ plot(steps, ret[, 2] / (ret[, 1] + ret[, 2]), type="l",
      main="Maximum Price vs returnShipment")
 ```
 
+
+```{r}
+kable(describe2(dt.train$price, dt.test$price))
+```
+
 ```{r}
 plot.ddens(dt.train$price, dt.test$price, main="Kernel Density Estimate of Price",
            xlab="price (€)")
 ```
+
+Both are positively skewed and thus have a long tail on the right. The kurtosis is
+higher for the train set, hence the higher peak.
+
+Zoom in:
 
 ```{r}
 plot.ddens(dt.train$price, dt.test$price, main="Kernel Density Estimate of Price",
