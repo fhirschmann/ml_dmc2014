@@ -136,7 +136,7 @@ hist(dt.test$deliveryTime, main="Histogram of deliveryTime (Test)", xlab="Time (
 Do some descriptive statistics:
 
 ```{r}
-kable(describe2(dt.train$price, dt.test$price))
+kable(describe2(dt.train$deliveryTime, dt.test$deliveryTime))
 ```
 
 A kernel density estimate is probably better:
@@ -355,18 +355,27 @@ dt.test[outl.test, ]$dateOfBirth <- NA
 dt.test[outl.test, ]$customerAge <- NA
 ```
 
+Let's do some descriptive statistics:
+
+```{r}
+kable(describe2(dt.train$customerAge, dt.test$customerAge))
+```
+
 Then we do a Quantile-Quantile plot against the normal distribution:
 ```{r}
 par(mfrow=c(1, 2))
 
 qqnorm(dt.train$customerAge, main="Customer Age Normal Q-Q Plot (Train)")
+grid()
 qqline(dt.train$customerAge, col="red")
 qqnorm(dt.test$customerAge, main="Customer Age Normal Q-Q Plot (Test)")
+grid()
 qqline(dt.train$customerAge, col="red")
 ```
 
-On the extremes, they are are not really normally distributed, but very close!
-
+You can clearly see that the age is normally distributed. However, 
+due to the slightly positive skew and kurtosis, you can see that the distribution
+deviates from the normal distribution in its tails.
 
 #### Customer Age vs returnShipment
 
@@ -379,6 +388,7 @@ x[1:10, ]  # first 10 elements
 r <- x[, 2] / (x[, 1] + x[, 2])  # ratio of returned items for each age
 plot(rownames(r), r, type="l", main="Ratio of Returned Items vs Age",
      xlab="Age", ylab="Returned Items (Ratio)", col="blue")
+grid()
 lines(supsmu(as.numeric(rownames(r)), r), col="red")
 legend("topright", c("Return Ratio", "Return Ratio (Smoothed (Friedman 1984))"),
        col = c("blue", "red"), lty = 1)
