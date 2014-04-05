@@ -360,7 +360,9 @@ Then we do a Quantile-Quantile plot against the normal distribution:
 par(mfrow=c(1, 2))
 
 qqnorm(dt.train$customerAge, main="Customer Age Normal Q-Q Plot (Train)")
+qqline(dt.train$customerAge, col="red")
 qqnorm(dt.test$customerAge, main="Customer Age Normal Q-Q Plot (Test)")
+qqline(dt.train$customerAge, col="red")
 ```
 
 On the extremes, they are are not really normally distributed, but very close!
