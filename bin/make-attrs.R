@@ -4,9 +4,13 @@
 source("R/data.R")
 
 # Frequency of the customer ID (corresponds to the number of items ordered per customer)
-write.csv(data.frame(Freq=sort(table(c(dt.train$customerID, dt.test$customerID)),
-                               decreasing=T)),
-          file="task/customerid_freq.csv", quote=F)
+customerID.freq <- data.frame(table(factor(c(as.character(dt.train$customerID),
+                                             as.character(dt.test$customerID)))))
+colnames(customerID.freq) <- c("customerID", "Freq")
+customerID.freq <- customerID.freq[order(customerID.freq$Freq, decreasing=T), ]
+rownames(customerID.freq) <- 1:nrow(customerID.freq)
+
+write.csv(customerID.freq, file="task/customerid_freq.csv", quote=F)
 
 # Attribute itemType
 train.shoeIDs <- unique(dt.train[with(dt.train,

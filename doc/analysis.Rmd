@@ -201,7 +201,8 @@ So it does make sense to use it in some form.
 #### Is there a customer ID that appears unusually often?
 
 ```{r}
-tail(sort(table(c(dt.train$customerID, dt.test$customerID))), 10)
+tail(sort(table(dt.train$customerID)), 10)
+tail(sort(table(dt.test$customerID)), 10)
 ```
 
 No.
