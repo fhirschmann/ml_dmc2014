@@ -472,9 +472,11 @@ grid()
 
 ```{r}
 dt.train$customerAge <- NULL
+dt.train$deliveryTime <- NULL
 write.table(dt.train, file="task/orders_train.clean.txt", sep=";", na="?",
             quote=F, row.names=F)
 dt.test$customerAge <- NULL
+dt.test$deliveryTime <- NULL
 write.table(dt.test, file="task/orders_class.clean.txt", sep=";", na="?",
             quote=F, row.names=F)
 ```
