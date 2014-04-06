@@ -114,6 +114,15 @@ mosaic(returnShipment ~ month(orderDate), data=dt.train,
        main="Mosaic Plot of Month vs returnShipment")
 ```
 
+#### orderWeekday
+
+```{r}
+mosaic(returnShipment ~ wday(orderDate, label=T, abbr=F), data=dt.train,
+       main="Mosaic Plot of Weekday vs returnShipment")
+```
+
+#### orderMonth + orderWeekday
+
 ```{r}
 mosaic(returnShipment ~ month(orderDate) + wday(orderDate, label=T, abbr=F),
        data=dt.train, main="Mosaic Plot of Weekday/Month vs returnShipment")
