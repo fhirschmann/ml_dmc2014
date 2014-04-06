@@ -468,6 +468,13 @@ grid()
 
 ### returnShipment
 
+## Cleaned Data
+
+```{r}
+write.csv(dt.train, file="task/orders_train.clean.txt", sep=";", na="?")
+write.csv(dt.test, file="task/orders_class.clean.txt", sep=";", na="?")
+```
+
 ## SessionInfo
 
 ```{r}
