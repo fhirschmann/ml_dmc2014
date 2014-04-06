@@ -109,6 +109,11 @@ with(dt.test, length(unique(orderItemID)) / length(orderItemID))
 qplot(month(orderDate, label=T), fill=group, data=dt.merged, position="dodge", binwidth=1)
 ```
 
+```{r}
+mosaic(returnShipment ~ month(orderDate), data=dt.train,
+       main="Mosaic Plot of Month vs returnShipment")
+```
+
 
 ### deliveryDate
 
