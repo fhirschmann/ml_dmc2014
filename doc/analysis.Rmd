@@ -475,6 +475,10 @@ write.csv(dt.train, file="task/orders_train.clean.txt", sep=";", na="?")
 write.csv(dt.test, file="task/orders_class.clean.txt", sep=";", na="?")
 ```
 
+The cleaned data is [available](http://dwxput6p.0x0b.de/).
+Do note that *no* instances have been removed. The
+outliers simply had their outlying attribute set to NA/?.
+
 ## SessionInfo
 
 ```{r}
