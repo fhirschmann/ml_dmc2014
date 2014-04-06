@@ -471,8 +471,10 @@ grid()
 ## Cleaned Data
 
 ```{r}
-write.csv(dt.train, file="task/orders_train.clean.txt", sep=";", na="?")
-write.csv(dt.test, file="task/orders_class.clean.txt", sep=";", na="?")
+dt.train$customerAge <- NULL
+write.table(dt.train, file="task/orders_train.clean.txt", sep=";", na="?", quote=F)
+dt.test$customerAge <- NULL
+write.table(dt.test, file="task/orders_class.clean.txt", sep=";", na="?", quote=F)
 ```
 
 The cleaned data is [available](http://dwxput6p.0x0b.de/).
