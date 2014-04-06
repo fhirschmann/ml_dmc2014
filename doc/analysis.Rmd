@@ -50,6 +50,28 @@ dt.merged <- rbind(data.frame(dt.train, group="train"),
                    data.frame(dt.test, group="test", returnShipment=NA))
 ```
 
+## Score Function
+
+The score function is given by
+
+```{r}
+score <- function(pred, obs) sum(abs(obs - pred))
+```
+
+### Baseline
+
+Always say 1:
+
+```{r}
+score(1, dt.train$returnShipment)
+```
+
+Always say 0:
+
+```{r}
+score(0, dt.train$returnShipment)
+```
+
 ## General data Analysis
 
 ### Attribute #, Types, Factor Levels, ...
