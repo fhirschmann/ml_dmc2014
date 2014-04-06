@@ -472,9 +472,11 @@ grid()
 
 ```{r}
 dt.train$customerAge <- NULL
-write.table(dt.train, file="task/orders_train.clean.txt", sep=";", na="?", quote=F)
+write.table(dt.train, file="task/orders_train.clean.txt", sep=";", na="?",
+            quote=F, include.rownames=F)
 dt.test$customerAge <- NULL
-write.table(dt.test, file="task/orders_class.clean.txt", sep=";", na="?", quote=F)
+write.table(dt.test, file="task/orders_class.clean.txt", sep=";", na="?",
+            quote=F, include.rownames=F)
 ```
 
 The cleaned data is [available](http://dwxput6p.0x0b.de/).
