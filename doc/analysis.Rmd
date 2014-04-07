@@ -198,7 +198,17 @@ much higher for the train set, hence the higher peak.
 ### color
 
 ```{r}
-sort(table(dt.train$color))
+col.train <- data.frame(table(dt.train$color))
+colnames(col.train) <- c("color", "Train")
+col.train$Train <- round(col.train$Train / nrow(dt.train), 8)
+
+col.test <- data.frame(table(dt.test$color))
+colnames(col.test) <- c("color", "Test")
+col.test$Test <- round(col.test$Test / nrow(dt.test), 8)
+
+m <- merge(col.train, col.test, by=1, all.x=T, all.y=T)
+m$Ratio <- m$Train / m$Test
+m[order(m$Ratio, decreasing=T), ]
 ```
 
 ### manufacturerID
