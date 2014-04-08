@@ -37,7 +37,7 @@ describe2 <- function(train, test) {
 }
 
 returnRate <- function(subset) {
-    sum(subset$returnRate) / nrow(subset)
+    sum(subset$returnShipment) / nrow(subset)
 }
 ```
 
