@@ -35,6 +35,10 @@ norm.lin <- function(x, mi=min(x), ma=max(x)) {
 describe2 <- function(train, test) {
     rbind(psych::describe(train), psych::describe(test))[, 3:13]
 }
+
+returnRate <- function(subset) {
+    sum(subset$returnRate) / nrow(subset)
+}
 ```
 
 ## Read in the Data
@@ -477,6 +481,50 @@ grid()
 ```
 
 ### returnShipment
+
+## holiday skew
+
+Train data date range:
+
+```{r}
+min(dt.train$orderDate)
+max(dt.train$orderDate)
+```
+
+Test data date range:
+
+```{r}
+min(dt.test$orderDate)
+max(dt.test$orderDate)
+```
+
+Easter Sunday 2012: 2012-04-08
+Easter Sunday 2013: 2012-03-31
+
+This means, the train data includes the week before Easter Sunday for both 2012 and 2013 while the test data represents the 30 days after Easter Sunday.
+
+```{r}
+train.after.easter <- subset(dt.train, orderDate >= ymd('2012-04-09') & orderDate < (ymd('2012-04-09') + days(30)))
+
+nrow(train.after.easter)
+nrow(dt.test)
+
+nrow(train.after.easter) / nrow(dt.test)
+
+returnRate(train.after.easter)
+```
+
+The train data set for the relevant period of the previous year is 71.99%.
+The return rate is 48.50% for the after easter period.
+
+TODO
+
+- include school holidays (easter & pentecost), filter by federal state
+- compare to pentecost holidays
+- compare to "innocent" timeperiod
+    - what's a good candidate?
+- check christmas skew
+- check distributions of train.after.easter vs dt.test
 
 ## Cleaned Data
 
