@@ -1,0 +1,17 @@
+Simon:
+
+- manufacturerID: Bezieht sich itemID darauf? Preissegmente?
+- color: Zusammenfassung, Modetrends
+
+Fabian:
+
+- Age fixen
+
+Christoph:
+
+- Preise: Range/Abschöpfung/Prämienpreise
+          Größe/Farbe vs. Price, Datum
+
+Michael:
+
+- Holiday Untersuchung
