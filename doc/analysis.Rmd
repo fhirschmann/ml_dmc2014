@@ -504,7 +504,7 @@ Easter Sunday 2013: 2012-03-31
 This means, the train data includes the week before Easter Sunday for both 2012 and 2013 while the test data represents the 30 days after Easter Sunday.
 
 ```{r}
-train.after.easter <- subset(dt.train, orderDate >= as.Date('2012-04-09') & orderDate < (as.Date-04-09') + days(30)))
+train.after.easter <- subset(dt.train, orderDate >= as.Date('2012-04-09') & orderDate < (as.Date('2012-04-09') + days(30)))
 
 nrow(train.after.easter)
 nrow(dt.test)
