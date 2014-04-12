@@ -62,7 +62,7 @@ pp <- function(dt) {
                       "nature"="other", #?
                       "ancient"="other", #?
                       "curry"="yellow",
-                      "torquoise"="blue",
+                      "turquoise"="blue",
                       "navy"="blue",
                       "brown"="brown",
                       "aubergine"="red", #brown?
@@ -90,6 +90,7 @@ pp <- function(dt) {
                       "berry"="red",
                       "grey"="grey",
                       "ocher"="brown",
+					  "avocado"="green",
                       "magenta"="red",
                       "olive"="green",
                       "white"="white",
