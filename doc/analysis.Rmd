@@ -212,7 +212,7 @@ col.test$Test <- round(col.test$Test / nrow(dt.test), 8)
 
 m <- merge(col.train, col.test, by=1, all.x=T, all.y=T)
 m$Ratio <- m$Train / m$Test
-m[order(m$Ratio, decreasing=T), ]
+print(m[order(m$Ratio, decreasing=T), ], digits=8)
 ```
 
 ### manufacturerID
