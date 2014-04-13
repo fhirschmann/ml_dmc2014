@@ -383,8 +383,8 @@ dt.train[outl.train, ]$dateOfBirth <- NA
 Let's compute an age attribute:
 
 ```{r}
-dt.train$customerAge <- as.integer(2013 - year(dt.train$dateOfBirth))
-dt.test$customerAge <- as.integer(2013 - year(dt.test$dateOfBirth))
+dt.train$customerAge <- as.integer(year(dt.train$orderDate) - year(dt.train$dateOfBirth))
+dt.test$customerAge <- as.integer(year(dt.test$orderDate) - year(dt.test$dateOfBirth))
 ```
 
 And plot it:
@@ -418,18 +418,34 @@ Then we do a Quantile-Quantile plot against the normal distribution:
 ```{r}
 par(mfrow=c(1, 2))
 
-qqnorm(dt.train$customerAge, main="Customer Age Normal Q-Q Plot (Train)")
+qqnorm(dt.train$customerAge, main="Age per item Normal Q-Q Plot (Train)")
 grid()
 qqline(dt.train$customerAge, col="red")
-qqnorm(dt.test$customerAge, main="Customer Age Normal Q-Q Plot (Test)")
+qqnorm(dt.test$customerAge, main="Age per item Normal Q-Q Plot (Test)")
 grid()
 qqline(dt.train$customerAge, col="red")
 ```
 
 You can clearly see that the age is normally distributed. However, 
 due to the slightly positive skew and kurtosis, you can see that the distribution
-deviates from the normal distribution in its tails.
+deviates from the normal distribution in its tails. Do note that this is actually
+the customer age per orderItem (per instance), i.e. customers are counted more than
+one time if they have ordered more than one item.
 
+What if we count every customer only once?
+```{r}
+dt.train.customer <- dt.train[!duplicated(dt.train$customerID), ]
+dt.test.customer <- dt.test[!duplicated(dt.test$customerID), ]
+
+par(mfrow=c(1, 2))
+
+qqnorm(dt.train.customer$customerAge, main="Age Normal Q-Q Plot (Train)")
+grid()
+qqline(dt.train.customer$customerAge, col="red")
+qqnorm(dt.test.customer$customerAge, main="Age Normal Q-Q Plot (Test)")
+grid()
+qqline(dt.train.customer$customerAge, col="red")
+```
 #### Customer Age vs returnShipment
 
 First, let's create a high-dimensional contingency table:
