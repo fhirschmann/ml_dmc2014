@@ -610,3 +610,7 @@ outliers simply had their outlying attribute set to NA/?.
 ```{r}
 sessionInfo()
 ```
+
+```{r}
+date()
+```
