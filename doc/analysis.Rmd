@@ -246,7 +246,7 @@ print(m[order(m$Ratio, decreasing=T), ], digits=8)
 ```
 
 Too many colors, many almost the same ... mapping:
-```{r}
+```{r, message=F}
 colors <- function(x) {revalue(x, c("dark denim"="black", #blue?
                       "dark navy"="blue",
                       "ash"="grey",
