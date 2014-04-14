@@ -20,6 +20,7 @@ library(data.table)
 library(lubridate)
 library(vcd)
 library(psych)
+library(plyr)
 
 plot.ddens <- function(v1, v2, ...) {
     d1 <- density(v1, na.rm=T)
@@ -245,8 +246,7 @@ print(m[order(m$Ratio, decreasing=T), ], digits=8)
 ```
 
 Too many colors, many almost the same ... mapping:
-```{r, warning=FALSE}
-library(plyr)
+```{r}
 colors <- function(x) {revalue(x, c("dark denim"="black", #blue?
                       "dark navy"="blue",
                       "ash"="grey",
@@ -341,45 +341,48 @@ dt.test$fewcolors <- colors(dt.test$color)
 as you can see, not really clear to say for each color.
 plotted:
 
-```{r, warning=FALSE}
-p <- rbind(data.frame(prop.table(table(dt.test$fewcolors)), group="test"), data.frame(prop.table(table(dt.train$fewcolors)), group="train"))
+```{r, warning=F, message=F}
+p <- rbind(data.frame(prop.table(table(dt.test$fewcolors)), group="test"),
+           data.frame(prop.table(table(dt.train$fewcolors)), group="train"))
 
-ggplot(p, aes(x=Var1, y=Freq, fill=group)) + geom_bar(position="dodge") + ggtitle("Color Frequencies in the Train and Test Set")
-
+ggplot(p, aes(x=Var1, y=Freq, fill=group)) + geom_bar(position="dodge") + 
+    ggtitle("Color Frequencies in the Train and Test Set") +
+    xlab("Color") + ylab("Frequency")
 ```
 
-roughly the same distribution, green differs.
+Roughly the same distribution, but green shows the greatest difference.
 Additionally: Looked up spring/summer trends 2012/2013.
-2012 -> knallig / sandfarben / sommerfarbe himmelblau / strahlendes weiß
-2013 -> grafische muster / glänzend / transparent / asiastyle
----> generell: schwer zu sagen da jede modeseite da andere meinungen hat
 
+- 2012: knallig / sandfarben / sommerfarbe himmelblau / strahlendes weiß
+- 2013: grafische muster / glänzend / transparent / asiastyle
+
+Generell schwer zu sagen, da jede modeseite da andere Meinungen hat.
 
 ### manufacturerID
 
-see if itemIDs show up are present at more than on manufacturer:
+#### Is the same itemID used with two differing manufacturers?
 
 ```{r}
 nrow(unique(dt.train[c("manufacturerID", "itemID")]))
 length(unique(dt.train$itemID))
+
 nrow(unique(dt.test[c("manufacturerID", "itemID")]))
 length(unique(dt.test$itemID))
 
 ```
 
-train: 4 itemIDs have more than one manufacturer
-test: itemID is unique
+- train: 4 itemIDs have more than one manufacturer
+- test: itemID is unique
 
 what about manufacturerID in train and test?
 
 ```{r}
 length(unique(dt.train$manufacturerID))
-length(setdiff(dt.train$manufacturerID,dt.test$manufacturerID))
-length(setdiff(dt.test$manufacturerID,dt.train$manufacturerID))
+length(setdiff(dt.train$manufacturerID, dt.test$manufacturerID))
+length(setdiff(dt.test$manufacturerID, dt.train$manufacturerID))
 ```
-165 manufacturer, 119 of them also in the test set
--> 46 manufacturers do appear in the train but not the testset
-
+- 165 manufacturer, 119 of them also in the test set
+- 46 manufacturers do appear in the train but not the test set
 
 ### price
 
