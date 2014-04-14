@@ -211,6 +211,20 @@ length(unique(dt.test$itemID))
 
 Observation: Almost all items in the test set are present in the train set.
 
+How many instances (in %) are in the intersect?
+
+```{r}
+i <- intersect(dt.train$itemID, dt.test$itemID)
+nrow(dt.train[dt.train$itemID %in% i,]) / nrow(dt.train) * 100
+```
+
+How about the train set?
+
+```{r}
+nrow(dt.test[dt.test$itemID %in% i,]) / nrow(dt.test) * 100
+```
+
+
 ### size
 
 ### color
@@ -322,13 +336,13 @@ How many instances (in %) are in the intersect?
 
 ```{r}
 i <- intersect(dt.train$customerID, dt.test$customerID)
-nrow(dt.train[dt.train$customerID %in% i,]) / nrow(dt.train)
+nrow(dt.train[dt.train$customerID %in% i,]) / nrow(dt.train) * 100
 ```
 
 How about the train set?
 
 ```{r}
-nrow(dt.test[dt.test$customerID %in% i,]) / nrow(dt.test)
+nrow(dt.test[dt.test$customerID %in% i,]) / nrow(dt.test) * 100
 ```
 
 #### Is there a customer ID that appears unusually often?
