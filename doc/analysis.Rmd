@@ -545,15 +545,13 @@ grid()
 Train data date range:
 
 ```{r}
-min(dt.train$orderDate)
-max(dt.train$orderDate)
+range(dt.train$orderDate)
 ```
 
 Test data date range:
 
 ```{r}
-min(dt.test$orderDate)
-max(dt.test$orderDate)
+range(dt.test$orderDate)
 ```
 
 Easter Sunday 2012: 2012-04-08
