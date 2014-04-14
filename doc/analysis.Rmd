@@ -197,6 +197,20 @@ much higher for the train set, hence the higher peak.
 
 ### itemID
 
+#### How large is the intersection between the train and test set?
+
+```{r}
+length(intersect(dt.train$itemID, dt.test$itemID))
+```
+
+Out of how many customers?
+```{r}
+length(unique(dt.train$itemID))
+length(unique(dt.test$itemID))
+```
+
+Observation: Almost all items in the test set are present in the train set.
+
 ### size
 
 ### color
@@ -296,10 +310,10 @@ Not at all.
 length(intersect(dt.train$customerID, dt.test$customerID))
 ```
 
-Out of how many instances:
+Out of how many customers?
 ```{r}
-nrow(dt.train)
-nrow(dt.test)
+length(unique(dt.train$customerID))
+length(unique(dt.test$customerID))
 ```
 
 So it does make sense to use it in some form.
