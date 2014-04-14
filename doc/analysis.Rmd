@@ -271,7 +271,7 @@ kable(describe2(dt.train$price, dt.test$price))
 
 ```{r}
 plot.ddens(dt.train$price, dt.test$price, main="Kernel Density Estimate of Price",
-           xlab="price (EUR)")
+           xlab="price (EUR)", ylim=c(0, 0.018))
 ```
 
 Both are positively skewed and thus have a long tail on the right. The kurtosis is
@@ -281,7 +281,7 @@ Zoom in:
 
 ```{r}
 plot.ddens(dt.train$price, dt.test$price, main="Kernel Density Estimate of Price",
-           xlab="price (EUR)", xlim=c(0, 300))
+           xlab="price (EUR)", xlim=c(0, 300), ylim=c(0, 0.020))
 ```
 
 Particularly interesting is the fact that the density is highest around prices
