@@ -318,6 +318,19 @@ length(unique(dt.test$customerID))
 
 So it does make sense to use it in some form.
 
+How many instances (in %) are in the intersect?
+
+```{r}
+i <- intersect(dt.train$customerID, dt.test$customerID)
+nrow(dt.train[dt.train$customerID %in% i,]) / nrow(dt.train)
+```
+
+How about the train set?
+
+```{r}
+nrow(dt.test[dt.test$customerID %in% i,]) / nrow(dt.test)
+```
+
 #### Is there a customer ID that appears unusually often?
 
 ```{r}
