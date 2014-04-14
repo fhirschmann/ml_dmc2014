@@ -54,7 +54,7 @@ pp <- function(dt) {
                       "mahagoni"="red", #brown?
                       "gold"="yellow",
                       "dark oliv"="green",
-                      "striped"="striped",
+                      "striped"="other",
                       "anthracite"="black", #grey?
                       "antique pink"="red",
                       "floral"="other", #?
