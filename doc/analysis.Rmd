@@ -22,9 +22,10 @@ library(vcd)
 library(psych)
 
 plot.ddens <- function(v1, v2, ...) {
-    plot(density(v1, na.rm=T), col="blue", ...)
+    d1 <- density(v1, na.rm=T)
+    plot(d1, col="blue")
     grid()
-    lines(density(v2, na.rm=T), col="red")
+    lines(density(v2, na.rm=T, bw=d1$bw), col="red")
     legend("topright", c("Train", "Test"), col = c("blue", "red"), lty = 1)
 }
 
