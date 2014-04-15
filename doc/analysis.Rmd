@@ -704,12 +704,14 @@ nrow(train.after.easter)
 nrow(dt.test)
 
 nrow(train.after.easter) / nrow(dt.test)
-
-returnRate(train.after.easter)
 ```
+The train data size for the relevant period of the previous year is 71.99% of the test data size.
 
-The train data set for the relevant period of the previous year is 71.99%.
-The return rate is 48.50% for the after easter period.
+```{r}
+returnRate(train.after.easter)
+returnRate(dt.train)
+```
+The return rate is 48.50% for the after easter period with is similar to the overall return rate.
 
 TODO
 
@@ -721,9 +723,8 @@ TODO
 - include school holidays (easter & pentecost), filter by federal state
 - compare to pentecost holidays
 - compare to "innocent" timeperiod
-    - what's a good candidate?
+    - what's a good candidate? -> september
 - check christmas skew
-- check distributions of train.after.easter vs dt.test
 
 ## Cleaned Data
 
