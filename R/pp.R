@@ -8,10 +8,12 @@ pp <- function(dt) {
     #
     # Returns:
     #   A preprocessed data frame
+    require(data.table)
     require(lubridate)
     require(plyr)
     
     dt2 <- dt
+    dt2.tbl <- data.table(dt)
     message("Preprocessing Data Frame")
 
     # Nominal Predictors    
@@ -44,6 +46,8 @@ pp <- function(dt) {
     dt2$orderWeekday <- as.ordered(as.factor(lubridate::wday(dt2$orderDate, label=T, abbr=F)))
 
     dt2$customerAge <- as.integer(2013 - year(dt2$dateOfBirth))
+    
+    dt2$sameItemsOrdered <- dt2.tbl[,x := .N, by=c("itemID", "customerID", "orderDate")]$x
     
     #summarize colors:
     colors <- dt2$color
