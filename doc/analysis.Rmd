@@ -226,6 +226,22 @@ How about the train set?
 nrow(dt.test[dt.test$itemID %in% i,]) / nrow(dt.test) * 100
 ```
 
+#### Are there items that are always returned?
+
+```{r}
+x <- as.data.frame.matrix(structable(returnShipment ~ itemID, data=dt.train))
+head(x[x[["0"]] == 0, ])
+```
+
+Yes, but for items which have only been ordered a few times this is not
+really significant. Let's see about the items which have been ordered
+more than 5 times:
+
+```{r}
+x[x[["0"]] == 0 & x[["1"]] > 5,]
+```
+
+Only three items that have been ordered a total of 29 times.
 
 ### size
 
@@ -493,6 +509,41 @@ tail(sort(table(dt.test$customerID)), 10)
 
 No.
 
+#### Are there customers that always return items?
+
+```{r}
+x <- as.data.frame.matrix(structable(returnShipment ~ customerID, data=dt.train))
+head(x[x[["0"]] == 0, ])
+```
+
+Yes, but for cases where these customers have only ordered a few times this is not
+really significant. Let's see about the customers which have ordered
+more than 9 items:
+
+```{r}
+nrow(x[x[["0"]] == 0 & x[["1"]] > 9,])
+```
+
+There are 146 of these customers.
+
+Another import aspect might be how many orders these customers have placed:
+
+```{r}
+z <- dt.train[dt.train$customerID %in% rownames(x[x[["0"]] == 0, ]), c("customerID", "orderDate")]
+z <- z[!duplicated(z), ]
+zz <- as.data.frame(table(z$customerID))
+table(zz$Freq)
+```
+
+The 6225 customers who have placed only 1 order and returned all of the items
+are negligible. 
+
+If we set the cutoff at 2, i.e. customers who have placed more than 2 orders,
+how many test set instances does this relate to?
+
+```{r}
+nrow(dt.test[dt.test$customerID %in% zz[zz$Freq > 2,]$Var1, ])
+```
 ### salutation
 
 It's a women store:
