@@ -10,6 +10,9 @@ delayedAssign("dt.train.pp", pp(dt.train.raw))
 delayedAssign("dt.train", addlevels(im(cl(dt.train.pp)), dt.test.pp))
 
 delayedAssign("dt.june", subset(dt.train, month(orderDate) == 6))
+delayedAssign("dt.july", subset(dt.train, month(orderDate) == 7))
+delayedAssign("dt.august", subset(dt.train, month(orderDate) == 8))
+
 delayedAssign("dt.mini", subset(dt.train, week(orderDate) == 6))
 delayedAssign("dt.tiny", subset(dt.mini, wday(orderDate) == 1))
 
