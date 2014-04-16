@@ -4,7 +4,7 @@ source("R/utils.R")
 na.strings <- c("NA", "", "??", "?")
 
 # Lazy evaluation: dt.train and dt.test get constructed when needed
-delayedAssign("dt.train.raw", read.csv("task/orders_train.txt",
+delayedAssign("dt.train.raw", read.csv("task/data_train.txt",
                                        sep=";", na.strings=na.strings))
 delayedAssign("dt.train.pp", pp(dt.train.raw))
 delayedAssign("dt.train", addlevels(im(cl(dt.train.pp)), dt.test.pp))
@@ -16,7 +16,7 @@ delayedAssign("dt.august", subset(dt.train, month(orderDate) == 8))
 delayedAssign("dt.mini", subset(dt.train, week(orderDate) == 6))
 delayedAssign("dt.tiny", subset(dt.mini, wday(orderDate) == 1))
 
-delayedAssign("dt.test.raw", read.csv("task/orders_class.txt",
+delayedAssign("dt.test.raw", read.csv("task/data_test.txt",
                                       sep=";", na.strings=na.strings))
 delayedAssign("dt.test.pp", pp(dt.test.raw))
 delayedAssign("dt.test", addlevels(im(cl(dt.test.pp)), dt.train.pp))
