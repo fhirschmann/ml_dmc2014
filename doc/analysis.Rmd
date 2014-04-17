@@ -727,6 +727,15 @@ axis(1, as.Date(names(accsum)), format(as.Date(names(accsum)), "%b %y"))
 grid()
 ```
 
+#### Account Age
+```{r}
+dt.train$accountAge <- as.numeric(dt.test$orderDate - dt.test$creationDate)
+dt.test$accountAge <- as.numeric(dt.test$orderDate - dt.test$creationDate)
+
+plot.ddens(dt.train$accountAge, dt.test$accountAge, main="Account Age at Order Date",
+           xlab="Age (days)")
+```
+
 ### returnShipment
 
 ## holiday skew
@@ -782,10 +791,12 @@ TODO
 ```{r}
 dt.train$customerAge <- NULL
 dt.train$deliveryTime <- NULL
+dt.train$accountAge <- NULL
 write.table(dt.train, file="task/orders_train.clean.txt", sep=";", na="?",
             quote=F, row.names=F)
 dt.test$customerAge <- NULL
 dt.test$deliveryTime <- NULL
+dt.test$accountAge <- NULL
 write.table(dt.test, file="task/orders_class.clean.txt", sep=";", na="?",
             quote=F, row.names=F)
 ```
