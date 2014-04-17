@@ -742,15 +742,6 @@ plot.ddens(dt.train$accountAge, dt.test$accountAge, main="Account Age at Order D
 ```
 
 ```{r}
-par(mfrow=c(1, 2))
-
-barplot(prop.table(table(cut(dt.train$accountAge, c(0, 50, 200, Inf)))), ylim=c(0, 1),
-        main="Account Age (Train)", xlab="Age (days)", ylab="Frequency")
-barplot(prop.table(table(cut(dt.test$accountAge, c(0, 50, 200, Inf)))), ylim=c(0, 1),
-        main="Account Age (Test)", xlab="Age (days)", ylab="Frequency")
-```
-
-```{r}
 mosaic(returnShipment ~ cut(accountAge, c(0, 50, 200, Inf)), data=dt.train,
        main="Account Age vs returnShipment")
 ```
