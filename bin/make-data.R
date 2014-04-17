@@ -22,7 +22,11 @@ feat.simple <- function(dt) {
     # Add some features
     dt2$orderWeekday <- as.ordered(as.factor(lubridate::wday(dt2$orderDate, label=T, abbr=F)))
     
-    dt2$customerAge <- as.integer(2013 - year(dt2$dateOfBirth))
+    # Customer Age in Years
+    dt2$customerAge <- as.integer(year(dt2$orderDate) - year(dt2$dateOfBirth))
+    
+    # Account Age in Days
+    dt2$accountAge <- as.numeric(dt2$orderDate - dt2$creationDate)
     
     dt2$sameItemsOrdered <- dt2.tbl[,x := .N, by=c("itemID", "customerID", "orderDate")]$x
     
