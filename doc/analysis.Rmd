@@ -729,17 +729,12 @@ grid()
 
 #### Account Age
 ```{r}
-dt.train$accountAge <- as.numeric(dt.test$orderDate - dt.test$creationDate)
+dt.train$accountAge <- as.numeric(dt.train$orderDate - dt.train$creationDate)
 dt.test$accountAge <- as.numeric(dt.test$orderDate - dt.test$creationDate)
 
 plot.ddens(dt.train$accountAge, dt.test$accountAge, main="Account Age at Order Date",
            xlab="Age (days)")
 ```
-
-You can clearly see that the test set has lots of very old accounts, whilst
-the train set doesn't.
-
-To get an equal distribution, we discretize:
 
 ```{r}
 par(mfrow=c(1, 2))
@@ -806,6 +801,13 @@ TODO
 - compare to "innocent" timeperiod
     - what's a good candidate? -> september
 - check christmas skew
+
+### afterEaster as Train/Test set (CV)
+
+```{r}
+dt.train.ae <- train.after.easter
+
+```
 
 ## Cleaned Data
 
