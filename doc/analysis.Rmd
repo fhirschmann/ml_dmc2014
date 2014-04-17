@@ -248,6 +248,16 @@ x[x[["0"]] == 0 & x[["1"]] > 5,]
 
 Only three items that have been ordered a total of 29 times.
 
+How about the intersection of the train and testset over the months?
+
+```{r}
+dt.merged$month <- ((year(dt.merged$orderDate)-2012)*12 + month(dt.merged$orderDate)) - 3
+tbl2monthPercent <- t(sapply(1:12, function(w) length(intersect(unique(dt.test$itemID), unique(dt.merged[dt.merged$month == w, ]$itemID))) / length(unique(dt.test$itemID))))
+tbl2monthPercent
+```
+
+Bad: The first three months which seem like a similar time for purchases clothing-style-wise (spring/summer collection) only have a 14-15 percent intersection with the testset. Good: The last three months have a high intersection with over 90 percent. You can also really see the change from winter to summer collection, within one month (from december to january), the intersection jumps from 44 to 92 percent.
+
 ### size
 
 ### color
@@ -372,6 +382,31 @@ ggplot(p, aes(x=Var1, y=Freq, fill=group)) + geom_bar(position="dodge") +
 ```
 
 Roughly the same distribution, but green shows the greatest difference.
+
+Lets have a look at the colors over the months:
+
+```{r, warning=F, message=F}
+library(plyr)
+dt.merged$week <- ((year(dt.merged$orderDate)-2012)*52 + week(dt.merged$orderDate)) - 13
+
+tbl <- t(sapply(1:57, function(w) prop.table(table(dt.merged[dt.merged$week == w, ]$fewcolors))))
+
+rownames(tbl) <- 1:57
+plot(rownames(tbl),tbl[,1], type="l", col="black", ylim=c(0,1))
+lines(rownames(tbl), tbl[, 2], col="blue")
+lines(rownames(tbl), tbl[, 3], col="brown")
+lines(rownames(tbl), tbl[, 4], col="green")
+lines(rownames(tbl), tbl[, 5], col="grey")
+lines(rownames(tbl), tbl[, 6], col="pink")   #other
+lines(rownames(tbl), tbl[, 7], col="red")
+lines(rownames(tbl), tbl[, 8], col="orange") #white
+lines(rownames(tbl), tbl[, 9], col="yellow")
+```
+
+colors are selfexplanatory except for: pink = other, orange = white
+
+We see: blue, red, brown dont change much. Black rises, white/grey falls in cold months. Yellow and 'other' stay very low the whole time. Green rises all the time, which explains the difference in the other barplot.
+
 Additionally: Looked up spring/summer trends 2012/2013.
 
 - 2012: knallig / sandfarben / sommerfarbe himmelblau / strahlendes weiß
