@@ -736,6 +736,27 @@ plot.ddens(dt.train$accountAge, dt.test$accountAge, main="Account Age at Order D
            xlab="Age (days)")
 ```
 
+You can clearly see that the test set has lots of very old accounts, whilst
+the train set doesn't.
+
+To get an equal distribution, we discretize:
+
+```{r}
+par(mfrow=c(1, 2))
+
+barplot(prop.table(table(cut(dt.train$accountAge, c(0, 50, 200, Inf)))), ylim=c(0, 1),
+        main="Account Age (Train)", xlab="Age (days)", ylab="Frequency")
+barplot(prop.table(table(cut(dt.test$accountAge, c(0, 50, 200, Inf)))), ylim=c(0, 1),
+        main="Account Age (Test)", xlab="Age (days)", ylab="Frequency")
+```
+
+```{r}
+mosaic(returnShipment ~ cut(accountAge, c(0, 50, 200, Inf)), data=dt.train,
+       main="Account Age vs returnShipment")
+```
+
+Interesting, newer accounts tend to not return items as often as older accounts.
+
 ### returnShipment
 
 ## holiday skew
