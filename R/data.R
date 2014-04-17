@@ -9,6 +9,9 @@ delayedAssign("dt.train.raw", read.csv("task/data_train.txt",
 delayedAssign("dt.train.pp", pp(dt.train.raw))
 delayedAssign("dt.train", addlevels(im(cl(dt.train.pp)), dt.test.pp))
 
+delayedAssign("dt.train.ae", subset(dt.train, orderDate >= as.Date("2012-04-09") & 
+                                        orderDate < (as.Date("2012-04-09") + days(30))))
+
 delayedAssign("dt.june", subset(dt.train, month(orderDate) == 6))
 delayedAssign("dt.july", subset(dt.train, month(orderDate) == 7))
 delayedAssign("dt.august", subset(dt.train, month(orderDate) == 8))
