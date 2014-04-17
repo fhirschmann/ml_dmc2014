@@ -22,12 +22,17 @@ library(vcd)
 library(psych)
 library(plyr)
 
-plot.ddens <- function(v1, v2, ...) {
+plot.ddens <- function(v1, v2, v3=NULL, ...) {
     d1 <- density(v1, na.rm=T)
     plot(d1, col="blue", ...)
     grid()
     lines(density(v2, na.rm=T, bw=d1$bw), col="red")
-    legend("topright", c("Train", "Test"), col = c("blue", "red"), lty = 1)
+    if (is.null(v3)) {
+        legend("topright", c("Train", "Test"), col = c("blue", "red"), lty = 1)
+    } else {
+        legend("topright", c("Train", "Test", "Train (Sample)"), col = c("blue", "red", "green"), lty = 1)
+        lines(density(v3, na.rm=T, bw=d1$bw), col="green")
+    }
 }
 
 norm.lin <- function(x, mi=min(x), ma=max(x)) {
@@ -806,7 +811,8 @@ TODO
 
 ```{r}
 dt.train.ae <- train.after.easter
-
+plot.ddens(dt.train.ae$price, dt.test$price, main="Kernel Density Estimate of Price",
+           xlab="Price (EUR)")
 ```
 
 ## Cleaned Data
