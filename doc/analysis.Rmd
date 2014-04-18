@@ -393,7 +393,7 @@ tbl <- t(sapply(1:13, function(w) prop.table(table(dt.merged[dt.merged$month == 
 rownames(tbl) <- 1:13
 
 
-plot(rownames(tbl),tbl[,"brown"], type="l", xlab="months", ylab="popularity of color in percent (of all colors)", col="brown", ylim=c(0,0.4))
+plot(rownames(tbl),tbl[,"brown"], type="l", xlab="months", ylab="popularity of color in percent (of all colors)", col="brown", ylim=c(0,0.4), xaxt="n")
 axis(1, at=1:13, labels=c("Apr", "Mar", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr"))
 
 lines(rownames(tbl), tbl[, "red"], col="red")
@@ -410,7 +410,7 @@ colors are selfexplanatory except for: pink = other, orange = white
 
 months = the months, starting 1 = april, ending 13 = april (testset)
 
-We see: blue, red, brown dont change much. Black rises, white/grey falls in cold months. Yellow and 'other' stay very low the whole time. Green rises all the time, which explains the difference in the other barplot.
+We see: blue, red, brown dont change much. Black rises, white/grey falls at the end of the summer and in cold months. Yellow and 'other' stay very low the whole time. Green rises all the time, which explains the difference in the other barplot.
 
 Additionally: Looked up spring/summer trends 2012/2013.
 
