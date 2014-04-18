@@ -367,6 +367,7 @@ colors <- function(x) {revalue(x, c("dark denim"="black", #blue?
                       "vanille"="white"))}
 dt.train$fewcolors <- colors(dt.train$color)
 dt.test$fewcolors <- colors(dt.test$color)
+dt.merged$fewcolors <- colors(dt.merged$color)
 ```
                       
 as you can see, not really clear to say for each color.
@@ -386,13 +387,10 @@ Roughly the same distribution, but green shows the greatest difference.
 Lets have a look at the colors over the months:
 
 ```{r, warning=F, message=F}
-library(plyr)
-dt.merged$week <- ((year(dt.merged$orderDate)-2012)*52 + week(dt.merged$orderDate)) - 13
+tbl <- t(sapply(1:13, function(w) prop.table(table(dt.merged[dt.merged$month == w, ]$fewcolors))))
 
-tbl <- t(sapply(1:57, function(w) prop.table(table(dt.merged[dt.merged$week == w, ]$fewcolors))))
-
-rownames(tbl) <- 1:57
-plot(rownames(tbl),tbl[,1], type="l", col="black", ylim=c(0,1))
+rownames(tbl) <- 1:13
+plot(rownames(tbl),tbl[,1], type="l", xlab="months", ylab="popularity of color in percent (of all colors)", col="black", ylim=c(0,1))
 lines(rownames(tbl), tbl[, 2], col="blue")
 lines(rownames(tbl), tbl[, 3], col="brown")
 lines(rownames(tbl), tbl[, 4], col="green")
