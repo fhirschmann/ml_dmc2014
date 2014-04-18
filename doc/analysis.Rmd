@@ -392,17 +392,18 @@ tbl <- t(sapply(1:13, function(w) prop.table(table(dt.merged[dt.merged$month == 
 
 rownames(tbl) <- 1:13
 
-tbl
 
-plot(rownames(tbl),tbl[,1], type="l", xlab="months", ylab="popularity of color in percent (of all colors)", col="brown", ylim=c(0,1))
-lines(rownames(tbl), tbl[, 2], col="red")
-lines(rownames(tbl), tbl[, 3], col="pink")   #other
-lines(rownames(tbl), tbl[, 4], col="black")
-lines(rownames(tbl), tbl[, 5], col="yellow")
-lines(rownames(tbl), tbl[, 6], col="blue")   
-lines(rownames(tbl), tbl[, 7], col="grey")
-lines(rownames(tbl), tbl[, 8], col="green")
-lines(rownames(tbl), tbl[, 9], col="orange") #white
+plot(rownames(tbl),tbl[,"brown"], type="l", xlab="months", ylab="popularity of color in percent (of all colors)", col="brown", ylim=c(0,0.4))
+axis(1, at=1:13, labels=c("Apr", "Mar", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr"))
+
+lines(rownames(tbl), tbl[, "red"], col="red")
+lines(rownames(tbl), tbl[, "other"], col="pink")   #other
+lines(rownames(tbl), tbl[, "black"], col="black")
+lines(rownames(tbl), tbl[, "yellow"], col="yellow")
+lines(rownames(tbl), tbl[, "blue"], col="blue")   
+lines(rownames(tbl), tbl[, "grey"], col="grey")
+lines(rownames(tbl), tbl[, "green"], col="green")
+lines(rownames(tbl), tbl[, "white"], col="orange") #white
 ```
 
 colors are selfexplanatory except for: pink = other, orange = white
