@@ -387,21 +387,27 @@ Roughly the same distribution, but green shows the greatest difference.
 Lets have a look at the colors over the months:
 
 ```{r, warning=F, message=F}
+dt.merged$month <- ((year(dt.merged$orderDate)-2012)*12 + month(dt.merged$orderDate)) - 3
 tbl <- t(sapply(1:13, function(w) prop.table(table(dt.merged[dt.merged$month == w, ]$fewcolors))))
 
 rownames(tbl) <- 1:13
-plot(rownames(tbl),tbl[,1], type="l", xlab="months", ylab="popularity of color in percent (of all colors)", col="black", ylim=c(0,1))
-lines(rownames(tbl), tbl[, 2], col="blue")
-lines(rownames(tbl), tbl[, 3], col="brown")
-lines(rownames(tbl), tbl[, 4], col="green")
-lines(rownames(tbl), tbl[, 5], col="grey")
-lines(rownames(tbl), tbl[, 6], col="pink")   #other
-lines(rownames(tbl), tbl[, 7], col="red")
-lines(rownames(tbl), tbl[, 8], col="orange") #white
-lines(rownames(tbl), tbl[, 9], col="yellow")
+
+tbl
+
+plot(rownames(tbl),tbl[,1], type="l", xlab="months", ylab="popularity of color in percent (of all colors)", col="brown", ylim=c(0,1))
+lines(rownames(tbl), tbl[, 2], col="red")
+lines(rownames(tbl), tbl[, 3], col="pink")   #other
+lines(rownames(tbl), tbl[, 4], col="black")
+lines(rownames(tbl), tbl[, 5], col="yellow")
+lines(rownames(tbl), tbl[, 6], col="blue")   
+lines(rownames(tbl), tbl[, 7], col="grey")
+lines(rownames(tbl), tbl[, 8], col="green")
+lines(rownames(tbl), tbl[, 9], col="orange") #white
 ```
 
 colors are selfexplanatory except for: pink = other, orange = white
+
+months = the months, starting 1 = april, ending 13 = april (testset)
 
 We see: blue, red, brown dont change much. Black rises, white/grey falls in cold months. Yellow and 'other' stay very low the whole time. Green rises all the time, which explains the difference in the other barplot.
 
