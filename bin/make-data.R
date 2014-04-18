@@ -3,6 +3,7 @@ library(data.table)
 library(plyr)
 library(lubridate)
 library(vcd)
+library(zoo)
 
 source("R/pp.R")
 
@@ -21,8 +22,6 @@ zz <- as.data.frame(table(z$customerID))
 
 
 feat.simple <- function(dt) {
-    require(zoo)
-
     dt2 <- dt
     dt2.tbl <- data.table(dt)
     
@@ -41,7 +40,7 @@ feat.simple <- function(dt) {
     
     dt2$sameItemsOrdered <- dt2.tbl[,x := .N, by=c("itemID", "customerID", "orderDate")]$x
     
-    dt2$firstOrderDate <- dt2.tbl[, x := min(orderDate), by=c("customerID", "orderDate")]$x
+    dt2$firstOrderDate <- as.Date(dt2.tbl[, x := as.integer(min(orderDate)), by=c("customerID", "orderDate")]$x)
     
     #summarize colors:
     colors <- dt2$color
