@@ -2,6 +2,7 @@
 library(data.table)
 library(plyr)
 library(lubridate)
+library(vcd)
 
 source("R/pp.R")
 
@@ -11,7 +12,17 @@ na.strings <- c("NA", "", "??", "?")
 dt.train <- pp(read.csv("task/orders_train.txt", sep=";", na.strings=na.strings))
 dt.test <- pp(read.csv("task/orders_class.txt", sep=";", na.strings=na.strings))
 
+# customer blacklist
+x <- as.data.frame.matrix(structable(returnShipment ~ customerID, data = dt.train))
+z <- dt.train[dt.train$customerID %in% rownames(x[x[["0"]] == 0, ]), c("customerID", 
+                                                                       "orderDate")]
+z <- z[!duplicated(z), ]
+zz <- as.data.frame(table(z$customerID))
+
+
 feat.simple <- function(dt) {
+    require(zoo)
+
     dt2 <- dt
     dt2.tbl <- data.table(dt)
     
@@ -29,6 +40,8 @@ feat.simple <- function(dt) {
     dt2$accountAge <- as.numeric(dt2$orderDate - dt2$creationDate)
     
     dt2$sameItemsOrdered <- dt2.tbl[,x := .N, by=c("itemID", "customerID", "orderDate")]$x
+    
+    dt2$firstOrderDate <- dt2.tbl[, x := min(orderDate), by=c("customerID", "orderDate")]$x
     
     #summarize colors:
     colors <- dt2$color
