@@ -40,7 +40,7 @@ feat.simple <- function(dt) {
     
     dt2$sameItemsOrdered <- dt2.tbl[,x := .N, by=c("itemID", "customerID", "orderDate")]$x
     
-    dt2$firstOrderDate <- as.Date(dt2.tbl[, x := as.integer(min(orderDate)), by=c("customerID", "orderDate")]$x)
+    dt2$firstOrderDate <- as.Date(dt2.tbl[, x := as.integer(min(orderDate)), by=c("customerID")]$x)
     
     #summarize colors:
     colors <- dt2$color
