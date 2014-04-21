@@ -28,13 +28,6 @@ dt.test <- read.csv("task/orders_class.txt", sep=";",
 
 # Feature Engineering
 
-## Customer Blacklist
-x <- as.data.frame.matrix(structable(returnShipment ~ customerID, data = dt.train))
-z <- dt.train[dt.train$customerID %in% rownames(x[x[["0"]] == 0, ]), c("customerID", 
-                                                                       "orderDate")]
-z <- z[!duplicated(z), ]
-zz <- as.data.frame(table(z$customerID))
-
 #ideen für features:
 #größe des customers aus bestellen items ermitteln
 #preisfeature: abweichung von preis (höher, niedriger, gleich)
