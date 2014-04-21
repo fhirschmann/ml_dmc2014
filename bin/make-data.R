@@ -73,6 +73,9 @@ add.features <- function(dt) {
     # Fix sizes
     dt2$size <- droplevels(as.factor(toupper(dt2$size)))
     
+    # Discretized price
+    dt2$discretizedPrice <- cut(dt2$price, c(0, 1:20 * 10, Inf), left=T, right=F)
+    
     dt2
 }
 
