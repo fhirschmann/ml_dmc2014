@@ -37,7 +37,7 @@ dt.test <- read.csv("task/orders_class.txt", sep=";",
 
 dt.train$returnShipment <- revalue(dt.train$returnShipment, c("0"="no", "1"="yes"))
 
-feat.simple <- function(dt) {
+add.features <- function(dt) {
     dt2 <- data.table(dt)
     
     #dt2$creationDateMissing <- as.factor(ifelse(is.na(dt2$creationDate), "yes", "no"))
@@ -72,7 +72,41 @@ feat.simple <- function(dt) {
     dt2
 }
 
-dt.train <- feat.simple(dt.train)
-dt.test <- feat.simple(dt.test)
+dt.train <- add.features(dt.train)
+dt.test <- add.features(dt.test)
+
+rm.outliers <- function(dt) {
+    dt2 <- dt
+    
+    # dateOfBirth/Age
+    outliers <- with(dt2,
+                     !is.na(dateOfBirth) 
+                     & (dateOfBirth == as.Date("1949-11-19")
+                        | customerAge > 85
+                        | customerAge < 19))
+    dt2[outliers, ]$dateOfBirth <- NA
+    dt2[outliers, ]$customerAge <- NA
+    dt2$dateOfBirthIsOutlier <- "no"
+    dt2[outliers, ]$dateOfBirthIsOutlier <- "yes"
+    dt2$dateOfBirthIsOutlier <- as.factor(dt2$dateOfBirthIsOutlier)
+    
+    dt2
+}
+
+dt.train <- rm.outliers(dt.train)
+dt.test <- rm.outliers(dt.test)
+
+fix.missing <- function(dt) {
+    dt2 <- dt
+    
+    nas <- is.na(dt2$color)
+    dt2[nas, ]$color <- "other"
+    dt2[nas, ]$fewcolors <- "other"
+    
+    dt2
+}
+
+dt.train <- fix.missing(dt.train)
+dt.test <- fix.missing(dt.test)
 
 save(dt.train, dt.test, file="data.RData")
