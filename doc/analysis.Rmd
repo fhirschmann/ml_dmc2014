@@ -141,6 +141,24 @@ mosaic(returnShipment ~ month(orderDate) + wday(orderDate, label=T, abbr=F),
 
 ### deliveryDate
 
+#### Missing Delivery Dates
+
+```{r}
+dt <- dt.train
+dt$deliveryDateMissing <- ifelse(is.na(dt$deliveryDate), "yes", "no")
+structable(returnShipment ~ deliveryDateMissing, data=dt)
+```
+
+Cool! :)
+
+How many delivery dates are missing in the test set?
+
+```{r}
+count(is.na(dt.test$deliveryDate))
+```
+
+#### Outliers
+
 First, let's infer an attribute delivery time, which describes the time (in days)
 the delivery has taken:
 
@@ -201,22 +219,6 @@ plot.ddens(dt.train$deliveryTime, dt.test$deliveryTime, xlim=c(0, 40),
 
 Both are positively skewed and thus have a long tail on the right. The kurtosis is
 much higher for the train set, hence the higher peak.
-
-#### Missing Delivery Dates
-
-```{r}
-dt <- dt.train
-dt$deliveryDateMissing <- ifelse(is.na(dt$deliveryDate), "yes", "no")
-structable(returnShipment ~ deliveryDateMissing, data=dt)
-```
-
-Cool! :)
-
-How many delivery dates are missing in the test set?
-
-```{r}
-count(is.na(dt.test$deliveryDate))
-```
 
 ### itemID
 
