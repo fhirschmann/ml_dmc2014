@@ -30,7 +30,7 @@ descs <- list(
                 .model=c("rules", "tree"),
                 .trials=1
                 ),
-            trControl=ctrl.probs,
+            trControl=ctrl,
             control=C5.0Control(earlyStopping=F)))
 )
 
