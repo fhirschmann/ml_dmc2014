@@ -202,6 +202,16 @@ plot.ddens(dt.train$deliveryTime, dt.test$deliveryTime, xlim=c(0, 40),
 Both are positively skewed and thus have a long tail on the right. The kurtosis is
 much higher for the train set, hence the higher peak.
 
+#### Missing Delivery Dates
+
+```{r}
+dt <- dt.train
+dt$deliveryDateMissing <- ifelse(is.na(dt$deliveryDate), "yes", "no")
+structtable(returnShipment ~ deliveryDateMissing, data=dt)
+```
+
+Cool! :)
+
 ### itemID
 
 #### How large is the intersection between the train and test set?
