@@ -16,10 +16,6 @@ delayedAssign("dt.august", subset(dt.train, month(orderDate) == 8))
 delayedAssign("dt.mini", subset(dt.train, week(orderDate) == 6))
 delayedAssign("dt.tiny", subset(dt.mini, wday(orderDate) == 1))
 
-delayedAssign("dt.test.raw", read.csv("task/data_test.txt",
-                                      sep=";", na.strings=na.strings,
-                                      colClasses=dt.classes))
-
 # Merged Train/Test Data; this is mostly useful for plotting
 delayedAssign("dt.merged", rbind(data.frame(dt.train, group="train"),
                                  data.frame(dt.test, group="test", returnShipment=NA)))
