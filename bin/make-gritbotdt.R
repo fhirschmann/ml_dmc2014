@@ -10,15 +10,16 @@ cl <- function(x) {
     x$orderDate <- as.numeric(x$orderDate)
     x$deliveryDate <- NULL
     x$dateOfBirth <- NULL
+    x$firstOrderDate <- NULL
     x$creationDate <- NULL    
     x
 }
 
-x <- cl(dt.train.pp)
+x <- cl(dt.train)
 y <- x$returnShipment
 x$returnShipment <- NULL
 
-xt <- cl(dt.test.pp)
+xt <- cl(dt.test)
 yt <- xt$returnShipment
 xt$returnShipment <- NULL
 
