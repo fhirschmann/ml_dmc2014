@@ -9,8 +9,10 @@ fs.all <- function(dt) {
     dt2$itemID <- NULL
     dt2$manufacturerID <- NULL
     dt2$customerID <- NULL
-    dt2$colors <- NULL
+    dt2$color <- NULL
     dt2$instantorder <- NULL
+    
+    dt2$firstOrderDate <- NULL
     
     dt2$orderItemID <- NULL  # This attribute is useless
     
