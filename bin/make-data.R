@@ -52,7 +52,7 @@ add.features <- function(dt) {
     dt2$dateOfBirthMissing <- as.factor(ifelse(is.na(dt2$dateOfBirth), "yes", "no"))
     
     # Account age in Days
-    dt2$accountAge <- as.numeric(dt2$orderDate - dt2$creationDate)
+    dt2$accountAge <- as.integer(dt2$orderDate - dt2$creationDate)
     
     # Number of items ordered with the same ID
     dt2 <- dt2[, sameItemsOrdered := .N, by=c("itemID", "customerID", "orderDate")]
