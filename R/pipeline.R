@@ -13,6 +13,8 @@ ctrl <- trainControl(method="cv", savePredictions=T,
 ctrl.probs <- ctrl
 ctrl.probs$classProbs <- TRUE
 
+dt <- droplevels(dt.june)
+
 # List of stuff to learn
 descs <- list(
     nb=list(
@@ -47,7 +49,7 @@ common.desc <- list(
         # Always learn returnShipment using all attributes
         form=returnShipment ~ .,
         # Data to Train on
-        data="dt.june",  # pass as string for lazy evaluation
+        data=dt,  # pass as string for lazy evaluation
         # Maximize the metric
         maximize=F,
         # Use Points to select the best tuning parameters
