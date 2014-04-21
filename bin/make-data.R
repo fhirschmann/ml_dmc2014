@@ -20,6 +20,12 @@ z <- dt.train[dt.train$customerID %in% rownames(x[x[["0"]] == 0, ]), c("customer
 z <- z[!duplicated(z), ]
 zz <- as.data.frame(table(z$customerID))
 
+#ideen für features:
+#größe des customers aus bestellen items ermitteln
+#preisfeature: abweichung von preis (höher, niedriger, gleich)
+#anrede: runterbrechen auf "männlich" / "weiblich" (falls kein großer unterschied bei returnshipments zwischen anreden)
+
+
 
 feat.simple <- function(dt) {
     dt2 <- dt
