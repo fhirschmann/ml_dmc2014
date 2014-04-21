@@ -31,6 +31,8 @@ feat.simple <- function(dt) {
     dt2 <- dt
     dt2.tbl <- data.table(dt)
     
+    dt2$creationDateMissing <- as.factor(ifelse(is.na(dt2$creationDate), "yes", "no"))
+    
     dt2$deliveryTime <- as.integer(dt2$deliveryDate - dt2$orderDate)
     dt2$deliveryDateMissing <- ifelse(is.na(dt2$deliveryDate), "yes", "no")
     

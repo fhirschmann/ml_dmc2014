@@ -212,6 +212,12 @@ structtable(returnShipment ~ deliveryDateMissing, data=dt)
 
 Cool! :)
 
+How many delivery dates are missing in the test set?
+
+```{r}
+count(is.na(dt.test$deliveryDate))
+```
+
 ### itemID
 
 #### How large is the intersection between the train and test set?
