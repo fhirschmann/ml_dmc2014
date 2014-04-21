@@ -94,6 +94,14 @@ rm.outliers <- function(dt) {
     dt2[outliers, ]$dateOfBirthIsOutlier <- "yes"
     dt2$dateOfBirthIsOutlier <- as.factor(dt2$dateOfBirthIsOutlier)
     
+    # deliveryDate/Time
+    outliers <- !is.na(dt2$deliveryTime) & dt2$deliveryTime < 0
+    dt2[outliers, ]$deliveryTime <- NA
+    dt2[outliers, ]$deliveryDate <- NA
+    dt2$deliveryDateIsOutlier <- "no"
+    dt2[outliers, ]$deliveryDateIsOutlier <- "yes"
+    dt2$deliveryDateIsOutlier <- as.factor(dt2$deliveryDateIsOutlier)
+    
     dt2
 }
 
