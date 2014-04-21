@@ -76,6 +76,26 @@ add.features <- function(dt) {
     # Discretized price
     dt2$discretizedPrice <- cut(dt2$price, c(0, 1:20 * 10, Inf), left=T, right=F)
     
+    # West/East Germany
+    dt2$westGermany <- revalue(dt2$state, c(
+        "Baden-Wuerttemberg"="yes",
+        "Bavaria"="yes",
+        "Berlin"="no",
+        "Brandenburg"="no",
+        "Bremen"="yes",
+        "Hesse"="yes",
+        "Hamburg"="yes",
+        "Lower Saxony"="yes",
+        "Mecklenburg-Western Pomerania"="no",
+        "North Rhine-Westphalia"="yes",
+        "Rhineland-Palatinate"="yes",
+        "Schleswig-Holstein"="yes",
+        "Saarland"="yes",
+        "Saxony"="no",
+        "Saxony-Anhalt"="no",
+        "Thuringia"="no"
+    ))
+    
     dt2
 }
 
