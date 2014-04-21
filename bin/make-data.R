@@ -36,8 +36,6 @@ feat.simple <- function(dt) {
     dt2$deliveryTime <- as.integer(dt2$deliveryDate - dt2$orderDate)
     dt2$deliveryDateMissing <- as.factor(ifelse(is.na(dt2$deliveryDate), "yes", "no"))
     
-    dt2$instantorder <- as.factor(ifelse(dt2$orderDate == dt2$creationDate, "yes", "no"))
-    
     dt2$orderWeekday <- as.ordered(as.factor(lubridate::wday(dt2$orderDate, label=T, abbr=F)))
     
     # Customer Age in Years
@@ -51,6 +49,10 @@ feat.simple <- function(dt) {
     
     dt2$firstOrderDate <- as.Date(dt2.tbl[, x := as.integer(min(orderDate)), by=c("customerID")]$x)
     dt2$firstOrderDate <- as.Date(dt2$firstOrderDate)
+    
+    dt2$orderVolume <- dt.tbl[, x := as.integer(sum(price)), by=c("customerID", "orderDate")]$x
+    
+    dt2$totalOrderVolume <- dt.tbl[, x := as.integer(sum(price)), by=c("customerID")]$x
     
     #summarize colors:
     colors <- dt2$color
