@@ -71,7 +71,7 @@ caret.train.default.desc <- list(train.args=list(),
                                  save.data=TRUE)
 
 caret.train <- function(descs, common.desc=(d <- caret.train.default.desc),
-                        train.only=NULL, verbose=TRUE) {
+                        train.only=NULL, verbose=FALSE) {
     # This is a wrapper around caret::train that allows
     # to pass a list of learner descriptions.
     #
