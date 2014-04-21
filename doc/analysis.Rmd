@@ -865,6 +865,27 @@ The cleaned data is [available](http://dwxput6p.0x0b.de/).
 Do note that *no* instances have been removed. The
 outliers simply had their outlying attribute set to NA/?.
 
+## Missing Value Imputation
+
+```{r}
+library(zoo)
+dt <- dt.merged[c("orderDate", "creationDate", "customerID")]
+dt$firstOrderDate <- as.Date(data.table(dt)[, x := as.integer(min(orderDate)), by=c("customerID")]$x)
+dt <- unique(dt[c("firstOrderDate", "creationDate")])
+smoothScatter(dt$firstOrderDate, dt$creationDate, xlab="Date of First Order", ylab="Creation Date",
+              main="Date of First Order vs Creation Date")
+abline(1, 1, col="red")
+```
+
+Another obvious idea is to rely on customerID being an incrementing
+number, but this isn't always true:
+
+```{r}
+dt <- unique(dt.merged[c("creationDate", "customerID")])
+smoothScatter(dt$creationDate, dt$customerID, xlab="Creation Date", ylab="Customer ID",
+              main="Creation Date vs Customer ID")
+```
+
 ## SessionInfo
 
 ```{r}
