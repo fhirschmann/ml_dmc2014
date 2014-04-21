@@ -5,6 +5,8 @@ library(lubridate)
 library(vcd)
 library(zoo)
 
+# Read in the Data
+
 dt.na.strings <- c("NA", "", "??", "?")
 
 dt.classes <- c(
@@ -24,7 +26,9 @@ dt.train$returnShipment <- revalue(as.factor(dt.train$returnShipment), c("0"="no
 dt.test <- read.csv("task/orders_class.txt", sep=";",
                     colClasses=dt.classes, na.strings=dt.na.strings)
 
-# customer blacklist
+# Feature Engineering
+
+## Customer Blacklist
 x <- as.data.frame.matrix(structable(returnShipment ~ customerID, data = dt.train))
 z <- dt.train[dt.train$customerID %in% rownames(x[x[["0"]] == 0, ]), c("customerID", 
                                                                        "orderDate")]
@@ -41,7 +45,7 @@ dt.train$returnShipment <- revalue(dt.train$returnShipment, c("0"="no", "1"="yes
 feat.simple <- function(dt) {
     dt2 <- data.table(dt)
     
-    dt2$creationDateMissing <- as.factor(ifelse(is.na(dt2$creationDate), "yes", "no"))
+    #dt2$creationDateMissing <- as.factor(ifelse(is.na(dt2$creationDate), "yes", "no"))
     
     dt2$deliveryTime <- as.integer(dt2$deliveryDate - dt2$orderDate)
     dt2$deliveryDateMissing <- as.factor(ifelse(is.na(dt2$deliveryDate), "yes", "no"))
