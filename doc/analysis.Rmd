@@ -157,6 +157,8 @@ How many delivery dates are missing in the test set?
 count(is.na(dt.test$deliveryDate))
 ```
 
+Awesome.
+
 #### Outliers
 
 First, let's infer an attribute delivery time, which describes the time (in days)
