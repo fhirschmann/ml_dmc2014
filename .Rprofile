@@ -1,5 +1,4 @@
 source("R/dmc.R")
-source("R/data.R")
 
 
 options(
