@@ -17,6 +17,7 @@ dt.classes <- c(
     "deliveryDate"="Date",
     "dateOfBirth"="Date",
     "itemID"="factor",
+    "size"="factor",
     "manufacturerID"="factor",
     "customerID"="factor",
     "creationDate"="Date"
@@ -68,6 +69,9 @@ add.features <- function(dt) {
     
     # Summarize colors:
     dt2$fewcolors <- revalue(dt2$color, colormap)
+    
+    # Fix sizes
+    dt2$size <- droplevels(as.factor(toupper(dt2$size)))
     
     dt2
 }
