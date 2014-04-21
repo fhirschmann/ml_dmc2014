@@ -67,7 +67,7 @@ add.features <- function(dt) {
     # Total volume of customer's order
     dt2 <- dt2[, totalOrderVolume := sum(price), by=c("customerID")]
     
-    # Summarize colors:
+    # Summarize colors
     dt2$fewcolors <- revalue(dt2$color, colormap)
     
     # Fix sizes
