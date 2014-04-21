@@ -159,6 +159,12 @@ count(is.na(dt.test$deliveryDate))
 
 Awesome.
 
+Make this an attribute:
+```{r}
+dt.train$deliveryDateMissing <- as.factor(ifelse(is.na(dt.train$deliveryDate), "yes", "no"))
+dt.test$deliveryDateMissing <- as.factor(ifelse(is.na(dt.test$deliveryDate), "yes", "no"))
+```
+
 #### Outliers
 
 First, let's infer an attribute delivery time, which describes the time (in days)
