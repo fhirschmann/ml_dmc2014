@@ -32,6 +32,7 @@ feat.simple <- function(dt) {
     dt2.tbl <- data.table(dt)
     
     dt2$deliveryTime <- as.integer(dt2$deliveryDate - dt2$orderDate)
+    dt2$deliveryDateMissing <- ifelse(is.na(dt2$deliveryDate), "yes", "no")
     
     dt2$instantorder <- as.factor(ifelse(dt2$orderDate == dt2$creationDate, "yes", "no"))
     
@@ -40,6 +41,7 @@ feat.simple <- function(dt) {
     
     # Customer Age in Years
     dt2$customerAge <- as.integer(year(dt2$orderDate) - year(dt2$dateOfBirth))
+    dt2$dateOfBirthMissing <- as.factor(ifelse(is.na(dt2$dateOfBirth), "yes", "no"))
     
     # Account Age in Days
     dt2$accountAge <- as.numeric(dt2$orderDate - dt2$creationDate)
