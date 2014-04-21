@@ -5,13 +5,24 @@ library(lubridate)
 library(vcd)
 library(zoo)
 
-source("R/pp.R")
+dt.na.strings <- c("NA", "", "??", "?")
 
+dt.classes <- c(
+    "orderItemID"="factor",
+    "orderDate"="Date",
+    "deliveryDate"="Date",
+    "dateOfBirth"="Date",
+    "itemID"="factor",
+    "manufacturerID"="factor",
+    "customerID"="factor",
+    "creationDate"="Date"
+)
 
-na.strings <- c("NA", "", "??", "?")
-
-dt.train <- pp(read.csv("task/orders_train.txt", sep=";", na.strings=na.strings))
-dt.test <- pp(read.csv("task/orders_class.txt", sep=";", na.strings=na.strings))
+dt.train <- read.csv("task/orders_train.txt", sep=";",
+                     colClasses=dt.classes, na.strings=dt.na.strings)
+dt.train$returnShipment <- revalue(as.factor(dt.train$returnShipment), c("0"="no", "1"="yes"))
+dt.test <- read.csv("task/orders_class.txt", sep=";",
+                    colClasses=dt.classes, na.strings=dt.na.strings)
 
 # customer blacklist
 x <- as.data.frame.matrix(structable(returnShipment ~ customerID, data = dt.train))
@@ -25,38 +36,40 @@ zz <- as.data.frame(table(z$customerID))
 #preisfeature: abweichung von preis (höher, niedriger, gleich)
 #anrede: runterbrechen auf "männlich" / "weiblich" (falls kein großer unterschied bei returnshipments zwischen anreden)
 
-
+dt.train$returnShipment <- revalue(dt.train$returnShipment, c("0"="no", "1"="yes"))
 
 feat.simple <- function(dt) {
-    dt2 <- dt
-    dt2.tbl <- data.table(dt)
+    dt2 <- data.table(dt)
     
     dt2$creationDateMissing <- as.factor(ifelse(is.na(dt2$creationDate), "yes", "no"))
     
     dt2$deliveryTime <- as.integer(dt2$deliveryDate - dt2$orderDate)
     dt2$deliveryDateMissing <- as.factor(ifelse(is.na(dt2$deliveryDate), "yes", "no"))
-    
     dt2$orderWeekday <- as.ordered(as.factor(lubridate::wday(dt2$orderDate, label=T, abbr=F)))
     
-    # Customer Age in Years
+    # Customer age in Years
     dt2$customerAge <- as.integer(year(dt2$orderDate) - year(dt2$dateOfBirth))
     dt2$dateOfBirthMissing <- as.factor(ifelse(is.na(dt2$dateOfBirth), "yes", "no"))
     
-    # Account Age in Days
+    # Account age in Days
     dt2$accountAge <- as.numeric(dt2$orderDate - dt2$creationDate)
     
-    dt2$sameItemsOrdered <- dt2.tbl[,x := .N, by=c("itemID", "customerID", "orderDate")]$x
+    # Number of items ordered with the same ID
+    dt2 <- dt2[, sameItemsOrdered := .N, by=c("itemID", "customerID", "orderDate")]
     
-    dt2$firstOrderDate <- as.Date(dt2.tbl[, x := as.integer(min(orderDate)), by=c("customerID")]$x)
+    # Date of first order (per customer)
+    dt2 <- dt2[, firstOrderDate := min(orderDate), by=c("customerID")]
     dt2$firstOrderDate <- as.Date(dt2$firstOrderDate)
     
-    dt2$orderVolume <- dt2.tbl[, x := as.integer(sum(price)), by=c("customerID", "orderDate")]$x
+    # Volume of order
+    dt2 <- dt2[, orderVolume := as.integer(sum(price)), by=c("customerID", "orderDate")]
     
-    dt2$totalOrderVolume <- dt2.tbl[, x := as.integer(sum(price)), by=c("customerID")]$x
+    # Total volume of customer's order
+    dt2 <- dt2[, totalOrderVolume := as.integer(sum(price)), by=c("customerID")]
     
-    #summarize colors:
-    colors <- dt2$color
-    colors <- revalue(colors, c("dark denim"="black", #blue?
+    # Summarize colors:
+    dt2$fewcolors <- revalue(dt2$color,
+                             c("dark denim"="black", #blue?
                                 "dark navy"="blue",
                                 "ash"="grey",
                                 "bordeaux"="red",
@@ -143,14 +156,10 @@ feat.simple <- function(dt) {
                                 "opal"="other", #kann alles sein
                                 "perlmutt"="other", #?
                                 "vanille"="white"))
-    dt2$fewcolors <- colors
     dt2
 }
 
 dt.train <- feat.simple(dt.train)
 dt.test <- feat.simple(dt.test)
 
-write.table(dt.train, file = "task/data_train.txt", sep = ";", na = "NA", 
-            quote = F, row.names = F)
-write.table(dt.test, file = "task/data_test.txt", sep = ";", na = "NA", 
-            quote = F, row.names = F)
+save(dt.train, dt.test, file="data.RData")

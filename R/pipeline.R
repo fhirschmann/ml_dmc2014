@@ -49,7 +49,7 @@ common.desc <- list(
         # Always learn returnShipment using all attributes
         form=returnShipment ~ .,
         # Data to Train on
-        data=dt,  # pass as string for lazy evaluation
+        data=dt.mini,  # pass as string for lazy evaluation
         # Maximize the metric
         maximize=F,
         # Use Points to select the best tuning parameters
