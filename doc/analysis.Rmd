@@ -851,19 +851,6 @@ returnRate(dt.train)
 ```
 The return rate is 48.50% for the after easter period with is similar to the overall return rate.
 
-TODO
-
-- develop comparison criteria
-    - returnRate (only within train)
-    - number of orders
-    - size of orders
-    - type of orders?
-- include school holidays (easter & pentecost), filter by federal state
-- compare to pentecost holidays
-- compare to "innocent" timeperiod
-    - what's a good candidate? -> september
-- check christmas skew
-
 ### afterEaster as Train/Test set (CV)
 
 ```{r}
