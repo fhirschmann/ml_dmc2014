@@ -234,9 +234,10 @@ much higher for the train set, hence the higher peak.
 
 ```{r, fig.height=8}
 par(xpd=F, mar=c(8.1, 5.1, 5.1, 2.1), mgp=c(6, 1, 0))
-smoothScatter(dt.merged$orderDate, dt.merged$itemID, main="orderDate vs itemID", xlab="Month", ylab="itemID",
+smoothScatter(as.integer(dt.merged$orderDate), as.integer(dt.merged$itemID),
+              main="orderDate vs itemID", xlab="Month", ylab="itemID",
               xaxt="n")
-abline(v=max(dt.train$orderDate), col="red")
+abline(v=max(as.integer(dt.train$orderDate)), col="red")
 par(xpd=T)
 legend("topleft", c("Test Set Start"), lty=c(1), col=c("red"))
 lbls <- as.Date(c("2012-04-01", "2012-05-01", "2012-06-01", "2012-07-01", "2012-08-01", "2012-09-01",
@@ -247,7 +248,8 @@ axis(1, lbls, lbls, las=2)
 
 ```{r, fig.height=8}
 par(xpd=F, mar=c(8.1, 5.1, 5.1, 2.1), mgp=c(6, 1, 0))
-smoothScatter(as.integer(dt.merged$orderItemID), dt.merged$itemID, main="orderItemID vs itemID", xlab="Month",
+smoothScatter(as.integer(dt.merged$orderItemID), as.integer(dt.merged$itemID), main="orderItemID vs itemID",
+              xlab="OrderItemID",
               ylab="itemID", xaxt="n")
 abline(v=max(as.integer(dt.train$orderItemID)), col="red")
 legend("topleft", c("Test Set Start"), lty=c(1), col=c("red"))
