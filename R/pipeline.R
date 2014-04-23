@@ -31,6 +31,7 @@ descs <- list(
                 .trials=1
                 ),
             trControl=ctrl,
+            na.action=na.pass,
             control=C5.0Control(earlyStopping=F)))
 )
 
