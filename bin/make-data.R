@@ -5,6 +5,11 @@ library(lubridate)
 library(vcd)
 library(zoo)
 
+<<<<<<< HEAD
+=======
+source("R/colormap.R")
+
+>>>>>>> re-add make-data
 # Read in the Data
 
 dt.na.strings <- c("NA", "", "??", "?")
@@ -15,6 +20,10 @@ dt.classes <- c(
     "deliveryDate"="Date",
     "dateOfBirth"="Date",
     "itemID"="factor",
+<<<<<<< HEAD
+=======
+    "size"="factor",
+>>>>>>> re-add make-data
     "manufacturerID"="factor",
     "customerID"="factor",
     "creationDate"="Date"
@@ -28,6 +37,7 @@ dt.test <- read.csv("task/orders_class.txt", sep=";",
 
 # Feature Engineering
 
+<<<<<<< HEAD
 ## Customer Blacklist
 x <- as.data.frame.matrix(structable(returnShipment ~ customerID, data = dt.train))
 z <- dt.train[dt.train$customerID %in% rownames(x[x[["0"]] == 0, ]), c("customerID", 
@@ -35,6 +45,8 @@ z <- dt.train[dt.train$customerID %in% rownames(x[x[["0"]] == 0, ]), c("customer
 z <- z[!duplicated(z), ]
 zz <- as.data.frame(table(z$customerID))
 
+=======
+>>>>>>> re-add make-data
 #ideen für features:
 #größe des customers aus bestellen items ermitteln
 #preisfeature: abweichung von preis (höher, niedriger, gleich)
@@ -42,7 +54,11 @@ zz <- as.data.frame(table(z$customerID))
 
 dt.train$returnShipment <- revalue(dt.train$returnShipment, c("0"="no", "1"="yes"))
 
+<<<<<<< HEAD
 feat.simple <- function(dt) {
+=======
+add.features <- function(dt) {
+>>>>>>> re-add make-data
     dt2 <- data.table(dt)
     
     #dt2$creationDateMissing <- as.factor(ifelse(is.na(dt2$creationDate), "yes", "no"))
@@ -56,7 +72,11 @@ feat.simple <- function(dt) {
     dt2$dateOfBirthMissing <- as.factor(ifelse(is.na(dt2$dateOfBirth), "yes", "no"))
     
     # Account age in Days
+<<<<<<< HEAD
     dt2$accountAge <- as.numeric(dt2$orderDate - dt2$creationDate)
+=======
+    dt2$accountAge <- as.integer(dt2$orderDate - dt2$creationDate)
+>>>>>>> re-add make-data
     
     # Number of items ordered with the same ID
     dt2 <- dt2[, sameItemsOrdered := .N, by=c("itemID", "customerID", "orderDate")]
@@ -66,6 +86,7 @@ feat.simple <- function(dt) {
     dt2$firstOrderDate <- as.Date(dt2$firstOrderDate)
     
     # Volume of order
+<<<<<<< HEAD
     dt2 <- dt2[, orderVolume := as.integer(sum(price)), by=c("customerID", "orderDate")]
     
     # Total volume of customer's order
@@ -165,5 +186,96 @@ feat.simple <- function(dt) {
 
 dt.train <- feat.simple(dt.train)
 dt.test <- feat.simple(dt.test)
+=======
+    dt2 <- dt2[, orderVolume := sum(price), by=c("customerID", "orderDate")]
+    
+    # Total volume of customer's order
+    dt2 <- dt2[, totalOrderVolume := sum(price), by=c("customerID")]
+    
+    # Summarize colors
+    dt2$fewcolors <- revalue(dt2$color, colormap)
+    
+    # Fix sizes
+    dt2$size <- droplevels(as.factor(toupper(dt2$size)))
+    
+    # Discretized price
+    dt2$discretizedPrice <- cut(dt2$price, c(0, 1:20 * 10, Inf), left=T, right=F)
+    
+    # West/East Germany
+    dt2$westGermany <- revalue(dt2$state, c(
+        "Baden-Wuerttemberg"="yes",
+        "Bavaria"="yes",
+        "Berlin"="no",
+        "Brandenburg"="no",
+        "Bremen"="yes",
+        "Hesse"="yes",
+        "Hamburg"="yes",
+        "Lower Saxony"="yes",
+        "Mecklenburg-Western Pomerania"="no",
+        "North Rhine-Westphalia"="yes",
+        "Rhineland-Palatinate"="yes",
+        "Schleswig-Holstein"="yes",
+        "Saarland"="yes",
+        "Saxony"="no",
+        "Saxony-Anhalt"="no",
+        "Thuringia"="no"
+    ))
+    
+    dt2
+}
+
+dt.train <- add.features(dt.train)
+dt.test <- add.features(dt.test)
+
+rm.outliers <- function(dt) {
+    dt2 <- dt
+    
+    # dateOfBirth/Age
+    outliers <- with(dt2,
+                     !is.na(dateOfBirth) 
+                     & (dateOfBirth == as.Date("1949-11-19")
+                        | customerAge > 85
+                        | customerAge < 19))
+    dt2[outliers, ]$dateOfBirth <- NA
+    dt2[outliers, ]$customerAge <- NA
+    dt2$dateOfBirthIsOutlier <- "no"
+    dt2[outliers, ]$dateOfBirthIsOutlier <- "yes"
+    dt2$dateOfBirthIsOutlier <- as.factor(dt2$dateOfBirthIsOutlier)
+    
+    # deliveryDate/Time
+    outliers <- !is.na(dt2$deliveryTime) & dt2$deliveryTime < 0
+    dt2[outliers, ]$deliveryTime <- NA
+    dt2[outliers, ]$deliveryDate <- NA
+    dt2$deliveryDateIsOutlier <- "no"
+    dt2[outliers, ]$deliveryDateIsOutlier <- "yes"
+    dt2$deliveryDateIsOutlier <- as.factor(dt2$deliveryDateIsOutlier)
+    
+    # creationDate
+    outliers <- dt2$creationDate == as.Date("2011-02-16")
+    dt2[outliers, ]$creationDate <- NA
+    dt2[outliers, ]$accountAge <- NA
+    dt2$creationDateIsOutlier <- "no"
+    dt2[outliers, ]$creationDateIsOutlier <- "yes"
+    dt2$creationDateIsOutlier <- as.factor(dt2$creationDateIsOutlier)
+    
+    dt2
+}
+
+dt.train <- rm.outliers(dt.train)
+dt.test <- rm.outliers(dt.test)
+
+fix.missing <- function(dt) {
+    dt2 <- dt
+    
+    nas <- is.na(dt2$color)
+    dt2[nas, ]$color <- "other"
+    dt2[nas, ]$fewcolors <- "other"
+    
+    dt2
+}
+
+dt.train <- fix.missing(dt.train)
+dt.test <- fix.missing(dt.test)
+>>>>>>> re-add make-data
 
 save(dt.train, dt.test, file="data.RData")
