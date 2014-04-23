@@ -252,7 +252,7 @@ smoothScatter(as.integer(dt.merged$orderItemID), as.integer(dt.merged$itemID), m
               xlab="OrderItemID",
               ylab="itemID", xaxt="n")
 abline(v=max(as.integer(dt.train$orderItemID)), col="red")
-legend("topleft", c("Test Set Start"), lty=c(1), col=c("red"))
+legend("top", c("Test Set Start"), lty=c(1), col=c("red"))
 lbls <- seq(0, 480000, 20000)
 axis(1, lbls, lbls, las=2)
 ```
