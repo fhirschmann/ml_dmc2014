@@ -246,17 +246,6 @@ lbls <- as.Date(c("2012-04-01", "2012-05-01", "2012-06-01", "2012-07-01", "2012-
 axis(1, lbls, lbls, las=2)
 ```
 
-```{r, fig.height=8}
-par(xpd=F, mar=c(8.1, 5.1, 5.1, 2.1), mgp=c(6, 1, 0))
-smoothScatter(as.integer(dt.merged$orderItemID), as.integer(dt.merged$itemID), main="orderItemID vs itemID",
-              xlab="OrderItemID",
-              ylab="itemID", xaxt="n")
-abline(v=max(as.integer(dt.train$orderItemID)), col="red")
-legend("top", c("Test Set Start"), lty=c(1), col=c("red"))
-lbls <- seq(0, 480000, 20000)
-axis(1, lbls, lbls, las=2)
-```
-
 #### How large is the intersection between the train and test set?
 
 ```{r}
