@@ -68,11 +68,6 @@ add.features <- function(dt) {
     dt2$firstOrderDate <- as.Date(dt2$firstOrderDate)
     
     # Volume of order
-    dt2 <- dt2[, orderVolume := as.integer(sum(price)), by=c("customerID", "orderDate")]
-    
-    # Total volume of customer's order
-    dt2 <- dt2[, totalOrderVolume := as.integer(sum(price)), by=c("customerID")]
-    
     dt2 <- dt2[, orderVolume := sum(price), by=c("customerID", "orderDate")]
     
     # Total volume of customer's order
