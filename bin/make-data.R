@@ -44,7 +44,7 @@ zz <- as.data.frame(table(z$customerID))
 
 dt.train$returnShipment <- revalue(dt.train$returnShipment, c("0"="no", "1"="yes"))
 
-feat.simple <- function(dt) {
+add.features <- function(dt) {
     dt2 <- data.table(dt)
     
     #dt2$creationDateMissing <- as.factor(ifelse(is.na(dt2$creationDate), "yes", "no"))
