@@ -18,3 +18,10 @@ fs.all <- function(dt) {
     
     dt2
 }
+
+fs.tree <- function(dt) {
+    dt2 <- fs.all(dt)
+    dt2$price <- NULL
+    
+    dt2
+}

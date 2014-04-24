@@ -20,27 +20,23 @@ delayedAssign("dt.tiny", subset(dt.mini, wday(orderDate) == 1))
 delayedAssign("dt.merged", rbind(data.frame(dt.train, group="train"),
                                  data.frame(dt.test, group="test", returnShipment=NA)))
 
-t1.train.ids <- read.csv("eva/T1_train.txt")$orderItemID
-t1.test.ids <- read.csv("eva/T1_test.txt")$orderItemID
+dt.t1 <- list(
+    train=dt.train[read.csv("eva/T1_train.txt")$orderItemID, ],
+    test=read.csv("eva/T1_test.txt")$orderItemID
+)
 
-t2.train.ids <- read.csv("eva/T2_train.txt")$orderItemID
-t2.test.ids <- read.csv("eva/T2_test.txt")$orderItemID
+dt.t2<- list(
+    train=dt.train[read.csv("eva/T2_train.txt")$orderItemID, ],
+    test=read.csv("eva/T2_test.txt")$orderItemID
+)
 
-t3.train.ids <- read.csv("eva/T3_train.txt")$orderItemID
-t3.test.ids <- read.csv("eva/T3_test.txt")$orderItemID
-
-dt.t1.train <- dt.train[t1.train.ids, ]
-dt.t1.test <- dt.train[t1.train.ids, ]
-
-dt.t2.train <- dt.train[t2.train.ids, ]
-dt.t2.test <- dt.train[t2.train.ids, ]
-
-dt.t3.train <- dt.train[t3.train.ids, ]
-dt.t3.test <- dt.train[t3.train.ids, ]
+dt.t3 <- list(
+    train=dt.train[read.csv("eva/T3_train.txt")$orderItemID, ],
+    test=read.csv("eva/T3_test.txt")$orderItemID
+)
 
 # Serialized Models
 delayedAssign("mds", caret.load())
-
 
 clear <- function() {
     rm(list=c(dt.train.raw, dt.train.pp, dt.train, dt.june,
