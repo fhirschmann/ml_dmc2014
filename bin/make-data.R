@@ -25,7 +25,7 @@ dt.classes <- c(
 dt.train <- read.csv("task/orders_train-w-holidays.txt", sep=";",
                      colClasses=dt.classes, na.strings=dt.na.strings)
 dt.train$returnShipment <- revalue(as.factor(dt.train$returnShipment), c("0"="no", "1"="yes"))
-dt.test <- read.csv("task/orders_class-holidays.txt", sep=";",
+dt.test <- read.csv("task/orders_class-w-holidays.txt", sep=";",
                     colClasses=dt.classes, na.strings=dt.na.strings)
 
 # Feature Engineering
