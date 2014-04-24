@@ -158,6 +158,7 @@ def main(path, to):
     with open(path) as f, open(to, 'w') as fout:
         reader = csv.DictReader(f, delimiter=';')
         writer = csv.DictWriter(fout, reader.fieldnames + ['holiday'], delimiter=';')
+        writer.writeheader()
         for entry in reader:
             entry['holiday'] = judge_holidays(datetime.date(*[int(x) for x in entry['orderDate'].split('-')]), entry['state'])
             writer.writerow(entry)
