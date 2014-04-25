@@ -4,6 +4,6 @@ source("R/fs.R")
 source("R/dmc.R")
 library(C50)
 
-fit.c50 <- dmc.train(C5.0, fs.fun=fs.tree)
+fit.c50 <- dmc.train(C5.0, fs.fun=fs.tree, rules=T, trials=10)
 caret.save(fit.c50, "c50", "models2")
 dmc.evaluate(fit.c50)
