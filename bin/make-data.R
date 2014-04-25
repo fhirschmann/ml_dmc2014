@@ -96,7 +96,7 @@ for (i in c("T1", "T2", "T3")) {
     test.ids <- read.csv(paste("eva/", i, "_test.txt", sep=""))$orderItemID
     dt.dmc[[i]] <- list(
         train=add.features.otf(dt.train[train.ids, ], dt.train[-(test.ids), ]),
-        test=add.features.otf(dt.test[test.ids, ], dt.train[-(test.ids), ]))
+        test=add.features.otf(dt.train[test.ids, ], dt.train[-(test.ids), ]))
 }
 
 save(dt.train, dt.test, dt.dmc, file="data.RData")
