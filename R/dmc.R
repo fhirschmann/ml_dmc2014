@@ -15,9 +15,6 @@ DmcTrain <- function(method, data=dt.dmc, fs.fun=identity, ...) {
         models[[name]]$preds <- predict(models[[name]]$model, data[[name]]$test)
         models[[name]]$score <- dmc.points(models[[name]]$preds, data[[name]]$test$returnShipment)
     }
-    
-    res <- list()
-    class(res) <- "DmcTrain"
 
     results <- data.frame(cbind(
         sapply(models, function(x) x$score, USE.NAMES=F),
@@ -27,10 +24,12 @@ DmcTrain <- function(method, data=dt.dmc, fs.fun=identity, ...) {
     results <- rbind(results, Total=colSums(results))
     results$Accuracy <- 1 - (results$Score / results$n_Test)
     
-    list(
+    res <- list(
       models=models,
       results=results
     )
+    class(res) <- "DmcTrain"
+    res
 }
 
 summary.DmcTrain <- function(train) {
