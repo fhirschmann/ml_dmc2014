@@ -50,8 +50,8 @@ returnRate <- function(subset) {
 
 ## Read in the Data
 ```{r}
-dt.train <- read.csv("task/orders_train.txt", sep=";", na.strings=c("?", "??", "NA", ""))
-dt.test <- read.csv("task/orders_class.txt", sep=";", na.strings=c("?", "??", "NA", ""))
+dt.train <- read.csv("task/orders_train-w-holidays.txt", sep=";", na.strings=c("?", "??", "NA", ""))
+dt.test <- read.csv("task/orders_class-w-holidays.txt", sep=";", na.strings=c("?", "??", "NA", ""))
 
 dt.dates <- c("dateOfBirth", "creationDate", "orderDate", "deliveryDate")
 dt.train[dt.dates] <- lapply(dt.train[dt.dates], as.Date)
@@ -833,6 +833,22 @@ Interesting, newer accounts tend to not return items as often as older accounts.
 ### returnShipment
 
 ## holiday skew
+
+Partitioning the data into during, before, and after a (school) holiday and other dates.
+
+```{r}
+par(mfrow=c(1, 2))
+barplot(table(dt.train$holiday), horiz=T, main="Date distribution in relation to holidays (train)")
+barplot(table(dt.test$holiday), horiz=T, main="Date distribution in relation to holidays (test)")
+```
+
+```{r}
+par(mfrow=c(1, 2))
+barplot(structable(holiday ~ returnShipment, data=dt.train), horiz=T, main="Return ratios in relation to holidays (train)")
+barplot(structable(holiday ~ returnShipment, data=dt.test), horiz=T, main="Return ratios in relation to holidays (test)")
+```
+
+## Easter
 
 Train data date range:
 
