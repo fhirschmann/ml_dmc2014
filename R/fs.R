@@ -10,7 +10,6 @@ fs.all <- function(dt) {
     dt2$manufacturerID <- NULL
     dt2$customerID <- NULL
     dt2$color <- NULL
-    dt2$instantorder <- NULL
     
     dt2$firstOrderDate <- NULL
     

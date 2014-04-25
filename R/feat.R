@@ -22,6 +22,12 @@ add.features <- function(dt) {
     # Number of items ordered with the same ID
     dt2[, sameItemsOrdered := .N, by=c("itemID", "customerID", "orderDate")]
     
+    # Total number of items ordered
+    dt2[, itemsOrdered := .N, by=c("itemID", "customerID", "orderDate")]
+    
+    # Total number of orders
+    dt[, customerNumOrders := .N, by=("customerID", "orderDate")]
+    
     # Date of first order (per customer)
     dt2[, firstOrderDate := min(orderDate), by=c("customerID")]
     dt2$firstOrderDate <- as.Date(dt2$firstOrderDate)
