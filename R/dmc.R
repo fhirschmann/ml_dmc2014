@@ -7,7 +7,7 @@ dmc.train <- function(method, data=dt.dmc, fs.fun=identity, ...) {
     for (name in names(data)) {
         dt <- data[[name]]$train
         dt <- dt[!dt$deliveryDateMissing == "yes", ]
-        fit[[name]] <- method(returnShipment ~ ., data=fs.fun(dt))
+        fit[[name]] <- method(returnShipment ~ ., data=fs.fun(dt), ...)
     }
     
     fit
