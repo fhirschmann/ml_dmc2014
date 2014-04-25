@@ -22,11 +22,14 @@ dt.classes <- c(
     "creationDate"="Date"
 )
 
-dt.train <- read.csv("task/orders_train-w-holidays.txt", sep=";",
+dt.train <- read.csv("task/orders_train.txt", sep=";",
                      colClasses=dt.classes, na.strings=dt.na.strings)
 dt.train$returnShipment <- revalue(as.factor(dt.train$returnShipment), c("0"="no", "1"="yes"))
-dt.test <- read.csv("task/orders_class-w-holidays.txt", sep=";",
+dt.train$holiday <- read.csv("task/orders_train.holiday.txt")$holiday
+dt.test <- read.csv("task/orders_class.txt", sep=";",
                     colClasses=dt.classes, na.strings=dt.na.strings)
+#dt.test$holiday <- read.csv("task/orders_class.holiday.txt")$holiday
+
 
 # Feature Engineering
 
