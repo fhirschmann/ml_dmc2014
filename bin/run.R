@@ -7,6 +7,7 @@
 #
 # To get a list of available models try ./bin/run.R -l
 
+source("R/data.R")
 source("R/pipeline.R")
 
 args <- commandArgs(T)
@@ -16,7 +17,6 @@ if ("-l" %in% args) {
     quit()
 }
 
-source("R/data.R")
 source("R/dmc.R")
 try.mp()
 
