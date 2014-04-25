@@ -68,4 +68,9 @@ add.features.otf <- function(dt) {
     #
     # Place features that should be computed on the fly on the train set only here.
     #
+    dt2 <- dt
+    
+    dt2[, customerReturnRate := sum(returnShipment == "yes") / .N, by=c("customerID")]
+    
+    dt2
 }
