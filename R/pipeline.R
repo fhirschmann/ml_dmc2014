@@ -13,8 +13,9 @@ ctrl <- trainControl(method="cv", savePredictions=T,
 ctrl.probs <- ctrl
 ctrl.probs$classProbs <- TRUE
 
-dt <- droplevels(dt.june)
-
+dt <- dt.dmc$T3$test
+# dt <- rbind(dt.dmc$T3$train, dt.dmc$T3$test)
+    
 # List of stuff to learn
 descs <- list(
     nb=list(
