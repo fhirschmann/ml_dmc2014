@@ -20,17 +20,17 @@ add.features <- function(dt) {
     dt2$accountAge <- as.numeric(dt2$orderDate - dt2$creationDate)
     
     # Number of items ordered with the same ID
-    dt2 <- dt2[, sameItemsOrdered := .N, by=c("itemID", "customerID", "orderDate")]
+    dt2[, sameItemsOrdered := .N, by=c("itemID", "customerID", "orderDate")]
     
     # Date of first order (per customer)
-    dt2 <- dt2[, firstOrderDate := min(orderDate), by=c("customerID")]
+    dt2[, firstOrderDate := min(orderDate), by=c("customerID")]
     dt2$firstOrderDate <- as.Date(dt2$firstOrderDate)
     
     # Volume of order
-    dt2 <- dt2[, orderVolume := sum(price), by=c("customerID", "orderDate")]
+    dt2[, orderVolume := sum(price), by=c("customerID", "orderDate")]
     
     # Total volume of customer's order
-    dt2 <- dt2[, totalOrderVolume := sum(price), by=c("customerID")]
+    dt2[, totalOrderVolume := sum(price), by=c("customerID")]
     
     # Summarize colors
     dt2$fewcolors <- revalue(dt2$color, colormap)
