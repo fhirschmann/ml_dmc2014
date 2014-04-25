@@ -1,29 +1,43 @@
 # DMC2014 Specific Stuff
 
 
-dmc.train <- function(method, data=dt.dmc, fs.fun=identity, ...) {
-    fit <- list()
+DmcTrain <- function(method, data=dt.dmc, fs.fun=identity, ...) {
+    models <- list()
     
     for (name in names(data)) {
+        models[[name]] <- list()
+        class(models[[name]]) <- "DmcFit"
+        
         dt <- data[[name]]$train
         dt <- dt[!dt$deliveryDateMissing == "yes", ]
-        fit[[name]] <- method(returnShipment ~ ., data=fs.fun(dt), ...)
+        models[[name]] <- list()
+        models[[name]]$model <- method(returnShipment ~ ., data=fs.fun(dt), ...)
+        models[[name]]$preds <- predict(models[[name]]$model, data[[name]]$test)
+        models[[name]]$score <- dmc.points(models[[name]]$preds, data[[name]]$test$returnShipment)
     }
     
-    fit
-}
-
-dmc.evaluate <- function(fit, data=dt.dmc) {
     res <- list()
+    class(res) <- "DmcTrain"
 
-    for (name in names(data)) {
-        res[[name]] <- dmc.points(dmc.predict(fit[[name]], data[[name]]$test), data[[name]]$test$returnShipment)
-    }
+    results <- data.frame(cbind(
+        sapply(models, function(x) x$score, USE.NAMES=F),
+        sapply(dt.dmc, function(x) nrow(x$train), USE.NAMES=F),
+        sapply(dt.dmc, function(x) nrow(x$test), USE.NAMES=F)))
+    colnames(results) <- c("Score", "n_Train", "n_Test")
+    results <- rbind(results, Total=colSums(results))
+    results$Accuracy <- 1 - (results$Score / results$n_Test)
     
-    res
+    list(
+      models=models,
+      results=results
+    )
 }
 
-dmc.predict <- function(model, data) {
+summary.DmcTrain <- function(train) {
+    train$results
+}
+
+predict.DmcTrain <- function(model, data) {
     dt <- data
     dt$returnShipment <- NULL
 
