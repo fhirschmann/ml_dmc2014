@@ -99,6 +99,4 @@ for (i in c("T1", "T2", "T3")) {
         test=add.features.otf(dt.test[test.ids, ], dt.train[-(test.ids), ]))
 }
 
-dt.dmc$T1$train <- add.features.otf(dt.dmc$T1)
-
 save(dt.train, dt.test, dt.dmc, file="data.RData")
