@@ -23,7 +23,7 @@ add.features <- function(dt) {
     dt2[, sameItemsOrdered := .N, by=c("itemID", "customerID", "orderDate")]
     
     # Total number of items ordered
-    dt2[, itemsOrdered := .N, by=c("itemID", "customerID", "orderDate")]
+    dt2[, customerNumItemsOrdered := .N, by=c("itemID", "customerID", "orderDate")]
     
     # Total number of orders
     dt2[, customerNumOrders := .N, by=c("customerID", "orderDate")]
