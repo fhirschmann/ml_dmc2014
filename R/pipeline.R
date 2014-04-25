@@ -1,20 +1,29 @@
 # Training function definition
 source("R/dmc.R")
 source("R/fs.R")
+source("R/feat.R")
 
 library(functional)
 library(caret)
 library(C50)
 
-ctrl <- trainControl(method="cv", savePredictions=T,
+
+dt <- dt.dmc$T3$test
+# dt <- rbind(dt.dmc$T3$train, dt.dmc$T3$test)
+
+folds <- createFolds(dt$returnShipment, k=5)
+
+ctrl <- trainControl(method="cv", savePredictions=T, index=folds,
                      summaryFunction=dmc.summary, returnData=T)
+
+# Tricky part: compute the on-the-fly features for each hold-out sample
+# only by using all the other samples.
+
+# TODO
 
 # Don't pass this to classifiers who do not return class probabilities
 ctrl.probs <- ctrl
 ctrl.probs$classProbs <- TRUE
-
-dt <- dt.dmc$T3$test
-# dt <- rbind(dt.dmc$T3$train, dt.dmc$T3$test)
     
 # List of stuff to learn
 descs <- list(
