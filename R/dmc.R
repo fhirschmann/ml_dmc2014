@@ -37,7 +37,7 @@ summary.DmcTrain <- function(train) {
     train$results
 }
 
-predict.DmcTrain <- function(model, data) {
+predict.DmcFit <- function(model, data) {
     dt <- data
     dt$returnShipment <- NULL
 
