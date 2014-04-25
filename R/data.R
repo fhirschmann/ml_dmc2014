@@ -20,19 +20,20 @@ delayedAssign("dt.tiny", subset(dt.mini, wday(orderDate) == 1))
 delayedAssign("dt.merged", rbind(data.frame(dt.train, group="train"),
                                  data.frame(dt.test, group="test", returnShipment=NA)))
 
-dt.t1 <- list(
-    train=dt.train[read.csv("eva/T1_train.txt")$orderItemID, ],
-    test=read.csv("eva/T1_test.txt")$orderItemID
-)
 
-dt.t2<- list(
-    train=dt.train[read.csv("eva/T2_train.txt")$orderItemID, ],
-    test=read.csv("eva/T2_test.txt")$orderItemID
-)
-
-dt.t3 <- list(
-    train=dt.train[read.csv("eva/T3_train.txt")$orderItemID, ],
-    test=read.csv("eva/T3_test.txt")$orderItemID
+dt.dmc <- list(
+    T1=list(
+        train=dt.train[read.csv("eva/T1_train.txt")$orderItemID, ],
+        test=dt.train[read.csv("eva/T1_test.txt")$orderItemID, ]
+    ),
+    T2=list(
+        train=dt.train[read.csv("eva/T2_train.txt")$orderItemID, ],
+        test=dt.train[read.csv("eva/T2_test.txt")$orderItemID, ]
+    ),
+    T3=list(
+        train=dt.train[read.csv("eva/T3_train.txt")$orderItemID, ],
+        test=dt.train[read.csv("eva/T3_test.txt")$orderItemID, ]
+    )
 )
 
 # Serialized Models

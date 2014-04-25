@@ -1,5 +1,26 @@
 # DMC2014 Specific Stuff
 
+
+dmc.train <- function(method, data=dt.dmc, fs.fun=identity, ...) {
+    fit <- list()
+    
+    for (name in names(data)) {
+        fit[[name]] <- method(returnShipment ~ ., data=fs.fun(data[[name]]$train))
+    }
+    
+    fit
+}
+
+dmc.evaluate <- function(fit, data=dt.dmc) {
+    res <- list()
+
+    for (name in names(data)) {
+        res[[name]] <- dmc.points(predict(fit[[name]], data[[name]]$test), data[[name]]$test$returnShipment)
+    }
+    
+    res
+}
+
 dmc.points <- function(pred, obs) {
     require(plyr)
 
