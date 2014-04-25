@@ -1,5 +1,5 @@
 # DMC2014 Specific Stuff
-
+source("R/feat.R")
 
 DmcTrain <- function(method, data=dt.dmc, fs.fun=identity, ...) {
     models <- list()
@@ -10,9 +10,10 @@ DmcTrain <- function(method, data=dt.dmc, fs.fun=identity, ...) {
         
         dt <- data[[name]]$train
         dt <- dt[!dt$deliveryDateMissing == "yes", ]
+        dt <- add.features.otf(dt)
         models[[name]] <- list()
         models[[name]]$model <- method(returnShipment ~ ., data=fs.fun(dt), ...)
-        models[[name]]$preds <- predict(models[[name]]$model, data[[name]]$test)
+        models[[name]]$preds <- predict(models[[name]]$model, fs.fun(add.features.otf(data[[name]]$test)))
         models[[name]]$score <- dmc.points(models[[name]]$preds, data[[name]]$test$returnShipment)
     }
 
