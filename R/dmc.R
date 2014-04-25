@@ -5,7 +5,9 @@ dmc.train <- function(method, data=dt.dmc, fs.fun=identity, ...) {
     fit <- list()
     
     for (name in names(data)) {
-        fit[[name]] <- method(returnShipment ~ ., data=fs.fun(data[[name]]$train))
+        dt <- data[[name]]$train
+        dt <- dt[!dt$deliveryDateMissing == "yes", ]
+        fit[[name]] <- method(returnShipment ~ ., data=fs.fun(dt))
     }
     
     fit
@@ -15,10 +17,20 @@ dmc.evaluate <- function(fit, data=dt.dmc) {
     res <- list()
 
     for (name in names(data)) {
-        res[[name]] <- dmc.points(predict(fit[[name]], data[[name]]$test), data[[name]]$test$returnShipment)
+        res[[name]] <- dmc.points(dmc.predict(fit[[name]], data[[name]]$test), data[[name]]$test$returnShipment)
     }
     
     res
+}
+
+dmc.predict <- function(model, data) {
+    dt <- data
+    dt$returnShipment <- NULL
+
+    dt$pred <- predict(model, dt)
+    dt[dt$deliveryDateMissing == "yes", ]$pred <- "no"
+    
+    dt$pred
 }
 
 dmc.points <- function(pred, obs) {
