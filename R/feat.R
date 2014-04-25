@@ -70,14 +70,24 @@ add.features <- function(dt) {
     dt2
 }
 
-add.features.otf <- function(dt) {
+add.features.otf <- function(to, from) {
     #
     # Place features that should be computed on the fly on the train set only here.
     #
+    # Args:
+    #   to: data frame to add the features to
+    #   from: data frame to calculate the features from
     require(data.table)
-    dt2 <- data.table(dt)
+    require(plyr)
     
-    dt2[, customerReturnRate := sum(returnShipment == "yes") / .N, by=c("customerID")]
+    dt.to <- data.table(to)
+    dt.from <- data.table(from)
+    print(nrow(dt.from))
+    print(nrow(dt.to))
     
-    dt2
+    dt.from[, customerReturnRate := sum(returnShipment == "yes") / .N, by=c("customerID")]
+    retRate <- unique(dt.from[, c("customerID", "customerReturnRate"), with=F])
+    dt.to <- join(dt.to, retRate, by="customerID")
+    
+    dt.to
 }

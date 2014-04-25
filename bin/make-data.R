@@ -30,16 +30,6 @@ dt.test <- read.csv("task/orders_class.txt", sep=";",
                     colClasses=dt.classes, na.strings=dt.na.strings)
 #dt.test$holiday <- read.csv("task/orders_class.holiday.txt")$holiday
 
-
-# Feature Engineering
-
-## Customer Blacklist
-x <- as.data.frame.matrix(structable(returnShipment ~ customerID, data = dt.train))
-z <- dt.train[dt.train$customerID %in% rownames(x[x[["0"]] == 0, ]), c("customerID", 
-                                                                       "orderDate")]
-z <- z[!duplicated(z), ]
-zz <- as.data.frame(table(z$customerID))
-
 #ideen für features:
 #größe des customers aus bestellen items ermitteln
 #preisfeature: abweichung von preis (höher, niedriger, gleich)
@@ -100,4 +90,15 @@ fix.missing <- function(dt) {
 #dt.train <- fix.missing(dt.train)
 #dt.test <- fix.missing(dt.test)
 
-save(dt.train, dt.test, file="data.RData")
+dt.dmc <- list()
+for (i in c("T1", "T2", "T3")) {
+    train.ids <- read.csv(paste("eva/", i, "_train.txt", sep=""))$orderItemID
+    test.ids <- read.csv(paste("eva/", i, "_test.txt", sep=""))$orderItemID
+    dt.dmc[[i]] <- list(
+        train=add.features.otf(dt.train[train.ids, ], dt.train[-(test.ids), ]),
+        test=add.features.otf(dt.test[test.ids, ], dt.train[-(test.ids), ]))
+}
+
+dt.dmc$T1$train <- add.features.otf(dt.dmc$T1)
+
+save(dt.train, dt.test, dt.dmc, file="data.RData")
