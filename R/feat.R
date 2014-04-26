@@ -84,8 +84,12 @@ add.features.otf <- function(to, from) {
     dt.from <- data.table(from)
     
     dt.from[, customerReturnRate := sum(returnShipment == "yes") / .N, by=c("customerID")]
-    retRate <- unique(dt.from[, c("customerID", "customerReturnRate"), with=F])
-    dt.to <- join(dt.to, retRate, by="customerID")
+    customerRetRate <- unique(dt.from[, c("customerID", "customerReturnRate"), with=F])
+    dt.to <- join(dt.to, customerRetRate, by="customerID")
+    
+    dt.from[, itemReturnRate := sum(returnShipment == "yes") / .N, by=c("itemID")]
+    itemRetRate <- unique(dt.from[, c("itemID", "itemReturnRate"), with=F])
+    dt.to <- join(dt.to, itemRetRate, by="itemID")
     
     dt.to
 }
