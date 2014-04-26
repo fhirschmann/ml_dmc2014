@@ -12,6 +12,7 @@ DmcTrain <- function(method, data=dt.dmc, fs.fun=identity, ...) {
         dt <- dt[!dt$deliveryDateMissing == "yes", ]
         models[[name]] <- list()
         models[[name]]$model <- method(returnShipment ~ ., data=fs.fun(dt), ...)
+        models[[name]]$orderItemIDs <- data[[name]]$test$orderItemID
         models[[name]]$preds <- predict(models[[name]]$model, fs.fun(data[[name]]$test))
         models[[name]]$score <- dmc.points(models[[name]]$preds, data[[name]]$test$returnShipment)
     }
@@ -34,6 +35,19 @@ DmcTrain <- function(method, data=dt.dmc, fs.fun=identity, ...) {
 
 summary.DmcTrain <- function(train) {
     train$results
+}
+
+exportPreds.DmcTrain <- function(train, path) {
+    require(plyr)
+    
+    dir.create(path, recursive=T)
+    for (name in names(train$models)) {
+        preds <- revalue(train$models[[name]]$preds, c("yes"="1", "no"="0"))
+        write.table(data.frame(orderItemID=train$models[[name]]$orderItemIDs,
+                             prediction=preds),
+                  sep=";", quote=F, row.names=F,
+                  file=file.path(path, paste(name, "txt", sep=".")))
+    }
 }
 
 predict.DmcFit <- function(model, data) {
