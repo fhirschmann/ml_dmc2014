@@ -843,9 +843,7 @@ barplot(table(dt.test$holiday), horiz=T, main="Date distribution in relation to 
 ```
 
 ```{r}
-par(mfrow=c(1, 2))
 barplot(structable(holiday ~ returnShipment, data=dt.train), horiz=T, main="Return ratios in relation to holidays (train)")
-barplot(structable(holiday ~ returnShipment, data=dt.test), horiz=T, main="Return ratios in relation to holidays (test)")
 ```
 
 ## Easter
