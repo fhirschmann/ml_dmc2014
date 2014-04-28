@@ -90,20 +90,19 @@ fix.missing <- function(dt) {
 #dt.train <- fix.missing(dt.train)
 #dt.test <- fix.missing(dt.test)
 
-dt.dmc.ids.test <- list()
-dt.dmc.ids.train <- list()
+dt.dmc.ids <- list(test=list(), train=list())
 for (i in c("T1", "T2", "T3")) {
-    dt.dmc.ids.train[[i]] <- read.csv(paste("eva/", i, "_train.txt", sep=""))$orderItemID
-    dt.dmc.ids.test[[i]] <- read.csv(paste("eva/", i, "_test.txt", sep=""))$orderItemID
+    dt.dmc.ids$train[[i]] <- read.csv(paste("eva/", i, "_train.txt", sep=""))$orderItemID
+    dt.dmc.ids$test[[i]] <- read.csv(paste("eva/", i, "_test.txt", sep=""))$orderItemID
 }
 
 dt.dmc <- list()
-for (i in names(dt.dmc.ids.train)) {
-    train.ids <- dt.dmc.ids.train[[i]]
-    test.ids <- dt.dmc.ids.test[[i]]
+for (i in names(dt.dmc.ids$train)) {
+    train.ids <- dt.dmc.ids$train[[i]]
+    test.ids <- dt.dmc.ids$test[[i]]
     dt.dmc[[i]] <- list(
         train=add.features.otf(dt.train[train.ids, ], dt.train[-(test.ids), ]),
         test=add.features.otf(dt.train[test.ids, ], dt.train[-(test.ids), ]))
 }
 
-save(dt.train, dt.test, dt.dmc, dt.dmc.ids.train, dt.dmc.ids.test, file="data.RData")
+save(dt.train, dt.test, dt.dmc, dt.dmc.ids, file="data.RData")
