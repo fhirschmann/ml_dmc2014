@@ -929,6 +929,139 @@ smoothScatter(dt$creationDate, dt$customerID, xlab="Creation Date", ylab="Custom
               main="Creation Date vs Customer ID")
 ```
 
+## itemID vs price
+
+### What are the equalities/differences in prices and items in the train and test set?
+Preparing data for analysis:
+```{r}
+analyseTB.train<-data.table(dt.train)[,list(itemID,price,orderDate,size,color,returnShipment)]
+analyseTB.test<-data.table(dt.test)[,list(itemID,price,orderDate,size,color)]
+```
+#### How many different items and prices are in the train and test set?
+```{r}
+comparision<-matrix(c(length(unique(analyseTB.train$itemID)),length(unique(analyseTB.train$price)),length(unique(analyseTB.test$itemID)),length(unique(analyseTB.test$price))),ncol=2,byrow=TRUE)
+rownames(comparision)<-c("itemIDs","prices")
+colnames(comparision)<-c("Train","Test")
+comparision <- as.table(comparision)
+comparision
+```
+There more unique itemID-price combinations then distinct items
+```{r}
+nrow(analyseTB.train[,sum(itemID),by=list(itemID,price)]) 
+```
+#### Getting a small overview of price range and the quantity of price levels per item:
+```{r echo=F}
+itemPriceRange.train<- analyseTB.train[,list(min(price),max(price)),by=list(itemID)]
+setnames(itemPriceRange.train,c("V1", "V2"),c("min","max"))
+setkey(itemPriceRange.train,itemID)
+itemPriceRange.train=itemPriceRange.train[analyseTB.train[order(itemID,-price,decreasing=FALSE),length(itemID),by=list(itemID,price)][,length(price),by=itemID]] #JOIN
+setnames(itemPriceRange.train,"V1","levels")
+
+itemPriceRange.test<- analyseTB.test[,list(min(price),max(price)),by=list(itemID)]
+setnames(itemPriceRange.test,c("V1", "V2"),c("min","max"))
+setkey(itemPriceRange.test,itemID)
+itemPriceRange.test=itemPriceRange.test[analyseTB.test[order(itemID,-price,decreasing=FALSE),length(itemID),by=list(itemID,price)][,length(price),by=itemID]]
+setnames(itemPriceRange.test,"V1","levels")
+```
+Absolute:
+```{r}
+comparision<-matrix(c(nrow(itemPriceRange.train[max==min]),nrow(itemPriceRange.test[max==min]),nrow(itemPriceRange.train[max!=min]),nrow(itemPriceRange.test[max!=min])),ncol=2,byrow=TRUE)
+rownames(comparision)<-c("constant","variable")
+colnames(comparision)<-c("Train","Test")
+comparision <- as.table(comparision)
+comparision
+```
+In percent:
+```{r}
+comparision<-matrix(c(nrow(itemPriceRange.train[max==min])/nrow(itemPriceRange.train),nrow(itemPriceRange.test[max==min])/nrow(itemPriceRange.test),nrow(itemPriceRange.train[max!=min])/nrow(itemPriceRange.train),nrow(itemPriceRange.test[max!=min])/nrow(itemPriceRange.test)),ncol=2,byrow=TRUE)
+rownames(comparision)<-c("constant","variable")
+colnames(comparision)<-c("Train","Test")
+comparision <- as.table(comparision)
+comparision
+```
+There are constant prices as well as variable prices depending on item.
+
+### Overview of price levels
+
+Quantity of price levels per itemID (1 = constant price).
+```{r}
+par(mfrow = c(1, 2))
+bins=seq(0,10,by=1)
+hist(itemPriceRange.train$levels, breaks=bins, col="lightblue", xlab="# level",ylab="count", main = "Levels (Train)")
+hist(itemPriceRange.test$levels, breaks=bins, col="lightblue", xlab="# level",ylab="count", main = "Levels (Test)")
+```
+
+### Overview of discount rates in training set:
+```{r}
+setkey(analyseTB.train,itemID)
+analyseTB.train<-analyseTB.train[itemPriceRange.train]
+analyseTB.train<-analyseTB.train[,discount:=round((1-price/max)*100,digits=0)] #adding discount rates
+hist(analyseTB.train$discount, breaks=seq(0,100,by=1),col="lightblue", xlab="discount in %", main = "Discount (Train)")
+```
+
+### Overview of discount rates in test set (depending on train set):
+Comparison of overall price levels and test set price levels.
+```{r echo=F}
+analyseTB.merged=data.table(dt.merged)[,list(itemID,price,orderDate,size,color)]
+
+itemPriceRange.merged<- analyseTB.merged[,list(min(price),max(price)),by=list(itemID)]
+setnames(itemPriceRange.merged,c("V1", "V2"),c("min","max"))
+setkey(itemPriceRange.merged,itemID)
+itemPriceRange.merged=itemPriceRange.merged[analyseTB.merged[order(itemID,-price,decreasing=FALSE),length(itemID),by=list(itemID,price)][,length(price),by=itemID]]
+setnames(itemPriceRange.merged,"V1","levels")
+setkey(analyseTB.test,itemID)
+```
+```{r}
+analyseTB.test<-merge(analyseTB.test,itemPriceRange.merged)
+analyseTB.test<-analyseTB.test[,discount:=round((1-price/max)*100,digits=0)]
+hist(analyseTB.test$discount, breaks=seq(0,100,by=1),col="lightblue", xlab="discount in %" , main = "Discount (Test)")
+```
+
+#### Comparison of Discounting in Train und Test set
+```{r}
+comparision<-matrix(c(nrow(analyseTB.train[discount==0])/nrow(analyseTB.train),nrow(analyseTB.test[discount==0])/nrow(analyseTB.test),nrow(analyseTB.train[discount>0])/nrow(analyseTB.train),nrow(analyseTB.test[discount>0])/nrow(analyseTB.test)),ncol=2,byrow=TRUE)
+rownames(comparision)<-c("no discount","sale")
+colnames(comparision)<-c("Train","Test")
+comparision <- as.table(comparision)
+comparision
+```
+In the Test set there are less discounted items then in the train set.
+
+### Discount rate vs. returnShipment
+How does the discount rate affect on returnShipment:
+```{r}
+mosaic(returnShipment ~  cut(discount, c(-Inf, 0, 1:6 * 10, 100, Inf),dig.lab=20), data = analyseTB.train, main = "Mosaic Plot of Discount rate vs returnShipment", xlab="discount rate")
+```
+Three points are interesting:
+- payment of max price is a considered decision: buying an item without a discount it's more likely to keep it 
+- quite the contrary: a discount itself influences the returnShipment in a negative way - BUT: the bigger the discount is the more likely items does not get returned 
+- even thought an item's price is zero (itemID=44) it was returned
+
+### Analysis of Discount during year in Train set
+```{r}
+analyseTB.train<-analyseTB.train[,length(itemID),by=list(itemID,price,orderDate,color,size,discount,max,min)]
+#analyseTB.train<-analyseTB.train[discount>0,discount:=1]
+#analyseTB.train<-analyseTB.train[,price:=(price/max*100)] #Normalisierung auf Wertebreich [0,100]
+```
+#MICHAEL: vll hast du eine angemessenere visualisierung der Daten. am besten ein dichtebasierter scatter
+```{r}
+smoothScatter(analyseTB.train[min!=max]$orderDate, analyseTB.train[min!=max]$discount, xlab = "Creation Date", ylab = "discount rate", main = "Order Date vs discount rate")
+
+ggplot(analyseTB.train[min!=max], aes(orderDate, price, colour = discount)) + geom_point(aes(colour = factor(discount))) + theme(axis.text.x=element_text(angle=-90))
+```
+- constant prices: just one price
+- variable prices: random up and downs for many items (item, color, size)-  no exact trend
+
+#### Exemplary: Price history of two different colors of most sold item "1415"
+```{r}
+ggplot(analyseTB.train[itemID=="1415" & (color=="black" | color =="white")], aes(orderDate, price, group = color, colour = discount)) + geom_path(aes(colour = factor(color))) + theme(axis.text.x=element_text(angle=-90))
+```
+#### Exemplary: Price history of two different sizes of most sold item "1415" 
+```{r}
+ggplot(analyseTB.train[itemID=="1415" & (size=="L" | size=="XL")], aes(orderDate, price, group = size, colour = size)) + geom_path(alpha = 0.5) + theme(axis.text.x=element_text(angle=-90))
+```
+
+
 ## SessionInfo
 
 ```{r}
