@@ -8,21 +8,14 @@ library(caret)
 library(C50)
 
 
-dt <- dt.dmc$T3$test
-# dt <- rbind(dt.dmc$T3$train, dt.dmc$T3$test)
+indx.train <- dt.dmc.ids$train
+names(indx.train) <- paste("Training0", 1:length(names(indx.train)), sep="")
+indx.test <- dt.dmc.ids$test
+names(indx.test) <- paste("Testing0", 1:length(names(indx.test)), sep="")
 
-folds <- createFolds(dt$returnShipment, k=5)
-
-#ctrl <- trainControl(method="cv", savePredictions=T, index=folds,
-#                     summaryFunction=dmc.summary, returnData=T)
 ctrl <- trainControl(method="cv", savePredictions=T,
                      summaryFunction=dmc.summary, returnData=T,
-                     index=dt.dmc.ids.train, indexOut=dt.dmc.ids.test)
-
-# Tricky part: compute the on-the-fly features for each hold-out sample
-# only by using all the other samples.
-
-# TODO
+                     index=indx.train, indexOut=indx.test)
 
 # Don't pass this to classifiers who do not return class probabilities
 ctrl.probs <- ctrl
@@ -36,6 +29,8 @@ descs <- list(
             trControl=ctrl.probs)
     ),
     c50=list(
+        data.fun=fs.tree,
+        na.action=na.pass,
         train.args=list(
             method="C5.0",
             tuneGrid=expand.grid(
@@ -63,7 +58,7 @@ common.desc <- list(
         # Always learn returnShipment using all attributes
         form=returnShipment ~ .,
         # Data to Train on
-        data=dt,  # pass as string for lazy evaluation
+        data=dt.train,
         # Maximize the metric
         maximize=F,
         # Use Points to select the best tuning parameters
