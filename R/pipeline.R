@@ -13,8 +13,11 @@ dt <- dt.dmc$T3$test
 
 folds <- createFolds(dt$returnShipment, k=5)
 
-ctrl <- trainControl(method="cv", savePredictions=T, index=folds,
-                     summaryFunction=dmc.summary, returnData=T)
+#ctrl <- trainControl(method="cv", savePredictions=T, index=folds,
+#                     summaryFunction=dmc.summary, returnData=T)
+ctrl <- trainControl(method="cv", savePredictions=T,
+                     summaryFunction=dmc.summary, returnData=T,
+                     index=dt.dmc.ids.train, indexOut=dt.dmc.ids.test)
 
 # Tricky part: compute the on-the-fly features for each hold-out sample
 # only by using all the other samples.
@@ -37,7 +40,7 @@ descs <- list(
             method="C5.0",
             tuneGrid=expand.grid(
                 .winnow=c(FALSE),
-                .model=c("rules", "tree"),
+                .model=c("rules"),
                 .trials=1
                 ),
             trControl=ctrl,
