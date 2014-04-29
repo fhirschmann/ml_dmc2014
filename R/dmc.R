@@ -2,11 +2,12 @@
 source("R/feat.R")
 source("R/utils.R")
 
-dmc.train <- function(data, tuneGrid=NULL, fs.fun, verbose=T, method="nb", ...) {
+dmctrain <- function(data, tuneGrid=NULL, fs.fun, verbose=T, method="nb",
+                     save.path=NULL, ...) {
     require(caret)
+    require(foreach)
     
     res <- list()
-    class(res) <- "dmctrain"
     
     if (is.null(tuneGrid)) {
         # TODO
@@ -27,69 +28,55 @@ dmc.train <- function(data, tuneGrid=NULL, fs.fun, verbose=T, method="nb", ...) 
                                 ...)
             preds <- predict(fit, fs.fun(data[[dt.name]]$test), na.action=na.pass)
             score <- dmc.points(preds, data[[dt.name]]$test$returnShipment)
-            list(fit=fit, score=score, accuracy=1 - (score / nrow(data[[dt.name]]$test)), preds=preds)
+            list(fit=fit, score=score, accuracy=1 - (score / nrow(data[[dt.name]]$test)),
+                 preds=preds, orderItemID=data[[dt.name]]$test$orderItemID)
         }
         results$score <- sapply(models, function(x) x$score)
         results$accuracy <- sapply(models, function(x) x$accuracy)
         list(models=models, results=results)
     }
     names(res) <- names(data)
+    class(res) <- "dmctrain"
+    
+    if (!is.null(save.path)) {
+        saveRDS(res, file=file.path(save.path, paste(method, "RData", sep=".")))
+        write.csv(summary(res), file=file.path(save.path, paste(method, "csv", sep=".")))
+    }
     
     res
 }
 
-summary.dmctrain <- function(dmctrain) {
-    results <- sapply(names(dmctrain), function(n) data.frame(dmctrain[[n]]$results, set=n),
+summary.dmctrain <- function(object) {
+    results <- sapply(names(object), function(n) data.frame(object[[n]]$results, set=n),
                       simplify=F)
     tbl <- do.call(rbind, results)
     rownames(tbl) <- NULL
     tbl
 }
 
-
-dmc.multitrain <- function(form, data, method, fs.fun=identity,
-                           trControl=trainControl(), save.path=NA, 
-                           verbose=F, ...) {
-    # Trains a model using multiple train/test splits.
-    # Args:
-    #   form: formula
-    #   data: data, list(T1=list(train=dt.test, test=dt.test))
-    #   method: method for caret::train
-    #   fs.fun: feature selection function
-    #   trControl: caret::trainControl
-    #   save.path: filename stem to save to
-    #   ...: passed to dmc.train
-    #
-    # Returns:
-    #   a dmc.multitrain object
+extractpreds.dmctrain <- function(dmctrain) {
+    best <- sapply(dmctrain, function(x) which.min(x$results$score))
+    preds <- lapply(names(dmctrain), function(x) dmctrain[[x]]$models[[best[[x]]]]$preds)
     
-    require(foreach)
     
-    models <- foreach(dt.name=names(data)) %do% {
-        message(paste("Learning model", method, "on", dt.name))
-        dmc.train(form=form, 
-                  dt.train=data[[dt.name]]$train,
-                  dt.test=data[[dt.name]]$test,
-                  trControl=trControl,
-                  save.path=save.path,
-                  method=method,
-                  save.fname=paste(dt.name, method, sep="_"),
-                  verbose=verbose,
-                  ...)
-    }
-    names(models) <- names(dt.dmc)
+    preds <- do.call(c, sapply(dmctrain,
+                               function(x) as.numeric(
+                                   as.character(
+                                       revalue(
+                                           x$models[[which.min(x$results$score)]]$preds,
+                                           c("no"="0", "yes"="1")))),
+                               simplify=F))
+    names(preds) <- NULL
     
-    res <- list(models=models)
-    class(res) <- "dmc.multitrain"
+    orderItemID <- do.call(c, sapply(dmctrain, function(x) as.character(
+        x$models[[which.min(x$results$score)]]$orderItemID),
+        simplify=F))
+    names(orderItemID) <- NULL
+    res <- data.frame(orderItemID=orderItemID, prediction=preds)
     res
 }
 
-dmc.supertrain.default.desc <- list(train.args=list(),
-                                    data.fun=identity,
-                                    save.path="models")
-
-dmc.supertrain <- function(descs, common.desc=(d <- caret.train.default.desc),
-                           train.only=NULL) {
+dmcstrain <- function(descs, common.desc, train.only=NULL) {
     # Takes a list of learner descriptions and fits multiple models.
     #
     # Args:
@@ -107,48 +94,19 @@ dmc.supertrain <- function(descs, common.desc=(d <- caret.train.default.desc),
         desc <- list.update(common.desc, descs[[name]])
         desc$train.args <- train.args
     
-        fit <- do.call(dmc.multitrain, c(desc$train.args,
-                                         fs.fun=desc$fs.fun,
-                                         trControl=desc$train.args$trControl,
-                                         save.path=desc$save.path,
-                                         verbose=desc$verbose))
+        fit <- do.call(dmctrain,
+                       c(list(desc$data,
+                         desc$tuneGrid,
+                         desc$fs.fun,
+                         desc$verbose,
+                         desc$method,
+                         desc$save.path),
+                         desc$train.args))
         
         fits[[name]] <- fit
     }
     
     fits
-}
-
-DmcTrain <- function(method, data=dt.dmc, fs.fun=identity, ...) {
-    models <- list()
-    
-    for (name in names(data)) {
-        models[[name]] <- list()
-        class(models[[name]]) <- "DmcFit"
-        
-        dt <- data[[name]]$train
-        dt <- dt[!dt$deliveryDateMissing == "yes", ]
-        models[[name]] <- list()
-        models[[name]]$model <- method(returnShipment ~ ., data=fs.fun(dt), ...)
-        models[[name]]$orderItemIDs <- data[[name]]$test$orderItemID
-        models[[name]]$preds <- predict(models[[name]]$model, fs.fun(data[[name]]$test))
-        models[[name]]$score <- dmc.points(models[[name]]$preds, data[[name]]$test$returnShipment)
-    }
-
-    results <- data.frame(cbind(
-        sapply(models, function(x) x$score, USE.NAMES=F),
-        sapply(dt.dmc, function(x) nrow(x$train), USE.NAMES=F),
-        sapply(dt.dmc, function(x) nrow(x$test), USE.NAMES=F)))
-    colnames(results) <- c("Score", "n_Train", "n_Test")
-    results <- rbind(results, Total=colSums(results))
-    results$Accuracy <- 1 - (results$Score / results$n_Test)
-    
-    res <- list(
-      models=models,
-      results=results
-    )
-    class(res) <- "DmcTrain"
-    res
 }
 
 summary.DmcTrain <- function(train) {
