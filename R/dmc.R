@@ -145,6 +145,23 @@ dmc.points <- function(pred, obs) {
     sum(abs(obs2 - pred2))
 }
 
+dmc.evaluate <- function(dir) {
+    require(stringr)
+    require(plyr)
+    
+    results <- sapply(list.files(dir, pattern=".csv", full.names=T),
+                      read.csv, simplify=F)
+    names(results) <- str_sub(list.files(dir, pattern=".csv"), 1, -5)
+    
+    best <- sapply(results,
+                   function(x) ddply(x, .(set), summarize, accuracy=max(accuracy)),
+                   simplify=F)
+    comp <- t(as.data.frame(sapply(best, function(x) x$accuracy, simplify=F)))
+    colnames(comp) <- best[[1]]$set
+    
+    list(models=results, comp=comp)
+}
+
 dmc.inst <- function(upgrade=F) {
     # Installs the required dependencies.
     #
