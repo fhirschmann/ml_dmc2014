@@ -70,6 +70,17 @@ add.features <- function(dt) {
     dt2
 }
 
+lsmooth <- function(x, N, alpha=1, mean=0.52) {
+    ## laplacian smoothing with known mean
+    ##
+    ## Args:
+    ##   x: count of observations with class i
+    ##   N: count of all observations
+    ##   alpha: smoothing parameter
+    ##   mean: mean of class i observations
+    (x + alpha) / (N + (alpha / mean))
+}
+
 add.features.otf <- function(to, from) {
     #
     # Place features that should be computed on the fly on the train set only here.
@@ -83,11 +94,11 @@ add.features.otf <- function(to, from) {
     dt.to <- data.table(to)
     dt.from <- data.table(from)
     
-    dt.from[, customerReturnRate := sum(returnShipment == "yes") / .N, by=c("customerID")]
+    dt.from[, customerReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("customerID")]
     customerRetRate <- unique(dt.from[, c("customerID", "customerReturnRate"), with=F])
     dt.to <- join(dt.to, customerRetRate, by="customerID")
     
-    dt.from[, itemReturnRate := sum(returnShipment == "yes") / .N, by=c("itemID")]
+    dt.from[, itemReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("itemID")]
     itemRetRate <- unique(dt.from[, c("itemID", "itemReturnRate"), with=F])
     dt.to <- join(dt.to, itemRetRate, by="itemID")
     
