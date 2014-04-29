@@ -15,7 +15,13 @@ ctrl <- trainControl(method="cv", savePredictions=T,
 # Don't pass this to classifiers who do not return class probabilities
 ctrl.probs <- ctrl
 ctrl.probs$classProbs <- TRUE
-    
+
+# This will use the otf features
+dt.T <- rbind(dt.dmc$T1$train, dt.dmc$T1$test,
+              dt.dmc$T2$train, dt.dmc$T2$test,
+              dt.dmc$T3$train, dt.dmc$T3$test)
+rownames(dt.T) <- dt.T$orderItemID
+
 # List of stuff to learn
 descs <- list(
     nb=list(
@@ -53,7 +59,7 @@ common.desc <- list(
         # Always learn returnShipment using all attributes
         form=returnShipment ~ .,
         # Data to Train on
-        data=dt.train,
+        data=dt.T,
         # Maximize the metric
         maximize=F,
         # Use Points to select the best tuning parameters
