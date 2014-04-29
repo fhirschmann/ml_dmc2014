@@ -54,7 +54,9 @@ summary.dmctrain <- function(object) {
     tbl
 }
 
-extractpreds.dmctrain <- function(dmctrain) {
+extractPreds.dmctrain <- function(dmctrain) {
+    require(plyr)
+    
     best <- sapply(dmctrain, function(x) which.min(x$results$score))
     preds <- lapply(names(dmctrain), function(x) dmctrain[[x]]$models[[best[[x]]]]$preds)
     
@@ -109,33 +111,6 @@ dmcstrain <- function(descs, common.desc, train.only=NULL) {
     fits
 }
 
-summary.DmcTrain <- function(train) {
-    train$results
-}
-
-exportPreds.DmcTrain <- function(train, path) {
-    require(plyr)
-    
-    dir.create(path, recursive=T)
-    for (name in names(train$models)) {
-        preds <- revalue(train$models[[name]]$preds, c("yes"="1", "no"="0"))
-        write.table(data.frame(orderItemID=train$models[[name]]$orderItemIDs,
-                             prediction=preds),
-                  sep=";", quote=F, row.names=F,
-                  file=file.path(path, paste(name, "txt", sep=".")))
-    }
-}
-
-predict.DmcFit <- function(model, data) {
-    dt <- data
-    dt$returnShipment <- NULL
-
-    dt$pred <- predict(model, dt)
-    dt[dt$deliveryDateMissing == "yes", ]$pred <- "no"
-    
-    dt$pred
-}
-
 dmc.points <- function(pred, obs) {
     require(plyr)
 
@@ -152,16 +127,6 @@ dmc.points <- function(pred, obs) {
     }
 
     sum(abs(obs2 - pred2))
-}
-
-dmc.evaluate.model <- function(md) {
-    sum(md$resample$Score)
-}
-
-# Summary function for caret
-dmc.summary <- function(data, lev=NULL, model=NULL) {
-    score <- dmc.points(data$pred, data$obs)
-    c(Score=score)
 }
 
 dmc.inst <- function(upgrade=F) {

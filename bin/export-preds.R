@@ -3,5 +3,7 @@
 source("R/dmc.R")
 args <- commandArgs(T)
 
-load(args[[1]])
-exportPreds.DmcTrain(fit, args[[2]])
+fit <- readRDS(args[[1]])
+preds <- extractPreds.dmctrain(fit)
+write.table(preds, file=args[[2]], quote=F, sep=";",
+            row.names=F)
