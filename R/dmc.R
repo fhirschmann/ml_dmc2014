@@ -19,17 +19,22 @@ dmctrain <- function(data, tuneGrid=NULL, fs.fun, verbose=T, method="nb",
             if (verbose)
                 message(paste("Learning model for", method, "on", dt.name,
                               e, "/", nrow(tuneGrid)))
+            dt.train <- data[[dt.name]]$train
+            dt.train <- dt.train[dt.train$deliveryDateMissing == "no", ]
+            dt.test <- data[[dt.name]]$test
+            
             fit <- caret::train(returnShipment ~ .,
-                                data=fs.fun(data[[dt.name]]$train),
+                                data=fs.fun(dt.train),
                                 tuneGrid=tuneGrid[e, ],
-                                trControl=trainControl(
-                                    method="none"),
+                                trControl=trainControl(method="none"),
                                 method=method,
                                 ...)
-            preds <- predict(fit, fs.fun(data[[dt.name]]$test), na.action=na.pass)
-            score <- dmc.points(preds, data[[dt.name]]$test$returnShipment)
-            list(fit=fit, score=score, accuracy=1 - (score / nrow(data[[dt.name]]$test)),
-                 preds=preds, orderItemID=data[[dt.name]]$test$orderItemID)
+            
+            dt.test$pred <- predict(fit, fs.fun(dt.test), na.action=na.pass)
+            dt.test[dt.test$deliveryDateMissing == "yes", ]$pred <- "no"
+            score <- dmc.points(dt.test$pred, data[[dt.name]]$test$returnShipment)
+            list(fit=fit, score=score, accuracy=1 - (score / nrow(dt.test)),
+                 pred=dt.test$pred, orderItemID=data[[dt.name]]$test$orderItemID)
         }
         results$score <- sapply(models, function(x) x$score)
         results$accuracy <- sapply(models, function(x) x$accuracy)
@@ -58,14 +63,14 @@ extractPreds.dmctrain <- function(dmctrain) {
     require(plyr)
     
     best <- sapply(dmctrain, function(x) which.min(x$results$score))
-    preds <- lapply(names(dmctrain), function(x) dmctrain[[x]]$models[[best[[x]]]]$preds)
+    preds <- lapply(names(dmctrain), function(x) dmctrain[[x]]$models[[best[[x]]]]$pred)
     
     
     preds <- do.call(c, sapply(dmctrain,
                                function(x) as.numeric(
                                    as.character(
                                        revalue(
-                                           x$models[[which.min(x$results$score)]]$preds,
+                                           x$models[[which.min(x$results$score)]]$pred,
                                            c("no"="0", "yes"="1")))),
                                simplify=F))
     names(preds) <- NULL
