@@ -91,7 +91,7 @@ fix.missing <- function(dt) {
 #dt.test <- fix.missing(dt.test)
 
 dt.dmc.ids <- list(test=list(), train=list())
-for (i in c("T1", "T2", "T3")) {
+for (i in c("T1", "T2", "T3", "X1", "X2", "X3")) {
     dt.dmc.ids$train[[i]] <- read.csv(paste("eva/", i, "_train.txt", sep=""))$orderItemID
     dt.dmc.ids$test[[i]] <- read.csv(paste("eva/", i, "_test.txt", sep=""))$orderItemID
 }
