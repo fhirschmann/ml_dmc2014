@@ -48,7 +48,8 @@ dmctrain <- function(data, tuneGrid=NULL, tuneLength=3, fs.fun, verbose=T, metho
     
     if (!is.null(save.path)) {
         saveRDS(res, file=file.path(save.path, paste(method, "RData", sep=".")))
-        write.csv(summary(res), file=file.path(save.path, paste(method, "csv", sep=".")))
+        write.csv(summary(res), file=file.path(save.path, paste(method, "csv", sep=".")),
+                  quote=F, row.names=F)
     }
     
     res
