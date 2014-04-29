@@ -10,7 +10,10 @@ dmctrain <- function(data, tuneGrid=NULL, tuneLength=3, fs.fun, verbose=T, metho
     res <- list()
     
     if (is.null(tuneGrid)) {
-        tuneGrid <- getModelInfo(method)[[method]]$grid(0, 0, tuneLength)
+        tuneGrid <- getModelInfo(method)[[method]]$grid(
+            dt.dmc[[1]]$train,
+            dt.dmc[[1]]$train$returnShipment,
+            tuneLength)
     }
     
     res <- foreach(dt.name=names(data)) %do% {
