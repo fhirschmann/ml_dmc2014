@@ -13,7 +13,7 @@ figure*/
 doc/notes.html
 doc/notes.md
 models/*.RData
-models/hist/*.RData
-models/*.csv
+models/**.RData
+models/**.csv
 cache/
 task/orders_train.arff
