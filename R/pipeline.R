@@ -22,11 +22,12 @@ descs <- list(
     c50=list(
         fs.fun=fs.tree,
         method="C5.0",
-        tuneGrid=expand.grid(
-            trials=1,
-            model="rules",
-            winnow=F
-        ),
+        #tuneGrid=expand.grid(
+        #    trials=1,
+        #    model="rules",
+        #    winnow=F
+        #),
+        tuneLength=6,
         train.args=list(
             na.action=na.pass,
             control=C5.0Control(earlyStopping=F))
