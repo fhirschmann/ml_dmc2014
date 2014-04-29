@@ -22,7 +22,11 @@ descs <- list(
     c50=list(
         fs.fun=fs.tree,
         method="C5.0",
-        tuneLength=1,
+        tuneGrid=expand.grid(
+            trials=1,
+            model="rules",
+            winnow=F
+        ),
         train.args=list(
             na.action=na.pass,
             control=C5.0Control(earlyStopping=F))
@@ -42,5 +46,5 @@ common.desc <- list(
     # trainControl
     trControl=ctrl,
     # Data
-    data=dt.dmc.mini
+    data=dt.dmc
 )
