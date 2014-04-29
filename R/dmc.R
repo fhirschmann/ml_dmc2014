@@ -2,7 +2,7 @@
 source("R/feat.R")
 source("R/utils.R")
 
-dmctrain <- function(data, tuneGrid=NULL, fs.fun, verbose=T, method="nb",
+dmctrain <- function(data, tuneGrid=NULL, tuneLength=3, fs.fun, verbose=T, method="nb",
                      save.path=NULL, ...) {
     require(caret)
     require(foreach)
@@ -10,7 +10,7 @@ dmctrain <- function(data, tuneGrid=NULL, fs.fun, verbose=T, method="nb",
     res <- list()
     
     if (is.null(tuneGrid)) {
-        # TODO
+        tuneGrid <- getModelInfo(method)[[method]]$grid(0, 0, tuneLength)
     }
     
     res <- foreach(dt.name=names(data)) %do% {
@@ -104,6 +104,7 @@ dmcstrain <- function(descs, common.desc, train.only=NULL) {
         fit <- do.call(dmctrain,
                        c(list(desc$data,
                          desc$tuneGrid,
+                         desc$tuneLength,
                          desc$fs.fun,
                          desc$verbose,
                          desc$method,

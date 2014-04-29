@@ -22,11 +22,7 @@ descs <- list(
     c50=list(
         fs.fun=fs.tree,
         method="C5.0",
-        tuneGrid=expand.grid(
-            .winnow=c(FALSE),
-            .model=c("rules", "tree"),
-            .trials=1:2
-        ),
+        tuneLength=1,
         train.args=list(
             na.action=na.pass,
             control=C5.0Control(earlyStopping=F))
@@ -41,6 +37,8 @@ common.desc <- list(
     save.path="models",
     # Function to apply to the data frame
     fs.fun=fs.all,
+    # Tune Length
+    tuneLength=3,
     # trainControl
     trControl=ctrl,
     # Data
