@@ -105,4 +105,7 @@ for (i in names(dt.dmc.ids$train)) {
         test=add.features.otf(dt.train[test.ids, ], dt.train[-(test.ids), ]))
 }
 
-save(dt.train, dt.test, dt.dmc, dt.dmc.ids, file="data.RData")
+dt.dmc.mini <- sapply(dt.dmc, function(x) list(train=head(x$train, 2000), test=head(x$test, 100)),
+                      simplify=F)
+
+save(dt.train, dt.test, dt.dmc, dt.dmc.mini, dt.dmc.ids, file="data.RData")
