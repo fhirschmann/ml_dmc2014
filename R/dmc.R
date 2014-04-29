@@ -113,7 +113,13 @@ dmcstrain <- function(descs, common.desc, train.only=NULL) {
         fits[[name]] <- fit
     }
     
+    class(fits) <- "dmcstrain"
+    
     fits
+}
+
+summary.dmcstrain <- function(object) {
+    sapply(object, summary, simplify=F)
 }
 
 dmc.points <- function(pred, obs) {

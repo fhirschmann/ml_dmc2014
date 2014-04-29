@@ -14,3 +14,4 @@ source("R/pipeline.R")
 args <- commandArgs(T)
 
 strain <- dmcstrain(descs, common.desc, train.only=args)
+print(summary(strain))
