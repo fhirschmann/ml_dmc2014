@@ -7,15 +7,10 @@ library(functional)
 library(caret)
 library(C50)
 
-
-indx.train <- dt.dmc.ids$train
-names(indx.train) <- paste("Training0", 1:length(names(indx.train)), sep="")
-indx.test <- dt.dmc.ids$test
-names(indx.test) <- paste("Testing0", 1:length(names(indx.test)), sep="")
-
 ctrl <- trainControl(method="cv", savePredictions=T,
                      summaryFunction=dmc.summary, returnData=T,
-                     index=indx.train, indexOut=indx.test)
+                     index=dmc.dtmap(dt.dmc.ids$train, "Training"),
+                     indexOut=dmc.dtmap(dt.dmc.ids$test, "Testing"))
 
 # Don't pass this to classifiers who do not return class probabilities
 ctrl.probs <- ctrl

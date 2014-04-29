@@ -1,6 +1,15 @@
 # DMC2014 Specific Stuff
 source("R/feat.R")
 
+
+dmc.dtmap <- function(l, prefix) {
+    require(plyr)
+    l2 <- l
+    map <- c("T1"="01", "T2"="02", "T3"="03")
+    names(l2) <- paste(prefix, revalue(names(l), map), sep="")
+    l2
+}
+
 DmcTrain <- function(method, data=dt.dmc, fs.fun=identity, ...) {
     models <- list()
     
