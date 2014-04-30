@@ -203,11 +203,10 @@ dmc.evaluate <- function(dir) {
         colnames(df) <- b$set
         rownames(df) <- NULL
         data.frame(df)
-    })
+    }, simplify=F)
     comp <- join_all(comp, type="full")
     rownames(comp) <- names(best)
 
-    sets <- unique(do.call(c, sapply(best, function(x) levels(x$set))))
     list(models=results, comp=comp, best=best)
 }
 
