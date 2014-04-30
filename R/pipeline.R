@@ -19,6 +19,14 @@ descs <- list(
         method="nb",
         train.args=list()
     ),
+    ada=list(
+        method="ada",
+        tuneLength=4
+    ),
+    amore=list(
+        method="AMORE",
+        tuneLength=4
+    ),
     c50=list(
         fs.fun=fs.tree,
         method="C5.0",
