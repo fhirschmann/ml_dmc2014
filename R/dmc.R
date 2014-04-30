@@ -12,13 +12,18 @@ dmctrain <- function(dt.train, dt.test, fs.fun, method="rf",
     trControl$indexOut <- list(rs1=nrow(dt.train)+1:nrow(data))
     trControl$method <- "cv"
     
-    caret::train(returnShipment ~ ., data=data, method=method,
-                 trControl=trControl, na.action=na.pass, ...)
+    fit <- caret::train(returnShipment ~ ., data=data, method=method,
+                        trControl=trControl, na.action=na.pass, ...)
+    
+    fit$pred$rowIndex <- fit$pred$rowIndex - nrow(dt.train)
+    
+    fit
 }
 
 dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(), 
                       save.path=NULL, ...) {
     require(foreach)
+    require(plyr)
     
     res <- foreach(dt.name=names(data)) %do% {
         dt.train <- data[[dt.name]]$train
@@ -37,7 +42,13 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
         # with missing delivery dates into account.
         results$accuracy <- 1 - (results$score / nrow(data[[dt.name]]$test))
         
-        list(model=model, results=results, orderItemID=dt.test$orderItemID)
+        mDD <- data[[dt.name]]$test$deliveryDateMissing == "yes"
+        
+        list(model=model, results=results,
+             index=data.frame(orderItemID=dt.test$orderItemID,
+                              rowIndex=rownames(dt.test)),
+             indexMissingDD=data.frame(orderItemID=data[[dt.name]]$test[mDD, ]$orderItemID,
+                                       rowIndex=rownames(data[[dt.name]]$test[mDD, ])))
     }
     names(res) <- names(data)
     
@@ -51,7 +62,28 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
 }
 
 extractPreds.dmcmtrain <- function(mtrain) {
+    require(plyr)
     
+    sapply(mtrain,
+           function(x) {
+               best <- caret.best(x$model)
+               best <- best[!is.na(best$obs), ]
+               
+               if(nrow(x$index) != nrow(best))
+                   stop("Predictions are not of the same length.")
+               
+               best <- join(best, x$index, by="rowIndex")[c("orderItemID", "pred")]
+               colnames(best) <- c("orderItemID", "prediction")
+               miss <- x$indexMissingDD[c("orderItemID")]
+               miss$prediction <- "no"
+               miss$prediction <- as.factor(miss$prediction)
+               
+               preds <- rbind(best, miss)
+               preds <- preds[order(preds$orderItemID), ]
+               rownames(preds) <- NULL
+               preds
+           },
+           simplify=F)
 }
 
 dmcdtrain <- function(desc, common.desc) {
