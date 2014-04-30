@@ -8,17 +8,19 @@
 # To get a list of available models try ./bin/run.R -l
 
 source("R/data.R")
-
-# RAM...
-dt.train <- NULL
-dt.test <- NULL
-gc(F)
-
 source("R/dmc.R")
 source("R/pipeline.R")
 source("R/utils.R")
 library(doParallel)
 registerDoParallel(1)
+
+
+# RAM...
+dt.train <- NULL
+dt.test <- NULL
+dt.dmc <- NULL
+gc(F)
+
 
 args <- commandArgs(T)
 
