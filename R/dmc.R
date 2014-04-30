@@ -2,173 +2,64 @@
 source("R/feat.R")
 source("R/utils.R")
 
-dmctrain <- function(data, tuneGrid=NULL,
-                     preProcess = NULL,
-                     tuneLength=3, fs.fun, verbose=T, method="nb",
-                     save.path=NULL, ...) {
+dmctrain <- function(dt.train, dt.test, fs.fun, method="rf",
+                     trControl=trainControl(), ...) {
     require(caret)
+    
+    data <- fs.fun(rbind(dt.train, dt.test))
+    
+    trControl$index <- list(rs1=1:nrow(dt.train))
+    trControl$indexOut <- list(rs1=nrow(dt.train)+1:nrow(data))
+    trControl$method <- "cv"
+    
+    caret::train(returnShipment ~ ., data=data, method=method,
+                 trControl=trControl, na.action=na.pass, ...)
+}
+
+dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(), 
+                      save.path=NULL, ...) {
     require(foreach)
     
-    res <- list()
-    models <- getModelInfo(method, regex=FALSE)[[1]]
-    
-    ## Gather all the pre-processing info. We will need it to pass into the grid creation
-    ## code so that there is a concorance between the data used for modeling and grid creation
-    if(!is.null(preProcess))
-    {
-        ppOpt <- list(options = preProcess)
-        if(length(trControl$preProcOptions) > 0) ppOpt <- c(ppOpt,trControl$preProcOptions)
-    } else ppOpt <- NULL
-    
-    ## If no default training grid is specified, get one. We have to pass in the formula
-    ## and data for some models (rpart, pam, etc - see manual for more details)
-    if(is.null(tuneGrid)) {
-        # Haxx
-        x <- data$T1$train
-        x$returnShipment <- NULL
-        y <- data$T1$returnShipment
-        
-        if(!is.null(ppOpt) && length(models$parameters$parameter) > 1 && as.character(models$parameters$parameter) != "parameter") {        
-            pp <- list(method = ppOpt$options)
-            if("ica" %in% pp$method) pp$n.comp <- ppOpt$ICAcomp
-            if("pca" %in% pp$method) pp$thresh <- ppOpt$thresh
-            if("knnImpute" %in% pp$method) pp$k <- ppOpt$k   
-            pp$x <- x
-            ppObj <- do.call("preProcess", pp)
-            tuneGrid <- models$grid(predict(ppObj, x), y, tuneLength)
-            rm(ppObj, pp)
-        } else {
-            tuneGrid <- models$grid(x, y, tuneLength)            
-        }
+    models <- foreach(dt.name=names(data)) %do% {
+        message(paste("Training", method, "on", dt.name))
+        dmctrain(data[[dt.name]]$train, data[[dt.name]]$test, fs.fun, method,
+                 trControl, ...)
     }
-    if (verbose) {
-        message("Tuning Grid:")
-        print(tuneGrid)
-    }
+    names(models) <- names(data)
     
-    res <- foreach(dt.name=names(data)) %do% {
-        results <- tuneGrid
-        
-        dt.train <- data[[dt.name]]$train
-        dt.train <- dt.train[dt.train$deliveryDateMissing == "no", ]
-        dt.test <- data[[dt.name]]$test
-        
-        dt.train.fs <- fs.fun(dt.train)
-        dt.test.fs <- fs.fun(dt.test)
-        
-        # If we want to predict later, dt.train needs to have all the
-        # levels that are in dt.test
-        dt.train.fs.lvl <- addlevels(dt.train.fs, dt.test.fs)
-        dt.test.fs.lvl <- addlevels(dt.test.fs, dt.train.fs)
-        
-        models <- foreach(e=1:nrow(tuneGrid), .packages=c("caret", "ada")) %dopar% {
-            if (verbose)
-                message(paste("Learning model for", method, "on", dt.name,
-                              e, "/", nrow(tuneGrid)))
-                    
-            fit <- caret::train(returnShipment ~ .,
-                                data=dt.train.fs.lvl,
-                                tuneGrid=tuneGrid[e, , drop=F],
-                                trControl=trainControl(method="none"),
-                                method=method,
-                                ...)
-            
-            dt.test$pred <- predict(fit, dt.test.fs.lvl, na.action=na.pass)
-            dt.test[dt.test$deliveryDateMissing == "yes", ]$pred <- "no"
-            score <- dmc.points(dt.test$pred, data[[dt.name]]$test$returnShipment)
-            list(fit=fit, score=score, accuracy=1 - (score / nrow(dt.test)),
-                 pred=dt.test$pred, orderItemID=data[[dt.name]]$test$orderItemID)
-        }
-        results$score <- sapply(models, function(x) x$score)
-        results$accuracy <- sapply(models, function(x) x$accuracy)
-        list(models=models, results=results)
-    }
-    names(res) <- names(data)
-    class(res) <- "dmctrain"
+    res <- list(models=models)
+    class(res) <- "mtrain"
     
     if (!is.null(save.path)) {
         saveRDS(res, file=file.path(save.path, paste(method, "RData", sep=".")))
-        write.csv(summary(res), file=file.path(save.path, paste(method, "csv", sep=".")),
-                  quote=F, row.names=F)
     }
     
     res
 }
 
-summary.dmctrain <- function(object) {
-    results <- sapply(names(object), function(n) data.frame(object[[n]]$results, set=n),
-                      simplify=F)
-    tbl <- do.call(rbind, results)
-    rownames(tbl) <- NULL
-    tbl
-}
-
-extractPreds.dmctrain <- function(dmctrain) {
-    require(plyr)
-    
-    best <- sapply(dmctrain, function(x) which.min(x$results$score))
-    preds <- lapply(names(dmctrain), function(x) dmctrain[[x]]$models[[best[[x]]]]$pred)
-    
-    
-    preds <- do.call(c, sapply(dmctrain,
-                               function(x) as.numeric(
-                                   as.character(
-                                       revalue(
-                                           x$models[[which.min(x$results$score)]]$pred,
-                                           c("no"="0", "yes"="1")))),
-                               simplify=F))
-    names(preds) <- NULL
-    
-    orderItemID <- do.call(c, sapply(dmctrain, function(x) as.character(
-        x$models[[which.min(x$results$score)]]$orderItemID),
-        simplify=F))
-    names(orderItemID) <- NULL
-    res <- data.frame(orderItemID=orderItemID, prediction=preds)
-    res
-}
-
-dmcstrain <- function(descs, common.desc, train.only=NULL) {
-    # Takes a list of learner descriptions and fits multiple models.
+dmcdtrain <- function(desc, common.desc) {
+    # Takes a learner description and fits a model
     #
     # Args:
     #   descs: learner description
     #   common.desc: description common to all learners
-    #   train.only: train only a subset of learners
     #
     # Returns:
-    #   a list of dmc.multifit objects
+    #   a mtrain object
+
+    train.args <- list.update(common.desc$train.args, desc$train.args)
+    desc <- list.update(common.desc, desc)
+    desc$train.args <- NULL
+    args <- c(desc, train.args)
     
-    fits <- list()
-    
-    for (name in (if (length(train.only) == 0) names(descs) else train.only)) {
-        train.args <- list.update(common.desc$train.args, descs[[name]]$train.args)
-        desc <- list.update(common.desc, descs[[name]])
-        desc$train.args <- train.args
-    
-        fit <- do.call(dmctrain,
-                       c(list(desc$data,
-                         desc$tuneGrid,
-                         desc$preProcess,
-                         desc$tuneLength,
-                         desc$fs.fun,
-                         desc$verbose,
-                         desc$method,
-                         desc$save.path),
-                         desc$train.args))
-        
-        fits[[name]] <- fit
-    }
-    
-    class(fits) <- "dmcstrain"
-    
-    fits
+    do.call(dmcmtrain, args)
 }
 
 summary.dmcstrain <- function(object) {
     sapply(object, summary, simplify=F)
 }
 
-dmc.points <- function(pred, obs) {
+dmc.score <- function(pred, obs, na.rm=F) {
     require(plyr)
 
     if (is.factor(pred)) {
@@ -183,7 +74,7 @@ dmc.points <- function(pred, obs) {
         obs2 <- as.numeric(obs)
     }
 
-    sum(abs(obs2 - pred2))
+    sum(abs(obs2 - pred2), na.rm=T)
 }
 
 dmc.evaluate <- function(dir) {
@@ -208,11 +99,6 @@ dmc.evaluate <- function(dir) {
     rownames(comp) <- names(best)
 
     list(models=results, comp=comp, best=best)
-}
-
-dmc.grid <- function(method, dt, tuneLength=3) {
-    require(caret)
-    getModelInfo(method)[[method]]$grid(dt, dt$returnShipment, tuneLength)
 }
 
 dmc.nzv <- function(dt, fs.fun, ...) {

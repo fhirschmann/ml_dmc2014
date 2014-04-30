@@ -12,9 +12,9 @@ source("R/dmc.R")
 source("R/pipeline.R")
 source("R/utils.R")
 library(doParallel)
-registerDoParallel(4)
+registerDoParallel(1)
 
 args <- commandArgs(T)
 
-strain <- dmcstrain(descs, common.desc, train.only=args)
-print(summary(strain))
+dtrain <- dmcdtrain(descs[[args[[1]]]], common.desc)
+dtrain

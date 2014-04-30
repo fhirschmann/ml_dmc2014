@@ -7,7 +7,9 @@ library(functional)
 library(caret)
 library(C50)
 
-ctrl <- trainControl(savePredictions=T, returnData=T)
+ctrl <- trainControl(savePredictions=T, returnData=T,
+                     summaryFunction=function(data, lev=NULL, model=NULL) {
+                         c(score=dmc.score(data$pred, data$obs, na.rm=T)) })
 
 # Don't pass this to classifiers who do not return class probabilities
 ctrl.probs <- ctrl
@@ -17,58 +19,59 @@ ctrl.probs$classProbs <- TRUE
 descs <- list(
     nb=list(
         fs.fun=fs.nb,
-        method="nb"
+        train.args=list(
+            method="nb"
+        )
     ),
     rf=list(
         fs.fun=fs.rf,
-        method="rf",
-        tuneLength=2
+        train.args=list(
+            method="rf",
+            tuneLength=2
+        )
     ),
     rf2=list(
         fs.fun=fs.rf,
-        method="extraTrees",
-        tuneLength=1
+        train.args=list(
+            method="extraTrees",
+            tuneLength=1
+        )
     ),
     orf=list(
         fs.fun=fs.rf,
-        method="ORFridge"
+        train.args=list(
+            method="ORFridge"
+        )
     ),
     rrf=list(
         fs.fun=fs.rf,
-        method="RRFglobal"
+        train.args=list(
+            method="RRFglobal"
+        )
     ),
     treebag=list(
         fs.fun=fs.rf,
-        method="treebag"
+        train.args=list(
+            method="treebag"
+        )
     ),
     c50=list(
         fs.fun=fs.tree,
-        method="C5.0",
-        #tuneGrid=expand.grid(
-        #    trials=1,
-        #    model="rules",
-        #    winnow=F
-        #),
-        tuneLength=6,
         train.args=list(
-            na.action=na.pass,
+            method="C5.0",
+            tuneLength=6,
             control=C5.0Control(earlyStopping=F))
     )
 )
 
 # Common description
 common.desc <- list(
-    # Be verbose
-    verbose=T,
     # Serialize models to models/ directory
     save.path="models",
     # Function to apply to the data frame
     fs.fun=fs.all,
-    # Tune Length
-    tuneLength=3,
-    # trainControl
-    trControl=ctrl,
-    preProcess=NULL,
     # Data
-    data=dt.dmc.mini
+    data=dt.dmc,
+    # Arguments to caret::train
+    train.args=list(trControl=ctrl, metric="score", maximize=F)
 )
