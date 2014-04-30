@@ -63,10 +63,10 @@ dmctrain <- function(data, tuneGrid=NULL,
             # levels that are in dt.test
             dt.train.fs.lvl <- addlevels(dt.train.fs, dt.test.fs)
             dt.test.fs.lvl <- addlevels(dt.test.fs, dt.train.fs)
-            
+                    
             fit <- caret::train(returnShipment ~ .,
                                 data=dt.train.fs.lvl,
-                                tuneGrid=tuneGrid[e, ],
+                                tuneGrid=tuneGrid[e, , drop=F],
                                 trControl=trainControl(method="none"),
                                 method=method,
                                 ...)
