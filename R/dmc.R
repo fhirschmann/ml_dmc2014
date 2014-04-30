@@ -20,7 +20,7 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
                       save.path=NULL, ...) {
     require(foreach)
     
-    models <- foreach(dt.name=names(data)) %do% {
+    res <- foreach(dt.name=names(data)) %do% {
         dt.train <- data[[dt.name]]$train
         dt.train <- dt.train[dt.train$deliveryDateMissing == "no", ]
         
@@ -28,11 +28,11 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
         dt.test <- dt.test[dt.test$deliveryDateMissing == "no", ]
         
         message(paste("Training", method, "on", dt.name))
-        dmctrain(dt.train, dt.test, fs.fun, method, trControl, ...)
+        model <- dmctrain(dt.train, dt.test, fs.fun, method, trControl, ...)
+        list(model=model, orderItemID=dt.test$orderItemID)
     }
-    names(models) <- names(data)
+    names(res) <- names(data)
     
-    res <- list(models=models)
     class(res) <- "mtrain"
     
     if (!is.null(save.path)) {
@@ -40,6 +40,10 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
     }
     
     res
+}
+
+extractPreds.dmcmtrain <- function(mtrain) {
+    
 }
 
 dmcdtrain <- function(desc, common.desc) {

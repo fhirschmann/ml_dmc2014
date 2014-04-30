@@ -17,4 +17,4 @@ registerDoParallel(1)
 args <- commandArgs(T)
 
 dtrain <- dmcdtrain(descs[[args[[1]]]], common.desc)
-dtrain
+sapply(dtrain, function(x) x$model, simplify=F)
