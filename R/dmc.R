@@ -25,8 +25,6 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
     require(plyr)
     
     res <- foreach(dt.name=names(data)) %do% {
-        gc()
-        
         dt.train <- data[[dt.name]]$train
         dt.train <- dt.train[dt.train$deliveryDateMissing == "no", ]
         
