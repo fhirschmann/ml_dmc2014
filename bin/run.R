@@ -10,6 +10,9 @@
 source("R/data.R")
 source("R/dmc.R")
 source("R/pipeline.R")
+source("R/utils.R")
+library(doParallel)
+registerDoParallel(4)
 
 args <- commandArgs(T)
 

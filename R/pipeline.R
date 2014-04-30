@@ -23,7 +23,7 @@ descs <- list(
     ada=list(
         fs.fun=fs.tree,
         method="ada",
-        tuneLength=4
+        tuneLength=1
     ),
     amore=list(
         method="AMORE",
@@ -57,5 +57,5 @@ common.desc <- list(
     # trainControl
     trControl=ctrl,
     # Data
-    data=dt.dmc
+    data=dt.dmc.mini
 )

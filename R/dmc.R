@@ -16,9 +16,9 @@ dmctrain <- function(data, tuneGrid=NULL, tuneLength=3, fs.fun, verbose=T, metho
             tuneLength)
     }
     
-    res <- foreach(dt.name=names(data)) %do% {
+    res <- foreach(dt.name=names(data)) %dopar% {
         results <- tuneGrid
-        models <- foreach(e=1:nrow(tuneGrid)) %do% {
+        models <- foreach(e=1:nrow(tuneGrid), .packages=c("caret", "ada")) %do% {
             if (verbose)
                 message(paste("Learning model for", method, "on", dt.name,
                               e, "/", nrow(tuneGrid)))
