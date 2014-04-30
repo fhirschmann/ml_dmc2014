@@ -150,6 +150,12 @@ dmc.evaluate <- function(dir) {
     list(models=results, comp=comp, best=best)
 }
 
+dmc.convertPreds <- function(preds) {
+    require(plyr)
+    
+    as.character(revalue(preds, c("yes"="0", "no"="1")))
+}
+
 dmc.nzv <- function(dt, fs.fun, ...) {
     sapply(dt, function(x) sapply(x, function(y) nearZeroVar(fs.fun(y), saveMetrics=T, ...),
                                   simplify=F),
