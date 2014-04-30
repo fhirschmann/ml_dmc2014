@@ -21,6 +21,7 @@ descs <- list(
         train.args=list()
     ),
     ada=list(
+        fs.fun=fs.tree,
         method="ada",
         tuneLength=4
     ),
