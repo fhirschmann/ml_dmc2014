@@ -162,6 +162,11 @@ dmc.evaluate <- function(dir) {
     list(models=results, comp=comp)
 }
 
+dmc.grid <- function(method, dt, tuneLength=3) {
+    require(caret)
+    getModelInfo(method)[[method]]$grid(dt, dt$returnShipment, tuneLength)
+}
+
 dmc.inst <- function(upgrade=F) {
     # Installs the required dependencies.
     #

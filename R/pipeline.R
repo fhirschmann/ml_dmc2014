@@ -16,6 +16,7 @@ ctrl.probs$classProbs <- TRUE
 # List of stuff to learn
 descs <- list(
     nb=list(
+        fs.fun=fs.nb,
         method="nb",
         train.args=list()
     ),

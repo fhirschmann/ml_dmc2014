@@ -15,8 +15,19 @@ fs.all <- function(dt) {
     
     dt2$orderItemID <- NULL  # This attribute is useless
     
+    dt2$deliveryDateMissing <- NULL
+    
     dt2
 }
+
+fs.nb <- function(dt) {
+    dt2 <- fs.all(dt)
+    
+    dt2$discretizedPrice <- NULL
+    
+    dt2
+}
+
 
 fs.tree <- function(dt) {
     dt2 <- fs.all(dt)
