@@ -98,6 +98,7 @@ add.features.otf <- function(to, from) {
     customerRetRate <- unique(dt.from[, c("customerID", "customerReturnRate"), with=F])
     dt.to <- join(dt.to, customerRetRate, by="customerID")
     
+    # TODO: Maybe we should group this by c("itemID", "color", "size")
     dt.from[, itemReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("itemID")]
     itemRetRate <- unique(dt.from[, c("itemID", "itemReturnRate"), with=F])
     dt.to <- join(dt.to, itemRetRate, by="itemID")
