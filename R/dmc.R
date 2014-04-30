@@ -167,6 +167,12 @@ dmc.grid <- function(method, dt, tuneLength=3) {
     getModelInfo(method)[[method]]$grid(dt, dt$returnShipment, tuneLength)
 }
 
+dmc.nzv <- function(dt, fs.fun, ...) {
+    sapply(dt, function(x) sapply(x, function(y) nearZeroVar(fs.fun(y), saveMetrics=T, ...),
+                                  simplify=F),
+           simplify=F)
+}
+
 dmc.inst <- function(upgrade=F) {
     # Installs the required dependencies.
     #
