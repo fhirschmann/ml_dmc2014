@@ -17,17 +17,12 @@ ctrl.probs$classProbs <- TRUE
 descs <- list(
     nb=list(
         fs.fun=fs.nb,
-        method="nb",
-        train.args=list()
+        method="nb"
     ),
-    ada=list(
+    rf=list(
         fs.fun=fs.tree,
-        method="ada",
-        tuneLength=1
-    ),
-    amore=list(
-        method="AMORE",
-        tuneLength=4
+        method="rf",
+        tuneLength=2
     ),
     c50=list(
         fs.fun=fs.tree,

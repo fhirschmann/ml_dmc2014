@@ -43,6 +43,7 @@ dmctrain <- function(data, tuneGrid=NULL,
     }
     if (verbose) {
         message("Tuning Grid:")
+        print(tuneGrid)
     }
     
     res <- foreach(dt.name=names(data)) %do% {
