@@ -23,12 +23,12 @@ dmctrain <- function(data, tuneGrid=NULL,
     ## If no default training grid is specified, get one. We have to pass in the formula
     ## and data for some models (rpart, pam, etc - see manual for more details)
     if(is.null(tuneGrid)) {
-        if(!is.null(ppOpt) && length(models$parameters$parameter) > 1 && as.character(models$parameters$parameter) != "parameter") {
-            # Haxx
-            x <- data$T1$train
-            x$returnShipment <- NULL
-            y <- data$T1$returnShipment
-            
+        # Haxx
+        x <- data$T1$train
+        x$returnShipment <- NULL
+        y <- data$T1$returnShipment
+        
+        if(!is.null(ppOpt) && length(models$parameters$parameter) > 1 && as.character(models$parameters$parameter) != "parameter") {        
             pp <- list(method = ppOpt$options)
             if("ica" %in% pp$method) pp$n.comp <- ppOpt$ICAcomp
             if("pca" %in% pp$method) pp$thresh <- ppOpt$thresh
@@ -37,11 +37,12 @@ dmctrain <- function(data, tuneGrid=NULL,
             ppObj <- do.call("preProcess", pp)
             tuneGrid <- models$grid(predict(ppObj, x), y, tuneLength)
             rm(ppObj, pp)
-        } else tuneGrid <- models$grid(x, y, tuneLength)
+        } else {
+            tuneGrid <- models$grid(x, y, tuneLength)            
+        }
     }
     if (verbose) {
         message("Tuning Grid:")
-        print(tuneGrid)
     }
     
     res <- foreach(dt.name=names(data)) %do% {
