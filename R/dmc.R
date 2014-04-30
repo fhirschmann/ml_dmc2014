@@ -48,21 +48,23 @@ dmctrain <- function(data, tuneGrid=NULL,
     
     res <- foreach(dt.name=names(data)) %do% {
         results <- tuneGrid
+        
+        dt.train <- data[[dt.name]]$train
+        dt.train <- dt.train[dt.train$deliveryDateMissing == "no", ]
+        dt.test <- data[[dt.name]]$test
+        
+        dt.train.fs <- fs.fun(dt.train)
+        dt.test.fs <- fs.fun(dt.test)
+        
+        # If we want to predict later, dt.train needs to have all the
+        # levels that are in dt.test
+        dt.train.fs.lvl <- addlevels(dt.train.fs, dt.test.fs)
+        dt.test.fs.lvl <- addlevels(dt.test.fs, dt.train.fs)
+        
         models <- foreach(e=1:nrow(tuneGrid), .packages=c("caret", "ada")) %dopar% {
             if (verbose)
                 message(paste("Learning model for", method, "on", dt.name,
                               e, "/", nrow(tuneGrid)))
-            dt.train <- data[[dt.name]]$train
-            dt.train <- dt.train[dt.train$deliveryDateMissing == "no", ]
-            dt.test <- data[[dt.name]]$test
-            
-            dt.train.fs <- fs.fun(dt.train)
-            dt.test.fs <- fs.fun(dt.test)
-            
-            # If we want to predict later, dt.train needs to have all the
-            # levels that are in dt.test
-            dt.train.fs.lvl <- addlevels(dt.train.fs, dt.test.fs)
-            dt.test.fs.lvl <- addlevels(dt.test.fs, dt.train.fs)
                     
             fit <- caret::train(returnShipment ~ .,
                                 data=dt.train.fs.lvl,
