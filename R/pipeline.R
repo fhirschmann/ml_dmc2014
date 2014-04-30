@@ -20,7 +20,7 @@ descs <- list(
         method="nb"
     ),
     rf=list(
-        fs.fun=fs.tree,
+        fs.fun=fs.rf,
         method="rf",
         tuneLength=2
     ),

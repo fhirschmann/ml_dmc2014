@@ -31,7 +31,17 @@ fs.nb <- function(dt) {
 
 fs.tree <- function(dt) {
     dt2 <- fs.all(dt)
+    
     dt2$price <- NULL
+    
+    dt2
+}
+
+fs.rf <- function(dt) {
+    require(randomForest)
+    dt2 <- fs.tree(dt)
+    
+    dt2 <- na.roughfix(dt2)
     
     dt2
 }
