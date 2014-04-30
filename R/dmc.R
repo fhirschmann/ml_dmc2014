@@ -156,11 +156,18 @@ dmc.evaluate <- function(dir) {
     best <- sapply(results,
                    function(m) ddply(m, .(set), function(x) x[which.min(x$score), ]),
                    simplify=F)
-    comp <- data.frame(t(sapply(best, function(x) unlist(x[c("accuracy", "score")]))))
-    colnames(comp) <- c(paste("acc", best[[1]]$set, sep="_"),
-                        paste("sco", best[[1]]$set, sep="_"))
-    
-    list(models=results, best=best, comp=comp)
+
+    comp <- sapply(best, function(b) {
+        df <- t(data.frame(b$accuracy))
+        colnames(df) <- b$set
+        rownames(df) <- NULL
+        data.frame(df)
+    })
+    comp <- join_all(comp, type="full")
+    rownames(comp) <- names(best)
+
+    sets <- unique(do.call(c, sapply(best, function(x) levels(x$set))))
+    list(models=results, comp=comp, best=best)
 }
 
 dmc.grid <- function(method, dt, tuneLength=3) {
