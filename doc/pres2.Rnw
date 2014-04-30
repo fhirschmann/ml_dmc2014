@@ -1,0 +1,93 @@
+\documentclass[color=usenames,dvipsnames]{beamer}
+\usetheme{Amsterdam}
+
+\usepackage{amsmath}
+\usepackage[mathletters]{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage{tikz}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{pifont}
+\usepackage{bibentry}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{multicol}
+\usepackage{caption}
+\usepackage{wasysym}
+
+% frame numbers in short title
+\newcommand*{\oldshorttitle}{}
+\let\oldshorttitle\insertshorttitle
+\renewcommand*{\insertshorttitle}{
+  \oldshorttitle\hfill
+  \insertframenumber\,/\,\inserttotalframenumber
+}
+
+\newcommand{\neutranie}{\tikz[baseline=-0.75ex,black]{
+    \draw circle (2mm);
+\node[fill,circle,inner sep=0.5pt] (left eye) at (135:0.8mm) {};
+\node[fill,circle,inner sep=0.5pt] (right eye) at (45:0.8mm) {};
+\draw (-135:0.9mm) -- (-45:0.9mm);
+    }
+}
+\title{Data Mining Cup 2010}
+\subtitle{Group \texttt{R} Interim Report}
+\author{Fabian Hirschmann, Michael Markert, Simon Holthausen}
+\institute{Technische Universität Darmstadt}
+\date{May 2014}
+\newcommand{\gcheck}{\textcolor{green}{\ding{52}}}
+\newcommand{\rballot}{\textcolor{red}{\ding{55}}}
+
+%\setbeamercovered{transparent}
+\setbeamertemplate{navigation symbols}{}
+
+<<setup, echo=F, message=F, include=FALSE>>=
+opts_chunk$set(echo=F, breaklines=T, fig.path="figure-pres1/")
+opts_knit$set(root.dir="../")
+library(xtable)
+library(stats)
+library(vcd)
+library(plyr)
+library(caret)
+library(C50)
+library(lubridate)
+
+@
+
+<<load, echo=F, message=F>>=
+source("R/data.R")
+source("R/dmc.R")
+source("R/fs.R")
+source("R/utils.R")
+source("R/lib/parallelsets.R")
+
+eva <- dmc.evaluate("models")
+@
+
+\begin{document}
+\begin{frame}{}
+  \titlepage
+\end{frame}
+
+%\begin{frame}
+%\frametitle{Table of Contents}
+%\tableofcontents
+%\end{frame}
+
+\section{Algorithms}
+\begin{frame}[fragile]{Algorithms}
+<<results="asis">>=
+algos <- do.call(rbind, sapply(names(eva$best), function(x) {
+    i <- getModelInfo(x, regex=F)[[1]]
+    data.frame(Name=x, Label=i$label, Library=paste(i$library, collapse=", "))
+}, simplify=F))
+print(xtable(algos), include.rownames=F)
+@
+\end{frame}
+
+\section{Questions}
+\begin{frame}{Questions}
+    \Large Questions? Anyone?
+\end{frame}
+
+\end{document}
