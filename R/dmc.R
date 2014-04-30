@@ -154,12 +154,13 @@ dmc.evaluate <- function(dir) {
     names(results) <- str_sub(list.files(dir, pattern=".csv"), 1, -5)
     
     best <- sapply(results,
-                   function(x) ddply(x, .(set), summarize, accuracy=max(accuracy)),
+                   function(m) ddply(m, .(set), function(x) x[which.min(x$score), ]),
                    simplify=F)
-    comp <- t(as.data.frame(sapply(best, function(x) x$accuracy, simplify=F)))
-    colnames(comp) <- best[[1]]$set
+    comp <- data.frame(t(sapply(best, function(x) unlist(x[c("accuracy", "score")]))))
+    colnames(comp) <- c(paste("acc", best[[1]]$set, sep="_"),
+                        paste("sco", best[[1]]$set, sep="_"))
     
-    list(models=results, comp=comp)
+    list(models=results, best=best, comp=comp)
 }
 
 dmc.grid <- function(method, dt, tuneLength=3) {
