@@ -21,9 +21,14 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
     require(foreach)
     
     models <- foreach(dt.name=names(data)) %do% {
+        dt.train <- data[[dt.name]]$train
+        dt.train <- dt.train[dt.train$deliveryDateMissing == "no", ]
+        
+        dt.test <- data[[dt.name]]$test
+        dt.test <- dt.test[dt.test$deliveryDateMissing == "no", ]
+        
         message(paste("Training", method, "on", dt.name))
-        dmctrain(data[[dt.name]]$train, data[[dt.name]]$test, fs.fun, method,
-                 trControl, ...)
+        dmctrain(dt.train, dt.test, fs.fun, method, trControl, ...)
     }
     names(models) <- names(data)
     
