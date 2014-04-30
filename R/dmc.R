@@ -29,7 +29,15 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
         
         message(paste("Training", method, "on", dt.name))
         model <- dmctrain(dt.train, dt.test, fs.fun, method, trControl, ...)
-        list(model=model, orderItemID=dt.test$orderItemID)
+        
+        results <- model$results
+        results$scoreSD <- NULL
+        
+        # We divide by the full data set in order to take instances
+        # with missing delivery dates into account.
+        results$accuracy <- 1 - (results$score / nrow(data[[dt.name]]$test))
+        
+        list(model=model, results=results, orderItemID=dt.test$orderItemID)
     }
     names(res) <- names(data)
     
