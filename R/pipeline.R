@@ -56,6 +56,7 @@ common.desc <- list(
     tuneLength=3,
     # trainControl
     trControl=ctrl,
+    preProcess=NULL,
     # Data
     data=dt.dmc.mini
 )

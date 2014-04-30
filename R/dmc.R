@@ -2,18 +2,46 @@
 source("R/feat.R")
 source("R/utils.R")
 
-dmctrain <- function(data, tuneGrid=NULL, tuneLength=3, fs.fun, verbose=T, method="nb",
+dmctrain <- function(data, tuneGrid=NULL,
+                     preProcess = NULL,
+                     tuneLength=3, fs.fun, verbose=T, method="nb",
                      save.path=NULL, ...) {
     require(caret)
     require(foreach)
     
     res <- list()
+    models <- getModelInfo(method, regex=FALSE)[[1]]
     
-    if (is.null(tuneGrid)) {
-        tuneGrid <- getModelInfo(method)[[method]]$grid(
-            dt.dmc[[1]]$train,
-            dt.dmc[[1]]$train$returnShipment,
-            tuneLength)
+    ## Gather all the pre-processing info. We will need it to pass into the grid creation
+    ## code so that there is a concorance between the data used for modeling and grid creation
+    if(!is.null(preProcess))
+    {
+        ppOpt <- list(options = preProcess)
+        if(length(trControl$preProcOptions) > 0) ppOpt <- c(ppOpt,trControl$preProcOptions)
+    } else ppOpt <- NULL
+    
+    ## If no default training grid is specified, get one. We have to pass in the formula
+    ## and data for some models (rpart, pam, etc - see manual for more details)
+    if(is.null(tuneGrid)) {
+        if(!is.null(ppOpt) && length(models$parameters$parameter) > 1 && as.character(models$parameters$parameter) != "parameter") {
+            # Haxx
+            x <- data$T1$train
+            x$returnShipment <- NULL
+            y <- data$T1$returnShipment
+            
+            pp <- list(method = ppOpt$options)
+            if("ica" %in% pp$method) pp$n.comp <- ppOpt$ICAcomp
+            if("pca" %in% pp$method) pp$thresh <- ppOpt$thresh
+            if("knnImpute" %in% pp$method) pp$k <- ppOpt$k   
+            pp$x <- x
+            ppObj <- do.call("preProcess", pp)
+            tuneGrid <- models$grid(predict(ppObj, x), y, tuneLength)
+            rm(ppObj, pp)
+        } else tuneGrid <- models$grid(x, y, tuneLength)
+    }
+    if (verbose) {
+        message("Tuning Grid:")
+        print(tuneGrid)
     }
     
     res <- foreach(dt.name=names(data)) %do% {
@@ -108,6 +136,7 @@ dmcstrain <- function(descs, common.desc, train.only=NULL) {
         fit <- do.call(dmctrain,
                        c(list(desc$data,
                          desc$tuneGrid,
+                         desc$preProcess,
                          desc$tuneLength,
                          desc$fs.fun,
                          desc$verbose,
