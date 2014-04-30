@@ -20,6 +20,11 @@ delayedAssign("dt.tiny", subset(dt.mini, wday(orderDate) == 1))
 delayedAssign("dt.merged", rbind(data.frame(dt.train, group="train"),
                                  data.frame(dt.test, group="test", returnShipment=NA)))
 
+delayedAssign("dt.dmc.small", sapply(dt.dmc, function(x) list(train=head(x$train, 20000), test=head(x$test, 2000)),
+                                     simplify=F))
+delayedAssign("dt.dmc.mini", sapply(dt.dmc, function(x) list(train=head(x$train, 2000), test=head(x$test, 100)),
+                                    simplify=F))
+
 # Serialized Models
 delayedAssign("mds", caret.load())
 

@@ -16,7 +16,6 @@ dmctrain <- function(dt.train, dt.test, fs.fun, method="rf",
                         trControl=trControl, na.action=na.pass, ...)
     
     fit$pred$rowIndex <- fit$pred$rowIndex - nrow(dt.train)
-    
     fit
 }
 
@@ -26,6 +25,8 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
     require(plyr)
     
     res <- foreach(dt.name=names(data)) %do% {
+        gc()
+        
         dt.train <- data[[dt.name]]$train
         dt.train <- dt.train[dt.train$deliveryDateMissing == "no", ]
         
@@ -44,11 +45,15 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
         
         mDD <- data[[dt.name]]$test$deliveryDateMissing == "yes"
         
-        list(model=model, results=results,
+        l <- list(model=model, results=results,
              index=data.frame(orderItemID=dt.test$orderItemID,
                               rowIndex=rownames(dt.test)),
              indexMissingDD=data.frame(orderItemID=data[[dt.name]]$test[mDD, ]$orderItemID,
                                        rowIndex=rownames(data[[dt.name]]$test[mDD, ])))
+        dt.train <- NULL
+        dt.test <- NULL
+        gc(F)
+        l
     }
     names(res) <- names(data)
     

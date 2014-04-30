@@ -8,6 +8,12 @@
 # To get a list of available models try ./bin/run.R -l
 
 source("R/data.R")
+
+# RAM...
+dt.train <- NULL
+dt.test <- NULL
+gc(F)
+
 source("R/dmc.R")
 source("R/pipeline.R")
 source("R/utils.R")
