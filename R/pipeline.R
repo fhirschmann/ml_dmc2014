@@ -24,6 +24,23 @@ descs <- list(
         method="rf",
         tuneLength=2
     ),
+    rf2=list(
+        fs.fun=fs.rf,
+        method="extraTrees",
+        tuneLength=1
+    ),
+    orf=list(
+        fs.fun=fs.rf,
+        method="ORFridge"
+    ),
+    rrf=list(
+        fs.fun=fs.rf,
+        method="RRFglobal"
+    ),
+    treebag=list(
+        fs.fun=fs.rf,
+        method="treebag"
+    ),
     c50=list(
         fs.fun=fs.tree,
         method="C5.0",
