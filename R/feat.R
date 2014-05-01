@@ -92,7 +92,7 @@ add.features.otf <- function(to, from) {
     require(plyr)
     
     dt.to <- data.table(to)
-    dt.from <- data.table(from)
+    dt.from <- data.table(from[from$deliveryDateMissing == "no", ])
     
     dt.from[, customerReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("customerID")]
     customerRetRate <- unique(dt.from[, c("customerID", "customerReturnRate"), with=F])
