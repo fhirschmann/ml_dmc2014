@@ -16,6 +16,7 @@ dmctrain <- function(dt.train, dt.test, fs.fun, method="rf",
                         trControl=trControl, na.action=na.pass, ...)
     
     fit$pred$rowIndex <- fit$pred$rowIndex - nrow(dt.train)
+    fit$pred <- fit$pred[!is.na(fit$pred$obs), ]
     fit
 }
 
