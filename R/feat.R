@@ -4,6 +4,8 @@ add.features <- function(dt) {
     #
     # Place features that can be computed over the entire data set here.
     #
+    require(plyr)
+    
     dt2 <- data.table(dt)
     
     #dt2$creationDateMissing <- as.factor(ifelse(is.na(dt2$creationDate), "yes", "no"))
@@ -46,6 +48,13 @@ add.features <- function(dt) {
     
     # Discretized price
     dt2$discretizedPrice <- cut(dt2$price, c(0, 1:20 * 10, Inf), left=T, right=F)
+    
+    # Item Discount
+    disc <- dt2[, c("itemID", "price"), with=F]
+    disc[, itemDiscount := max(price), by=c("itemID")]
+    disc <- unique(disc[, c("itemID", "itemDiscount"), with=F])
+    dt2 <- join(dt2, disc, by="itemID")
+    dt2$itemDiscount <- 1 - dt2$price / dt2$itemDiscount
     
     # West/East Germany
     dt2$westGermany <- revalue(dt2$state, c(
