@@ -179,7 +179,8 @@ caret.bestidx <- function(fit) {
         rep(TRUE, nrow(fit$pred))
     } else {
         params <- colnames(fit$bestTune)
-        Reduce('&', lapply(params, function(y) fit$pred[[y]] == fit$bestTune[[y]]))    
+        Reduce('&', lapply(params, function(y)
+            as.character(fit$pred[[y]]) == as.character(fit$bestTune[[y]])))    
     }
 }
 
