@@ -20,6 +20,14 @@ fs.all <- function(dt) {
     dt2
 }
 
+fs.svm <- function(dt) {
+    dt2 <- fs.all(dt)
+    
+    dt2$discretizedPrice <- NULL
+    
+    dt2
+}
+
 fs.nb <- function(dt) {
     dt2 <- fs.all(dt)
     

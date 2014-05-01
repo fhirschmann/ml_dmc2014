@@ -55,10 +55,11 @@ descs <- list(
             method="treebag"
         )
     ),
-    elm=list(
-        fs.fun=fs.nn,
+    svmLinear=list(
+        fs.fun=fs.svm,
         train.args=list(
-            method="elm"
+            method="svmLinear",
+            preProcess=c("knnImpute")
         )
     ),
     evtree=list(
