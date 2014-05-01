@@ -25,7 +25,7 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
     require(foreach)
     require(plyr)
     
-    res <- foreach(dt.name=names(data)) %do% {
+    models <- foreach(dt.name=names(data)) %do% {
         train.idx <- data[[dt.name]]$train$deliveryDateMissing == "no"
         test.idx <- data[[dt.name]]$test$deliveryDateMissing == "no"
         
@@ -49,12 +49,21 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
         list(model=model, results=results,
              skippedOrderItemID=as.numeric(as.character(data[[dt.name]]$test[!test.idx, ]$orderItemID)))
     }
-    names(res) <- names(data)
+    names(models) <- names(data)
+
+    results <- do.call(rbind, sapply(names(models),
+                                     function(n) data.frame(models[[n]]$results, set=n),
+                                     simplify=F))
+    bestResults <- results[sapply(names(models),
+                                  function(n) paste(n, rownames(models[[n]]$model$bestTune), sep=".")), ]
     
+    res <- list(models=models, results=results, bestResults=bestResults)
     class(res) <- "mtrain"
     
     if (!is.null(save.path)) {
         saveRDS(res, file=file.path(save.path, paste(method, "RData", sep=".")))
+        saveRDS(res[c("results", "bestResults")],
+                file=file.path(save.path, paste(method, "_res", ".RData", sep="")))
     }
     
     res
