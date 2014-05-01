@@ -50,8 +50,7 @@ add.features <- function(dt) {
     dt2$discretizedPrice <- cut(dt2$price, c(0, 1:20 * 10, Inf), left=T, right=F)
     
     # Item Discount
-    # TODO: by=c("itemID", "color", "size")
-    dt2[, itemDiscount := 1 - price / max(price), by=c("itemID")]
+    dt2[, itemDiscount := 1 - price / max(price), by=c("itemID", "size")]
     
     # West/East Germany
     dt2$westGermany <- revalue(dt2$state, c(
