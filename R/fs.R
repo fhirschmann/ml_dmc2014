@@ -38,6 +38,14 @@ fs.tree <- function(dt) {
     dt2
 }
 
+fs.nn <- function(dt) {
+    dt2 <- fs.all(dt)
+    
+    dt2$discretizedPrice <- NULL
+    
+    dt2
+}
+
 fs.rf <- function(dt) {
     require(randomForest)
     dt2 <- fs.tree(dt)

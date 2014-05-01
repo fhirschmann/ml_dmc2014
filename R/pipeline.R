@@ -55,14 +55,32 @@ descs <- list(
             method="treebag"
         )
     ),
+    elm=list(
+        fs.fun=fs.nn,
+        train.args=list(
+            method="elm"
+        )
+    ),
+    evtree=list(
+        fs.fun=fs.tree,
+        train.args=list(
+            method="evtree"
+        )
+    ),
+    ctree=list(
+        fs.fun=fs.tree,
+        train.args=list(
+            method="ctree"
+        )
+    ),
     c50=list(
         fs.fun=fs.tree,
         train.args=list(
             method="C5.0",
-            tuneLength=5
-            #tuneGrid=expand.grid(
-            #    trials=1, winnow=c(F), model="rules"),
-            #control=C5.0Control(earlyStopping=F)
+            #tuneLength=5
+            tuneGrid=expand.grid(
+                trials=1, winnow=c(F), model="rules"),
+            control=C5.0Control(earlyStopping=F)
         )
     )
 )
@@ -74,7 +92,8 @@ common.desc <- list(
     # Function to apply to the data frame
     fs.fun=fs.all,
     # Data
-    data=dt.dmc,
+    #data=dt.dmc["T3"],
+    data=dt.dmc[names(dt.dmc) != "C"],  # exclude C
     # Arguments to caret::train
     train.args=list(trControl=ctrl, metric="score", maximize=F)
 )
