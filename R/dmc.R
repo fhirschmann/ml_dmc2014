@@ -151,8 +151,12 @@ dmc.loadeva <- function(dir) {
             comb.acc[m, s] <- if (length(acc) == 0) NA else acc
         }
     }
+    wiki <- data.frame(apply(apply(round(comb.acc, 4), 2, paste), 1, function(x) paste(x, collapse="|")))
+    rownames(wiki) <- rownames(comb.acc)
+    colnames(wiki) <- "accuracy"
+    wiki$accuracy <- paste("|R", wiki$accuracy, "|", sep="|")
         
-    list(models=results, accuracy=comb.acc)
+    list(models=results, accuracy=comb.acc, wiki=wiki)
 }
 
 dmc.convertPreds <- function(preds) {
