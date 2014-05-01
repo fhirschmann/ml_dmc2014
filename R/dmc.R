@@ -72,7 +72,7 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
 extractPreds.dmcmtrain <- function(mtrain) {
     require(plyr)
     
-    sapply(mtrain,
+    sapply(mtrain$models,
            function(x) {
                best <- caret.best(x$model)
                pred <- rbind(best[!is.na(best$obs), ][c("orderItemID", "pred")],
