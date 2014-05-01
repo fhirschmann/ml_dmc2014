@@ -133,7 +133,26 @@ dmc.loadeva <- function(dir) {
     results <- sapply(list.files(dir, pattern="_res.RData", full.names=T),
                       readRDS, simplify=F)
     names(results) <- str_sub(list.files(dir, pattern="_res.RData"), 1, -11)
-    results
+    
+    comb <- do.call(rbind, sapply(names(results),
+                                  function(x) data.frame(
+                                      results[[x]]$bestResults[c("score", "accuracy", "set")],
+                                      method=x),
+                                  simplify=F))
+
+    comb.acc <- as.data.frame(matrix(nrow=length(levels(comb$method)),
+                                     ncol=length(levels(comb$set))))
+    colnames(comb.acc) <- levels(comb$set)
+    rownames(comb.acc) <- levels(comb$method)
+    
+    for (m in rownames(comb.acc)) {
+        for (s in colnames(comb.acc)) {
+            acc <- comb[comb$set == s & comb$method == m, ]$accuracy
+            comb.acc[m, s] <- if (length(acc) == 0) NA else acc
+        }
+    }
+        
+    list(models=results, accuracy=comb.acc)
 }
 
 dmc.convertPreds <- function(preds) {
