@@ -7,7 +7,7 @@ library(functional)
 library(caret)
 library(C50)
 
-ctrl <- trainControl(savePredictions=T, returnData=T,
+ctrl <- trainControl(savePredictions=T, returnData=T, returnResamp="all",
                      summaryFunction=function(data, lev=NULL, model=NULL) {
                          c(score=dmc.score(data$pred, data$obs, na.rm=T)) })
 
@@ -59,8 +59,11 @@ descs <- list(
         fs.fun=fs.tree,
         train.args=list(
             method="C5.0",
-            tuneLength=6,
-            control=C5.0Control(earlyStopping=F))
+            tuneLength=5
+            #tuneGrid=expand.grid(
+            #    trials=1, winnow=c(F), model="rules"),
+            #control=C5.0Control(earlyStopping=F)
+        )
     )
 )
 
