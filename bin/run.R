@@ -25,4 +25,4 @@ gc(F)
 args <- commandArgs(T)
 
 dtrain <- dmcdtrain(descs[[args[[1]]]], common.desc)
-sapply(dtrain, function(x) x$model, simplify=F)
+dtrain[c("results", "bestResults")]

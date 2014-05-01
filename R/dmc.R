@@ -126,28 +126,14 @@ dmc.score <- function(pred, obs, na.rm=F) {
     sum(abs(obs2 - pred2), na.rm=T)
 }
 
-dmc.evaluate <- function(dir) {
+dmc.loadeva <- function(dir) {
     require(stringr)
     require(plyr)
     
-    results <- sapply(list.files(dir, pattern=".csv", full.names=T),
-                      read.csv, simplify=F)
-    names(results) <- str_sub(list.files(dir, pattern=".csv"), 1, -5)
-    
-    best <- sapply(results,
-                   function(m) ddply(m, .(set), function(x) x[which.min(x$score), ]),
-                   simplify=F)
-
-    comp <- sapply(best, function(b) {
-        df <- t(data.frame(b$accuracy))
-        colnames(df) <- b$set
-        rownames(df) <- NULL
-        data.frame(df)
-    }, simplify=F)
-    comp <- join_all(comp, type="full")
-    rownames(comp) <- names(best)
-
-    list(models=results, comp=comp, best=best)
+    results <- sapply(list.files(dir, pattern="_res.RData", full.names=T),
+                      readRDS, simplify=F)
+    names(results) <- str_sub(list.files(dir, pattern="_res.RData"), 1, -11)
+    results
 }
 
 dmc.convertPreds <- function(preds) {

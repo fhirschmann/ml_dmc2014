@@ -5,4 +5,4 @@ source("R/dmc.R")
 
 args <- commandArgs(T)
 
-dmc.evaluate(args[[1]])
+dmc.loadeva(args[[1]])
