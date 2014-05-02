@@ -1,6 +1,6 @@
 #!/usr/bin/Rscript
 #
-# Usage: (Rscript) bin/evaluate.R
+# Usage: (Rscript) bin/evaluate.R models/
 source("R/dmc.R")
 
 args <- commandArgs(T)
