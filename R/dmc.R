@@ -94,6 +94,7 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
                                      function(n) data.frame(models[[n]]$results, set=n),
                                      simplify=F))
     if (nrow(results) == length(models)) {
+        # There is only one row in the tuning grid
         bestResults <- results
     } else {
         bestResults <- results[sapply(names(models),
@@ -122,10 +123,16 @@ extractPreds.dmcmtrain <- function(mtrain) {
     sapply(mtrain$models,
            function(x) {
                x$bestTune <- x$model$bestTune
+               # Extract the predictions for the tuning parameters that
+               # yielded the best results
                best <- caret.best(x)
+               
+               # Some instances were skipped due to missing delivery dates,
+               # so we add them back and set them to "no"
                pred <- rbind(best[!is.na(best$obs), ][c("orderItemID", "pred")],
                              data.frame(orderItemID=x$skippedOrderItemID,
                                         pred=rep("no", length(x$skippedOrderItemID))))
+               
                colnames(pred) <- c("orderItemID", "prediction")
                pred <- pred[order(pred$orderItemID), ]
                rownames(pred) <- NULL
@@ -175,6 +182,11 @@ dmc.score <- function(pred, obs, na.rm=F) {
 }
 
 dmc.loadeva <- function(dir) {
+    ## Loads the serialized evaluation results from a directory
+    ## (for multiple learners)
+    ##
+    ## Args:
+    ##   dir: directory to load from
     require(stringr)
     require(plyr)
     
@@ -188,6 +200,8 @@ dmc.loadeva <- function(dir) {
                                       method=x),
                                   simplify=F))
 
+    # Combine the accuracy for multiple learners across all set in a nicely
+    # looking matrix
     comb.acc <- as.data.frame(matrix(nrow=length(levels(comb$method)),
                                      ncol=length(levels(comb$set))))
     colnames(comb.acc) <- levels(comb$set)
@@ -199,6 +213,8 @@ dmc.loadeva <- function(dir) {
             comb.acc[m, s] <- if (length(acc) == 0) NA else acc
         }
     }
+    
+    # Wiki Markup for easier pasting
     wiki <- data.frame(apply(apply(round(comb.acc, 4), 2, paste), 1, function(x) paste(x, collapse="|")))
     rownames(wiki) <- rownames(comb.acc)
     colnames(wiki) <- "accuracy"
