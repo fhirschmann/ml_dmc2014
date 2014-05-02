@@ -18,10 +18,10 @@ dmctrain <- function(dt.train, dt.test, fs.fun, method="rf",
     trControl$indexOut <- list(rs1=nrow(dt.train)+1:nrow(data))
     trControl$method <- "cv"
     
+    set.seed(42)
     fit <- caret::train(returnShipment ~ ., data=data, method=method,
                         trControl=trControl, na.action=na.pass, ...)
 
-    fit$pred$rowIndex <- fit$pred$rowIndex - nrow(dt.train)
     fit
 }
 
@@ -39,20 +39,29 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
                           data[[dt.name]]$test[test.idx, ],
                           fs.fun, method, trControl, ...)
             
+        # Copy the results from caret
         results <- model$results
+        
+        # Standard Deviation doesn't make sense, since we have one test set only
         results$scoreSD <- NULL
         
         # We divide by the full data set in order to take instances
         # with missing delivery dates into account.
         results$accuracy <- 1 - (results$score / nrow(data[[dt.name]]$test))
         
+        # Copy the predictions from caret
+        pred <- model$pred
+        
+        # The test set comes after the train set (in terms of row indices)
+        pred$rowIndex <- pred$rowIndex - sum(train.idx)
+        
         # Add orderItemID to pred
         map <- data.frame(rowIndex=1:sum(test.idx),
                           orderItemID=data[[dt.name]]$test[test.idx, ]$orderItemID)
     
-        model$pred <- join(model$pred, map, by="rowIndex")
+        pred <- join(pred, map, by="rowIndex")
         
-        list(model=model, results=results,
+        list(model=model, results=results, pred=pred,
              skippedOrderItemID=as.numeric(as.character(data[[dt.name]]$test[!test.idx, ]$orderItemID)))
     }
     names(models) <- names(data)
@@ -84,7 +93,8 @@ extractPreds.dmcmtrain <- function(mtrain) {
     
     sapply(mtrain$models,
            function(x) {
-               best <- caret.best(x$model)
+               x$bestTune <- x$model$bestTune
+               best <- caret.best(x)
                pred <- rbind(best[!is.na(best$obs), ][c("orderItemID", "pred")],
                              data.frame(orderItemID=x$skippedOrderItemID,
                                         pred=rep("no", length(x$skippedOrderItemID))))
