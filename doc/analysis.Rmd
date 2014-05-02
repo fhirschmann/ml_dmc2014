@@ -1043,7 +1043,7 @@ analyseTB.train<-analyseTB.train[,length(itemID),by=list(itemID,price,orderDate,
 #analyseTB.train<-analyseTB.train[discount>0,discount:=1]
 #analyseTB.train<-analyseTB.train[,price:=(price/max*100)] #Normalisierung auf Wertebreich [0,100]
 ```
-#MICHAEL: vll hast du eine angemessenere visualisierung der Daten. am besten ein dichtebasierter scatter
+
 ```{r}
 smoothScatter(analyseTB.train[min!=max]$orderDate, analyseTB.train[min!=max]$discount, xlab = "Creation Date", ylab = "discount rate", main = "Order Date vs discount rate")
 
