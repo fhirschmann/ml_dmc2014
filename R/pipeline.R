@@ -83,6 +83,14 @@ descs <- list(
                 trials=1, winnow=c(F), model="rules"),
             control=C5.0Control(earlyStopping=F)
         )
+    ),
+    c50t=list(
+        fs.fun=fs.tree,
+        train.args=list(
+            method="C5.0",
+            tuneLength=10,
+            control=C5.0Control(earlyStopping=F)
+        )
     )
 )
 
