@@ -9,7 +9,10 @@ dmctrain <- function(dt.train, dt.test, fs.fun, method="rf",
     data <- fs.fun(rbind(dt.train, dt.test))
     zeroVar <- names(which(sapply(dt.train, function(x) length(unique(x)) == 1)))
     message(paste("Excluding Zero Variance Predictors", paste(zeroVar, collapse=", ")))
-    data <- data[!names(data) %in% zeroVar, ]
+    data <- data[!names(data) %in% zeroVar]
+    
+    message("Training on the following Data:")
+    message(str(data))
     
     trControl$index <- list(rs1=1:nrow(dt.train))
     trControl$indexOut <- list(rs1=nrow(dt.train)+1:nrow(data))
@@ -36,6 +39,7 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
         model <- dmctrain(data[[dt.name]]$train[train.idx, ], 
                           data[[dt.name]]$test[test.idx, ],
                           fs.fun, method, trControl, ...)
+        message(model$results)
             
         results <- model$results
         results$scoreSD <- NULL
