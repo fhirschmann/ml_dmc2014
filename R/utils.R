@@ -17,6 +17,17 @@ addlevels <- function (df1, df2) {
     dfx
 }
 
+remove.nzv <- function(df, exclude=c()) {
+    for (n in colnames(df)) {
+        if (is.factor(df[[n]]) & length((levels(df[[n]]) == 1))) {
+            if (!n %in% exclude) {
+                df[[n]] <- NULL
+            }
+        }
+    }
+    df
+}
+
 table2 <- function(v1, v2, row.names=c("train", "test")) {
     # Frequency table for two factors with the same levels.
     #
