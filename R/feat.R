@@ -51,6 +51,7 @@ add.features <- function(dt) {
     
     # Item Discount
     dt2[, itemDiscount := 1 - price / max(price), by=c("itemID", "size")]
+    dt2[is.na(dt2$itemDiscount), ]$itemDiscount <- 0
     
     # West/East Germany
     dt2$westGermany <- revalue(dt2$state, c(
