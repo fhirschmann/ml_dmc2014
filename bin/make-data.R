@@ -96,6 +96,27 @@ for (i in c("T1", "T2", "T3", "X1", "X2", "X3")) {
     dt.dmc.ids$test[[i]] <- read.csv(paste("eva/", i, "_test.txt", sep=""))$orderItemID
 }
 
+dt.dmc.ids$train$C <- as.integer(as.character(dt.train[dt.train$orderDate < as.Date("2013-03-01"), ]$orderItemID))
+dt.dmc.ids$test$C <- as.integer(as.character(dt.train[dt.train$orderDate >= as.Date("2013-03-01"), ]$orderItemID))
+
+
+c1 <- unique(union(dt.dmc.ids$train$T1, dt.dmc.ids$test$T1))
+c2 <- unique(union(dt.dmc.ids$train$T2, dt.dmc.ids$test$T2))
+c3 <- unique(union(dt.dmc.ids$train$T2, dt.dmc.ids$test$T3))
+
+add.collection <- function(dt) {
+    dt$collection <- 0
+    dt[dt$orderItemID %in% c1, ]$collection <- 1
+    dt[dt$orderItemID %in% c2, ]$collection <- 2
+    dt[dt$orderItemID %in% c3, ]$collection <- 3
+    
+    dt$collection <- as.factor(dt$collection)
+    dt
+}
+
+dt.train <- add.collection(dt.train)
+dt.test <- add.collection(dt.test)
+
 dt.dmc <- list()
 for (i in names(dt.dmc.ids$train)) {
     train.ids <- dt.dmc.ids$train[[i]]
@@ -104,26 +125,5 @@ for (i in names(dt.dmc.ids$train)) {
         train=add.features.otf(dt.train[train.ids, ], dt.train[-(test.ids), ]),
         test=add.features.otf(dt.train[test.ids, ], dt.train[-(test.ids), ]))
 }
-
-c1 <- unique(union(dt.dmc.ids$train$T1, dt.dmc.ids$test$T1))
-c2 <- unique(union(dt.dmc.ids$train$T2, dt.dmc.ids$test$T2))
-c3 <- unique(union(dt.dmc.ids$train$T2, dt.dmc.ids$test$T3))
-
-add.collection <- function(dt) {
-    dt$collection <- 0
-    dt[c1, ]$collection <- 1
-    dt[c2, ]$collection <- 2
-    dt[c3, ]$collection <- 3
-    
-    dt$collection <- as.factor(dt$collection)
-    dt
-}
-
-dt.train.col <- add.collection(dt.train)
-dt.train.col.train <- dt.train.col[dt.train.col$orderDate < as.Date("2013-03-01"), ]
-dt.train.col.test <- dt.train.col[dt.train.col$orderDate >= as.Date("2013-03-01"), ]
-dt.dmc$C$train <- add.features.otf(dt.train.col.train, dt.train.col.train)
-dt.dmc$C$test <- add.features.otf(dt.train.col.test, dt.train.col.train)
-#dt.test.col <- add.collection(dt.test)
 
 save(dt.train, dt.test, dt.dmc, dt.dmc.ids, file="data.RData")
