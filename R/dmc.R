@@ -28,7 +28,7 @@ dmctrain <- function(dt.train, dt.test, fs.fun, method="rf",
     
     # Magic for train/test split
     trControl$index <- list(rs1=1:nrow(dt.train))
-    trControl$indexOut <- list(rs1=nrow(dt.train)+1:nrow(data))
+    trControl$indexOut <- list((rs1=nrow(dt.train)+1):nrow(data))
     trControl$method <- "cv"
     
     set.seed(42)
