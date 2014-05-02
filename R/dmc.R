@@ -4,9 +4,9 @@ source("R/utils.R")
 
 dmctrain <- function(dt.train, dt.test, fs.fun, method="rf",
                      trControl=trainControl(), ...) {
-    ## Trains and tests on a specific train sets. Note that this
+    ## Trains and tests on specific sets. Note that this
     ## simply concatenates the two sets, so the row indices of dt.test
-    ## will by off by nrow(dt.train).
+    ## will by off by nrow(dt.train) in $preds.
     ##
     ## Args:
     ##   dt.train: train set
