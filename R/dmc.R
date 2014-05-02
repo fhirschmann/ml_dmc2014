@@ -23,6 +23,7 @@ dmctrain <- function(dt.train, dt.test, fs.fun, method="rf",
     
     fit$pred$rowIndex <- fit$pred$rowIndex - nrow(dt.train)
     fit$pred <- fit$pred[!is.na(fit$pred$obs), ]
+    message(fit$results)
     fit
 }
 
@@ -39,7 +40,6 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
         model <- dmctrain(data[[dt.name]]$train[train.idx, ], 
                           data[[dt.name]]$test[test.idx, ],
                           fs.fun, method, trControl, ...)
-        message(model$results)
             
         results <- model$results
         results$scoreSD <- NULL
