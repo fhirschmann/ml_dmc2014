@@ -8,7 +8,7 @@ add.features <- function(dt) {
     
     dt2 <- data.table(dt)
     
-    #dt2$creationDateMissing <- as.factor(ifelse(is.na(dt2$creationDate), "yes", "no"))
+    dt2$creationDateMissing <- as.factor(ifelse(is.na(dt2$creationDate), "yes", "no"))
     
     dt2$deliveryTime <- as.integer(dt2$deliveryDate - dt2$orderDate)
     dt2$deliveryDateMissing <- as.factor(ifelse(is.na(dt2$deliveryDate), "yes", "no"))
