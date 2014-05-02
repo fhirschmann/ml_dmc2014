@@ -24,5 +24,6 @@ gc(F)
 
 args <- commandArgs(T)
 
-dtrain <- dmcdtrain(descs[[args[[1]]]], common.desc)
+
+system.time(dtrain <- dmcdtrain(descs[[args[[1]]]], common.desc))
 dtrain[c("results", "bestResults")]
