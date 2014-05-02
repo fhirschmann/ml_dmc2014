@@ -4,9 +4,21 @@ source("R/utils.R")
 
 dmctrain <- function(dt.train, dt.test, fs.fun, method="rf",
                      trControl=trainControl(), ...) {
+    ## Trains and tests on a specific train sets. Note that this
+    ## simply concatenates the two sets, so the row indices of dt.test
+    ## will by off by nrow(dt.train).
+    ##
+    ## Args:
+    ##   dt.train: train set
+    ##   dt.test: test set
+    ##   fs.fun: function applied to the data prior to learning
+    ##   method: caret's method
+    ##   trControl: caret's trainControl
     require(caret)
     
     data <- fs.fun(rbind(dt.train, dt.test))
+    
+    # Remove Zero-Variance Predictors; some algos can't handle them
     zeroVar <- names(which(sapply(dt.train, function(x) length(unique(x)) == 1)))
     message(paste("Excluding Zero Variance Predictors", paste(zeroVar, collapse=", ")))
     data <- data[!names(data) %in% zeroVar]
@@ -14,6 +26,7 @@ dmctrain <- function(dt.train, dt.test, fs.fun, method="rf",
     message("Training on the following Data:")
     message(str(data))
     
+    # Magic for train/test split
     trControl$index <- list(rs1=1:nrow(dt.train))
     trControl$indexOut <- list(rs1=nrow(dt.train)+1:nrow(data))
     trControl$method <- "cv"
@@ -27,10 +40,20 @@ dmctrain <- function(dt.train, dt.test, fs.fun, method="rf",
 
 dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(), 
                       save.path=NULL, ...) {
+    ## Trains and tests on a list of train and test sets.
+    ##
+    ## Args:
+    ##   data: list(A=list(train=..., test=...), B=list(train=..., test=...))
+    ##   fs.fun: function applied to the data prior to learning
+    ##   method: caret's method
+    ##   trControl: caret's trainControl
+    ##   save.path: path to save the resulting models to
     require(foreach)
     require(plyr)
     
     models <- foreach(dt.name=names(data)) %do% {
+        # We don't want to train on instances with missing deliv dates,
+        # because they are practically unlabeled
         train.idx <- data[[dt.name]]$train$deliveryDateMissing == "no"
         test.idx <- data[[dt.name]]$test$deliveryDateMissing == "no"
         
@@ -66,6 +89,7 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
     }
     names(models) <- names(data)
 
+    # Concatenate the results from all train/test set combinations
     results <- do.call(rbind, sapply(names(models),
                                      function(n) data.frame(models[[n]]$results, set=n),
                                      simplify=F))
@@ -89,6 +113,10 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
 }
 
 extractPreds.dmcmtrain <- function(mtrain) {
+    ## Extracts the best predictions from multiple models
+    ##
+    ## Args:
+    ##   data: a 'mtrain' object
     require(plyr)
     
     sapply(mtrain$models,
@@ -107,14 +135,14 @@ extractPreds.dmcmtrain <- function(mtrain) {
 }
 
 dmcdtrain <- function(desc, common.desc) {
-    # Takes a learner description and fits a model
-    #
-    # Args:
-    #   descs: learner description
-    #   common.desc: description common to all learners
-    #
-    # Returns:
-    #   a mtrain object
+    ## Takes a learner description and fits a model
+    ##
+    ## Args:
+    ##   descs: learner description
+    ##   common.desc: description common to all learners
+    ##
+    ## Returns:
+    ##   a mtrain object
 
     train.args <- list.update(common.desc$train.args, desc$train.args)
     desc <- list.update(common.desc, desc)
@@ -185,17 +213,22 @@ dmc.convertPreds <- function(preds) {
     as.character(revalue(preds, c("yes"="1", "no"="0")))
 }
 
-dmc.nzv <- function(dt, fs.fun, ...) {
+dmc.nzv <- function(dt, fs.fun=identity, ...) {
+    ## Prints Zero and Near-Zero-Variance Statistics
+    ##
+    ## Args:
+    ##   dt: a data frame
+    ##   fs.fun: function to apply to the data frame
     sapply(dt, function(x) sapply(x, function(y) nearZeroVar(fs.fun(y), saveMetrics=T, ...),
                                   simplify=F),
            simplify=F)
 }
 
 dmc.inst <- function(upgrade=F) {
-    # Installs the required dependencies.
-    #
-    # Args:
-    #   upgrade: force upgrade
+    ## Installs the required dependencies.
+    ##
+    ## Args:
+    ##   upgrade: force upgrade
     
     libs <- c("devtools", "Metrics", "ellipse", "data.table", "knitr",
               "mda", "Hmisc", "lubridate", "earth", "pROC", "C50",
