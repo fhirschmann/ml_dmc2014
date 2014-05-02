@@ -6,7 +6,10 @@ dmctrain <- function(dt.train, dt.test, fs.fun, method="rf",
                      trControl=trainControl(), ...) {
     require(caret)
     
-    data <- remove.nzv(fs.fun(rbind(dt.train, dt.test)), exclude="returnShipment")
+    data <- fs.fun(rbind(dt.train, dt.test))
+    zeroVar <- names(which(sapply(dt.train, function(x) length(unique(x)) == 1)))
+    message(paste("Excluding Zero Variance Predictors", paste(zeroVar, collapse=", ")))
+    data <- data[!names(data) %in% zeroVar, ]
     
     trControl$index <- list(rs1=1:nrow(dt.train))
     trControl$indexOut <- list(rs1=nrow(dt.train)+1:nrow(data))
