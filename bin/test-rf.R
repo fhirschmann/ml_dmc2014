@@ -15,7 +15,7 @@ fit <- train(returnShipment ~ ., fs.rf(dt.train[use, ]),
              na.action=na.pass, trControl=trainControl(method="cv", number=10))
 
 
-pred <- dt.test
+pred <- fs.rf(dt.test)
 pred$pred <- predict(fit, dt.test, na.action=na.pass)
 pred[pred$deliveryDateMissing == "yes", ]$pred <- "no"
 
