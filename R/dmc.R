@@ -20,10 +20,8 @@ dmctrain <- function(dt.train, dt.test, fs.fun, method="rf",
     
     fit <- caret::train(returnShipment ~ ., data=data, method=method,
                         trControl=trControl, na.action=na.pass, ...)
-    
+
     fit$pred$rowIndex <- fit$pred$rowIndex - nrow(dt.train)
-    fit$pred <- fit$pred[!is.na(fit$pred$obs), ]
-    message(fit$results)
     fit
 }
 
@@ -51,6 +49,7 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
         # Add orderItemID to pred
         map <- data.frame(rowIndex=1:sum(test.idx),
                           orderItemID=data[[dt.name]]$test[test.idx, ]$orderItemID)
+    
         model$pred <- join(model$pred, map, by="rowIndex")
         
         list(model=model, results=results,
@@ -61,8 +60,12 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
     results <- do.call(rbind, sapply(names(models),
                                      function(n) data.frame(models[[n]]$results, set=n),
                                      simplify=F))
-    bestResults <- results[sapply(names(models),
-                                  function(n) paste(n, rownames(models[[n]]$model$bestTune), sep=".")), ]
+    if (nrow(results) == length(models)) {
+        bestResults <- results
+    } else {
+        bestResults <- results[sapply(names(models),
+                                      function(n) paste(n, rownames(models[[n]]$model$bestTune), sep=".")), ]
+    }
     
     res <- list(models=models, results=results, bestResults=bestResults)
     class(res) <- "mtrain"
