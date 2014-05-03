@@ -33,7 +33,13 @@ descs <- list(
         fs.fun=fs.tree,
         train.args=list(
             method="gbm",
-            tuneLength=8
+            tuneLength=5
+        )
+    ),
+    svmLinear=list(
+        fs.fun=fs.svm,
+        train.args=list(
+            method="svmLinear"
         )
     ),
     nb=list(
@@ -78,7 +84,7 @@ descs <- list(
         fs.fun=fs.svm,
         train.args=list(
             method="svmLinear",
-            preProcess=c("knnImpute")
+            tuneLength=5
         )
     ),
     evtree=list(
@@ -120,7 +126,7 @@ common.desc <- list(
     # Function to apply to the data frame
     fs.fun=fs.all,
     # Data
-    #data=dt.dmc.mini[c("T1", "T2")],
+    #data=dt.dmc.mini[c("T3")],
     data=dt.dmc[c("T1", "T2", "T3")],
     #data=dt.dmc[names(dt.dmc) != "C"],  # exclude C
     # Arguments to caret::train
