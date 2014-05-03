@@ -17,6 +17,25 @@ ctrl.probs$classProbs <- TRUE
 
 # List of stuff to learn
 descs <- list(
+    ada=list(
+        fs.fun=fs.tree,
+        train.args=list(
+            method="ada"
+        )
+    ),
+    amore=list(
+        fs.fun=fs.nn,
+        train.args=list(
+            method="AMORE"
+        )
+    ),
+    gbm=list(
+        fs.fun=fs.tree,
+        train.args=list(
+            method="gbm",
+            tuneLength=8
+        )
+    ),
     nb=list(
         fs.fun=fs.nb,
         train.args=list(
@@ -101,8 +120,9 @@ common.desc <- list(
     # Function to apply to the data frame
     fs.fun=fs.all,
     # Data
-    #data=dt.dmc["T3"],
-    data=dt.dmc[names(dt.dmc) != "C"],  # exclude C
+    #data=dt.dmc.mini[c("T1", "T2")],
+    data=dt.dmc[c("T1", "T2", "T3")],
+    #data=dt.dmc[names(dt.dmc) != "C"],  # exclude C
     # Arguments to caret::train
     train.args=list(trControl=ctrl, metric="score", maximize=F)
 )
