@@ -25,6 +25,7 @@ fs.svm <- function(dt) {
     
     dt2$discretizedPrice <- NULL
     dt2$discretizedCustomerAge <- NULL
+    dt2$discretizedAccountAge <- NULL
     dt2$size <- NULL
     
     dt2
@@ -35,6 +36,7 @@ fs.nb <- function(dt) {
     
     dt2$discretizedPrice <- NULL
     dt2$discretizedCustomerAge <- NULL
+    dt2$discretizedAccountAge <- NULL
     dt2$size <- NULL
     
     droplevels(dt2)
@@ -46,6 +48,7 @@ fs.tree <- function(dt) {
     
     dt2$price <- NULL  # Use discretized price
     dt2$customerAge <- NULL  # Same here
+    dt2$accountAge <- NULL
     
     dt2
 }
@@ -55,6 +58,7 @@ fs.nn <- function(dt) {
     
     dt2$discretizedPrice <- NULL
     dt2$discretizedCustomerAge <- NULL
+    dt2$discretizedAccountAge <- NULL
     
     dt2
 }
