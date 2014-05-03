@@ -15,10 +15,11 @@ add.features <- function(dt) {
     dt2$orderWeekday <- as.ordered(as.factor(lubridate::wday(dt2$orderDate, label=T, abbr=F)))
     
     # Instant Order
-    dt2$instantOrder <- as.factor(ifelse(dt2$creationDate == dt2$orderDate))
+    dt2$instantOrder <- as.factor(ifelse(dt2$creationDate == dt2$orderDate, "yes", "no"))
     
     # Customer age in Years
     dt2$customerAge <- as.integer(year(dt2$orderDate) - year(dt2$dateOfBirth))
+    dt2$discretizedCustomerAge <- cut(dt2$customerAge, 10 + 1:15 * 5)
     dt2$dateOfBirthMissing <- as.factor(ifelse(is.na(dt2$dateOfBirth), "yes", "no"))
     
     # Account age in Days
@@ -33,7 +34,7 @@ add.features <- function(dt) {
     
     # Total number of distinct items ordered
     dt2[, customerDistinctItemsOrdered := length(unique(itemID)), by=c("customerID", "orderDate")]
-    dt2$customerDistinctItemsOrderedBool <- as.factor(ifelse(dt2$customerDistinctItemsOrdered > 1), "yes", "no")
+    dt2$customerDistinctItemsOrderedBool <- as.factor(ifelse(dt2$customerDistinctItemsOrdered > 1, "yes", "no"))
     
     # Total number of orders
     dt2[, customerNumOrders := .N, by=c("customerID", "orderDate")]
