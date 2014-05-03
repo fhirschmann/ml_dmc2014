@@ -29,12 +29,3 @@ delayedAssign("dt.dmc.small", sapply(dt.dmc, function(x) list(train=head(x$train
                                      simplify=F))
 delayedAssign("dt.dmc.mini", sapply(dt.dmc, function(x) list(train=head(x$train, 2000), test=head(x$test, 100)),
                                     simplify=F))
-
-# Serialized Models
-delayedAssign("mds", caret.load())
-
-clear <- function() {
-    rm(list=c(dt.train.raw, dt.train.pp, dt.train, dt.june,
-              dt.test.raw, dt.test.pp, dt.test,
-              dt.merged, mds))
-}
