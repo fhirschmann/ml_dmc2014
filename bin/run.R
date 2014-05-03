@@ -19,7 +19,7 @@ registerDoParallel(1)
 dt.train <- NULL
 dt.test <- NULL
 dt.dmc <- NULL
-gc(F)
+gc(T)
 
 
 args <- commandArgs(T)

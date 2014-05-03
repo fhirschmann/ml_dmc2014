@@ -34,7 +34,8 @@ dmctrain <- function(dt.train, dt.test, fs.fun, method="rf",
     set.seed(42)
     fit <- caret::train(returnShipment ~ ., data=data, method=method,
                         trControl=trControl, na.action=na.pass, ...)
-
+    data <- NULL
+    gc(T)
     fit
 }
 
@@ -52,6 +53,8 @@ dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(),
     require(plyr)
     
     models <- foreach(dt.name=names(data)) %do% {
+        gc(T)
+        
         # We don't want to train on instances with missing deliv dates,
         # because they are practically unlabeled
         train.idx <- data[[dt.name]]$train$deliveryDateMissing == "no"
