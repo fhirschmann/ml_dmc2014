@@ -126,4 +126,7 @@ for (i in names(dt.dmc.ids$train)) {
         test=add.features.otf(dt.train[test.ids, ], dt.train[-(test.ids), ]))
 }
 
-save(dt.train, dt.test, dt.dmc, dt.dmc.ids, file="data.RData")
+saveRDS(dt.train, file="data.train.RData")
+saveRDS(dt.test, file="data.test.RData")
+saveRDS(dt.dmc, file="data.dmc.RData")
+saveRDS(dt.dmc.ids, file="data.dmc.ids.RData")
