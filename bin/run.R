@@ -22,8 +22,6 @@ if ("-m" %in% args) {
     desc$data <- list(train=head(desc$data$train, 20000),
                       test=head(desc$data$test, 1000))
 }
-str(desc$data)
-
 desc$data.name <- args[[2]]
 
 system.time(train <- do.call(dmctrain, desc))
