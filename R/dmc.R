@@ -91,34 +91,6 @@ extractPreds.dmctrain <- function(train) {
     pred[order(pred$orderItemID), ]
 }
 
-extractPreds2.dmcmtrain <- function(mtrain) {
-    ## Extracts the best predictions from multiple models
-    ##
-    ## Args:
-    ##   data: a 'mtrain' object
-    require(plyr)
-    
-    sapply(mtrain$models,
-           function(x) {
-               x$bestTune <- x$model$bestTune
-               # Extract the predictions for the tuning parameters that
-               # yielded the best results
-               best <- caret.best(x)
-               
-               # Some instances were skipped due to missing delivery dates,
-               # so we add them back and set them to "no"
-               pred <- rbind(best[!is.na(best$obs), ][c("orderItemID", "pred")],
-                             data.frame(orderItemID=x$skippedOrderItemID,
-                                        pred=rep("no", length(x$skippedOrderItemID))))
-               
-               colnames(pred) <- c("orderItemID", "prediction")
-               pred <- pred[order(pred$orderItemID), ]
-               rownames(pred) <- NULL
-               pred
-           },
-           simplify=F)
-}
-
 dmcdtrain <- function(desc, common.desc) {
     ## Takes a learner description and fits a model
     ##
