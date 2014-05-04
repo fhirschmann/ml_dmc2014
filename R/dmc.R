@@ -24,8 +24,10 @@ dmctrain <- function(data, data.name, fs.fun, method="rf", trControl=trainContro
         message(paste("Excluding Zero Variance Predictors", paste(zeroVar, collapse=", ")))
     data <- data[!names(data) %in% zeroVar]
     
-    message("Training on the following Data:")
-    message(str(data))
+    if (verbose) {
+        message("Training on the following Data:")
+        message(str(data))
+    }
     
     # Magic for train/test split
     trControl$index <- list(rs1=1:sum(train.idx))
