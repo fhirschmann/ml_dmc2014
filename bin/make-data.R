@@ -119,8 +119,8 @@ dt.test <- add.collection(dt.test)
 
 dt.dmc <- list()
 for (i in names(dt.dmc.ids$train)) {
-    train.ids <- dt.dmc.ids$train[[i]]
-    test.ids <- dt.dmc.ids$test[[i]]
+    train.ids <- as.integer(as.character(dt.dmc.ids$train[[i]]))
+    test.ids <- as.integer(as.numeric(dt.dmc.ids$test[[i]]))
     dt.dmc[[i]] <- list(
         train=add.features.otf(dt.train[train.ids, ], dt.train[-(test.ids), ]),
         test=add.features.otf(dt.train[test.ids, ], dt.train[-(test.ids), ]))
