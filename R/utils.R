@@ -41,17 +41,6 @@ df.classes <- function(dt) {
     data.frame(class=unlist(lapply(dt, function(x) paste(class(x), collapse="/"))))
 }
 
-df.nas <- function(dt) {
-    # Prints the number of NAs.
-    #
-    # Args:
-    #   dt: a data frame
-    
-    df <- t(data.frame(lapply(dt, function(x) sum(is.na(x)))))
-    colnames(df) <- c("NAs")
-    df
-}
-
 list.update <- function(l1, l2) {
     # Updates list l1 with the contents of l2 and returns
     # the new list.
@@ -62,104 +51,6 @@ list.update <- function(l1, l2) {
     
     lr <- l1[setdiff(names(l1), names(l2))]
     c(lr, l2)
-}
-
-caret.train.default.desc <- list(train.args=list(),
-                                 data.fun=identity,
-                                 serialize="models",
-                                 save.hist=TRUE,
-                                 save.data=TRUE)
-
-caret.train <- function(descs, common.desc=(d <- caret.train.default.desc),
-                        train.only=NULL, verbose=FALSE) {
-    # This is a wrapper around caret::train that allows
-    # to pass a list of learner descriptions.
-    #
-    # Args:
-    #   descs: learner descriptions
-    #   common.desc: default description for all learners
-    #   train.only: train only these models from descs
-    #   verbose: be verbose
-
-    require(caret)
-    
-    fits <- list()
-    
-    for (name in (if (length(train.only) == 0) names(descs) else train.only)) {
-        message("Learning model for ", name)
-        train.args <- list.update(common.desc$train.args, descs[[name]]$train.args)
-        desc <- list.update(common.desc, descs[[name]])
-        desc$train.args <- train.args
-        if (typeof(desc$train.args$data) == "character")
-            desc$train.args$data <- get(desc$train.args$data)
-            
-        desc$train.args$data <- desc$data.fun(desc$train.args$data)
-        
-        if (verbose) message(str(desc))
-        
-        # Train the model
-        set.seed(42)
-        fit <- do.call(caret::train, desc$train.args)
-        if (verbose) message(fit)
-    
-        # Serialize
-        if (!is.null(desc$serialize)) {
-            caret.save(fit, name, desc$serialize,
-                       if (desc$save.data) desc$train.args$data else NA)
-            if (desc$save.hist) {
-                datestr <- format(Sys.time(), "%Y-%m-%d_%H:%M:%S")
-                caret.save(fit, paste(name, datestr, sep="."),
-                           file.path(desc$serialize, "hist"),
-                           if (desc$save.data) desc$train.args$data else NA)
-            }
-        }
-
-        fits[[name]] <- fit
-    }
-    
-    fits
-}
-
-caret.save <- function(fit, name, path, dt=NA) {
-    fname <- file.path(path, paste(name, "RData", sep="."))
-    save(fit, file=fname)
-    message("Saved model to: ", fname)
-
-    write.csv(fit$results, file=file.path(path, paste(name, "csv", sep=".")),
-              row.names=FALSE)
-    
-    if (is.data.frame(dt)) {
-        fname <- file.path(path, "data", paste(name, "RData", sep="."))
-        save(dt, file=fname)
-        message("Saved data to: ", fname)
-        
-        write.table(colnames(dt), file=file.path(path, "data", paste(name, "txt", sep=".")),
-                    quote=F, row.names=F, col.names=F)
-    }
-}
-
-caret.evaluate <- function(mdir="models") {
-    
-}
-
-caret.load <- function(mdir="models") {
-    # Returns a list of serialized models.
-    #
-    # Args:
-    #   mdir: the directory to search for models in
-    
-    models <- list()
-    cwd <- getwd()
-    setwd(mdir)
-    
-    for (file in list.files(pattern=".RData")) {
-        name <- unlist(strsplit(file, "\\."))[1]
-        message(paste("Loading model from", file, "\n"))
-        load(file)
-        models[[name]] <- fit
-    }
-    setwd(cwd)
-    models
 }
 
 caret.bestidx <- function(fit) {

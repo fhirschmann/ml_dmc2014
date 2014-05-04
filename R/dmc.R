@@ -161,64 +161,10 @@ dmc.evaluate <- function(dir) {
     list(results=res, accuracy=acc, wiki=wiki)
 }
 
-
-dmc.loadeva <- function(dir) {
-    ## Loads the serialized evaluation results from a directory
-    ## (for multiple learners)
-    ##
-    ## Args:
-    ##   dir: directory to load from
-    require(stringr)
-    require(plyr)
-    
-    results <- sapply(list.files(dir, pattern="_res.RData", full.names=T),
-                      readRDS, simplify=F)
-    names(results) <- str_sub(list.files(dir, pattern="_res.RData"), 1, -11)
-    
-    comb <- do.call(rbind, sapply(names(results),
-                                  function(x) data.frame(
-                                      results[[x]]$bestResults[c("score", "accuracy", "set")],
-                                      method=x),
-                                  simplify=F))
-
-    # Combine the accuracy for multiple learners across all set in a nicely
-    # looking matrix
-    comb.acc <- as.data.frame(matrix(nrow=length(levels(comb$method)),
-                                     ncol=length(levels(comb$set))))
-    colnames(comb.acc) <- levels(comb$set)
-    rownames(comb.acc) <- levels(comb$method)
-    
-    for (m in rownames(comb.acc)) {
-        for (s in colnames(comb.acc)) {
-            acc <- comb[comb$set == s & comb$method == m, ]$accuracy
-            comb.acc[m, s] <- if (length(acc) == 0) NA else acc
-        }
-    }
-    
-    # Wiki Markup for easier pasting
-    wiki <- data.frame(apply(apply(round(comb.acc, 4), 2, paste), 1, function(x) paste(x, collapse="|")))
-    rownames(wiki) <- rownames(comb.acc)
-    colnames(wiki) <- "accuracy"
-    wiki$accuracy <- paste("|R", wiki$accuracy, "|", sep="|")
-        
-    list(models=results, accuracy=comb.acc, wiki=wiki)
-}
-
 dmc.convertPreds <- function(preds) {
     require(plyr)
     
     as.character(revalue(preds, c("yes"="1", "no"="0")))
-}
-
-dmc.nzv <- function(dt, fs.fun=identity, ...) {
-    ## Prints Zero and Near-Zero-Variance Statistics
-    ##
-    ## Args:
-    ##   dt: a data frame
-    ##   fs.fun: function to apply to the data frame
-    sapply(dt, function(x) sapply(x, function(y) nearZeroVar(fs.fun(y), saveMetrics=T, ...),
-                                  simplify=F),
-           simplify=F)
 }
 
 dmc.inst <- function(upgrade=F) {
