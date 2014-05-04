@@ -28,6 +28,11 @@ descs <- list(
         method="gbm",
         tuneLength=5
     ),
+    gbmC=list(
+      fs.fun=fs.tree,
+      method="gbm",
+      tuneLength=15
+    ),
     svmLinear=list(
         fs.fun=fs.svm,
         method="svmLinear"
@@ -40,6 +45,11 @@ descs <- list(
         fs.fun=fs.rf,
         method="rf",
         tuneLength=2
+    ),
+    rfC=list(
+      fs.fun=fs.rf,
+      method="rf",
+      tuneLength=15
     ),
     rf2=list(
         fs.fun=fs.rf,
@@ -84,6 +94,12 @@ descs <- list(
         method="C5.0",
         tuneLength=10,
         control=C5.0Control(earlyStopping=F)
+    ),
+    c50C=list(
+      fs.fun=fs.tree,
+      method="C5.0",
+      tuneLength=15,
+      control=C5.0Control(earlyStopping=F)
     )
 )
 
