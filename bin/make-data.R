@@ -15,10 +15,10 @@ dt.classes <- c(
     "orderDate"="Date",
     "deliveryDate"="Date",
     "dateOfBirth"="Date",
-    "itemID"="factor",
+    "itemID"="integer",
     "size"="factor",
-    "manufacturerID"="factor",
-    "customerID"="factor",
+    "manufacturerID"="integer",
+    "customerID"="integer",
     "creationDate"="Date"
 )
 
