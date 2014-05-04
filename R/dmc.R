@@ -127,6 +127,41 @@ dmc.score <- function(pred, obs, na.rm=F) {
     sum(abs(obs2 - pred2), na.rm=T)
 }
 
+dmc.evaluate <- function(dir) {
+    require(caret)
+    
+    files <- list.files(path=dir, pattern=paste(pattern=".*_res.RData", sep=""))
+    
+    models <- sapply(files, function(x) readRDS(file.path(dir, x)), simplify=F)
+    methods <- sapply(str_split(files, "_"), function(x) x[[1]])
+    sets <- sapply(str_split(files, "_"), function(x) x[[2]])
+    
+    res <- do.call(rbind, mapply(function(model, method, set) {
+        data.frame(method=method, set=set,
+                   model$bestResults[c("score", "accuracy")])
+    }, models, methods, sets, SIMPLIFY=F))
+    
+    acc <- matrix(nrow=length(unique(methods)), ncol=7)
+    rownames(acc) <- unique(methods)
+    colnames(acc) <- c("T1", "T2", "T3", "X1", "X2", "X3", "C")
+    
+    for (m in rownames(acc)) {
+        for (s in colnames(acc)) {
+            acc.e <- res[res$set == s & res$method == m, ]$accuracy
+            acc[m, s] <- if (length(acc.e) == 0) NA else as.numeric(acc.e)
+        }
+    }
+    
+    wiki <- data.frame(apply(apply(round(acc, 8), 2, paste), 1, function(x) paste(x, collapse="|")))
+    rownames(wiki) <- NULL
+    colnames(wiki) <- "accuracy"
+    wiki$accuracy <- paste(paste("|R", sapply(rownames(acc), function(x) getModelInfo(x, regex=F)[[1]]$label),
+                                 wiki$accuracy, sep="|"), "|", sep="")
+    
+    list(results=res, accuracy=acc, wiki=wiki)
+}
+
+
 dmc.loadeva <- function(dir) {
     ## Loads the serialized evaluation results from a directory
     ## (for multiple learners)
