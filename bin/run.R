@@ -16,11 +16,14 @@ desc <- list.update(common.desc, descs[[args[[1]]]])
 desc$data <- readRDS("data.dmc.RData")[[args[[2]]]]
 
 if ("-m" %in% args) {
-    desc$data <- list(train=head(desc$data$train, 2000),
-                      test=head(desc$data$test, 100))
+    desc$data <- list(train=desc$data$train[sample(nrow(desc$data$train), 2000), ],
+                      test=desc$data$test[sample(nrow(desc$data$test), 100), ])
 } else if ("-s" %in% args) {
-    desc$data <- list(train=head(desc$data$train, 20000),
-                      test=head(desc$data$test, 1000))
+    desc$data <- list(train=desc$data$train[sample(nrow(desc$data$train), 20000), ],
+                      test=desc$data$test[sample(nrow(desc$data$test), 1000), ])
+} else if ("-t" %in% args) {
+    desc$data <- list(train=desc$data$train[sample(nrow(desc$data$train), 100), ],
+                      test=desc$data$test[sample(nrow(desc$data$test), 10), ])
 }
 desc$data.name <- args[[2]]
 
