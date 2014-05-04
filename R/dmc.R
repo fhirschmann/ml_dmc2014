@@ -4,7 +4,7 @@ source("R/utils.R")
 
 
 dmctrain <- function(data, data.name, fs.fun, method="rf", trControl=trainControl(), 
-                     save.path=NULL, ...) {
+                     save.path=NULL, verbose=T, ...) {
     require(caret)
 
     # Indices of the rows used for training
@@ -20,7 +20,8 @@ dmctrain <- function(data, data.name, fs.fun, method="rf", trControl=trainContro
     
     # Remove Zero-Variance Predictors; some algos can't handle them
     zeroVar <- names(which(sapply(data, function(x) length(unique(x)) == 1)))
-    message(paste("Excluding Zero Variance Predictors", paste(zeroVar, collapse=", ")))
+    if (verbose)
+        message(paste("Excluding Zero Variance Predictors", paste(zeroVar, collapse=", ")))
     data <- data[!names(data) %in% zeroVar]
     
     message("Training on the following Data:")
