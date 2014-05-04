@@ -127,7 +127,7 @@ dmc.score <- function(pred, obs, na.rm=F) {
         obs2 <- as.numeric(obs)
     }
 
-    sum(abs(obs2 - pred2), na.rm=T)
+    sum(abs(obs2 - pred2), na.rm=na.rm)
 }
 
 dmc.evaluate <- function(dir) {
