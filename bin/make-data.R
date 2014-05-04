@@ -11,7 +11,7 @@ source("R/feat.R")
 dt.na.strings <- c("NA", "", "??", "?")
 
 dt.classes <- c(
-    "orderItemID"="factor",
+    "orderItemID"="integer",
     "orderDate"="Date",
     "deliveryDate"="Date",
     "dateOfBirth"="Date",
@@ -92,8 +92,8 @@ fix.missing <- function(dt) {
 
 dt.dmc.ids <- list(test=list(), train=list())
 for (i in c("T1", "T2", "T3", "X1", "X2", "X3")) {
-    dt.dmc.ids$train[[i]] <- read.csv(paste("eva/", i, "_train.txt", sep=""))$orderItemID
-    dt.dmc.ids$test[[i]] <- read.csv(paste("eva/", i, "_test.txt", sep=""))$orderItemID
+    dt.dmc.ids$train[[i]] <- as.numeric(as.character(read.csv(paste("eva/", i, "_train.txt", sep=""))$orderItemID))
+    dt.dmc.ids$test[[i]] <- as.numeric(as.character(read.csv(paste("eva/", i, "_test.txt", sep=""))$orderItemID))
 }
 
 dt.dmc.ids$train$C <- as.integer(as.character(dt.train[dt.train$orderDate < as.Date("2013-03-01"), ]$orderItemID))
@@ -119,8 +119,8 @@ dt.test <- add.collection(dt.test)
 
 dt.dmc <- list()
 for (i in names(dt.dmc.ids$train)) {
-    train.ids <- as.integer(as.character(dt.dmc.ids$train[[i]]))
-    test.ids <- as.integer(as.numeric(dt.dmc.ids$test[[i]]))
+    train.ids <- dt.dmc.ids$train[[i]]
+    test.ids <- dt.dmc.ids$test[[i]]
     dt.dmc[[i]] <- list(
         train=add.features.otf(dt.train[train.ids, ], dt.train[-(test.ids), ]),
         test=add.features.otf(dt.train[test.ids, ], dt.train[-(test.ids), ]))
