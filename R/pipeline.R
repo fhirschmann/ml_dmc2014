@@ -20,26 +20,69 @@ descs <- list(
         method="ada"
     ),
     fda=list( #"Argumente implizieren unterschiedliche Anzahl Zeilen: 37, 96"
-      fs.fun=fs.all,
-      method="fda",
-      tuneLength=5),
+        fs.fun=fs.all,
+        method="fda",
+        tuneLength=5
+    ),
     avNNet=list( #"konnte funktion nnet nicht finden"
-      fs.fun=fs.all,
-      method="avNNet",
-      tuneLength=5),
+        fs.fun=fs.all,
+        method="avNNet",
+        tuneLength=5
+    ),
     amore=list( #"Fehler in order(..) : Argument 1 ist kein Vektor
         fs.fun=fs.nn,
         method="AMORE",
         tuneLength=5
     ),
+    hda=list(
+        fs.fun=fs.rf,
+        method="hda"
+    ),
+    fda=list(
+        fs.fun=fs.nn,
+        method="fda"
+    ),
     gaussL=list(
-      fs.fun=fs.all,
-      method="gaussprLinear",
-      tuneLength=5),
+        fs.fun=fs.all,
+        method="gaussprLinear",
+        tuneLength=5
+    ),
+    multinom=list(
+        fs.fun=fs.rf,
+        method="multinom"
+    ),
     gbm=list(
         fs.fun=fs.tree,
         method="gbm",
         tuneLength=5
+    ),
+    mlp=list(
+        fs.fun=fs.rf,
+        method="mlp"
+    ),
+    mda=list(
+        fs.fun=fs.rf,
+        method="mda"
+    ),
+    lmt=list(
+        fs.fun=fs.tree,
+        method="LMT"
+    ),
+    lboost=list(
+        fs.fun=fs.rf,
+        method="LogitBoost"
+    ),
+    knn=list(
+        fs.fun=fs.rf,
+        method="knn"
+    ),
+    j48=list(
+        fs.fun=fs.tree,
+        method="J48"
+    ),
+    jrip=list(
+        fs.fun=fs.tree,
+        method="JRip"
     ),
     gbmC=list(
       fs.fun=fs.tree,
