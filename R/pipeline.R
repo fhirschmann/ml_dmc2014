@@ -19,10 +19,23 @@ descs <- list(
         fs.fun=fs.tree,
         method="ada"
     ),
-    amore=list(
+    fda=list( #"Argumente implizieren unterschiedliche Anzahl Zeilen: 37, 96"
+      fs.fun=fs.all,
+      method="fda",
+      tuneLength=5),
+    avNNet=list( #"konnte funktion nnet nicht finden"
+      fs.fun=fs.all,
+      method="avNNet",
+      tuneLength=5),
+    amore=list( #"Fehler in order(..) : Argument 1 ist kein Vektor
         fs.fun=fs.nn,
-        method="AMORE"
+        method="AMORE",
+        tuneLength=5
     ),
+    gaussL=list(
+      fs.fun=fs.all,
+      method="gaussprLinear",
+      tuneLength=5),
     gbm=list(
         fs.fun=fs.tree,
         method="gbm",
