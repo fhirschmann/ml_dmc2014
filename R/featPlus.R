@@ -1,4 +1,4 @@
-source("R\colormap.R")
+source("./R/colormap.R")
 
 add.features <- function(dt) {
     #
@@ -69,8 +69,8 @@ add.features <- function(dt) {
     
     ####customer features##########################################################################
     #lifetime returnShipment Rate
-    analyseTB.train=data.table(dt)[,list(itemID,customerID,returnShipment)]
-    temp=analyseTB.train[order(customerID,decreasing=TRUE),list(sum(returnShipment == "yes"),
+    temp<-dt2[,list(itemID,customerID,returnShipment)]
+    temp<-temp[order(customerID,decreasing=TRUE),list(sum(returnShipment == "yes"),
                                                            length(itemID)),by=list(customerID)]
     #1 custReturnRateSchatti - Meine Idee
     temp[V2 >= median(temp$V2), custReturnRateSchatti:=round((V1/V2),digits=2)*100]
@@ -88,32 +88,33 @@ add.features <- function(dt) {
     dt2<-dt2[temp]
     
     ###price features##########################################################################
-    analyseTB.merged=data.table(dt)[,list(itemID,price,orderDate,size,color)]
-    #1,2
-    itemPriceRange.merged<- analyseTB.merged[,list(min(price),max(price)),by=list(itemID)]
-    setnames(itemPriceRange.merged,c("V1", "V2"),c("min","max"))
-    setkey(itemPriceRange.merged,itemID)
-    #3
-    itemPriceRange.merged=itemPriceRange.merged[analyseTB.merged[order(itemID,-price,decreasing=FALSE),length(itemID),by=list(itemID,price)][,length(price),by=itemID]]
-    setnames(itemPriceRange.merged,"V1","levels")
-    #4
+    temp<-dt2[,list(itemID,price,orderDate,size,color)]
+    #1,2 ->min and max price
+    itemPriceRange<- temp[,list(min(price),max(price)),by=list(itemID)]
+    setnames(itemPriceRange,c("V1", "V2"),c("min","max"))
+    #3 -> quantity of price levels
+    setkey(itemPriceRange,itemID)
+    itemPriceRange=itemPriceRange[temp[order(itemID,-price,decreasing=FALSE),length(itemID),by=list(itemID,price)][,length(price),by=itemID]]
+    setnames(itemPriceRange,"V1","levels")
+    #4 -> boolean price range TRUE FALSE
     itemPriceRange[,priceRange:=0] #hinzufügen Feature priceRange
-    itemPriceRange[max!=min,priceRange:=1] #0:keine Range 1:Range
-    #5
-    itemPriceRange[,priceDiff:=max-min] #hinzufügen Feature priceDiff
-    #6
-    itemPriceRange[max!="0.00",maxDiscount:=priceDiff/max] #hinzufügen Feature priceDiff%
-    itemPriceRange[priceDiff==0,priceDiffRel:=0] #hinzufügen Feature priceDiff
+    itemPriceRange[max!=min,priceRange:=1] #0:keine Range       1:Range
+    #5 -> absolute Price Range
+    itemPriceRange[,AbsPriceRange:=max-min] #hinzufügen Feature abs priceDiff
+    
     #join itemPriceRange an itemID
     setkey(dt2,itemID)
     dt2<-dt2[itemPriceRange]
-    
+    #6 -> actual discount on piece
+    dt2[, actDiscount := round(1-(price/max),digits=2)*100]
+    #7 -> boolean discounted TRUE False
+    dt2$discount <- as.factor(ifelse(dt2$actDiscount==0, "no", "yes"))
     
     ###itemID features##########################################################################
     #return rate of items - hight rollers setting a fetaure on 1 low rollers on 0 
     # - setting divergation point based on Verteilung 
-    analyseTB.train=data.table(dt)[,list(itemID,returnShipment)]
-    temp=analyseTB.train[order(itemID,decreasing=TRUE),list(sum(returnShipment == "yes"), length(returnShipment)),by=itemID]
+    temp=dt2[,list(itemID,returnShipment)]
+    temp=temp[order(itemID,decreasing=TRUE),list(sum(returnShipment == "yes"), length(returnShipment)),by=itemID]
     #Meine Idee
     #1
     temp[V2 >= median(temp$V2), returnItemRateSchatti:=round((V1/V2),digits=2)*100]
@@ -132,8 +133,8 @@ add.features <- function(dt) {
     dt2<-dt2[temp]
     
     ###manufacturerID##########################################################################
-    analyseTB.train=data.table(dt)[,list(manufacturerID,returnShipment)]
-    temp=analyseTB.train[order(manufacturerID,decreasing=TRUE),list(sum(returnShipment == "yes"), 
+    temp=dt2[,list(manufacturerID,returnShipment)]
+    temp=temp[order(manufacturerID,decreasing=TRUE),list(sum(returnShipment == "yes"), 
                                             length(returnShipment)),by=manufacturerID]
     
     #Meine Idee
@@ -154,9 +155,8 @@ add.features <- function(dt) {
     dt2<-dt2[temp]
     
     #Löschen der temp Tabellen
-    rm(analyseTB.train)
     rm(temp)
-    rm(itemPriceRange.merged)
+    rm(itemPriceRange)
     
     dt2
 }
