@@ -1,20 +1,21 @@
 fs.all <- function(dt) {
     dt2 <- dt
-
-    #dt2$customerID <- NULL
-    dt2$orderDate <- NULL
-    dt2$deliveryDate <- NULL
-    dt2$dateOfBirth <- NULL
-    dt2$creationDate <- NULL
-    dt2$itemID <- NULL
-    dt2$manufacturerID <- NULL
-    dt2$customerID <- NULL
-    dt2$color <- NULL
     
+    dt2$orderItemID <- NULL
+    
+    dt2$orderDate <- NULL
+    
+    # Use deliveryTime
+    dt2$deliveryDate <- NULL
+    
+    # Use customerAge
+    dt2$dateOfBirth <- NULL
+    
+    # Use accountAge
+    dt2$creationDate <- NULL
     dt2$firstOrderDate <- NULL
     
-    dt2$orderItemID <- NULL  # This attribute is useless
-    
+    # We remove these instances beforehand
     dt2$deliveryDateMissing <- NULL
     
     dt2
@@ -40,6 +41,16 @@ fs.nb <- function(dt) {
     dt2$size <- NULL
     
     droplevels(dt2)
+}
+
+fs.c50 <- function(dt) {
+    dt2 <- fs.all(dt)
+    
+    #dt2$discretizedPrice <- NULL
+    dt2$discretizedCustomerAge <- NULL
+    dt2$discretizedAccountAge <- NULL
+    
+    dt2
 }
 
 
