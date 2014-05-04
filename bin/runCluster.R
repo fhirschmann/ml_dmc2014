@@ -27,7 +27,5 @@ if ("-m" %in% args) {
 
 desc$data.name <- args[[2]]
 
-#sapply(ls(), function(x) {message(x); object.size(get(x))})
-
-train <- do.call(dmctrain, desc)
+system.time(train <- do.call(dmctrain, desc))
 train[c("results", "bestResults")]
