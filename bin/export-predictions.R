@@ -1,26 +1,27 @@
 #!/usr/bin/env Rscript
 #
-# Usage: ./bin/export-predictions.R models/C5.0.RData directory/
-#        ./bin/export-predictions.R models/C5.0.RData file.txt
+# Usage: ./bin/export-predictions.R models/C5.0_T1.RData ... foo.txt
+#        ./bin/export-predictions.R models/C5.0_T1.RData ... directory/
 
 source("R/dmc.R")
 library(stringr)
 
 args <- commandArgs(T)
 
-fit <- readRDS(args[[1]])
-preds <- sapply(extractPreds.dmcmtrain(fit),
-                function(x) {
-                    x$prediction <- dmc.convertPreds(x$prediction)
-                    x
-                }, simplify=F)
+files <- args[1:length(args)-1]
+out <- args[[length(args)]]
+models <- sapply(files, readRDS, simplify=F)
+names(models) <- sapply(files, function(x) str_split(str_sub(basename(x), 1, -7), "_")[[1]][[2]])
+preds <- sapply(models, extractPreds.dmctrain, simplify=F)
 
-if (str_sub(args[[2]], -4, -1) == ".txt") {
+if (str_sub(out, -4, -1) == ".txt") {
+    message("Writing to file ", out)
     pred <- do.call(rbind, preds)
-    write.table(pred, file=args[[2]], quote=F, row.names=F, sep=";")
+    write.table(pred, file=out, quote=F, row.names=F, sep=";")
 } else {
+    message("Writing to directory ", out)
     for (n in names(preds)) {
-        write.table(preds[[n]], file=file.path(args[[2]], paste(n, "_pred.txt", sep="")),
+        write.table(preds[[n]], file=file.path(out, paste(n, "_pred.txt", sep="")),
                     quote=F, row.names=F, sep=";")   
     }
 }
