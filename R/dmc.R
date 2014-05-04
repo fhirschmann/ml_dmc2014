@@ -2,24 +2,24 @@
 source("R/feat.R")
 source("R/utils.R")
 
-dmctrain <- function(dt.train, dt.test, fs.fun, method="rf",
-                     trControl=trainControl(), ...) {
-    ## Trains and tests on specific sets. Note that this
-    ## simply concatenates the two sets, so the row indices of dt.test
-    ## will by off by nrow(dt.train) in $preds.
-    ##
-    ## Args:
-    ##   dt.train: train set
-    ##   dt.test: test set
-    ##   fs.fun: function applied to the data prior to learning
-    ##   method: caret's method
-    ##   trControl: caret's trainControl
+
+dmctrain <- function(data, data.name, fs.fun, method="rf", trControl=trainControl(), 
+                     save.path=NULL, ...) {
     require(caret)
+
+    # Indices of the rows used for training
+    train.idx <- data$train$deliveryDateMissing == "no"
     
-    data <- fs.fun(rbind(dt.train, dt.test))
+    # Indices of the rows used for training
+    test.idx <- data$test$deliveryDateMissing == "no"
+    
+    # Save orderItemID for later use
+    orderItemID <- as.numeric(as.character(data$test$orderItemID))
+    
+    data <- fs.fun(rbind(data$train[train.idx, ], data$test[test.idx, ]))
     
     # Remove Zero-Variance Predictors; some algos can't handle them
-    zeroVar <- names(which(sapply(dt.train, function(x) length(unique(x)) == 1)))
+    zeroVar <- names(which(sapply(data, function(x) length(unique(x)) == 1)))
     message(paste("Excluding Zero Variance Predictors", paste(zeroVar, collapse=", ")))
     data <- data[!names(data) %in% zeroVar]
     
@@ -27,96 +27,71 @@ dmctrain <- function(dt.train, dt.test, fs.fun, method="rf",
     message(str(data))
     
     # Magic for train/test split
-    trControl$index <- list(rs1=1:nrow(dt.train))
-    trControl$indexOut <- list((rs1=nrow(dt.train)+1):nrow(data))
+    trControl$index <- list(rs1=1:sum(train.idx))
+    trControl$indexOut <- list(rs1=(sum(train.idx)+1):nrow(data))
     trControl$method <- "cv"
-    
+    trControl$savePredictions <- T
+    trControl$summaryFunction <- function(data, lev=NULL, model=NULL) c(score=dmc.score(data$pred, data$obs))
+        
     set.seed(42)
-    fit <- caret::train(returnShipment ~ ., data=data, method=method,
-                        trControl=trControl, na.action=na.pass, ...)
-    data <- NULL
-    gc(T)
-    fit
-}
-
-dmcmtrain <- function(data, fs.fun, method="rf", trControl=trainControl(), 
-                      save.path=NULL, ...) {
-    ## Trains and tests on a list of train and test sets.
-    ##
-    ## Args:
-    ##   data: list(A=list(train=..., test=...), B=list(train=..., test=...))
-    ##   fs.fun: function applied to the data prior to learning
-    ##   method: caret's method
-    ##   trControl: caret's trainControl
-    ##   save.path: path to save the resulting models to
-    require(foreach)
-    require(plyr)
+    model <- caret::train(returnShipment ~ ., data=data, method=method,
+                          trControl=trControl, na.action=na.pass, metric="score",
+                          maximize=F, ...)
     
-    models <- foreach(dt.name=names(data)) %do% {
-        gc(T)
-        
-        # We don't want to train on instances with missing deliv dates,
-        # because they are practically unlabeled
-        train.idx <- data[[dt.name]]$train$deliveryDateMissing == "no"
-        test.idx <- data[[dt.name]]$test$deliveryDateMissing == "no"
-        
-        message(paste("Training", method, "on", dt.name))
-        model <- dmctrain(data[[dt.name]]$train[train.idx, ], 
-                          data[[dt.name]]$test[test.idx, ],
-                          fs.fun, method, trControl, ...)
-            
-        # Copy the results from caret
-        results <- model$results
-        
-        # Standard Deviation doesn't make sense, since we have one test set only
-        results$scoreSD <- NULL
-        
-        # We divide by the full data set in order to take instances
-        # with missing delivery dates into account.
-        results$accuracy <- 1 - (results$score / nrow(data[[dt.name]]$test))
-        
-        # Copy the predictions from caret
-        pred <- model$pred
-        
-        # The test set comes after the train set (in terms of row indices)
-        pred$rowIndex <- pred$rowIndex - sum(train.idx)
-        
-        # Add orderItemID to pred
-        map <- data.frame(rowIndex=1:sum(test.idx),
-                          orderItemID=data[[dt.name]]$test[test.idx, ]$orderItemID)
+    # Copy the results from caret
+    results <- model$results
     
-        pred <- join(pred, map, by="rowIndex")
-        
-        list(model=model, results=results, pred=pred,
-             skippedOrderItemID=as.numeric(as.character(data[[dt.name]]$test[!test.idx, ]$orderItemID)))
-    }
-    names(models) <- names(data)
-
-    # Concatenate the results from all train/test set combinations
-    results <- do.call(rbind, sapply(names(models),
-                                     function(n) data.frame(models[[n]]$results, set=n),
-                                     simplify=F))
-    if (nrow(results) == length(models)) {
-        # There is only one row in the tuning grid
+    # Standard Deviation doesn't make sense, since we have one test set only
+    results$scoreSD <- NULL
+    
+    # We divide by the full data set in order to take instances
+    # with missing delivery dates into account.
+    results$accuracy <- 1 - (results$score / length(test.idx))
+    
+    if (nrow(results) == 1) {
         bestResults <- results
     } else {
-        bestResults <- results[sapply(names(models),
-                                      function(n) paste(n, rownames(models[[n]]$model$bestTune), sep=".")), ]
+        bestResults <- results[rownames(model$bestTune), ]
     }
     
-    res <- list(models=models, results=results, bestResults=bestResults)
-    class(res) <- "mtrain"
+    # Copy the predictions from caret
+    pred <- model$pred
     
+    # The test set comes after the train set (in terms of row indices)
+    pred$rowIndex <- pred$rowIndex - sum(train.idx)
+    
+    # Add orderItemID to pred
+    map <- data.frame(rowIndex=1:sum(test.idx), orderItemID=orderItemID[which(test.idx)])
+    
+    pred <- join(pred, map, by="rowIndex")
+    
+    res <- list(model=model, results=results, bestResults=bestResults, pred=pred,
+                bestTune=model$bestTune,
+                skippedOrderItemID=orderItemID[which(!test.idx)])
+        
     if (!is.null(save.path)) {
-        saveRDS(res, file=file.path(save.path, paste(method, "RData", sep=".")))
+        stem <- file.path(save.path, paste(method, data.name, sep="_"))
+        saveRDS(res, file=paste(stem, ".RData", sep=""))
         saveRDS(res[c("results", "bestResults")],
-                file=file.path(save.path, paste(method, "_res", ".RData", sep="")))
+                file=paste(stem, "_res.RData", sep=""))
     }
     
+    class(res) <- "dmctrain"
     res
 }
 
-extractPreds.dmcmtrain <- function(mtrain) {
+extractPreds.dmctrain <- function(train) {
+    best <- caret.best(train)
+    
+    pred <- rbind(best[c("orderItemID", "pred")],
+                  data.frame(orderItemID=train$skippedOrderItemID,
+                             pred=rep("no", length(train$skippedOrderItemID))))
+    pred$pred <- dmc.convertPreds(pred$pred)
+    names(pred) <- c("orderItemID", "prediction")
+    pred[order(pred$orderItemID), ]
+}
+
+extractPreds2.dmcmtrain <- function(mtrain) {
     ## Extracts the best predictions from multiple models
     ##
     ## Args:
@@ -159,11 +134,7 @@ dmcdtrain <- function(desc, common.desc) {
     desc$train.args <- NULL
     args <- c(desc, train.args)
     
-    do.call(dmcmtrain, args)
-}
-
-summary.dmcstrain <- function(object) {
-    sapply(object, summary, simplify=F)
+    do.call(dmctrain, args)
 }
 
 dmc.score <- function(pred, obs, na.rm=F) {

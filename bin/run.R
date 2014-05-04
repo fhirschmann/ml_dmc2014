@@ -7,23 +7,27 @@
 #
 # To get a list of available models try ./bin/run.R -l
 
-source("R/data.R")
 source("R/dmc.R")
 source("R/pipeline.R")
 source("R/utils.R")
 library(doParallel)
 registerDoParallel(1)
 
-
-# RAM...
-dt.train <- NULL
-dt.test <- NULL
-dt.dmc <- NULL
-gc(T)
-
-
 args <- commandArgs(T)
 
+# Set the description for the learner
+desc <- list.update(common.desc, descs[[args[[1]]]])
 
-system.time(dtrain <- dmcdtrain(descs[[args[[1]]]], common.desc))
-dtrain[c("results", "bestResults")]
+desc$data <- readRDS("data.dmc.RData")[[args[[2]]]]
+
+if ("-m" %in% args) {
+    desc$data <- list(train=head(desc$data$train, 2000),
+                      test=head(desc$data$test, 100))
+}
+
+desc$data.name <- args[[2]]
+
+#sapply(ls(), function(x) {message(x); object.size(get(x))})
+
+train <- do.call(dmctrain, desc)
+train[c("results", "bestResults")]

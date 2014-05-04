@@ -7,9 +7,7 @@ library(functional)
 library(caret)
 library(C50)
 
-ctrl <- trainControl(savePredictions=T, returnData=T, returnResamp="all",
-                     summaryFunction=function(data, lev=NULL, model=NULL) {
-                         c(score=dmc.score(data$pred, data$obs, na.rm=T)) })
+ctrl <- trainControl(returnData=T, returnResamp="all")
 
 # Don't pass this to classifiers who do not return class probabilities
 ctrl.probs <- ctrl
@@ -19,103 +17,73 @@ ctrl.probs$classProbs <- TRUE
 descs <- list(
     ada=list(
         fs.fun=fs.tree,
-        train.args=list(
-            method="ada"
-        )
+        method="ada"
     ),
     amore=list(
         fs.fun=fs.nn,
-        train.args=list(
-            method="AMORE"
-        )
+        method="AMORE"
     ),
     gbm=list(
         fs.fun=fs.tree,
-        train.args=list(
-            method="gbm",
-            tuneLength=5
-        )
+        method="gbm",
+        tuneLength=5
     ),
     svmLinear=list(
         fs.fun=fs.svm,
-        train.args=list(
-            method="svmLinear"
-        )
+        method="svmLinear"
     ),
     nb=list(
         fs.fun=fs.nb,
-        train.args=list(
-            method="nb"
-        )
+        method="nb"
     ),
     rf=list(
         fs.fun=fs.rf,
-        train.args=list(
-            method="rf",
-            tuneLength=2
-        )
+        method="rf",
+        tuneLength=2
     ),
     rf2=list(
         fs.fun=fs.rf,
-        train.args=list(
-            method="extraTrees",
-            tuneLength=1
-        )
+        method="extraTrees",
+        tuneLength=1
     ),
     orf=list(
         fs.fun=fs.rf,
-        train.args=list(
-            method="ORFridge"
-        )
+        method="ORFridge"
     ),
     rrf=list(
         fs.fun=fs.rf,
-        train.args=list(
-            method="RRFglobal"
-        )
+        method="RRFglobal"
     ),
     treebag=list(
         fs.fun=fs.rf,
-        train.args=list(
-            method="treebag"
-        )
+        method="treebag"
     ),
     svmLinear=list(
         fs.fun=fs.svm,
-        train.args=list(
-            method="svmLinear",
-            tuneLength=5
-        )
+        method="svmLinear",
+        tuneLength=5
     ),
     evtree=list(
         fs.fun=fs.tree,
-        train.args=list(
-            method="evtree"
-        )
+        method="evtree"
     ),
     ctree=list(
         fs.fun=fs.tree,
-        train.args=list(
-            method="ctree"
-        )
+        method="ctree"
     ),
     c50=list(
         fs.fun=fs.tree,
-        train.args=list(
-            method="C5.0",
-            #tuneLength=5
-            tuneGrid=expand.grid(
-                trials=1, winnow=c(F), model="rules"),
-            control=C5.0Control(earlyStopping=F)
-        )
+        method="C5.0",
+        #tuneLength=5
+        tuneGrid=expand.grid(
+            trials=1, winnow=c(F), model="rules"),
+        control=C5.0Control(earlyStopping=F)
     ),
     c50t=list(
         fs.fun=fs.tree,
-        train.args=list(
-            method="C5.0",
-            tuneLength=10,
-            control=C5.0Control(earlyStopping=F)
-        )
+        method="C5.0",
+        tuneLength=10,
+        control=C5.0Control(earlyStopping=F)
     )
 )
 
@@ -126,9 +94,5 @@ common.desc <- list(
     # Function to apply to the data frame
     fs.fun=fs.all,
     # Data
-    #data=dt.dmc.mini[c("T3")],
-    data=dt.dmc[c("T1", "T2", "T3")],
-    #data=dt.dmc[names(dt.dmc) != "C"],  # exclude C
-    # Arguments to caret::train
-    train.args=list(trControl=ctrl, metric="score", maximize=F)
+    trControl=ctrl
 )
