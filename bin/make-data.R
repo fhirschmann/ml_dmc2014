@@ -30,11 +30,6 @@ dt.test <- read.csv("task/orders_class.txt", sep=";",
                     colClasses=dt.classes, na.strings=dt.na.strings)
 dt.test$holiday <- read.csv("task/orders_class.holiday.txt")$holiday
 
-#ideen für features:
-#größe des customers aus bestellen items ermitteln
-#preisfeature: abweichung von preis (höher, niedriger, gleich)
-#anrede: runterbrechen auf "männlich" / "weiblich" (falls kein großer unterschied bei returnshipments zwischen anreden)
-
 dt.train$returnShipment <- revalue(dt.train$returnShipment, c("0"="no", "1"="yes"))
 
 rm.outliers <- function(dt) {
