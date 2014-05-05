@@ -24,7 +24,7 @@ add.features <- function(dt) {
     
     # Account age in Days
     dt2$accountAge <- as.numeric(dt2$orderDate - dt2$creationDate)
-    dt2$discretizedAccountAge <- cut(dt2$accountAge, c(1, 1:16 * 50))
+    dt2$discretizedAccountAge <- cut(dt2$accountAge, c(-1, 1:16 * 50))
     
     # Number of items ordered with the same ID
     dt2[, sameItemsOrdered := .N, by=c("itemID", "customerID", "orderDate")]
