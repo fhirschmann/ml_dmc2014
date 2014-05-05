@@ -15,6 +15,7 @@ desc <- list.update(common.desc, descs[[args[[1]]]])
 
 desc$data <- readRDS("data.dmc.RData")[[args[[2]]]]
 
+set.seed(42)
 if ("-m" %in% args) {
     desc$data <- list(train=desc$data$train[sample(nrow(desc$data$train), 2000), ],
                       test=desc$data$test[sample(nrow(desc$data$test), 100), ])
