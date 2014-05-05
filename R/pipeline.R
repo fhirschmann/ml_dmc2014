@@ -52,9 +52,18 @@ descs <- list(
         method="multinom"
     ),
     gbm=list(
-        fs.fun=fs.tree,
+        fs.fun=fs.gbm,
         method="gbm",
-        tuneLength=5
+        tuneLength=4
+    ),
+    gbmT=list(
+        fs.fun=fs.gbm,
+        method="gbm",
+        tuneGrid=expand.grid(
+            shrinkage=c(0.1, 0.25, 0.5, 0.75, 1),
+            interaction.depth=1:10,
+            n.trees=1:10 * 50
+        )
     ),
     mlp=list(
         fs.fun=fs.rf,
@@ -125,7 +134,7 @@ descs <- list(
         method="treebag"
     ),
     svmLinear=list(
-        fs.fun=fs.svm,
+        fs.fun=fs.rf,
         method="svmLinear",
         tuneLength=5
     ),
@@ -148,7 +157,7 @@ descs <- list(
     c50t=list(
         fs.fun=fs.tree,
         method="C5.0",
-        tuneLength=10,
+        tuneLength=4,
         control=C5.0Control(earlyStopping=F)
     ),
     c50C=list(
