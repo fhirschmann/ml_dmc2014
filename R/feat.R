@@ -108,6 +108,8 @@ add.features.otf <- function(to, from) {
     require(data.table)
     require(plyr)
     
+    message(paste("Calculating features for", nrow(to), "instances based on", nrow(from), "instances"))
+    
     dt.to <- data.table(to)
     dt.from <- data.table(from[from$deliveryDateMissing == "no", ])
     

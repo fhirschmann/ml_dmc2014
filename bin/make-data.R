@@ -63,9 +63,11 @@ rm.outliers <- function(dt) {
     dt2
 }
 
+message("Removing outliers in Train and Test Set")
 dt.train <- rm.outliers(dt.train)
 dt.test <- rm.outliers(dt.test)
 
+message("Adding Features to the Train and Test Set")
 dt.train <- add.features(dt.train)
 dt.test <- add.features(dt.test)
 
@@ -98,11 +100,13 @@ add.collection <- function(dt) {
     dt2
 }
 
+message("Adding Feature Collection")
 dt.train <- add.collection(dt.train)
 dt.test <- add.collection(dt.test)
 
 dt.dmc <- list()
 for (i in names(dt.dmc.ids$train)) {
+    message(paste("Creating Data Set", i))
     train.ids <- dt.dmc.ids$train[[i]]
     test.ids <- dt.dmc.ids$test[[i]]
     dt.dmc[[i]] <- list(
@@ -117,6 +121,7 @@ na <- list(
     train=nas(dt.train),
     test=nas(dt.test))
 
+message("Serializing Data Frames")
 saveRDS(dt.train, file="data.train.RData")
 saveRDS(dt.test, file="data.test.RData")
 saveRDS(dt.dmc, file="data.dmc.RData")
