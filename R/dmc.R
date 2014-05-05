@@ -6,6 +6,8 @@ source("R/utils.R")
 dmctrain <- function(data, data.name, fs.fun, method="rf", trControl=trainControl(), 
                      save.path=NULL, verbose=T, ...) {
     require(caret)
+    
+    message("setting up data")
 
     # Indices of the rows used for training
     train.idx <- data$train$deliveryDateMissing == "no"
@@ -36,10 +38,14 @@ dmctrain <- function(data, data.name, fs.fun, method="rf", trControl=trainContro
     trControl$savePredictions <- T
     trControl$summaryFunction <- function(data, lev=NULL, model=NULL) c(score=dmc.score(data$pred, data$obs))
         
+    message("starting to train model")
+    
     set.seed(42)
     model <- caret::train(returnShipment ~ ., data=data, method=method,
                           trControl=trControl, na.action=na.pass, metric="score",
                           maximize=F, ...)
+    
+    message("model trained. calculating results")
     
     # Copy the results from caret
     results <- model$results
@@ -72,6 +78,8 @@ dmctrain <- function(data, data.name, fs.fun, method="rf", trControl=trainContro
                 bestTune=model$bestTune,
                 skippedOrderItemID=orderItemID[which(!test.idx)])
         
+    message("saving model and results")
+    
     if (!is.null(save.path)) {
         stem <- file.path(save.path, paste(method, data.name, sep="_"))
         saveRDS(res, file=paste(stem, ".RData", sep=""))
