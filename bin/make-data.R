@@ -28,7 +28,7 @@ dt.train$returnShipment <- revalue(as.factor(dt.train$returnShipment), c("0"="no
 dt.train$holiday <- read.csv("task/orders_train.holiday.txt")$holiday
 dt.test <- read.csv("task/orders_class.txt", sep=";",
                     colClasses=dt.classes, na.strings=dt.na.strings)
-#dt.test$holiday <- read.csv("task/orders_class.holiday.txt")$holiday
+dt.test$holiday <- read.csv("task/orders_class.holiday.txt")$holiday
 
 #ideen für features:
 #größe des customers aus bestellen items ermitteln
