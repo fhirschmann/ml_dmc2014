@@ -140,6 +140,7 @@ dmc.score <- function(pred, obs, na.rm=F) {
 
 dmc.evaluate <- function(dir) {
     require(caret)
+    require(stringr)
     
     files <- list.files(path=dir, pattern=paste(pattern=".*_res.RData", sep=""))
     
