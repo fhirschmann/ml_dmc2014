@@ -56,6 +56,15 @@ descs <- list(
         method="gbm",
         tuneLength=4
     ),
+    gbmS=list(
+        fs.fun=fs.gbm,
+        method="gbm",
+        tuneGrid=expand.grid(
+            shrinkage=c(0.0001, 0.001, 0.01),
+            interaction.depth=1:7,
+            n.trees=1:10 * 30
+        )
+    ),
     gbmT=list(
         fs.fun=fs.gbm,
         method="gbm",
