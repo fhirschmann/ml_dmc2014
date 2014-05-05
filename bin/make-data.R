@@ -88,14 +88,19 @@ c1 <- unique(union(dt.dmc.ids$train$T1, dt.dmc.ids$test$T1))
 c2 <- unique(union(dt.dmc.ids$train$T2, dt.dmc.ids$test$T2))
 c3 <- unique(union(dt.dmc.ids$train$T2, dt.dmc.ids$test$T3))
 
+c1.itemids <- unique(dt.train[c1, ]$itemID)
+c2.itemids <- unique(dt.train[c2, ]$itemID)
+c3.itemids <- unique(dt.train[c3, ]$itemID)
+
 add.collection <- function(dt) {
-    dt$collection <- 0
-    dt[dt$itemID %in% dt.train[c1, ]$itemID, ]$collection <- 1
-    dt[dt$itemID %in% dt.train[c2, ]$itemID, ]$collection <- 2
-    dt[dt$itemID %in% dt.train[c3, ]$itemID, ]$collection <- 3
+    dt2 <- dt
+    dt2$collection <- 0
+    dt2[dt2$itemID %in% c1.itemids, c("collection")] <- 1
+    dt2[dt2$itemID %in% c2.itemids, c("collection")] <- 2
+    dt2[dt2$itemID %in% c3.itemids, c("collection")] <- 3
     
-    dt$collection <- as.factor(dt$collection)
-    dt
+    dt2$collection <- as.factor(dt2$collection)
+    dt2
 }
 
 dt.train <- add.collection(dt.train)
