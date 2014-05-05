@@ -39,8 +39,8 @@ fs.nb <- function(dt) {
     dt2$discretizedCustomerAge <- NULL
     dt2$discretizedAccountAge <- NULL
     dt2$size <- NULL
-    
-    droplevels(dt2)
+
+    dt2[,eval(c("returnShipment", "customerReturnRate", "itemReturnRate", "price"))]
 }
 
 fs.c50 <- function(dt) {
@@ -49,6 +49,18 @@ fs.c50 <- function(dt) {
     #dt2$discretizedPrice <- NULL
     dt2$discretizedCustomerAge <- NULL
     dt2$discretizedAccountAge <- NULL
+    
+    dt2
+}
+
+fs.gbm <- function(dt) {
+    dt2 <- fs.tree(dt)
+    
+    dt2$color <- NULL
+    dt2$instantOrder <- NULL
+    dt2$salutation <- NULL
+    dt2$holiday <- NULL
+
     
     dt2
 }
