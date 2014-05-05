@@ -19,14 +19,22 @@ set.seed(42)
 if ("-m" %in% args) {
     desc$data <- list(train=desc$data$train[sample(nrow(desc$data$train), 2000), ],
                       test=desc$data$test[sample(nrow(desc$data$test), 100), ])
+    desc$save.path <- "models.medium"
 } else if ("-s" %in% args) {
     desc$data <- list(train=desc$data$train[sample(nrow(desc$data$train), 20000), ],
                       test=desc$data$test[sample(nrow(desc$data$test), 1000), ])
+    desc$save.path <- "models.small"
 } else if ("-t" %in% args) {
     desc$data <- list(train=desc$data$train[sample(nrow(desc$data$train), 100), ],
                       test=desc$data$test[sample(nrow(desc$data$test), 10), ])
+    desc$save.path <- "models.tiny"
 }
+
+message(paste("Writing to directory", desc$save.path))
+
 desc$data.name <- args[[2]]
+
+if (!file.exists(desc$save.path)) dir.create(desc$save.path)
 
 system.time(train <- do.call(dmctrain, desc))
 train[c("results", "bestResults")]
