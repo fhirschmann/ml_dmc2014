@@ -15,25 +15,6 @@ ctrl.probs$classProbs <- TRUE
 
 # List of stuff to learn
 descs <- list(
-    ada=list(
-        fs.fun=fs.tree,
-        method="ada"
-    ),
-    fda=list( #"Argumente implizieren unterschiedliche Anzahl Zeilen: 37, 96"
-        fs.fun=fs.all,
-        method="fda",
-        tuneLength=5
-    ),
-    avNNet=list( #"konnte funktion nnet nicht finden"
-        fs.fun=fs.all,
-        method="avNNet",
-        tuneLength=5
-    ),
-    amore=list( #"Fehler in order(..) : Argument 1 ist kein Vektor
-        fs.fun=fs.nn,
-        method="AMORE",
-        tuneLength=5
-    ),
     hda=list(
         fs.fun=fs.rf,
         method="hda"
@@ -54,7 +35,8 @@ descs <- list(
     gbm=list(
         fs.fun=fs.gbm,
         method="gbm",
-        tuneLength=4
+        tuneLength=4,
+        n.minobsinnode=3
     ),
     gbmS=list(
         fs.fun=fs.gbm,
@@ -90,10 +72,6 @@ descs <- list(
         fs.fun=fs.rf,
         method="LogitBoost"
     ),
-    knn=list(
-        fs.fun=fs.rf,
-        method="knn"
-    ),
     j48=list(
         fs.fun=fs.tree,
         method="J48"
@@ -105,10 +83,6 @@ descs <- list(
     svmLinear=list(
         fs.fun=fs.svm,
         method="svmLinear"
-    ),
-    nb=list(
-        fs.fun=fs.nb,
-        method="nb"
     ),
     rf=list(
         fs.fun=fs.rf,
@@ -141,10 +115,6 @@ descs <- list(
         fs.fun=fs.rf,
         method="svmLinear",
         tuneLength=5
-    ),
-    evtree=list(
-        fs.fun=fs.tree,
-        method="evtree"
     ),
     ctree=list(
         fs.fun=fs.tree,
