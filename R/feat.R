@@ -61,7 +61,8 @@ add.features <- function(dt) {
     
     # Item Discount
     dt2[, itemDiscount := 1 - price / max(price), by=c("itemID", "size")]
-    dt2[is.na(dt2$itemDiscount), ]$itemDiscount <- 0
+    
+    dt2[is.na(dt2$itemDiscount), c("itemDiscount")] <- 0
     
     # West/East Germany
     dt2$westGermany <- revalue(dt2$state, c(
@@ -118,111 +119,132 @@ add.features.otf <- function(to, from) {
     dt.from[, itemReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("itemID", "size")]
     itemRetRate <- unique(dt.from[, c("itemID", "itemReturnRate", "size"), with=F])
     dt.to <- join(dt.to, itemRetRate, by=c("itemID", "size"))
+
+}
+
+add.features.otf <- function(to, from) {
+    #
+    # Place features that should be computed on the fly on the train set only here.
+    #
+    # Args:
+    #   to: data frame to add the features to
+    #   from: data frame to calculate the features from
+    require(data.table)
+    require(plyr)
     
+    dt.to <- data.table(to)
+    dt.from <- data.table(from[from$deliveryDateMissing == "no", ])
     
+    dt.from[, customerReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("customerID")]
+    customerRetRate <- unique(dt.from[, c("customerID", "customerReturnRate"), with=F])
+    dt.to <- join(dt.to, customerRetRate, by="customerID")
     
+    # TODO: Maybe we should group this by c("itemID", "color", "size")
+    dt.from[, itemReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("itemID", "size")]
+    itemRetRate <- unique(dt.from[, c("itemID", "itemReturnRate", "size"), with=F])
+    dt.to <- join(dt.to, itemRetRate, by=c("itemID", "size"))
     
-    ###price features##########################################################################
-    temp <- rbind(data.frame(dt.from[,list(itemID,price,orderDate,size,color)], group="train"),
-                       data.frame(dt.to[,list(itemID,price,orderDate,size,color)], group="test"))
-    #1,2 ->min and max price
-    itemPriceRange<- temp[,list(min(price),max(price)),by=list(itemID)]
-    setnames(itemPriceRange,c("V1", "V2"),c("min","max"))
-    #3 -> quantity of price levels
-    setkey(itemPriceRange,itemID)
-    itemPriceRange=itemPriceRange[dt.from[order(itemID,-price,decreasing=FALSE),length(itemID),by=list(itemID,price)][,length(price),by=itemID]]
-    setnames(itemPriceRange,"V1","levels")
-    #4 -> boolean price range TRUE FALSE
-    itemPriceRange[,priceRange:=0] #hinzufügen Feature priceRange
-    itemPriceRange[max!=min,priceRange:=1] #0:keine Range       1:Range
-    #5 -> absolute Price Range
-    itemPriceRange[,AbsPriceRange:=max-min] #hinzufügen Feature abs priceDiff
-    
-    #join itemPriceRange an itemID
-    setkey(dt.from,itemID)
-    dt.from<-dt.from[itemPriceRange]
-    setkey(dt.to,itemID)
-    dt.to<-dt.to[itemPriceRange]
-    #6 -> actual discount on piece
-    dt.from[, actDiscount := round(1-(price/max),digits=2)*100]
-    dt.to[, actDiscount := round(1-(price/max),digits=2)*100]
-    #7 -> boolean discounted TRUE False
-    dt.from$discount <- as.factor(ifelse(dt.from$actDiscount==0, "no", "yes"))
-    dt.to$discount <- as.factor(ifelse(dt.to$actDiscount==0, "no", "yes"))
-    
-    ####customer features##########################################################################
-    #lifetime returnShipment Rate
-    temp<-dt.from[,list(itemID,customerID,returnShipment)]
-    temp<-temp[order(customerID,decreasing=TRUE),list(sum(returnShipment == "yes"),
-                                                      length(itemID)),by=list(customerID)]
-    #1 custReturnRateSchatti - Meine Idee
-    temp[V2 >= median(temp$V2), custReturnRateSchatti:=round((V1/V2),digits=2)*100]
-    temp[V2 < median(temp$V2), custReturnRateSchatti:=round((V1 + temp[,round(sum(V1)/sum(V2),digits=2)]*(median(temp$V2)-V1))/median(temp$V2),digits=2)*100]
-    
-    #     #2 custReturnRateSimon - Michaels Entwurf
-    #     temp[round((V1/V2),digits=2)>=round(sum(temp$V1)/sum(temp$V2),digits=2),
-    #          custReturnRateSimon:=round(V1/(V2+1),digits=2)*100]
-    #     temp[round((V1/V2),digits=2)<round(sum(temp$V1)/sum(temp$V2),digits=2),
-    #          custReturnRateSimon:=round((V1+1)/(V2+1),digits=2)*100]
-    #3,4
-    setnames(temp,c("V1", "V2"),c("custItemsReturned","custItemsOrdered"))
-    #join die temp an customerID
-    setkey(dt.from,customerID)
-    dt.from<-dt.from[temp]
-    setkey(dt.to,customerID)
-    dt.to<-dt.to[temp]
-    
-    ###itemID features##########################################################################
-    #return rate of items - hight rollers setting a fetaure on 1 low rollers on 0 
-    # - setting divergation point based on Verteilung 
-    temp=dt.from[,list(itemID,returnShipment)]
-    temp=temp[order(itemID,decreasing=TRUE),list(sum(returnShipment == "yes"), length(returnShipment)),by=itemID]
-    #Meine Idee
-    #1
-    temp[V2 >= median(temp$V2), returnItemRateSchatti:=round((V1/V2),digits=2)*100]
-    temp[V2 < median(temp$V2), returnItemRateSchatti:=round((V1 + temp[,round(sum(V1)/sum(V2),digits=2)]*(median(temp$V2)-V1))/median(temp$V2),digits=2)*100]
-    
-    #     #Michaels Entwurf
-    #     #2
-    #     temp[round((V1/V2),digits=2)>=round(sum(temp$V1)/sum(temp$V2),digits=2),
-    #          returnItemRateSimon:=round(V1/(V2+1),digits=2)*100]
-    #     temp[round((V1/V2),digits=2)<round(sum(temp$V1)/sum(temp$V2),digits=2),
-    #          returnItemRateSimon:=round((V1+1)/(V2+1),digits=2)*100]
-    #3,4
-    setnames(temp,c("V1", "V2"),c("itemsReturned","itemsOrdered"))
-    #join der temp an itemID
-    setkey(dt.from,itemID)
-    dt.from<-dt.from[temp]
-    setkey(dt.to,itemID)
-    dt.to<-dt.to[temp]
-    
-    ###manufacturerID##########################################################################
-    temp=dt.from[,list(manufacturerID,returnShipment)]
-    temp=temp[order(manufacturerID,decreasing=TRUE),list(sum(returnShipment == "yes"), 
-                                                         length(returnShipment)),by=manufacturerID]
-    
-    #Meine Idee
-    #1 10 ist beliebig gesetzt
-    temp[V2 >= 10, returnManuRateSchatti:=round((V1/V2),digits=2)*100]
-    temp[V2 < 10, returnManuRateSchatti:=round((V1 + temp[,round(sum(V1)/sum(V2),digits=2)]*(median(temp$V2)-V1))/median(temp$V2),digits=2)*100]
-    
-    #     #Michaels Entwurf
-    #     #2
-    #     temp[round((V1/V2),digits=2)>=round(sum(temp$V1)/sum(temp$V2),digits=2),
-    #          returnManuRateSimon:=round(V1/(V2+1),digits=2)*100]
-    #     temp[round((V1/V2),digits=2)<round(sum(temp$V1)/sum(temp$V2),digits=2),
-    #          returnManuRateSimon:=round((V1+1)/(V2+1),digits=2)*100]
-    #3,4
-    setnames(temp,c("V1", "V2"),c("manuItemsReturned","manuItemsOrdered"))
-    #join temp an manufacturerID
-    setkey(dt.from,manufacturerID)
-    dt.from<-dt.from[temp]
-    setkey(dt.to,manufacturerID)
-    dt.to<-dt.to[temp]
-    
-    #Löschen der temp Tabellen
-    rm(temp)
-    rm(itemPriceRange)
+#     ###price features##########################################################################
+#     temp <- rbind(data.frame(dt.from[,list(itemID,price,orderDate,size,color)], group="train"),
+#                   data.frame(dt.to[,list(itemID,price,orderDate,size,color)], group="test"))
+#     #1,2 ->min and max price
+#     itemPriceRange<- temp[,list(min(price),max(price)),by=list(itemID)]
+#     setnames(itemPriceRange,c("V1", "V2"),c("min","max"))
+#     #3 -> quantity of price levels
+#     setkey(itemPriceRange,itemID)
+#     itemPriceRange=itemPriceRange[dt.from[order(itemID,-price,decreasing=FALSE),length(itemID),by=list(itemID,price)][,length(price),by=itemID]]
+#     setnames(itemPriceRange,"V1","levels")
+#     #4 -> boolean price range TRUE FALSE
+#     itemPriceRange[,priceRange:=0] #hinzufügen Feature priceRange
+#     itemPriceRange[max!=min,priceRange:=1] #0:keine Range       1:Range
+#     #5 -> absolute Price Range
+#     itemPriceRange[,AbsPriceRange:=max-min] #hinzufügen Feature abs priceDiff
+#     
+#     #join itemPriceRange an itemID
+#     setkey(dt.from,itemID)
+#     dt.from<-dt.from[itemPriceRange]
+#     setkey(dt.to,itemID)
+#     dt.to<-dt.to[itemPriceRange]
+#     #6 -> actual discount on piece
+#     dt.from[, actDiscount := round(1-(price/max),digits=2)*100]
+#     dt.to[, actDiscount := round(1-(price/max),digits=2)*100]
+#     #7 -> boolean discounted TRUE False
+#     dt.from$discount <- as.factor(ifelse(dt.from$actDiscount==0, "no", "yes"))
+#     dt.to$discount <- as.factor(ifelse(dt.to$actDiscount==0, "no", "yes"))
+#     
+#     ####customer features##########################################################################
+#     #lifetime returnShipment Rate
+#     temp<-dt.from[,list(itemID,customerID,returnShipment)]
+#     temp<-temp[order(customerID,decreasing=TRUE),list(sum(returnShipment == "yes"),
+#                                                       length(itemID)),by=list(customerID)]
+#     #1 custReturnRateSchatti - Meine Idee
+#     temp[V2 >= median(temp$V2), custReturnRateSchatti:=round((V1/V2),digits=2)*100]
+#     temp[V2 < median(temp$V2), custReturnRateSchatti:=round((V1 + temp[,round(sum(V1)/sum(V2),digits=2)]*(median(temp$V2)-V1))/median(temp$V2),digits=2)*100]
+#     
+#     #     #2 custReturnRateSimon - Michaels Entwurf
+#     #     temp[round((V1/V2),digits=2)>=round(sum(temp$V1)/sum(temp$V2),digits=2),
+#     #          custReturnRateSimon:=round(V1/(V2+1),digits=2)*100]
+#     #     temp[round((V1/V2),digits=2)<round(sum(temp$V1)/sum(temp$V2),digits=2),
+#     #          custReturnRateSimon:=round((V1+1)/(V2+1),digits=2)*100]
+#     #3,4
+#     setnames(temp,c("V1", "V2"),c("custItemsReturned","custItemsOrdered"))
+#     #join die temp an customerID
+#     setkey(dt.from,customerID)
+#     dt.from<-dt.from[temp]
+#     setkey(dt.to,customerID)
+#     dt.to<-dt.to[temp]
+#     
+#     ###itemID features##########################################################################
+#     #return rate of items - hight rollers setting a fetaure on 1 low rollers on 0 
+#     # - setting divergation point based on Verteilung 
+#     temp=dt.from[,list(itemID,returnShipment)]
+#     temp=temp[order(itemID,decreasing=TRUE),list(sum(returnShipment == "yes"), length(returnShipment)),by=itemID]
+#     #Meine Idee
+#     #1
+#     temp[V2 >= median(temp$V2), returnItemRateSchatti:=round((V1/V2),digits=2)*100]
+#     temp[V2 < median(temp$V2), returnItemRateSchatti:=round((V1 + temp[,round(sum(V1)/sum(V2),digits=2)]*(median(temp$V2)-V1))/median(temp$V2),digits=2)*100]
+#     
+#     #     #Michaels Entwurf
+#     #     #2
+#     #     temp[round((V1/V2),digits=2)>=round(sum(temp$V1)/sum(temp$V2),digits=2),
+#     #          returnItemRateSimon:=round(V1/(V2+1),digits=2)*100]
+#     #     temp[round((V1/V2),digits=2)<round(sum(temp$V1)/sum(temp$V2),digits=2),
+#     #          returnItemRateSimon:=round((V1+1)/(V2+1),digits=2)*100]
+#     #3,4
+#     setnames(temp,c("V1", "V2"),c("itemsReturned","itemsOrdered"))
+#     #join der temp an itemID
+#     setkey(dt.from,itemID)
+#     dt.from<-dt.from[temp]
+#     setkey(dt.to,itemID)
+#     dt.to<-dt.to[temp]
+#     
+#     ###manufacturerID##########################################################################
+#     temp=dt.from[,list(manufacturerID,returnShipment)]
+#     temp=temp[order(manufacturerID,decreasing=TRUE),list(sum(returnShipment == "yes"), 
+#                                                          length(returnShipment)),by=manufacturerID]
+#     
+#     #Meine Idee
+#     #1 10 ist beliebig gesetzt
+#     temp[V2 >= 10, returnManuRateSchatti:=round((V1/V2),digits=2)*100]
+#     temp[V2 < 10, returnManuRateSchatti:=round((V1 + temp[,round(sum(V1)/sum(V2),digits=2)]*(median(temp$V2)-V1))/median(temp$V2),digits=2)*100]
+#     
+#     #     #Michaels Entwurf
+#     #     #2
+#     #     temp[round((V1/V2),digits=2)>=round(sum(temp$V1)/sum(temp$V2),digits=2),
+#     #          returnManuRateSimon:=round(V1/(V2+1),digits=2)*100]
+#     #     temp[round((V1/V2),digits=2)<round(sum(temp$V1)/sum(temp$V2),digits=2),
+#     #          returnManuRateSimon:=round((V1+1)/(V2+1),digits=2)*100]
+#     #3,4
+#     setnames(temp,c("V1", "V2"),c("manuItemsReturned","manuItemsOrdered"))
+#     #join temp an manufacturerID
+#     setkey(dt.from,manufacturerID)
+#     dt.from<-dt.from[temp]
+#     setkey(dt.to,manufacturerID)
+#     dt.to<-dt.to[temp]
+#     
+#     #Löschen der temp Tabellen
+#     rm(temp)
+#     rm(itemPriceRange)
     
     dt.to
 }
