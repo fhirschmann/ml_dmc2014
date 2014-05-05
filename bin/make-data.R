@@ -37,9 +37,6 @@ dt.test <- read.csv("task/orders_class.txt", sep=";",
 
 dt.train$returnShipment <- revalue(dt.train$returnShipment, c("0"="no", "1"="yes"))
 
-dt.train <- add.features(dt.train)
-dt.test <- add.features(dt.test)
-
 rm.outliers <- function(dt) {
     dt2 <- dt
     
@@ -47,16 +44,15 @@ rm.outliers <- function(dt) {
     outliers <- with(dt2,
                      !is.na(dateOfBirth) 
                      & (dateOfBirth == as.Date("1949-11-19")
-                        | customerAge > 85
-                        | customerAge < 19))
+                        | as.integer(year(orderDate) - year(dateOfBirth)) > 85
+                        | as.integer(year(orderDate) - year(dateOfBirth)) < 19))
     dt2[outliers, ]$dateOfBirth <- NA
-    dt2[outliers, ]$customerAge <- NA
     dt2$dateOfBirthIsOutlier <- "no"
     dt2[outliers, ]$dateOfBirthIsOutlier <- "yes"
     dt2$dateOfBirthIsOutlier <- as.factor(dt2$dateOfBirthIsOutlier)
     
     # deliveryDate/Time
-    outliers <- !is.na(dt2$deliveryTime) & dt2$deliveryTime < 0
+    outliers <- !is.na(dt2$deliveryDate) & as.integer(dt2$deliveryDate - dt2$orderDate) < 0
     dt2[outliers, ]$deliveryTime <- NA
     dt2[outliers, ]$deliveryDate <- NA
     dt2$deliveryDateIsOutlier <- "no"
@@ -66,7 +62,6 @@ rm.outliers <- function(dt) {
     # creationDate
     outliers <- dt2$creationDate == as.Date("2011-02-16")
     dt2[outliers, ]$creationDate <- NA
-    dt2[outliers, ]$accountAge <- NA
     dt2$creationDateIsOutlier <- "no"
     dt2[outliers, ]$creationDateIsOutlier <- "yes"
     dt2$creationDateIsOutlier <- as.factor(dt2$creationDateIsOutlier)
@@ -76,6 +71,9 @@ rm.outliers <- function(dt) {
 
 dt.train <- rm.outliers(dt.train)
 dt.test <- rm.outliers(dt.test)
+
+dt.train <- add.features(dt.train)
+dt.test <- add.features(dt.test)
 
 dt.dmc.ids <- list(test=list(), train=list())
 for (i in c("T1", "T2", "T3", "X1", "X2", "X3")) {
