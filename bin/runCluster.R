@@ -11,7 +11,7 @@ source("R/dmc.R")
 source("R/pipeline.R")
 source("R/utils.R")
 library(doParallel)
-registerDoParallel(4)
+registerDoParallel(16)
 
 args <- commandArgs(T)
 
