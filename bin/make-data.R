@@ -77,19 +77,6 @@ rm.outliers <- function(dt) {
 dt.train <- rm.outliers(dt.train)
 dt.test <- rm.outliers(dt.test)
 
-fix.missing <- function(dt) {
-    dt2 <- dt
-    
-    nas <- is.na(dt2$color)
-    dt2[nas, ]$color <- "other"
-    dt2[nas, ]$fewcolors <- "other"
-    
-    dt2
-}
-
-#dt.train <- fix.missing(dt.train)
-#dt.test <- fix.missing(dt.test)
-
 dt.dmc.ids <- list(test=list(), train=list())
 for (i in c("T1", "T2", "T3", "X1", "X2", "X3")) {
     dt.dmc.ids$train[[i]] <- as.numeric(as.character(read.csv(paste("eva/", i, "_train.txt", sep=""))$orderItemID))
@@ -126,7 +113,15 @@ for (i in names(dt.dmc.ids$train)) {
         test=add.features.otf(dt.train[test.ids, ], dt.train[-(test.ids), ]))
 }
 
+nas <- function(x) which(is.na(dt.train), T)
+
+na <- list(
+    dmc=sapply(dt.dmc, function(x) sapply(x, nas, simplify=F), simplify=F),
+    train=nas(dt.train),
+    test=nas(dt.test))
+
 saveRDS(dt.train, file="data.train.RData")
 saveRDS(dt.test, file="data.test.RData")
 saveRDS(dt.dmc, file="data.dmc.RData")
 saveRDS(dt.dmc.ids, file="data.dmc.ids.RData")
+saveRDS(na, file="na.RData")
