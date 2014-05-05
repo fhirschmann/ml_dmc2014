@@ -119,30 +119,6 @@ add.features.otf <- function(to, from) {
     dt.from[, itemReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("itemID", "size")]
     itemRetRate <- unique(dt.from[, c("itemID", "itemReturnRate", "size"), with=F])
     dt.to <- join(dt.to, itemRetRate, by=c("itemID", "size"))
-
-}
-
-add.features.otf <- function(to, from) {
-    #
-    # Place features that should be computed on the fly on the train set only here.
-    #
-    # Args:
-    #   to: data frame to add the features to
-    #   from: data frame to calculate the features from
-    require(data.table)
-    require(plyr)
-    
-    dt.to <- data.table(to)
-    dt.from <- data.table(from[from$deliveryDateMissing == "no", ])
-    
-    dt.from[, customerReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("customerID")]
-    customerRetRate <- unique(dt.from[, c("customerID", "customerReturnRate"), with=F])
-    dt.to <- join(dt.to, customerRetRate, by="customerID")
-    
-    # TODO: Maybe we should group this by c("itemID", "color", "size")
-    dt.from[, itemReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("itemID", "size")]
-    itemRetRate <- unique(dt.from[, c("itemID", "itemReturnRate", "size"), with=F])
-    dt.to <- join(dt.to, itemRetRate, by=c("itemID", "size"))
     
 #     ###price features##########################################################################
 #     temp <- rbind(data.frame(dt.from[,list(itemID,price,orderDate,size,color)], group="train"),
