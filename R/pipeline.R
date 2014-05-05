@@ -54,8 +54,7 @@ descs <- list(
     gbm=list(
         fs.fun=fs.gbm,
         method="gbm",
-        tuneLength=4,
-        trControl=ctrl.prob
+        tuneLength=4
     ),
     gbmS=list(
         fs.fun=fs.gbm,
@@ -64,8 +63,7 @@ descs <- list(
             shrinkage=c(0.0001, 0.001, 0.01),
             interaction.depth=1:7,
             n.trees=1:10 * 30
-        ),
-        trControl=ctrl.prob
+        )
     ),
     gbmT=list(
         fs.fun=fs.gbm,
@@ -74,8 +72,7 @@ descs <- list(
             shrinkage=c(0.00001, 0.0001, 0.001, 0.01, 0.1),
             interaction.depth=1:10,
             n.trees=1:10 * 50
-        ),
-        trControl=ctrl.prob
+        )
     ),
     mlp=list(
         fs.fun=fs.rf,
