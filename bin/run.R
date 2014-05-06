@@ -1,20 +1,25 @@
 #!/usr/bin/env Rscript
 #
-# Usage: ./bin/run c50 T1 (-m|-s|-t) (-d)
+# Usage: ./bin/run.R c50 T1 (-m|-s|-t) (-d)
 # Arguments:
 #   -t Train on the Tiny Dataset
 #   -s Train on the Small Dataset
 #   -m Train on the Medium Dataset
-#   -n Don't run ./bin/make-data.R
+#   -d Run ./bin/make-data.R
 
+args <- commandArgs(T)
+
+if ("-d" %in% args) {
+    system("./bin/make-data.R")
+}
+
+source("R/data.R")
 source("R/dmc.R")
 source("R/pipeline.R")
 source("R/utils.R")
 
-args <- commandArgs(T)
-
-if (!("-n" %in% args)) {
-    source("bin/make-data.R")
+if (length(args) < 2) {
+    error("Usage: ./bin/run.R c50 T1 (-m|-s|-t) (-d)")
 }
 
 #library(doParallel)
