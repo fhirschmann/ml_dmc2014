@@ -60,7 +60,7 @@ add.features <- function(dt) {
     dt2[is.na(dt2$itemDiscount), c("itemDiscount")] <- 0
 
     # favorite color
-    dt2[, favoriteColor := as.factor(names(which.max(table(color))), by=c('customerID'))]
+    dt2[, favoriteColor := as.factor(names(which.max(table(color)))), by=c('customerID')]
     
     # West/East Germany
     dt2$westGermany <- revalue(dt2$state, c(
