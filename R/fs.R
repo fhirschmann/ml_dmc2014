@@ -108,49 +108,6 @@ fs.simon <- function(dt) {
   dt2$itemID <- NULL
   
   
-  dt2$color <- NULL
-  dt2$salutation <- NULL
-  dt2$holiday <- NULL
-  
-  dt2$price <- NULL  # Use discretized price
-  dt2$customerAge <- NULL  # Same here
-  dt2$accountAge <- NULL
-  
-  dt2$orderDate <- NULL
-  
-  # Use deliveryTime
-  dt2$deliveryDate <- NULL
-  
-  # Use customerAge
-  dt2$dateOfBirth <- NULL
-  
-  # Use accountAge
-  dt2$creationDate <- NULL
-  dt2$firstOrderDate <- NULL
-  
-  # We remove these instances beforehand
-  dt2$deliveryDateMissing <- NULL
-  
-  dt2$color <- NULL
-  
-  dt2$salutation <- NULL
-  
-  dt2$state <- NULL
-  
-  dt2$holiday <- NULL
-  
-  dt2$dateOfBirthIsOutlier <- NULL
-  
-  dt2$dateOfBirthMissing <- NULL
-  
-  dt2$deliveryTime <- NULL
-  
-  dt2$customerAge <- NULL
-  
-  dt2$firstOrderDate <- NULL
-  
-  dt2$westGermany <- NULL
-  
   dt2
   
 }
