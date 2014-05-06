@@ -1,14 +1,24 @@
 #!/usr/bin/env Rscript
 #
-# Usage: ./bin/run c50 T1 (-m for mini data set)
+# Usage: ./bin/run c50 T1 (-m|-s|-t) (-d)
+# Arguments:
+#   -t Train on the Tiny Dataset
+#   -s Train on the Small Dataset
+#   -m Train on the Medium Dataset
+#   -n Don't run ./bin/make-data.R
 
 source("R/dmc.R")
 source("R/pipeline.R")
 source("R/utils.R")
-library(doParallel)
-registerDoParallel(1)
 
 args <- commandArgs(T)
+
+if (!("-n" %in% args)) {
+    source("bin/make-data.R")
+}
+
+#library(doParallel)
+#registerDoParallel(1)
 
 # Set the description for the learner
 desc <- list.update(common.desc, descs[[args[[1]]]])
