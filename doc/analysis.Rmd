@@ -1045,12 +1045,12 @@ analyseTB.train<-analyseTB.train[,length(itemID),by=list(itemID,price,orderDate,
 ```
 
 ```{r}
-smoothScatter(analyseTB.train[min!=max]$orderDate, analyseTB.train[min!=max]$discount, xlab = "Creation Date", ylab = "discount rate", main = "Order Date vs discount rate")
+smoothScatter(analyseTB.train[min!=max]$orderDate, analyseTB.train[min!=max]$discount, xlab = "Order Date", ylab = "discount rate", main = "Order Date vs discount rate")
 
 ggplot(analyseTB.train[min!=max], aes(orderDate, price, colour = discount)) + geom_point(aes(colour = factor(discount))) + theme(axis.text.x=element_text(angle=-90))
 ```
 - constant prices: just one price
-- variable prices: random up and downs for many items (item, color, size)-  no exact trend
+- variable prices: random up and downs for many items (item, color, size) -  no exact trend
 
 #### Exemplary: Price history of two different colors of most sold item "1415"
 ```{r}
