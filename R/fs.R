@@ -77,7 +77,13 @@ fs.tree <- function(dt) {
 }
 
 fs.nn <- function(dt) {
-    dt2 <- fs.all(dt)
+    dt2 <- dt
+    
+    
+    dt2$color <- NULL
+    dt2$instantOrder <- NULL
+    dt2$salutation <- NULL
+    dt2$holiday <- NULL
     
     dt2$discretizedPrice <- NULL
     dt2$discretizedCustomerAge <- NULL
@@ -96,7 +102,12 @@ fs.rf <- function(dt) {
 }
 
 fs.simon <- function(dt) {
+  ##wir lassen itemId hier drin!
   dt2 <- fs.gbm(dt)
+  
+  dt2$price <- NULL  # Use discretized price
+  dt2$customerAge <- NULL  # Same here
+  dt2$accountAge <- NULL
   
   dt2$orderDate <- NULL
   
