@@ -22,6 +22,8 @@ if (length(args) < 2) {
     stop("Usage: ./bin/run.R c50 T1 (-m|-s|-t) (-d)")
 }
 
+if (file.exists("config.R")) source("config.R")
+
 #library(doParallel)
 #registerDoParallel(1)
 
