@@ -7,7 +7,7 @@ library(functional)
 library(caret)
 library(C50)
 
-ctrl <- trainControl(returnData=T, returnResamp="all")
+ctrl <- trainControl(returnData=F, returnResamp="all")
 
 # Don't pass this to classifiers who do not return class probabilities
 ctrl.probs <- ctrl
@@ -75,24 +75,21 @@ descs <- list(
         tuneLength=8
     ),
     
-    svmPoly=list(
+    # Support Vector Machine (Polynomial Kernel)
+    svmPolyC=list(
         fs.fun=fs.rf,
         method="svmPoly",
-        tuneLength=3
+        tuneLength=7
     ),
     
-    hda=list(
-        fs.fun=fs.rf,
-        method="hda"
+    # Bagged Cart
+    treebagC=list(
+        fs.fun=fs.tree,
+        method="treebag"
     ),
     fda=list(
         fs.fun=fs.nn,
         method="fda"
-    ),
-    gaussL=list(
-        fs.fun=fs.all,
-        method="gaussprLinear",
-        tuneLength=5
     ),
     gbm=list(
         fs.fun=fs.gbm,
