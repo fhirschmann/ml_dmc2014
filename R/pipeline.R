@@ -59,7 +59,7 @@ descs <- list(
     ),
     
     # C5.0 with Probabilities
-    c50C=list(
+    c50CP=list(
         fs.fun=fs.tree,
         method="C5.0",
         tuneGrid=grid.c50,
