@@ -142,7 +142,7 @@ add.features.otf <- function(to, from) {
 
     ## sizeReturnRate
     dt.from[, sizeReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("size")]
-    sizeRR <- unique(dt.from[, c("sizeReturnRate", "size"), with=F])
+    sRR <- unique(dt.from[, c("sizeReturnRate", "size"), with=F])
     dt.to <- join(dt.to, sRR, by=c("size"))
 
     ## manufacturerReturnRate
