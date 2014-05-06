@@ -13,8 +13,74 @@ ctrl <- trainControl(returnData=T, returnResamp="all")
 ctrl.probs <- ctrl
 ctrl.probs$classProbs <- TRUE
 
+grid.gbm <- expand.grid(
+    shrinkage=c(0.00001, 0.0001, 0.001, 0.01, 0.1),
+    interaction.depth=1:15,
+    n.trees=c(1, 1:100 * 5)
+)
+
+grid.c50 <- expand.grid(
+    model=c("rules", "tree"),
+    winnow=c(TRUE, FALSE),
+    trials=1:100
+)
+
 # List of stuff to learn
 descs <- list(
+    # Stuff to run on the Cluster: Postfix with 'C'
+    
+    # GBM
+    gbmC=list(
+        fs.fun=fs.gbm,
+        method="gbm",
+        tuneGrid=grid.gbm
+    ),
+    
+    # GBM with Probabilities
+    gbmCP=list(
+        fs.fun=fs.gbm,
+        method="gbm",
+        tuneGrid=grid.gbm,
+        trControl=ctrl.probs
+    ),
+    
+    # C5.0
+    c50C=list(
+        fs.fun=fs.tree,
+        method="C5.0",
+        tuneGrid=grid.c50,
+        control=C5.0Control(earlyStopping=F)
+    ),
+    
+    # C5.0 with Probabilities
+    c50C=list(
+        fs.fun=fs.tree,
+        method="C5.0",
+        tuneGrid=grid.c50,
+        trControl=ctrl.probs,
+        control=C5.0Control(earlyStopping=F)
+    ),
+    
+    # Penalized Multinomial Regression
+    mnC=list(
+        fs.fun=fs.rf,
+        method="multinom",
+        tuneLength=20
+    ),
+    
+    # Regularized Random Forest (Global)
+    rrfGC=list(
+        fs.fun=fs.rf,
+        method="RRFglobal",
+        tuneLength=8
+    ),
+    
+    svmPoly=list(
+        fs.fun=fs.rf,
+        method="svmPoly",
+        tuneLength=3
+    ),
+    
     hda=list(
         fs.fun=fs.rf,
         method="hda"
@@ -28,10 +94,6 @@ descs <- list(
         method="gaussprLinear",
         tuneLength=5
     ),
-    multinom=list(
-        fs.fun=fs.rf,
-        method="multinom"
-    ),
     gbm=list(
         fs.fun=fs.gbm,
         method="gbm",
@@ -42,24 +104,6 @@ descs <- list(
           n.trees=100
         ),
         n.minobsinnode=3
-    ),
-    gbmS=list(
-        fs.fun=fs.gbm,
-        method="gbm",
-        tuneGrid=expand.grid(
-            shrinkage=c(0.0001, 0.001, 0.01),
-            interaction.depth=1:7,
-            n.trees=1:10 * 30
-        )
-    ),
-    gbmT=list(
-        fs.fun=fs.gbm,
-        method="gbm",
-        tuneGrid=expand.grid(
-            shrinkage=c(0.00001, 0.0001, 0.001, 0.01, 0.1),
-            interaction.depth=1:10,
-            n.trees=1:10 * 50
-        )
     ),
     mlp=list(
         fs.fun=fs.rf,
@@ -111,7 +155,7 @@ descs <- list(
     rrf=list(
         fs.fun=fs.rf,
         method="RRFglobal",
-        tuneLength=8
+        tuneLength=3
     ),
     treebag=list(
         fs.fun=fs.rf,
