@@ -8,10 +8,7 @@ add.features <- function(dt) {
     
     dt2 <- data.table(dt)
     
-    dt2$creationDateMissing <- as.factor(ifelse(is.na(dt2$creationDate), "yes", "no"))
-    
     dt2$deliveryTime <- as.integer(dt2$deliveryDate - dt2$orderDate)
-    dt2$deliveryDateMissing <- as.factor(ifelse(is.na(dt2$deliveryDate), "yes", "no"))
     dt2$orderWeekday <- as.ordered(as.factor(lubridate::wday(dt2$orderDate, label=T, abbr=F)))
     
     # Instant Order

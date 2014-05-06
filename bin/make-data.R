@@ -36,28 +36,35 @@ rm.outliers <- function(dt) {
     dt2 <- dt
     
     # dateOfBirth/Age
+    dt2$dateOfBirthMissing <- as.factor(ifelse(is.na(dt2$dateOfBirth), "yes", "no"))
+    
     outliers <- with(dt2,
                      !is.na(dateOfBirth) 
                      & (dateOfBirth == as.Date("1949-11-19")
                         | as.integer(year(orderDate) - year(dateOfBirth)) > 85
                         | as.integer(year(orderDate) - year(dateOfBirth)) < 19))
-    dt2[outliers, ]$dateOfBirth <- NA
+    dt2[outliers, c("dateOfBirth")] <- NA
     dt2$dateOfBirthIsOutlier <- "no"
-    dt2[outliers, ]$dateOfBirthIsOutlier <- "yes"
+    dt2[outliers, c("dateOfBirthIsOutlier")] <- "yes"
     dt2$dateOfBirthIsOutlier <- as.factor(dt2$dateOfBirthIsOutlier)
     
     # deliveryDate/Time
+    ## IMPORTANT: Do this first
+    dt2$deliveryDateMissing <- as.factor(ifelse(is.na(dt2$deliveryDate), "yes", "no"))
+    
     outliers <- !is.na(dt2$deliveryDate) & (dt2$deliveryDate - dt2$orderDate) < 0
-    dt2[outliers, ]$deliveryDate <- NA
+    dt2[outliers, c("deliveryDate")] <- NA
     dt2$deliveryDateIsOutlier <- "no"
-    dt2[outliers, ]$deliveryDateIsOutlier <- "yes"
+    dt2[outliers, c("deliveryDateIsOutlier")] <- "yes"
     dt2$deliveryDateIsOutlier <- as.factor(dt2$deliveryDateIsOutlier)
     
     # creationDate
+    dt2$creationDateMissing <- as.factor(ifelse(is.na(dt2$creationDate), "yes", "no"))
+    
     outliers <- dt2$creationDate == as.Date("2011-02-16")
-    dt2[outliers, ]$creationDate <- NA
+    dt2[outliers, c("creationDate")] <- NA
     dt2$creationDateIsOutlier <- "no"
-    dt2[outliers, ]$creationDateIsOutlier <- "yes"
+    dt2[outliers, c("creationDateIsOutlier")] <- "yes"
     dt2$creationDateIsOutlier <- as.factor(dt2$creationDateIsOutlier)
     
     dt2
@@ -66,6 +73,8 @@ rm.outliers <- function(dt) {
 message("Removing outliers in Train and Test Set")
 dt.train <- rm.outliers(dt.train)
 dt.test <- rm.outliers(dt.test)
+
+# DON'T SWITCH THESE TWO
 
 message("Adding Features to the Train and Test Set")
 dt.train <- add.features(dt.train)
