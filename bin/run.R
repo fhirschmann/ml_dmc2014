@@ -19,16 +19,20 @@ source("R/pipeline.R")
 source("R/utils.R")
 
 if (length(args) < 2) {
-    error("Usage: ./bin/run.R c50 T1 (-m|-s|-t) (-d)")
+    stop("Usage: ./bin/run.R c50 T1 (-m|-s|-t) (-d)")
 }
 
 #library(doParallel)
 #registerDoParallel(1)
 
 # Set the description for the learner
+desc <- descs[[args[[1]]]]
+if (is.null(desc)) stop(paste("Unknown Description. Available:",
+                              paste(names(descs), collapse=", ")))
 desc <- list.update(common.desc, descs[[args[[1]]]])
 
 desc$data <- readRDS("data.dmc.RData")[[args[[2]]]]
+if (is.null(desc$data)) stop("Unknown Data Set")
 
 set.seed(42)
 if ("-m" %in% args) {
