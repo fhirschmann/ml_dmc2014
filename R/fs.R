@@ -94,3 +94,43 @@ fs.rf <- function(dt) {
     
     dt2
 }
+
+fs.simon <- function(dt) {
+  dt2 <- fs.gbm(dt)
+  
+  dt2$orderDate <- NULL
+  
+  # Use deliveryTime
+  dt2$deliveryDate <- NULL
+  
+  # Use customerAge
+  dt2$dateOfBirth <- NULL
+  
+  # Use accountAge
+  dt2$creationDate <- NULL
+  dt2$firstOrderDate <- NULL
+  
+  # We remove these instances beforehand
+  dt2$deliveryDateMissing <- NULL
+  
+  dt.dmc$M1$train$color <- NULL
+  
+  dt.dmc$M1$train$salutation <- NULL
+  
+  dt.dmc$M1$train$state <- NULL
+  
+  dt.dmc$M1$train$holiday <- NULL
+  
+  dt.dmc$M1$train$dateOfBirthIsOutlier <- NULL
+  
+  dt.dmc$M1$train$dateOfBirthMissing <- NULL
+  
+  dt.dmc$M1$train$deliveryTime <- NULL
+  
+  dt.dmc$M1$train$customerAge <- NULL
+  
+  dt.dmc$M1$train$firstOrderDate
+  
+  dt.dmc$M1$train$westGermany <- NULL
+  
+}

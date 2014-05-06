@@ -36,6 +36,12 @@ descs <- list(
         tuneGrid=grid.gbm
     ),
     
+    gbmCsimon=list(
+      fs.fun=fs.simon,
+      method="gbm",
+      tuneGrid=grid.gbm
+    ),
+    
     # GBM with Probabilities
     gbmCP=list(
         fs.fun=fs.gbm,
