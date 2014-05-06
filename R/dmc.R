@@ -3,7 +3,7 @@ source("R/feat.R")
 source("R/utils.R")
 
 
-dmctrain <- function(data, data.name, fs.fun, method="rf", trControl=trainControl(), 
+dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainControl(), 
                      save.path=NULL, verbose=T, ...) {
     require(caret)
     
@@ -41,7 +41,7 @@ dmctrain <- function(data, data.name, fs.fun, method="rf", trControl=trainContro
     if (verbose) message("Starting to train model")
     
     set.seed(42)
-    model <- caret::train(returnShipment ~ ., data=data, method=method,
+    model <- caret::train(returnShipment ~ ., data=data,
                           trControl=trControl, na.action=na.pass, metric="score",
                           maximize=F, ...)
     
@@ -75,16 +75,19 @@ dmctrain <- function(data, data.name, fs.fun, method="rf", trControl=trainContro
     pred <- join(pred, map, by="rowIndex")
     
     res <- list(model=model, results=results, bestResults=bestResults, pred=pred,
-                bestTune=model$bestTune,
+                bestTune=model$bestTune, method=model$method,
+                label=getModelInfo(model$method, regex=F)[[1]]$label,
                 skippedOrderItemID=orderItemID[which(!test.idx)])
         
-    if (verbose) message("Saving model and results")
-    
     if (!is.null(save.path)) {
-        stem <- file.path(save.path, paste(method, data.name, sep="_"))
+        if (verbose) message("Saving model and results")
+        
+        stem <- file.path(save.path, paste(name, data.name, sep="_"))
         saveRDS(res, file=paste(stem, ".RData", sep=""))
-        saveRDS(res[c("results", "bestResults")],
+        saveRDS(res[c("results", "bestResults", "method", "label")],
                 file=paste(stem, "_res.RData", sep=""))
+        
+        if (verbose) message(paste("Saved model to", paste(stem, ".RData", sep="")))
     }
     
     class(res) <- "dmctrain"
@@ -145,13 +148,14 @@ dmc.evaluate <- function(dir) {
     files <- list.files(path=dir, pattern=paste(pattern=".*_res.RData", sep=""))
     
     models <- sapply(files, function(x) readRDS(file.path(dir, x)), simplify=F)
-    methods <- sapply(str_split(files, "_"), function(x) x[[1]])
+    methods <- sapply(models, function(x) x$method)
     sets <- sapply(str_split(files, "_"), function(x) x[[2]])
     
     res <- do.call(rbind, mapply(function(model, method, set) {
         data.frame(method=method, set=set,
                    model$bestResults[c("score", "accuracy")])
     }, models, methods, sets, SIMPLIFY=F))
+    res$label <- sapply(res$method, function(x) getModelInfo(x, regex=F)[[1]]$label)
     
     acc <- matrix(nrow=length(unique(methods)), ncol=7)
     rownames(acc) <- unique(methods)
@@ -167,7 +171,7 @@ dmc.evaluate <- function(dir) {
     wiki <- data.frame(apply(apply(round(acc, 8), 2, paste), 1, function(x) paste(x, collapse="|")))
     rownames(wiki) <- NULL
     colnames(wiki) <- "accuracy"
-    wiki$accuracy <- paste(paste("|R", sapply(rownames(acc), function(x) getModelInfo(x, regex=F)[[1]]$label),
+    wiki$accuracy <- paste(paste("|R", sapply(res$method, function(x) getModelInfo(x, regex=F)[[1]]$label),
                                  wiki$accuracy, sep="|"), "|", sep="")
     
     list(results=res, accuracy=acc, wiki=wiki)

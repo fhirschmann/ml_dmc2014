@@ -33,8 +33,10 @@ if ("-m" %in% args) {
 message(paste("Writing to directory", desc$save.path))
 
 desc$data.name <- args[[2]]
+desc$name <- args[[1]]
 
 if (!file.exists(desc$save.path)) dir.create(desc$save.path)
 
 system.time(train <- do.call(dmctrain, desc))
-train[c("results", "bestResults")]
+train[c("results", "bestResults", "method", "label")]
+warnings()
