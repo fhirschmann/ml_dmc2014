@@ -5,7 +5,6 @@ add.features <- function(dt) {
     # Place features that can be computed over the entire data set here.
     #
     require(plyr)
-    
     dt2 <- data.table(dt)
     
     dt2$deliveryTime <- as.integer(dt2$deliveryDate - dt2$orderDate)
@@ -17,7 +16,6 @@ add.features <- function(dt) {
     # Customer age in Years
     dt2$customerAge <- as.integer(year(dt2$orderDate) - year(dt2$dateOfBirth))
     dt2$discretizedCustomerAge <- cut(dt2$customerAge, 10 + 1:15 * 5)
-    dt2$dateOfBirthMissing <- as.factor(ifelse(is.na(dt2$dateOfBirth), "yes", "no"))
     
     # Account age in Days
     dt2$accountAge <- as.numeric(dt2$orderDate - dt2$creationDate)
