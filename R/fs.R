@@ -102,8 +102,10 @@ fs.rf <- function(dt) {
 }
 
 fs.simon <- function(dt) {
-  ##wir lassen itemId hier drin!
-  dt2 <- dt
+  dt2 <- fs.gbm(dt)
+  
+  ##wir lassen itemId nicht drin!
+  dt2$itemID <- NULL
   
   
   dt2$color <- NULL
