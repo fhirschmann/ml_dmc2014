@@ -191,12 +191,6 @@ descs <- list(
         method="C5.0",
         tuneLength=4,
         control=C5.0Control(earlyStopping=F)
-    ),
-    c50C=list(
-        fs.fun=fs.tree,
-        method="C5.0",
-        tuneLength=15,
-        control=C5.0Control(earlyStopping=F)
     )
 )
 
