@@ -14,7 +14,7 @@ ctrl.probs <- ctrl
 ctrl.probs$classProbs <- TRUE
 
 grid.gbm <- expand.grid(
-    shrinkage=c(0.00001, 0.0001, 0.001, 0.01, 0.1),
+    shrinkage=c(0.1),
     interaction.depth=1:15,
     n.trees=c(1, 1:100 * 5)
 )
