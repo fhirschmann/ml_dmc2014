@@ -133,4 +133,6 @@ fs.simon <- function(dt) {
   
   dt2$westGermany <- NULL
   
+  dt2
+  
 }
