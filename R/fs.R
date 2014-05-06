@@ -103,7 +103,12 @@ fs.rf <- function(dt) {
 
 fs.simon <- function(dt) {
   ##wir lassen itemId hier drin!
-  dt2 <- fs.gbm(dt)
+  dt2 <- dt
+  
+  
+  dt2$color <- NULL
+  dt2$salutation <- NULL
+  dt2$holiday <- NULL
   
   dt2$price <- NULL  # Use discretized price
   dt2$customerAge <- NULL  # Same here
@@ -140,7 +145,7 @@ fs.simon <- function(dt) {
   
   dt2$customerAge <- NULL
   
-  dt2$firstOrderDate
+  dt2$firstOrderDate <- NULL
   
   dt2$westGermany <- NULL
   
