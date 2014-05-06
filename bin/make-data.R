@@ -72,13 +72,10 @@ dt.train <- add.features(dt.train)
 dt.test <- add.features(dt.test)
 
 dt.dmc.ids <- list(test=list(), train=list())
-for (i in c("T1", "T2", "T3", "X1", "X2", "X3")) {
+for (i in c("T1", "T2", "T3", "X1", "X2", "X3", "M1", "M2", "M3")) {
     dt.dmc.ids$train[[i]] <- as.numeric(as.character(read.csv(paste("eva/", i, "_train.txt", sep=""))$orderItemID))
     dt.dmc.ids$test[[i]] <- as.numeric(as.character(read.csv(paste("eva/", i, "_test.txt", sep=""))$orderItemID))
 }
-
-dt.dmc.ids$train$C <- as.integer(as.character(dt.train[dt.train$orderDate < as.Date("2013-03-01"), ]$orderItemID))
-dt.dmc.ids$test$C <- as.integer(as.character(dt.train[dt.train$orderDate >= as.Date("2013-03-01"), ]$orderItemID))
 
 
 c1 <- unique(union(dt.dmc.ids$train$T1, dt.dmc.ids$test$T1))
