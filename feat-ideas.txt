@@ -1,0 +1,5 @@
+- Lieblingsfarbe
+- Nutzer bekannt?
+- Item bekannt?
+- Color return rate
+- size return rate
