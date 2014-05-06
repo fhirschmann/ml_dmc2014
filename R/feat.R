@@ -112,11 +112,19 @@ add.features.otf <- function(to, from) {
     dt.from[, customerReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("customerID")]
     customerRetRate <- unique(dt.from[, c("customerID", "customerReturnRate"), with=F])
     dt.to <- join(dt.to, customerRetRate, by="customerID")
+
+    # treat unknown customers
+    dt.to[, unknownCustomer := is.na(customerReturnRate)]
+    dt.to[is.na(customerReturnRate), customerReturnRate := 0.52]
     
     # TODO: Maybe we should group this by c("itemID", "color", "size")
     dt.from[, itemReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("itemID", "size")]
     itemRetRate <- unique(dt.from[, c("itemID", "itemReturnRate", "size"), with=F])
     dt.to <- join(dt.to, itemRetRate, by=c("itemID", "size"))
+
+    # treat unknown items
+    dt.to[, unknownItem := is.na(itemReturnRate)]
+    dt.to[is.na(itemReturnRate), itemReturnRate := 0.52]
     
     dt.to
 }
