@@ -36,6 +36,11 @@ descs <- list(
         fs.fun=fs.gbm,
         method="gbm",
         tuneLength=4,
+        tuneGrid=expand.grid(
+          shrinkage=0.001,
+          interaction.depth=5,
+          n.trees=100
+        ),
         n.minobsinnode=3
     ),
     gbmS=list(
@@ -105,7 +110,8 @@ descs <- list(
     ),
     rrf=list(
         fs.fun=fs.rf,
-        method="RRFglobal"
+        method="RRFglobal",
+        tuneLength=8
     ),
     treebag=list(
         fs.fun=fs.rf,
@@ -119,6 +125,11 @@ descs <- list(
     ctree=list(
         fs.fun=fs.tree,
         method="ctree"
+    ),
+    cforest=list(
+        fs.fun=fs.rf,
+        method="cforest",
+        tuneLength=7
     ),
     c50=list(
         fs.fun=fs.tree,
