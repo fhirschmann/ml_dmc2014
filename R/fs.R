@@ -113,24 +113,24 @@ fs.simon <- function(dt) {
   # We remove these instances beforehand
   dt2$deliveryDateMissing <- NULL
   
-  dt.dmc$M1$train$color <- NULL
+  dt2$color <- NULL
   
-  dt.dmc$M1$train$salutation <- NULL
+  dt2$salutation <- NULL
   
-  dt.dmc$M1$train$state <- NULL
+  dt2$state <- NULL
   
-  dt.dmc$M1$train$holiday <- NULL
+  dt2$holiday <- NULL
   
-  dt.dmc$M1$train$dateOfBirthIsOutlier <- NULL
+  dt2$dateOfBirthIsOutlier <- NULL
   
-  dt.dmc$M1$train$dateOfBirthMissing <- NULL
+  dt2$dateOfBirthMissing <- NULL
   
-  dt.dmc$M1$train$deliveryTime <- NULL
+  dt2$deliveryTime <- NULL
   
-  dt.dmc$M1$train$customerAge <- NULL
+  dt2$customerAge <- NULL
   
-  dt.dmc$M1$train$firstOrderDate
+  dt2$firstOrderDate
   
-  dt.dmc$M1$train$westGermany <- NULL
+  dt2$westGermany <- NULL
   
 }
