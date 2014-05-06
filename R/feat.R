@@ -117,7 +117,7 @@ add.features.otf <- function(to, from) {
     customerRetRate <- unique(dt.from[, c("customerID", "customerReturnRate"), with=F])
     dt.to <- join(dt.to, customerRetRate, by="customerID")
     # treat unknown customers
-    dt.to[, unknownCustomer := ifelse(is.na(customerReturnRate), "yes", "no")]
+    dt.to[, unknownCustomer := as.factor(ifelse(is.na(customerReturnRate), "yes", "no"))]
     dt.to[is.na(customerReturnRate), customerReturnRate := 0.52]
 
     ## itemReturnRate
@@ -126,21 +126,21 @@ add.features.otf <- function(to, from) {
     itemRetRate <- unique(dt.from[, c("itemID", "itemReturnRate", "size"), with=F])
     dt.to <- join(dt.to, itemRetRate, by=c("itemID", "size"))
     # treat unknown items
-    dt.to[, unknownItem := ifelse(is.na(itemReturnRate), "yes", "no")]
+    dt.to[, unknownItem := as.factor(ifelse(is.na(itemReturnRate), "yes", "no"))]
     dt.to[is.na(itemReturnRate), itemReturnRate := 0.52]
 
     ## colorReturnRate
     dt.from[, colorReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("color")]
     cRR <- unique(dt.from[, c("color", "colorReturnRate"), with=F])
     dt.to <- join(dt.to, cRR, by=c("color"))
-    dt.to[, unknownColor := ifelse(is.na(colorReturnRate), "yes", "no")]
+    dt.to[, unknownColor := as.factor(ifelse(is.na(colorReturnRate), "yes", "no"))]
     dt.to[is.na(colorReturnRate), colorReturnRate := 0.52]
 
     ## fewcolorsReturnRate
     dt.from[, fewcolorsReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("fewcolors")]
     fcRR <- unique(dt.from[, c("fewcolors", "fewcolorsReturnRate"), with=F])
     dt.to <- join(dt.to, fcRR, by=c("fewcolors"))
-    dt.to[, unknownFewColors := ifelse(is.na(fewcolorsReturnRate), "yes", "no")]
+    dt.to[, unknownFewColors := as.factor(ifelse(is.na(fewcolorsReturnRate), "yes", "no"))]
     dt.to[is.na(fewcolorsReturnRate), fewcolorsReturnRate := 0.52]
 
     ## sizeReturnRate
@@ -153,7 +153,7 @@ add.features.otf <- function(to, from) {
     mRR <- unique(dt.from[, c("manufacturerID", "manufacturerReturnRate"), with=F])
     dt.to <- join(dt.to, mRR, by="manufacturerID")
     # treat unknown manufacturers
-    dt.to[, unknownManufacturer := ifelse(is.na(manufacturerReturnRate), "yes", "no")]
+    dt.to[, unknownManufacturer := as.factor(ifelse(is.na(manufacturerReturnRate), "yes", "no"))]
     dt.to[is.na(manufacturerReturnRate), manufacturerReturnRate := 0.52]
 
     dt.to
