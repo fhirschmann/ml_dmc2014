@@ -114,7 +114,7 @@ add.features.otf <- function(to, from) {
     dt.to <- join(dt.to, customerRetRate, by="customerID")
 
     # treat unknown customers
-    dt.to[, unknownCustomer := is.na(customerReturnRate)]
+    dt.to[, unknownCustomer := ifelse(is.na(customerReturnRate), "yes", "no")]
     dt.to[is.na(customerReturnRate), customerReturnRate := 0.52]
     
     # TODO: Maybe we should group this by c("itemID", "color", "size")
@@ -123,7 +123,7 @@ add.features.otf <- function(to, from) {
     dt.to <- join(dt.to, itemRetRate, by=c("itemID", "size"))
 
     # treat unknown items
-    dt.to[, unknownItem := is.na(itemReturnRate)]
+    dt.to[, unknownItem := ifelse(is.na(itemReturnRate), "yes", "no")]
     dt.to[is.na(itemReturnRate), itemReturnRate := 0.52]
     
     dt.to
