@@ -108,24 +108,53 @@ add.features.otf <- function(to, from) {
     
     dt.to <- data.table(to)
     dt.from <- data.table(from[from$deliveryDateMissing == "no", ])
-    
+
+    ## customerReturnRate
     dt.from[, customerReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("customerID")]
     customerRetRate <- unique(dt.from[, c("customerID", "customerReturnRate"), with=F])
     dt.to <- join(dt.to, customerRetRate, by="customerID")
-
     # treat unknown customers
     dt.to[, unknownCustomer := ifelse(is.na(customerReturnRate), "yes", "no")]
     dt.to[is.na(customerReturnRate), customerReturnRate := 0.52]
-    
+
+    ## itemReturnRate
     # TODO: Maybe we should group this by c("itemID", "color", "size")
     dt.from[, itemReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("itemID", "size")]
     itemRetRate <- unique(dt.from[, c("itemID", "itemReturnRate", "size"), with=F])
     dt.to <- join(dt.to, itemRetRate, by=c("itemID", "size"))
-
     # treat unknown items
     dt.to[, unknownItem := ifelse(is.na(itemReturnRate), "yes", "no")]
     dt.to[is.na(itemReturnRate), itemReturnRate := 0.52]
-    
+
+    ## colorReturnRate
+    dt.from[, colorReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("color")]
+    cRR <- unique(dt.from[, c("color", "colorReturnRate"), with=F])
+    dt.to <- join(dt.to, cRR, by=c("color"))
+    dt.to[, unknownColor := ifelse(is.na(colorReturnRate), "yes", "no")]
+    dt.to[is.na(colorReturnRate), colorReturnRate := 0.52]
+
+    ## fewcolorsReturnRate
+    dt.from[, fewcolorsReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("fewcolors")]
+    fcRR <- unique(dt.from[, c("fewcolors", "fewcolorsReturnRate"), with=F])
+    dt.to <- join(dt.to, fcRR, by=c("fewcolors"))
+    dt.to[, unknownFewColors := ifelse(is.na(fewcolorsReturnRate), "yes", "no")]
+    dt.to[is.na(fewcolorsReturnRate), fewcolorsReturnRate := 0.52]
+
+    ## sizeReturnRate
+    dt.from[, sizeReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("size")]
+    sizeRR <- unique(dt.from[, c("sizeReturnRate", "size"), with=F])
+    dt.to <- join(dt.to, sRR, by=c("size"))
+
+    ## manufacturerReturnRate
+    dt.from[, manufacturerReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("manufacturerID")]
+    mRR <- unique(dt.from[, c("manufacturerID", "manufacturerReturnRate"), with=F])
+    dt.to <- join(dt.to, mRR, by="manufacturerID")
+    # treat unknown manufacturers
+    dt.to[, unknownManufacturer := ifelse(is.na(manufacturerReturnRate), "yes", "no")]
+    dt.to[is.na(manufacturerReturnRate), manufacturerReturnRate := 0.52]
+
+    ## TODO: fav color
+
     dt.to
 }
 
