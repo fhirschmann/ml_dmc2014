@@ -99,12 +99,13 @@ lsmooth <- function(x, N, alpha=1, mean=0.52) {
 }
 
 add.features.otf <- function(to, from) {
-    #
-    # Place features that should be computed on the fly on the train set only here.
-    #
-    # Args:
-    #   to: data frame to add the features to
-    #   from: data frame to calculate the features from
+    ##
+    ## Place features that should be computed based on one training set
+    ## and added to another set here.
+    ##
+    ## Args:
+    ##   to: data frame to add the features to
+    ##   from: data frame to calculate the features from
     require(data.table)
     require(plyr)
     
@@ -122,6 +123,25 @@ add.features.otf <- function(to, from) {
     itemRetRate <- unique(dt.from[, c("itemID", "itemReturnRate", "size"), with=F])
     dt.to <- join(dt.to, itemRetRate, by=c("itemID", "size"))
     
+    dt.to
+}
+
+add.features3 <- function(to, from) {
+    ## Place features that should be computed over ALL available data and
+    ## added to `to`.
+    ##
+    ## Args:
+    ##   to: data frame to add the features to
+    ##   from: data frame to calculate the features from
+    require(data.table)
+    require(plyr)
+    
+    dt.to <- data.table(to)
+    dt.from <- data.table(from[from$deliveryDateMissing == "no", ])
+    
+    dt.to
+}
+
 #     ###price features##########################################################################
 #     temp <- rbind(data.frame(dt.from[,list(itemID,price,orderDate,size,color)], group="train"),
 #                   data.frame(dt.to[,list(itemID,price,orderDate,size,color)], group="test"))
@@ -223,6 +243,3 @@ add.features.otf <- function(to, from) {
 #     #Löschen der temp Tabellen
 #     rm(temp)
 #     rm(itemPriceRange)
-    
-    dt.to
-}
