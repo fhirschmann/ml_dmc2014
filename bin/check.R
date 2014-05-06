@@ -2,12 +2,53 @@
 
 source("R/data.R")
 
+dt.na.strings <- c("NA", "", "??", "?")
+
+dt.classes <- c(
+    "orderItemID"="integer",
+    "orderDate"="Date",
+    "deliveryDate"="Date",
+    "dateOfBirth"="Date",
+    "itemID"="integer",
+    "size"="factor",
+    "manufacturerID"="integer",
+    "customerID"="integer",
+    "creationDate"="Date"
+)
+
+dt.train.orig <- read.csv("task/orders_train.txt", sep=";",
+                     colClasses=dt.classes, na.strings=dt.na.strings)
+dt.train.orig$returnShipment <- NULL
+dt.train.orig$holiday <- read.csv("task/orders_train.holiday.txt")$holiday
+dt.test.orig <- read.csv("task/orders_class.txt", sep=";",
+                    colClasses=dt.classes, na.strings=dt.na.strings)
+dt.test.orig$holiday <- read.csv("task/orders_class.holiday.txt")$holiday
+
 check <- function(cond, msg) {
     message(paste("Checking:", msg))
     if (!cond) {
-        error("FAILED")
+        stop("FAILED")
     }
 }
+
+check.missing <- function(actual, original, name) {
+    check(
+        all(actual[[paste(name, "Missing", sep="")]] == as.factor(ifelse(is.na(original[[name]]), "yes", "no"))),
+        paste(name, "Missing", sep=""))
+}
+
+
+for (a in c("deliveryDate", "dateOfBirth", "creationDate")) {
+    check.missing(dt.train, dt.train.orig, a)
+    check.missing(dt.test, dt.test.orig, a)
+}
+
+
+check(all(dt.train$deliveryDateMissing == as.factor(ifelse(is.na(dt.train.orig$deliveryDate), "yes", "no"))),
+      "Checking deliveryDateMissing Attribute in the Train Set")
+
+check(all(dt.test$deliveryDateMissing == as.factor(ifelse(is.na(dt.test.orig$deliveryDate), "yes", "no"))),
+      "Checking deliveryDateMissing Attribute in the Train Set")
 
 for (s in names(dt.dmc)) {
     message(paste("Checking Set", s))
@@ -18,3 +59,4 @@ for (s in names(dt.dmc)) {
     check(all(dt.dmc[[s]]$test$orderItemID == oid.test), "Test Set: Matching OrderItemID")
     
 }
+
