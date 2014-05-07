@@ -181,11 +181,11 @@ add.features.all <- function(to, from) {
     
     # favorite color
     dt.to[, customerFavoriteColor := as.factor(names(which.max(table(color)))), by=c('customerID')]
-    dt.to$customerItemIsFavoriteColor := as.factor(ifelse(color == customerFavoriteColor), "yes", "no")
+    dt.to$customerItemIsFavoriteColor <- as.factor(ifelse(dt.to$customerFavoriteColor == dt.to$color, "yes", "no"))
     
     # favorite baseColor
     dt.to[, customerFavoriteBaseColor := as.factor(names(which.max(table(baseColor)))), by=c('customerID')]
-    dt.to$customerItemIsFavoriteBaseColor := as.factor(ifelse(color == customerFavoriteBaseColor), "yes", "no")
+    dt.to$customerItemIsFavoriteBaseColor <- as.factor(ifelse(dt.to$customerFavoriteBaseColor == dt.to$baseColor, "yes", "no"))
     
     dt.to
 }
