@@ -26,7 +26,7 @@ add.features <- function(dt) {
     dt2$sameItemsOrderedBool <- as.factor(ifelse(dt2$sameItemsOrdered > 2, "yes", "no"))
     
     # Total number of items ordered
-    dt2[, customerNumItemsOrdered := .N, by=c("itemID", "customerID", "orderDate")]
+    dt2[, customerNumItemsOrdered := .N, by=c("customerID")]
     
     # Total number of distinct items ordered
     dt2[, customerDistinctItemsOrdered := length(unique(itemID)), by=c("customerID", "orderDate")]
