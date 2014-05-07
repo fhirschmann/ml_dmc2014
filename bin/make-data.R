@@ -59,7 +59,8 @@ rm.outliers <- function(dt) {
     dt2$deliveryDateIsOutlier <- as.factor(dt2$deliveryDateIsOutlier)
     
     # creationDate
-    dt2$creationDateMissing <- as.factor(ifelse(is.na(dt2$creationDate), "yes", "no"))
+    # None is missing, they are all outliers
+    #dt2$creationDateMissing <- as.factor(ifelse(is.na(dt2$creationDate), "yes", "no"))
     
     outliers <- dt2$creationDate == as.Date("2011-02-16")
     dt2[outliers, c("creationDate")] <- NA
@@ -120,8 +121,11 @@ dt.test <- add.collection(dt.test)
 
 dt.merged <- rbind(dt.train[, !names(dt.train) %in% c("returnShipment"), with=F], dt.test)
 
+message("Adding Features that can be computed on ALL data")
 dt.train <- add.features.all(dt.train, dt.merged)
 dt.test <- add.features.all(dt.test, dt.merged)
+
+message("Creating M sets")
 
 dt.dmc <- list()
 for (i in names(dt.dmc.ids$train)) {
@@ -145,4 +149,4 @@ saveRDS(dt.train, file="data.train.RData")
 saveRDS(dt.test, file="data.test.RData")
 saveRDS(dt.dmc, file="data.dmc.RData")
 saveRDS(dt.dmc.ids, file="data.dmc.ids.RData")
-saveRDS(na, file="na.RData")
+#saveRDS(na, file="na.RData")
