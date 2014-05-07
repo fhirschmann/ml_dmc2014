@@ -21,63 +21,43 @@ fs.all <- function(dt) {
     dt2
 }
 
-fs.svm <- function(dt) {
-    dt2 <- fs.all(dt)
+fs.noDiscrete <- function(dt) {
+    rm <- names(unlist(sapply(colnames(dt2),
+                              function(x) as.logical(grep("Discrete", x)), simplify=T)))
+    dt[setdiff(colnames(dt), rm)]
+}
+
+fs.onlyDiscrete <- function(dt) {
+    require(stringr)
     
-    dt2$priceDiscrete <- NULL
-    dt2$customerAgeDiscrete <- NULL
-    dt2$accountAgeDiscrete <- NULL
-    dt2$accountAgeAtOrderTimeDiscrete <- NULL
+    keep <- names(unlist(sapply(colnames(dt),
+                                function(x) as.logical(grep("Discrete", x)), simplify=T)))
+    rm <- str_sub(keep, 1, -9)
+    dt[setdiff(colnames(dt), rm)]
+}
+
+fs.svm <- function(dt) {
+    dt2 <- fs.noDiscrete(fs.all(dt))
+    
     dt2$size <- NULL
     
     dt2
-}
-
-fs.nb <- function(dt) {
-    dt2 <- fs.all(dt)
-    
-    dt2$priceDiscrete <- NULL
-    dt2$cumsterAgeDiscrete <- NULL
-    dt2$accountAgeDiscrete <- NULL
-    dt2$size <- NULL
-
-    dt2[,eval(c("returnShipment", "customerReturnRate", "itemReturnRate", "price"))]
 }
 
 fs.gbm <- function(dt) {
     dt2 <- fs.tree(dt)
     
-    dt2$color <- NULL
-    dt2$instantOrder <- NULL
-    dt2$salutation <- NULL
-    dt2$holiday <- NULL
-
-    
     dt2
 }
 
 fs.tree <- function(dt) {
-    dt2 <- fs.all(dt)
-    
-    dt2$price <- NULL  # Use discretized price
-    dt2$customerAge <- NULL  # Same here
-    dt2$accountAge <- NULL
+    dt2 <- fs.onlyDiscrete(fs.all(dt))
     
     dt2
 }
 
 fs.nn <- function(dt) {
-    dt2 <- dt
-    
-    
-    dt2$color <- NULL
-    dt2$instantOrder <- NULL
-    dt2$salutation <- NULL
-    dt2$holiday <- NULL
-    
-    dt2$priceDiscrete <- NULL
-    dt2$customerAgeDiscrete <- NULL
-    dt2$accountAgeDiscrete <- NULL
+    dt2 <- fs.onlyDiscrete(fs.all(dt))
     
     dt2
 }
