@@ -21,6 +21,28 @@ fs.all <- function(dt) {
     dt2
 }
 
+fs.noCustomer <- function(dt) {
+    dt2 <- dt
+    
+    dt2$customerID <- NULL
+    dt2$customerMoneySpent <- NULL
+    dt2$customerItemIsFavoriteBaseColor <- NULL
+    dt2$customerFavoriteBaseColor <- NULL
+    dt2$customerItemIsFavoriteColor <- NULL
+    dt2$customerFavoriteColor <- NULL
+    dt2$customerNumOrders <- NULL
+    dt2$customerAccountAge <- NULL
+    dt2$customerAccountAgeAtOrderTime <- NULL
+    dt2$customerAgeAtOrderTimeDiscrete <- NULL
+    dt2$customerAccountAgeAtOrderTimeDiscrete <- NULL
+    dt2$customerAccountAgeDiscrete <- NULL
+    dt2$customerNumItemsOrdered <- NULL
+    dt2$customerReturnRage <- NULL
+    dt2$customerTotalOrderVolume <- NULL
+    
+    dt2
+}
+
 fs.noDiscrete <- function(dt) {
     rm <- names(unlist(sapply(colnames(dt2),
                               function(x) as.logical(grep("Discrete", x)), simplify=T)))
