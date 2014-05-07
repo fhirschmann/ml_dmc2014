@@ -74,6 +74,14 @@ message("Removing outliers in Train and Test Set")
 dt.train <- rm.outliers(dt.train)
 dt.test <- rm.outliers(dt.test)
 
+dt.train$color <- as.character(dt.train$color)
+dt.train[is.na(dt.train$color), c("color")] <- "MISSING"
+dt.train$color <- as.factor(dt.train$color)
+
+dt.test$color <- as.character(dt.test$color)
+dt.test[is.na(dt.test$color), c("color")] <- "MISSING"
+dt.test$color <- as.factor(dt.test$color)
+
 # DON'T SWITCH THESE TWO
 
 message("Adding Features to the Train and Test Set")
