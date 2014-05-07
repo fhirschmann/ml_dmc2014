@@ -37,7 +37,7 @@ fs.noCustomer <- function(dt) {
     dt2$customerAccountAgeAtOrderTimeDiscrete <- NULL
     dt2$customerAccountAgeDiscrete <- NULL
     dt2$customerNumItemsOrdered <- NULL
-    dt2$customerReturnRage <- NULL
+    dt2$customerReturnRate <- NULL
     dt2$customerTotalOrderVolume <- NULL
     
     dt2
