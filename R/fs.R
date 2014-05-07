@@ -24,9 +24,10 @@ fs.all <- function(dt) {
 fs.svm <- function(dt) {
     dt2 <- fs.all(dt)
     
-    dt2$discretizedPrice <- NULL
-    dt2$discretizedCustomerAge <- NULL
-    dt2$discretizedAccountAge <- NULL
+    dt2$priceDiscrete <- NULL
+    dt2$customerAgeDiscrete <- NULL
+    dt2$accountAgeDiscrete <- NULL
+    dt2$accountAgeAtOrderTimeDiscrete <- NULL
     dt2$size <- NULL
     
     dt2
@@ -35,22 +36,12 @@ fs.svm <- function(dt) {
 fs.nb <- function(dt) {
     dt2 <- fs.all(dt)
     
-    dt2$discretizedPrice <- NULL
-    dt2$discretizedCustomerAge <- NULL
-    dt2$discretizedAccountAge <- NULL
+    dt2$priceDiscrete <- NULL
+    dt2$cumsterAgeDiscrete <- NULL
+    dt2$accountAgeDiscrete <- NULL
     dt2$size <- NULL
 
     dt2[,eval(c("returnShipment", "customerReturnRate", "itemReturnRate", "price"))]
-}
-
-fs.c50 <- function(dt) {
-    dt2 <- fs.all(dt)
-    
-    #dt2$discretizedPrice <- NULL
-    dt2$discretizedCustomerAge <- NULL
-    dt2$discretizedAccountAge <- NULL
-    
-    dt2
 }
 
 fs.gbm <- function(dt) {
@@ -64,7 +55,6 @@ fs.gbm <- function(dt) {
     
     dt2
 }
-
 
 fs.tree <- function(dt) {
     dt2 <- fs.all(dt)
@@ -85,9 +75,9 @@ fs.nn <- function(dt) {
     dt2$salutation <- NULL
     dt2$holiday <- NULL
     
-    dt2$discretizedPrice <- NULL
-    dt2$discretizedCustomerAge <- NULL
-    dt2$discretizedAccountAge <- NULL
+    dt2$priceDiscrete <- NULL
+    dt2$customerAgeDiscrete <- NULL
+    dt2$accountAgeDiscrete <- NULL
     
     dt2
 }

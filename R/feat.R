@@ -13,24 +13,28 @@ add.features <- function(dt) {
     # Instant Order
     dt2$instantOrder <- as.factor(ifelse(dt2$creationDate == dt2$orderDate, "yes", "no"))
     
-    # Customer age in Years
-    dt2$customerAge <- as.integer(year(dt2$orderDate) - year(dt2$dateOfBirth))
-    dt2$discretizedCustomerAge <- cut(dt2$customerAge, 10 + 1:15 * 5)
+    # Customer age in Years (at order time)
+    dt2$customerAgeAtOrderTime <- as.numeric((dt2$orderDate - dt2$dateOfBirth) / 365)
+    dt2$customerAgeAtOrderTimeDiscrete <- cut(dt2$customerAgeAtOrderTime, c(10 + 1:14 * 5, Inf))
     
-    # Account age in Days
-    dt2$accountAge <- as.numeric(dt2$orderDate - dt2$creationDate)
-    dt2$discretizedAccountAge <- cut(dt2$accountAge, c(-1, 1:16 * 50))
+    # Account age in Years (at order time)
+    dt2$customerAccountAgeAtOrderTime <- as.numeric((as.Date("2013-04-30") - dt2$creationDate) / 365)
+    dt2$customerAccountAgeAtOrderTimeDiscrete <- cut(dt2$customerAccountAgeAtOrderTime, c(-Inf, 1:10 * 0.2, Inf))
+    
+    # Account age in Years (absolute)
+    dt2$customerAccountAge <- as.numeric((dt2$orderDate - dt2$creationDate) / 365)
+    dt2$customerAccountAgeDiscrete <- cut(dt2$customerAccountAge, c(-Inf, 1:10 * 0.2, Inf))
     
     # Number of items ordered with the same ID
     dt2[, sameItemsOrdered := .N, by=c("itemID", "customerID", "orderDate")]
-    dt2$sameItemsOrderedBool <- as.factor(ifelse(dt2$sameItemsOrdered > 2, "yes", "no"))
+    dt2$sameItemsOrderedGreater2 <- as.factor(ifelse(dt2$sameItemsOrdered > 2, "yes", "no"))
     
     # Total number of items ordered
     dt2[, customerNumItemsOrdered := .N, by=c("customerID")]
     
     # Total number of distinct items ordered
     dt2[, customerDistinctItemsOrdered := length(unique(itemID)), by=c("customerID", "orderDate")]
-    dt2$customerDistinctItemsOrderedBool <- as.factor(ifelse(dt2$customerDistinctItemsOrdered > 1, "yes", "no"))
+    dt2$customerDistinctItemsOrderedGreater1 <- as.factor(ifelse(dt2$customerDistinctItemsOrdered > 1, "yes", "no"))
     
     # Total number of orders
     dt2[, customerNumOrders := .N, by=c("customerID", "orderDate")]
@@ -52,7 +56,7 @@ add.features <- function(dt) {
     dt2$size <- droplevels(as.factor(toupper(dt2$size)))
     
     # Discretized price
-    dt2$discretizedPrice <- cut(dt2$price, c(0, 1:20 * 10, Inf), left=T, right=F)
+    dt2$priceDiscrete <- cut(dt2$price, c(0, 1:20 * 10, Inf), left=T, right=F)
     
     # Item Discount
     dt2[, itemDiscount := 1 - price / max(price), by=c("itemID", "size")]
