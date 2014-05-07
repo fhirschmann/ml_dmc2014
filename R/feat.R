@@ -115,7 +115,7 @@ add.features.otf <- function(to, from) {
     
     ## total money spent per customer
     dt.from[dt.from$returnShipment == "no", customerMoneySpent := sum(price), by=c("customerID")]
-    customerMoneySpent <- unique(dt.from[, c("customerID", "customerMoneySpent"), with=F])
+    customerMoneySpent <- unique(dt.from[dt.from$returnShipment == "no", c("customerID", "customerMoneySpent"), with=F])
     dt.to <- join(dt.to, customerMoneySpent, by="customerID")
 
     ## customerReturnRate
@@ -180,11 +180,15 @@ add.features.all <- function(to, from) {
     dt.from <- data.table(from[from$deliveryDateMissing == "no", ])
     
     # favorite color
-    dt.to[, customerFavoriteColor := as.factor(names(which.max(table(color)))), by=c('customerID')]
+    dt.from[, customerFavoriteColor := as.factor(names(which.max(table(color)))), by=c('customerID')]
+    customerFavoriteColor <- unique(dt.from[, c("customerID", "customerFavoriteColor"), with=F])
+    dt.to <- join(dt.to, customerFavoriteColor, by=c("customerID"))
     dt.to$customerItemIsFavoriteColor <- as.factor(ifelse(dt.to$customerFavoriteColor == dt.to$color, "yes", "no"))
     
     # favorite baseColor
-    dt.to[, customerFavoriteBaseColor := as.factor(names(which.max(table(baseColor)))), by=c('customerID')]
+    dt.from[, customerFavoriteBaseColor := as.factor(names(which.max(table(baseColor)))), by=c('customerID')]
+    customerFavoriteBaseColor <- unique(dt.from[, c("customerID", "customerFavoriteBaseColor"), with=F])
+    dt.to <- join(dt.to, customerFavoriteBaseColor, by=c("customerID"))
     dt.to$customerItemIsFavoriteBaseColor <- as.factor(ifelse(dt.to$customerFavoriteBaseColor == dt.to$baseColor, "yes", "no"))
     
     dt.to
