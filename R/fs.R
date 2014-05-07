@@ -13,7 +13,7 @@ fs.all <- function(dt) {
     
     # Use accountAge
     dt2$creationDate <- NULL
-    dt2$firstOrderDate <- NULL
+    dt2$customerFirstOrderDate <- NULL
     
     # We remove these instances beforehand
     dt2$deliveryDateMissing <- NULL
