@@ -110,14 +110,20 @@ message("Adding Feature Collection")
 dt.train <- add.collection(dt.train)
 dt.test <- add.collection(dt.test)
 
+dt.merged <- rbind(dt.train[, !names(dt.train) %in% c("returnShipment"), with=F], dt.test)
+
 dt.dmc <- list()
 for (i in names(dt.dmc.ids$train)) {
     message(paste("Creating Data Set", i))
     train.ids <- dt.dmc.ids$train[[i]]
     test.ids <- dt.dmc.ids$test[[i]]
     dt.dmc[[i]] <- list(
-        train=add.features.otf(dt.train[train.ids, ], dt.train[-(test.ids), ]),
-        test=add.features.otf(dt.train[test.ids, ], dt.train[-(test.ids), ]))
+        train=add.features.all(
+            add.features.otf(dt.train[train.ids, ], dt.train[-(test.ids), ]),
+            dt.merged),
+        test=add.features.all(
+            add.features.otf(dt.train[test.ids, ], dt.train[-(test.ids), ]),
+            dt.merged))
 }
 
 nas <- function(x) which(is.na(dt.train), T)
