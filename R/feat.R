@@ -40,14 +40,14 @@ add.features <- function(dt) {
     dt2[, customerNumOrders := .N, by=c("customerID", "orderDate")]
     
     # Date of first order (per customer)
-    dt2[, firstOrderDate := min(orderDate), by=c("customerID")]
-    dt2$firstOrderDate <- as.Date(dt2$firstOrderDate)
+    dt2[, customerFirstOrderDate := min(orderDate), by=c("customerID")]
+    dt2$customerFirstOrderDate <- as.Date(dt2$customerFirstOrderDate)
     
     # Volume of order
     dt2[, orderVolume := sum(price), by=c("customerID", "orderDate")]
     
     # Total volume of customer's order
-    dt2[, totalOrderVolume := sum(price), by=c("customerID")]
+    dt2[, customerTotalOrderVolume := sum(price), by=c("customerID")]
     
     # Summarize colors
     dt2$fewcolors <- revalue(dt2$color, colormap)
@@ -64,7 +64,7 @@ add.features <- function(dt) {
     dt2[is.na(dt2$itemDiscount), c("itemDiscount")] <- 0
 
     # favorite color
-    dt2[, favoriteColor := as.factor(names(which.max(table(color)))), by=c('customerID')]
+    dt2[, customerFavoriteColor := as.factor(names(which.max(table(color)))), by=c('customerID')]
     
     # West/East Germany
     dt2$westGermany <- revalue(dt2$state, c(
