@@ -58,11 +58,21 @@ add.features <- function(dt) {
     # Discretized price
     dt2$priceDiscrete <- cut(dt2$price, c(0, 1:20 * 10, Inf), left=T, right=F)
     
+    # Price Levels
+    dt2[, itemPriceLevels := length(unique(price)), by=c("itemID")]
+    dt2$itemPriceLevelsGreater1 <- as.factor(ifelse(dt2$itemPriceLevels > 1, "yes", "no"))
+    
     # Item Discount
     dt2[, itemDiscount := 1 - price / max(price), by=c("itemID", "size")]
     
     dt2[is.na(dt2$itemDiscount), c("itemDiscount")] <- 0
     
+    # Item Collection
+    dt2[dt2$itemID < 1100, c("itemCollection")] <- 1
+    dt2[dt2$itemID >= 1100 & itemID < 2100, c("itemCollection")] <- 2
+    dt2[dt2$itemID >= 2100, c("itemCollection")] <- 3
+    dt2$itemCollection <- as.factor(dt2$itemCollection)
+
     # West/East Germany
     dt2$westGermany <- revalue(dt2$state, c(
         "Baden-Wuerttemberg"="yes",
