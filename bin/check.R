@@ -50,11 +50,21 @@ check(all(dt.train$deliveryDateMissing == as.factor(ifelse(is.na(dt.train.orig$d
 check(all(dt.test$deliveryDateMissing == as.factor(ifelse(is.na(dt.test.orig$deliveryDate), "yes", "no"))),
       "Checking deliveryDateMissing Attribute in the Train Set")
 
+check(all(!(is.na(dt.train$dateOfBirth) &
+                dt.train$dateOfBirthMissing == "no" &
+                dt.train$dateOfBirthIsOutlier == "no")),
+      "Checking if dateOfBirthMissing in the Train Set")
+
+check(all(!(is.na(dt.train$dateOfBirth) &
+                dt.train$dateOfBirthMissing == "no" &
+                dt.train$dateOfBirthIsOutlier == "no")),
+      "Checking if dateOfBirthMissing in the Test Set")
+
 for (s in names(dt.dmc)) {
     message(paste("Checking Set", s))
     oid.train <- as.numeric(as.character(read.csv(paste("eva/", s, "_train.txt", sep=""))$orderItemID))
     oid.test <- as.numeric(as.character(read.csv(paste("eva/", s, "_test.txt", sep=""))$orderItemID))
-    
+        
     check(all(dt.dmc[[s]]$train$orderItemID == oid.train), "Train Set: Matching OrderItemID")
     check(all(dt.dmc[[s]]$test$orderItemID == oid.test), "Test Set: Matching OrderItemID")
     
