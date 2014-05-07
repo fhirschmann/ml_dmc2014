@@ -21,7 +21,7 @@ grid.gbm <- expand.grid(
 
 grid.gbm.M <- expand.grid(
     shrinkage=c(0.1),
-    interaction.depth=1:8,
+    interaction.depth=1:5,
     n.trees=c(180, 200, 220, 240)
 )
 
