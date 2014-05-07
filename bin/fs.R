@@ -1,47 +1,23 @@
 #!/usr/bin/env Rscript
+
 library(caret)
 library(data.table)
 
+load('data.RData')
+source("R/pipeline.R")
 source("R/data.R")
 source("R/fs.R")
 
-dt.train <- data.frame(fs.all(dt.dmc$M1$train))
-dt.test <- data.frame(fs.all(dt.dmc$M1$test))
+dt <- fs.all(dt.train)
 
-# Take a sample
-set.seed(42)
-dt.train <- dt.train[sample(nrow(dt.train), 100), ]
-zeroVar <- names(which(sapply(dt.train, function(x) length(unique(x)) == 1)))
-dt.train <- dt.train[, !names(dt.train) %in% zeroVar]
-
-set.seed(42)
-dt.test <- dt.test[sample(nrow(dt.test), 10), ]
-dt.test <- dt.test[, !names(dt.test) %in% zeroVar]
-
-# Outcome
-y.train <- dt.train$returnShipment
-y.test <- dt.test$returnShipment
-
-# Training Data
-x.train <- dt.train
-x.train$returnShipment <- NULL
-x.test <- dt.test
-x.test$returnShipment <- NULL
-
-funcs <- caretFuncs
-funcs$fit <- function(a, b, first, last, ...) {
-    train(a, b, method = "gbm", tuneLength=1, ...) 
-}
-
-rctrl <- rfeControl(functions=funcs, saveDetails=T,
-                    allowParallel=F)
-
-set.seed(42)
-
-#rfefit <- rfeIter(x.train, y.train, x.test, y.test, sizes=4*(3:6),
-#                  rfeControl=rctrl)
-
-rfefit <- rfe(x.train, y.train, sizes=4*(3:6), rfeControl=rctrl)
-
-rfefit
-saveRDS(rfefit, file="rfe.RData")
+c50funcs <- caretFuncs
+c50funcs$fit <- function(a, b, first, last, ...) { train(a, b, method = 'C5.0', ...) }
+rctrl <- rfeControl(functions = c50funcs, method='cv', number = 10, saveDetails = T, allowParallel = F)
+pred <- dt$returnShipment
+dt$returnShipment <- NULL
+rfe(x=dt,
+    y=pred,
+    sizes = 4*(3:6),
+    metric="Accuracy",
+    maximize = T,
+    rfeControl=rctrl)
