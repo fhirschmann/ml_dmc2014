@@ -104,21 +104,6 @@ c1.itemids <- unique(dt.train[c1, ]$itemID)
 c2.itemids <- unique(dt.train[c2, ]$itemID)
 c3.itemids <- unique(dt.train[c3, ]$itemID)
 
-add.collection <- function(dt) {
-    dt2 <- dt
-    dt2$collection <- 0
-    dt2[dt2$itemID %in% c1.itemids, c("collection")] <- 1
-    dt2[dt2$itemID %in% c2.itemids, c("collection")] <- 2
-    dt2[dt2$itemID %in% c3.itemids, c("collection")] <- 3
-    
-    dt2$collection <- as.factor(dt2$collection)
-    dt2
-}
-
-message("Adding Feature Collection")
-dt.train <- add.collection(dt.train)
-dt.test <- add.collection(dt.test)
-
 dt.merged <- rbind(dt.train[, !names(dt.train) %in% c("returnShipment"), with=F], dt.test)
 
 message("Adding Features that can be computed on ALL data")
