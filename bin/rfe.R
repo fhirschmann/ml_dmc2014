@@ -32,4 +32,4 @@ rfefit <- rfe(x=dt, y=pred,
               rfeControl=rctrl)
 rfefit
 
-saveRDS(rfefit)
+saveRDS(rfefit, "rfe.RData")
