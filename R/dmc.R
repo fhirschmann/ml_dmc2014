@@ -18,12 +18,21 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
     # Save orderItemID for later use
     orderItemID <- as.numeric(as.character(data$test$orderItemID))
     
+    features.before <- colnames(data$train)
     data <- fs.fun(rbind(data$train[train.idx, ], data$test[test.idx, ]))
+    features.after <- colnames(data)
+    
+    if (verbose) {
+        message(paste("Excluded through fs.fun were\n",
+                      paste(setdiff(features.before, features.after), collapse="\n")),
+                "")
+    }
     
     # Remove Zero-Variance Predictors; some algos can't handle them
     zeroVar <- names(which(sapply(data, function(x) length(unique(x)) == 1)))
     if (verbose)
-        message(paste("Excluding Zero Variance Predictors", paste(zeroVar, collapse=", ")))
+        message(paste("Excluding Zero Variance Predictors\n", paste(zeroVar, collapse="\n")),
+                sep="")
     data <- data[!names(data) %in% zeroVar]
     
     if (verbose) {
