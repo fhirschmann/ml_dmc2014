@@ -33,8 +33,8 @@ add.features <- function(dt) {
     dt2[, customerNumItemsOrdered := .N, by=c("customerID")]
     
     # Total number of distinct items ordered
-    dt2[, customerDistinctItemsOrdered := length(unique(itemID)), by=c("customerID", "orderDate")]
-    dt2$customerDistinctItemsOrderedGreater1 <- as.factor(ifelse(dt2$customerDistinctItemsOrdered > 1, "yes", "no"))
+    dt2[, orderDistinctItems := length(unique(itemID)), by=c("customerID", "orderDate")]
+    dt2$orderDistinctItems <- as.factor(ifelse(dt2$orderDistinctItems > 1, "yes", "no"))
     
     # Total number of orders
     dt2[, customerNumOrders := .N, by=c("customerID", "orderDate")]
