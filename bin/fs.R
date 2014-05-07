@@ -5,8 +5,8 @@ library(data.table)
 source("R/data.R")
 source("R/fs.R")
 
-dt.train <- data.frame(fs.all(dt.dmc$T1$train))
-dt.test <- data.frame(fs.all(dt.dmc$T1$test))
+dt.train <- data.frame(fs.all(dt.dmc$M1$train))
+dt.test <- data.frame(fs.all(dt.dmc$M1$test))
 
 # Take a sample
 set.seed(42)
@@ -37,7 +37,11 @@ rctrl <- rfeControl(functions=funcs, saveDetails=T,
                     allowParallel=F)
 
 set.seed(42)
-rfefit <- rfeIter(x.train, y.train, x.test, y.test, sizes=4*(3:6),
-                  rfeControl=rctrl)
+
+#rfefit <- rfeIter(x.train, y.train, x.test, y.test, sizes=4*(3:6),
+#                  rfeControl=rctrl)
+
+rfefit <- rfe(x.train, y.train, sizes=4*(3:6), rfeControl=rctrl)
+
 rfefit
 saveRDS(rfefit, file="rfe.RData")
