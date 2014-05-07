@@ -124,8 +124,8 @@ add.features.otf <- function(to, from) {
     dt.to <- join(dt.to, customerRetRate, by="customerID")
     
     # treat unknown customers
-    dt.to[, unknownCustomer := as.factor(ifelse(is.na(customerReturnRate), "yes", "no"))]
-    dt.to[is.na(customerReturnRate), customerReturnRate := 0.52]
+    #dt.to[, unknownCustomer := as.factor(ifelse(is.na(customerReturnRate), "yes", "no"))]
+    #dt.to[is.na(customerReturnRate), customerReturnRate := 0.52]
 
     ## itemReturnRate
     # TODO: Maybe we should group this by c("itemID", "color", "size")
@@ -133,22 +133,22 @@ add.features.otf <- function(to, from) {
     itemRetRate <- unique(dt.from[, c("itemID", "itemReturnRate", "size"), with=F])
     dt.to <- join(dt.to, itemRetRate, by=c("itemID", "size"))
     # treat unknown items
-    dt.to[, unknownItem := as.factor(ifelse(is.na(itemReturnRate), "yes", "no"))]
-    dt.to[is.na(itemReturnRate), itemReturnRate := 0.52]
+    #dt.to[, unknownItem := as.factor(ifelse(is.na(itemReturnRate), "yes", "no"))]
+    #dt.to[is.na(itemReturnRate), itemReturnRate := 0.52]
 
     ## colorReturnRate
     dt.from[, colorReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("color")]
     cRR <- unique(dt.from[, c("color", "colorReturnRate"), with=F])
     dt.to <- join(dt.to, cRR, by=c("color"))
-    dt.to[, unknownColor := as.factor(ifelse(is.na(colorReturnRate), "yes", "no"))]
-    dt.to[is.na(colorReturnRate), colorReturnRate := 0.52]
+    #dt.to[, unknownColor := as.factor(ifelse(is.na(colorReturnRate), "yes", "no"))]
+    #dt.to[is.na(colorReturnRate), colorReturnRate := 0.52]
 
     ## baseColorReturnRate
     dt.from[, baseColorReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("baseColor")]
     fcRR <- unique(dt.from[, c("baseColor", "baseColorReturnRate"), with=F])
     dt.to <- join(dt.to, fcRR, by=c("baseColor"))
-    dt.to[, unknownFewColor := as.factor(ifelse(is.na(baseColorReturnRate), "yes", "no"))]
-    dt.to[is.na(baseColorReturnRate), baseColorReturnRate := 0.52]
+    #dt.to[, unknownFewColor := as.factor(ifelse(is.na(baseColorReturnRate), "yes", "no"))]
+    #dt.to[is.na(baseColorReturnRate), baseColorReturnRate := 0.52]
 
     ## sizeReturnRate
     dt.from[, sizeReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("size")]
@@ -180,16 +180,22 @@ add.features.all <- function(to, from) {
     dt.from <- data.table(from[from$deliveryDateMissing == "no", ])
     
     # favorite color
-    dt.from[, customerFavoriteColor := as.factor(names(which.max(table(color)))), by=c('customerID')]
+    dt.from[, customerFavoriteColor := names(which.max(table(color))), by=c('customerID')]
+    dt.from$customerFavoriteColor <- as.factor(dt.from$customerFavoriteColor)
     customerFavoriteColor <- unique(dt.from[, c("customerID", "customerFavoriteColor"), with=F])
     dt.to <- join(dt.to, customerFavoriteColor, by=c("customerID"))
-    dt.to$customerItemIsFavoriteColor <- as.factor(ifelse(dt.to$customerFavoriteColor == dt.to$color, "yes", "no"))
+    
+    dt.to$customerItemIsFavoriteColor <- as.factor(ifelse(
+        as.character(dt.to$customerFavoriteColor) == as.character(dt.to$color), "yes", "no"))
     
     # favorite baseColor
-    dt.from[, customerFavoriteBaseColor := as.factor(names(which.max(table(baseColor)))), by=c('customerID')]
+    dt.from[, customerFavoriteBaseColor := names(which.max(table(baseColor))), by=c('customerID')]
+    dt.from$customerFavoriteBaseColor <- as.factor(dt.from$customerFavoriteBaseColor)
+    
     customerFavoriteBaseColor <- unique(dt.from[, c("customerID", "customerFavoriteBaseColor"), with=F])
     dt.to <- join(dt.to, customerFavoriteBaseColor, by=c("customerID"))
-    dt.to$customerItemIsFavoriteBaseColor <- as.factor(ifelse(dt.to$customerFavoriteBaseColor == dt.to$baseColor, "yes", "no"))
+    dt.to$customerItemIsFavoriteBaseColor <- as.factor(ifelse(
+        as.character(dt.to$customerFavoriteBaseColor) == as.character(dt.to$baseColor), "yes", "no"))
     
     dt.to
 }
