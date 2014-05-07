@@ -15,14 +15,14 @@ ctrl.probs$classProbs <- TRUE
 
 grid.gbm <- expand.grid(
     shrinkage=c(0.1),
-    interaction.depth=1:15,
-    n.trees=c(1, 1:100 * 5)
+    interaction.depth=1:10,#1:15,
+    n.trees=c(1, 1:40  *5)#c(1, 1:100 * 5)
 )
 
 grid.c50 <- expand.grid(
     model=c("rules", "tree"),
     winnow=c(TRUE, FALSE),
-    trials=1:100
+    trials=30:60#1:100
 )
 
 # List of stuff to learn
@@ -55,7 +55,7 @@ descs <- list(
         fs.fun=fs.tree,
         method="C5.0",
         tuneGrid=grid.c50,
-        control=C5.0Control(earlyStopping=F)
+        control=C5.0Control(earlyStopping=T)
     ),
     
     # C5.0 with Probabilities
@@ -64,7 +64,7 @@ descs <- list(
         method="C5.0",
         tuneGrid=grid.c50,
         trControl=ctrl.probs,
-        control=C5.0Control(earlyStopping=F)
+        control=C5.0Control(earlyStopping=T)
     ),
     
     # Penalized Multinomial Regression
@@ -78,20 +78,21 @@ descs <- list(
     rrfGC=list(
         fs.fun=fs.rf,
         method="RRFglobal",
-        tuneLength=8
+        tuneLength=3#8
     ),
     
     # Support Vector Machine (Polynomial Kernel)
     svmPolyC=list(
         fs.fun=fs.rf,
         method="svmPoly",
-        tuneLength=7
+        tuneLength=3#7
     ),
     
     # Bagged Cart
     treebagC=list(
         fs.fun=fs.tree,
-        method="treebag"
+        method="treebag",
+        tuneLength=3
     ),
     fda=list(
         fs.fun=fs.nn,
