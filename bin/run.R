@@ -49,14 +49,16 @@ if ("-m" %in% args) {
     desc$save.path <- "models.tiny"
 }
 
-message(paste("Writing to directory", desc$save.path))
-
 desc$data.name <- args[[2]]
 desc$name <- args[[1]]
 
 if (file.exists("config.R")) source("config.R")
 
-if (!file.exists(desc$save.path)) dir.create(desc$save.path)
+if (!is.null(desc$save.path))
+    if (!file.exists(desc$save.path))
+        dir.create(desc$save.path)
+
+if (!is.null(desc$save.path)) message(paste("Writing to directory", desc$save.path))
 
 system.time(train <- do.call(dmctrain, desc))
 train[c("results", "bestResults", "method", "label")]
