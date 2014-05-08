@@ -15,6 +15,8 @@ fuck <- function(dt) {
 }
 
 score.min <- fuck(m)
+message(paste("Always Keep", paste(keep, collapse=", ")))
+
 message("All Features:")
 message(paste("\t Score", score.min))
 
@@ -30,6 +32,7 @@ for (f in colnames(m)) {
             score <- score.min
             exclude <- c(exclude, f)
             message(paste("Remove:", f))
+            score.min <- score
         } else {
             message(paste("Don't Remove:", f))
         }
