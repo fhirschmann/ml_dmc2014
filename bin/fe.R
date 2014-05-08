@@ -66,8 +66,8 @@ for (f in sample(cols, length(cols))) {
 }
 
 message("")
-message("Features Removed:")
+message("Features Kept:")
 data.frame(change=unlist(kept))
 message("")
-message("Features Kept")
+message("Features Removed")
 data.frame(change=removed)
