@@ -1,0 +1,185 @@
+Loading required package: methods
+Loading required package: stringr
+Loading required package: plyr
+
+Attaching package: ‘plyr’
+
+The following object is masked from ‘package:lubridate’:
+
+    here
+
+Always Keep returnShipment, size
+All Features:
+	 Score 13571
+Excluding: itemID
+	Score (current minimum): 13571
+	Score:  13568
+Remove: itemID
+Excluding: itemID, color
+	Score (current minimum): 13568
+	Score:  13563
+Remove: color
+Excluding: itemID, color, manufacturerID
+	Score (current minimum): 13563
+	Score:  13561
+Remove: manufacturerID
+Excluding: itemID, color, manufacturerID, customerID
+	Score (current minimum): 13561
+	Score:  13595
+Don't Remove: customerID
+Excluding: itemID, color, manufacturerID, salutation
+	Score (current minimum): 13561
+	Score:  13542
+Remove: salutation
+Excluding: itemID, color, manufacturerID, salutation, state
+	Score (current minimum): 13542
+	Score:  13576
+Don't Remove: state
+Excluding: itemID, color, manufacturerID, salutation, holiday
+	Score (current minimum): 13542
+	Score:  13549
+Don't Remove: holiday
+Excluding: itemID, color, manufacturerID, salutation, dateOfBirthMissing
+	Score (current minimum): 13542
+	Score:  13545
+Don't Remove: dateOfBirthMissing
+Excluding: itemID, color, manufacturerID, salutation, dateOfBirthIsOutlier
+	Score (current minimum): 13542
+	Score:  13544
+Don't Remove: dateOfBirthIsOutlier
+Excluding: itemID, color, manufacturerID, salutation, deliveryDateIsOutlier
+	Score (current minimum): 13542
+	Score:  13583
+Don't Remove: deliveryDateIsOutlier
+Excluding: itemID, color, manufacturerID, salutation, creationDateIsOutlier
+	Score (current minimum): 13542
+	Score:  13564
+Don't Remove: creationDateIsOutlier
+Excluding: itemID, color, manufacturerID, salutation, deliveryTime
+	Score (current minimum): 13542
+	Score:  13555
+Don't Remove: deliveryTime
+Excluding: itemID, color, manufacturerID, salutation, orderWeekday
+	Score (current minimum): 13542
+	Score:  13549
+Don't Remove: orderWeekday
+Excluding: itemID, color, manufacturerID, salutation, instantOrder
+	Score (current minimum): 13542
+	Score:  13565
+Don't Remove: instantOrder
+Excluding: itemID, color, manufacturerID, salutation, customerAgeAtOrderTimeDiscrete
+	Score (current minimum): 13542
+	Score:  13597
+Don't Remove: customerAgeAtOrderTimeDiscrete
+Excluding: itemID, color, manufacturerID, salutation, customerAccountAgeAtOrderTimeDiscrete
+	Score (current minimum): 13542
+	Score:  13595
+Don't Remove: customerAccountAgeAtOrderTimeDiscrete
+Excluding: itemID, color, manufacturerID, salutation, customerAccountAgeDiscrete
+	Score (current minimum): 13542
+	Score:  13567
+Don't Remove: customerAccountAgeDiscrete
+Excluding: itemID, color, manufacturerID, salutation, sameItemsOrdered
+	Score (current minimum): 13542
+	Score:  13584
+Don't Remove: sameItemsOrdered
+Excluding: itemID, color, manufacturerID, salutation, sameItemsOrderedGreater2
+	Score (current minimum): 13542
+	Score:  13551
+Don't Remove: sameItemsOrderedGreater2
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered
+	Score (current minimum): 13542
+	Score:  13507
+Remove: customerNumItemsOrdered
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, orderDistinctItems
+	Score (current minimum): 13507
+	Score:  13541
+Don't Remove: orderDistinctItems
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, customerNumOrders
+	Score (current minimum): 13507
+	Score:  13553
+Don't Remove: customerNumOrders
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, orderVolume
+	Score (current minimum): 13507
+	Score:  13569
+Don't Remove: orderVolume
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, customerTotalOrderVolume
+	Score (current minimum): 13507
+	Score:  13608
+Don't Remove: customerTotalOrderVolume
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, baseColor
+	Score (current minimum): 13507
+	Score:  13536
+Don't Remove: baseColor
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, priceDiscrete
+	Score (current minimum): 13507
+	Score:  13527
+Don't Remove: priceDiscrete
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, itemPriceLevels
+	Score (current minimum): 13507
+	Score:  13546
+Don't Remove: itemPriceLevels
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, itemPriceLevelsGreater1
+	Score (current minimum): 13507
+	Score:  13553
+Don't Remove: itemPriceLevelsGreater1
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, itemDiscount
+	Score (current minimum): 13507
+	Score:  13541
+Don't Remove: itemDiscount
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, itemCollection
+	Score (current minimum): 13507
+	Score:  13526
+Don't Remove: itemCollection
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, westGermany
+	Score (current minimum): 13507
+	Score:  13512
+Don't Remove: westGermany
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, customerFavoriteColor
+	Score (current minimum): 13507
+	Score:  13654
+Don't Remove: customerFavoriteColor
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, customerItemIsFavoriteColor
+	Score (current minimum): 13507
+	Score:  13535
+Don't Remove: customerItemIsFavoriteColor
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, customerFavoriteBaseColor
+	Score (current minimum): 13507
+	Score:  13495
+Remove: customerFavoriteBaseColor
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, customerFavoriteBaseColor, customerItemIsFavoriteBaseColor
+	Score (current minimum): 13495
+	Score:  13504
+Don't Remove: customerItemIsFavoriteBaseColor
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, customerFavoriteBaseColor, customerMoneySpent
+	Score (current minimum): 13495
+	Score:  13492
+Remove: customerMoneySpent
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, customerFavoriteBaseColor, customerMoneySpent, customerReturnRate
+	Score (current minimum): 13492
+	Score:  15183
+Don't Remove: customerReturnRate
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, customerFavoriteBaseColor, customerMoneySpent, itemReturnRate
+	Score (current minimum): 13492
+	Score:  13965
+Don't Remove: itemReturnRate
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, customerFavoriteBaseColor, customerMoneySpent, colorReturnRate
+	Score (current minimum): 13492
+	Score:  13499
+Don't Remove: colorReturnRate
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, customerFavoriteBaseColor, customerMoneySpent, baseColorReturnRate
+	Score (current minimum): 13492
+	Score:  13478
+Remove: baseColorReturnRate
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, customerFavoriteBaseColor, customerMoneySpent, baseColorReturnRate, sizeReturnRate
+	Score (current minimum): 13478
+	Score:  13516
+Don't Remove: sizeReturnRate
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, customerFavoriteBaseColor, customerMoneySpent, baseColorReturnRate, manufacturerReturnRate
+	Score (current minimum): 13478
+	Score:  13450
+Remove: manufacturerReturnRate
+Excluding: itemID, color, manufacturerID, salutation, customerNumItemsOrdered, customerFavoriteBaseColor, customerMoneySpent, baseColorReturnRate, manufacturerReturnRate, unknownManufacturer
+	Score (current minimum): 13450
+	Score:  13450
+Remove: unknownManufacturer
