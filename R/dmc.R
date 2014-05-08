@@ -6,7 +6,7 @@ library(functional)
 
 
 dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainControl(), 
-                     save.path=NULL, verbose=T, ...) {
+                     save.path=NULL, save.model=FALSE, verbose=T, ...) {
     require(caret)
     
     if (verbose) message("Setting up Data")
@@ -98,14 +98,16 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
                 skippedOrderItemID=orderItemID[which(!test.idx)])
         
     if (!is.null(save.path)) {
-        if (verbose) message("Saving model and results")
+        if (verbose) message("Results and Predictions")
         
         stem <- file.path(save.path, paste(name, data.name, sep="_"))
-        saveRDS(res, file=paste(stem, ".RData", sep=""))
         saveRDS(res[c("results", "bestResults", "method", "label")],
                 file=paste(stem, "_res.RData", sep=""))
+        write.table(extractPreds.dmctrain(res), file=paste(stem, "_pred.txt", sep=""),
+                    quote=F, row.names=F, sep=";")    
         
-        if (verbose) message(paste("Saved model to", paste(stem, ".RData", sep="")))
+        if (save.model)    
+            saveRDS(res, file=paste(stem, ".RData", sep=""))
     }
     
     class(res) <- "dmctrain"
