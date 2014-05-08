@@ -15,7 +15,7 @@ ctrl.probs$classProbs <- TRUE
 
 grid.gbm <- expand.grid(
     shrinkage=c(0.1),
-    interaction.depth=1:8,
+    interaction.depth=3:5,
     n.trees=c(180, 200, 220, 240, 260, 280, 300, 320, 340)
 )
 
@@ -41,6 +41,11 @@ descs <- list(
         method="gbm",
         tuneGrid=grid.gbm
     ),
+    
+    nb=list(
+      fs.fun=fs.nb,
+      method="nb",
+      tuneLength=3),
     
     # GBM with Probabilities
     gbmCP=list(
