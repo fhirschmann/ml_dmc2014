@@ -20,14 +20,21 @@ if (which == '1') {
 }
 
 set.seed(42)
-dt <- dt[sample(nrow(dt), 100000), ]
+dt <- dt[sample(nrow(dt), 20000), ]
 
 zeroVar <- names(which(sapply(dt, function(x) length(unique(x)) == 1)))
 dt <- dt[!names(dt) %in% zeroVar]
 
+
+grid <- expand.grid(
+    shrinkage=c(0.1),
+    interaction.depth=1:5,
+    n.trees=c(220)
+)
+
 funcs <- caretFuncs
 funcs$fit <- function(a, b, first, last, ...) {
-    train(a, b, method = "gbm", tuneLength=1, ...)
+    train(a, b, method = "gbm", tuneGrid=grid, ...)
 }
 
 rctrl <- rfeControl(functions = funcs, method="cv", number = 10,
