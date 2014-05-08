@@ -42,7 +42,8 @@ message(paste("\t Score", score.min))
 removed <- c()
 kept <- c()
 
-for (f in colnames(m)) {
+cols <- colnames(m)
+for (f in sample(cols, length(cols))) {
     if (!f %in% keep) {
         exclude2 <- c(exclude, f)
         message(paste("Excluding:", paste(exclude2, collapse=", ")))
