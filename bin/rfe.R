@@ -49,4 +49,4 @@ rfefit <- rfe(x=dt, y=pred,
               rfeControl=rctrl)
 rfefit
 
-saveRDS(rfefit, paste("rfe", which, ".RData", sep="")
+saveRDS(rfefit, paste("rfe-grid", which, ".RData", sep=""))
