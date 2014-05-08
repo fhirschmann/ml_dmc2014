@@ -36,6 +36,8 @@ fs.noCustomer <- function(dt) {
     dt2$customerAgeAtOrderTimeDiscrete <- NULL
     dt2$customerAccountAgeAtOrderTimeDiscrete <- NULL
     dt2$customerAccountAgeDiscrete <- NULL
+    
+    # THIS SHOULD NOT BE HERE (rename this)
     dt2$customerNumItemsOrdered <- NULL
     dt2$customerReturnRate <- NULL
     dt2$customerTotalOrderVolume <- NULL
@@ -78,20 +80,32 @@ fs.tree <- function(dt) {
     dt2
 }
 
-fs.c50 <- function(dt) {
+fs.c50 <- function(dt, customerKnown) {
     dt2 <- fs.tree(dt)
     
-    dt2$itemID <- NULL  # M11: -3
-    dt2$color <- NULL # M11: -5
-    dt2$manufacturerID <- NULL # M11: -2
-    dt2$salutation <- NULL # M11: -19
-    dt2$customerNumItemsOrdered <- NULL # M11: -35
-    dt2$customerFavoriteBaseColor <- NULL # M11: -12
-    dt2$customerMoneySpent <- NULL # M11: -3
-    dt2$baseColorReturnRate <- NULL # M11: -14
-    dt2$manufacturerReturnRate <- NULL # M11: -28
-    dt2$unknownManufacturer <- NULL # M11: 0
+    dt2$itemID <- NULL  # M11: -3, M10: -67
+    dt2$manufacturerID <- NULL # M11: -2, M10: -1
+    dt2$salutation <- NULL # M11: -19, M10: -74
+    dt2$unknownManufacturer <- NULL # M11: 0, M10: 0
     
+    if (customerKnown) {
+        # TODO: RENAME THIS
+        dt2$customerNumItemsOrdered <- NULL # M11: -35, M10: 
+        
+        dt2$customerFavoriteBaseColor <- NULL # M11: -12, M10: NA  
+        dt2$customerMoneySpent <- NULL # M11: -3, M10: NA
+        dt2$color <- NULL # M11: -5, M10: +63
+        dt2$baseColorReturnRate <- NULL # M11: -14, +19
+        dt2$manufacturerReturnRate <- NULL # M11: -28, M10: +27
+    } else {
+        dt2$state <- NULL
+        dt2$holiday <- NULL # M11: +7, M10: -74 (WHY?)
+        dt2$dateOfBirthIsOutlier <- NULL # M11: +2, M10: -25
+        dt2$orderDistinctItems <- NULL # M11: +34, M10: -30 (WHY?)
+        #dt2$itemPriceLevels <- NULL # M11: +39, M10: -7 (WHY?)
+        
+    }
+        
     dt2
 }
 

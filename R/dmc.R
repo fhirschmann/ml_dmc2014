@@ -22,13 +22,21 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
     
     features.before <- colnames(data$train)
     
-    if (data.name %in% c("M10", "M20", "M30")) {
+    data <- fs.all(rbind(data$train[train.idx, ], data$test[test.idx, ]))
+    
+    customer <- data.name %in% c("M11", "M21", "M31")
+    
+    if (!customer) {
         message("Removing Customer Features")
-        fs.fun <- Compose(fs.fun, fs.noCustomer)
+        data <- fs.noCustomer(data)
     }
     
-    data <- fs.fun(rbind(data$train[train.idx, ], data$test[test.idx, ]))
-    
+    if (length(formals(fs.fun)) > 1) {
+        data <- fs.fun(data, customer)
+    } else {
+        data <- fs.fun(data)
+    }
+        
     features.after <- colnames(data)
     
     if (verbose) {
