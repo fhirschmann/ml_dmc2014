@@ -26,11 +26,13 @@ for (s in c("M1", "M2", "M3")) {
         test$deliveryDateMissing <- NULL
         
         fit <- C5.0(returnShipment ~ ., data=train)
-        preds[[N]] <- predict(fit, test)
+        preds[[N+1]] <- predict(fit, test)
         
-        scores[[N]] <- dmc.score(preds, t$returnShipment)
+        scores[[N+1]] <- dmc.score(preds[[N+1]], test$returnShipment)
         
-        message(paste("Score", sN, scores[[N]]))
+        message(paste("Score", sN, scores[[N+1]]))
+        message(paste("Accuracy", 1 - scores[[N+1]] / nrow(dt.dmc[[sN]]$test)))
     }
     message(paste("Score", s, scores[[1]] + scores[[2]]))
+    message(paste("Accuracy", s, 1 - (scores[[1]] + scores[[2]]) / nrow(dt.dmc[[sN]]$test)))
 }
