@@ -170,6 +170,53 @@ dmc.score <- function(pred, obs, na.rm=F) {
 }
 
 dmc.evaluate <- function(dir) {
+    files <- list.files(path=dir, pattern=paste(pattern=".*_res.RData", sep=""))
+    
+    models <- sapply(files, function(x) readRDS(file.path(dir, x)), simplify=F)
+    sets <- sapply(str_split(files, "_"), function(x) x[[2]])
+    names <- sapply(str_split(files, "_"), function(x) x[[1]])
+    
+    i <- 0
+    for (s in sets) {
+        i <- i + 1;
+        models[[i]]$set <- sets[[i]]
+        models[[i]]$name <- names[[i]]
+    }
+    
+    scores <- matrix(nrow=length(unique(names)), ncol=9)
+    colnames(scores) <- c("M10", "M11", "M1", "M20", "M21", "M2", "M30", "M31", "M3")
+    rownames(scores) <- unique(names)
+    
+    for (m in models) {
+        scores[m$name, m$set] <- models[[1]]$bestResults$score
+    }
+
+    for (i in 1:3) {
+        for (m in rownames(scores)) {
+            scores[m, paste("M", i, sep="")] <- scores[m, paste("M", i, "0", sep="")] + scores[m, paste("M", i, "1", sep="")]
+        }
+    }
+    
+    # dput(sapply(dt.dmc, function(x) nrow(x$test)))
+    nrows <- structure(c(69646L, 31007L, 38639L, 38586L, 14745L, 23841L, 38586L, 
+                         12048L, 26538L), .Names = c("M1", "M10", "M11", "M2", "M20", 
+                                                     "M21", "M3", "M30", "M31"))
+    
+    accuracies <- scores
+    for (s in colnames(accuracies)) {
+        for (m in rownames(accuracies)) {
+            accuracies[m, s] <- 1 - (scores[m, s] / nrows[[s]])
+        }
+    }
+    
+    wiki <- data.frame(accuracies[, c("M1", "M2", "M3")])
+    wiki <- data.frame(apply(accuracies[, c("M1", "M2", "M3")], 1,
+                       function(x) paste("|R|", paste(x, collapse="|"), "|", sep="")))    
+    colnames(wiki) <- "Markup"
+    list(wiki=wiki, accuracies=accuracies, scores=scores)
+}
+
+dmc.evaluate2 <- function(dir) {
     require(caret)
     require(stringr)
     
