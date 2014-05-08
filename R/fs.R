@@ -103,3 +103,13 @@ fs.simon <- function(dt) {
   dt2
   
 }
+
+fs.nb <- function(dt) {
+  require(randomForest)
+  dt2 <- fs.all(dt)
+  
+  dt2 <- na.roughfix(dt2)
+  
+  
+  dt2
+}
