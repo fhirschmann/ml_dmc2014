@@ -6,6 +6,7 @@ m <- fs.noCustomer(fs.tree(dt.dmc$M10$train))
 t <- fs.noCustomer(fs.tree(dt.dmc$M10$test))
 
 exclude <- c()
+keep <- c("returnShipment", "size")
 
 fuck <- function(dt) {
     fit <- C5.0(returnShipment ~ ., data=dt)
@@ -18,11 +19,12 @@ message("All Features:")
 message(paste("\t Score", score.min))
 
 for (f in colnames(m)) {
-    if (f != "returnShipment") {
+    if (!f %in% keep) {
         exclude2 <- c(exclude, f)
-        message(paste("Excluding:", paste(exclude2, collapse=",")))
+        message(paste("Excluding:", paste(exclude2, collapse=", ")))
         
         score <- fuck(m[!colnames(m) %in% exclude2])
+        message(paste("\tScore (current minimum):", score.min))
         message(paste("\tScore: ", score))
         if (score <= score.min) {
             score <- score.min
