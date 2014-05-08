@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
-# Usage: ./bin/fe.R M10 c50 (feature name)
+# Usage: ./bin/fe.R c50 M10 [feature]
+#   i.e. ./bin/fe.R c50 M10 itemID
 
-library(C50)
 source("R/data.R")
 source("R/fs.R")
 
@@ -21,9 +21,17 @@ if (s %in% c("M10", "M20", "M30")) {
 } else {
     fsx <- identity
 }
+m <- dt.dmc[[s]]$train
+m <- m[m$deliveryDateMissing == "no", ]
+m <- fsx(fs.tree(m))
+m$deliveryDateMissing <- NULL
+t <- dt.dmc[[s]]$test
+t <- t[t$deliveryDateMissing <- "no", ]
+t <- fsx(fs.tree(t))
+t <- deliveryDateMissing <- NULL
 
-m <- fsx(fs.tree(dt.dmc[[s]]$train))
-t <- fsx(fs.tree(dt.dmc[[s]]$test))
+#m <- m[m$deliveryDateMissing == "no", ]
+#m <- m[m$deliveryDateMissing == "no", ]
 
 #m <- m[1:100, ]
 #t <- t[1:10, ]
@@ -37,9 +45,19 @@ if (is.na(only)) {
 message(paste("Always keeping", paste(keep, collapse=", ")))
 
 if (a == "c50") {
+    require("C50")
     fuck <- function(dt) {
         fit <- C5.0(returnShipment ~ ., data=dt)
         preds <- predict(fit, t)
+        dmc.score(preds, t$returnShipment)
+    }
+} else if (a == "gbm") {
+    require("gbm")
+    require("plyr")
+    fuck <- function(dt) {
+        dt$returnShipment <- revalue(dt$returnShipment, c("yes"="1", "no"="0"))
+        fit <- gbm(returnShipment ~ ., data=dt, shrinkage=0.1, interaction.depth=1)
+        preds <- revalue(predict(fit, t), c("1"="yes", "0"="no"))
         dmc.score(preds, t$returnShipment)
     }
 }
