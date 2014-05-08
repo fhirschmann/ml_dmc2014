@@ -1,17 +1,33 @@
 #!/usr/bin/env Rscript
+# Usage: ./bin/fe.R M10 c50
+
 library(C50)
 source("R/data.R")
 
-m <- fs.noCustomer(fs.tree(dt.dmc$M10$train))
-t <- fs.noCustomer(fs.tree(dt.dmc$M10$test))
+args <- commandArgs(T)
+
+s <- args[[1]] # M10, M11
+a <- args[[2]] # c50
+
+if (s %in% c("M10", "M20", "M30")) {
+    fsx <- fs.noCustomer
+    message("Removing Customer Features")
+} else {
+    fsx <- identity
+}
+
+m <- fsx(fs.tree(dt.dmc[[s]]$train))
+t <- fsx(fs.tree(dt.dmc[[s]]$test))
 
 exclude <- c()
 keep <- c("returnShipment", "size")
 
-fuck <- function(dt) {
-    fit <- C5.0(returnShipment ~ ., data=dt)
-    preds <- predict(fit, t)
-    dmc.score(preds, t$returnShipment)
+if (a == "c50") {
+    fuck <- function(dt) {
+        fit <- C5.0(returnShipment ~ ., data=dt)
+        preds <- predict(fit, t)
+        dmc.score(preds, t$returnShipment)
+    }
 }
 
 score.min <- fuck(m)
@@ -29,7 +45,6 @@ for (f in colnames(m)) {
         message(paste("\tScore (current minimum):", score.min))
         message(paste("\tScore: ", score))
         if (score <= score.min) {
-            score <- score.min
             exclude <- c(exclude, f)
             message(paste("Remove:", f))
             score.min <- score
