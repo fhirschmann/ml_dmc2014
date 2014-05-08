@@ -25,8 +25,9 @@ m <- dt.dmc[[s]]$train
 m <- m[m$deliveryDateMissing == "no", ]
 m <- fsx(fs.tree(m))
 m$deliveryDateMissing <- NULL
+
 t <- dt.dmc[[s]]$test
-t <- t[t$deliveryDateMissing <- "no", ]
+t <- t[t$deliveryDateMissing == "no", ]
 t <- fsx(fs.tree(t))
 t$deliveryDateMissing <- NULL
 
