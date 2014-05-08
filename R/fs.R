@@ -78,6 +78,23 @@ fs.tree <- function(dt) {
     dt2
 }
 
+fs.c50 <- function(dt) {
+    dt2 <- fs.tree(dt)
+    
+    dt2$itemID <- NULL  # M11: -3
+    dt2$color <- NULL # M11: -5
+    dt2$manufacturerID <- NULL # M11: -2
+    dt2$salutation <- NULL # M11: -19
+    dt2$customerNumItemsOrdered <- NULL # M11: -35
+    dt2$customerFavoriteBaseColor <- NULL # M11: -12
+    dt2$customerMoneySpent <- NULL # M11: -3
+    dt2$baseColorReturnRate <- NULL # M11: -14
+    dt2$manufacturerReturnRate <- NULL # M11: -28
+    dt2$unknownManufacturer <- NULL # M11: 0
+    
+    dt2
+}
+
 fs.nn <- function(dt) {
     dt2 <- fs.onlyDiscrete(fs.all(dt))
     
