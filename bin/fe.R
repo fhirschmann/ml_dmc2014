@@ -3,6 +3,7 @@
 
 library(C50)
 source("R/data.R")
+source("R/fs.R")
 
 args <- commandArgs(T)
 
