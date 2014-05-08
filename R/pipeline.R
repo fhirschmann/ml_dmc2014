@@ -16,19 +16,7 @@ ctrl.probs$classProbs <- TRUE
 grid.gbm <- expand.grid(
     shrinkage=c(0.1),
     interaction.depth=1:8,
-    n.trees=c(140, 180, 200, 220, 240, 260, 280, 300, 320, 340)
-)
-
-grid.gbm.M <- expand.grid(
-    shrinkage=c(0.1),
-    interaction.depth=1:5,
-    n.trees=c(180, 200, 220, 240)
-)
-
-grid.gbm.MMarkus <- expand.grid(
-    shrinkage=c(0.1, 0.001),
-    interaction.depth=1:8,
-    n.trees=c(180, 200, 220, 240, 260, 280)
+    n.trees=c(180, 200, 220, 240, 260, 280, 300, 320, 340)
 )
 
 grid.c50 <- expand.grid(
@@ -77,48 +65,6 @@ descs <- list(
         tuneGrid=grid.c50,
         trControl=ctrl.probs,
         control=C5.0Control(earlyStopping=T)
-    ),
-    
-    # Testing M1 vs M10 vs M11
-    gbmM1=list(
-        fs.fun=fs.gbm,
-        method="gbm",
-        tuneGrid=grid.gbm.M
-    ),
-    
-    gbmM10=list(
-        fs.fun=Compose(fs.gbm, fs.noCustomer),
-        method="gbm",
-        tuneGrid=grid.gbm.M
-    ),
-    
-    gbmM11=list(
-        fs.fun=fs.gbm,
-        method="gbm",
-        tuneGrid=grid.gbm.M
-    ),
-    
-    gbmM10Markus=list(
-        fs.fun=Compose(fs.gbm, fs.noCustomer),
-        method="gbm",
-        tuneGrid=grid.gbm.MMarkus
-    ),
-    
-    gbmM11Markus=list(
-        fs.fun=fs.gbm,
-        method="gbm",
-        tuneGrid=grid.gbm.MMarkus
-    ),
-    
-    c50M10=list(
-        fs.fun=Compose(fs.tree, fs.noCustomer),
-        method="C5.0",
-        tuneGrid=grid.c50
-    ),
-    c50M10=list(
-        fs.fun=fs.tree,
-        method="C5.0",
-        tuneGrid=grid.c50
     ),
     
     # Penalized Multinomial Regression
