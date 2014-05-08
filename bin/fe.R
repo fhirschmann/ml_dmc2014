@@ -56,7 +56,7 @@ if (a == "c50") {
     require("plyr")
     fuck <- function(dt) {
         dt$returnShipment <- revalue(dt$returnShipment, c("yes"="1", "no"="0"))
-        fit <- gbm(returnShipment ~ ., data=dt, shrinkage=0.1, interaction.depth=1)
+        fit <- gbm(returnShipment ~ ., data=dt, shrinkage=0.1, interaction.depth=1, n.trees=20)
         preds <- revalue(predict(fit, t), c("1"="yes", "0"="no"))
         dmc.score(preds, t$returnShipment)
     }
