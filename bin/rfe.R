@@ -6,10 +6,21 @@ library(data.table)
 source("R/data.R")
 source("R/fs.R")
 
-dt <- data.frame(fs.all(dt.dmc$M1$train))
+args <- commandArgs(T)
+set.seed(42)
+
+which <- args[[1]]
+
+# 1 -> gbm with customer info
+# 0 -> gbm without customer info
+if (which == '1') {
+    dt <- fs.gbm(data.frame(dt.dmc$M1$train))
+} else {
+    dt <- fs.noCustomer(fs.gbm(data.frame(dt.dmc$M1$train)))
+}
 
 set.seed(42)
-dt <- dt[sample(nrow(dt), 1000), ]
+dt <- dt[sample(nrow(dt), 100000), ]
 
 zeroVar <- names(which(sapply(dt, function(x) length(unique(x)) == 1)))
 dt <- dt[!names(dt) %in% zeroVar]
@@ -24,12 +35,11 @@ rctrl <- rfeControl(functions = funcs, method="cv", number = 10,
 pred <- dt$returnShipment
 dt$returnShipment <- NULL
 
-set.seed(42)
 rfefit <- rfe(x=dt, y=pred, 
-              sizes = 1:12 * 5,
+              sizes = 10:20 * 2,
               metric="Accuracy",
               maximize = T,
               rfeControl=rctrl)
 rfefit
 
-saveRDS(rfefit, "rfe.RData")
+saveRDS(rfefit, paste("rfe", which, ".RData", sep="")
