@@ -132,3 +132,203 @@ Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutl
 	Score (current minimum): 12076
 	Score:  12076
 Remove: unknownManufacturer
+Loading required package: methods
+Removing Customer Feature
+Loading required package: stringr
+Loading required package: plyr
+
+Attaching package: ‘plyr’
+
+The following object is masked from ‘package:lubridate’:
+
+    here
+
+Always Keep returnShipment, size
+All Features:
+	 Score 12429
+Excluding: itemID
+	Score (current minimum): 12429
+	Score: 12362
+	Change: -67
+Remove: itemID
+Excluding: itemID, color
+	Score (current minimum): 12362
+	Score: 12425
+	Change: 63
+Don't Remove: color
+Excluding: itemID, manufacturerID
+	Score (current minimum): 12362
+	Score: 12361
+	Change: -1
+Remove: manufacturerID
+Excluding: itemID, manufacturerID, salutation
+	Score (current minimum): 12361
+	Score: 12287
+	Change: -74
+Remove: salutation
+Excluding: itemID, manufacturerID, salutation, state
+	Score (current minimum): 12287
+	Score: 12228
+	Change: -59
+Remove: state
+Excluding: itemID, manufacturerID, salutation, state, holiday
+	Score (current minimum): 12228
+	Score: 12154
+	Change: -74
+Remove: holiday
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthMissing
+	Score (current minimum): 12154
+	Score: 12202
+	Change: 48
+Don't Remove: dateOfBirthMissing
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier
+	Score (current minimum): 12154
+	Score: 12129
+	Change: -25
+Remove: dateOfBirthIsOutlier
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, deliveryDateIsOutlier
+	Score (current minimum): 12129
+	Score: 12302
+	Change: 173
+Don't Remove: deliveryDateIsOutlier
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, creationDateIsOutlier
+	Score (current minimum): 12129
+	Score: 12208
+	Change: 79
+Don't Remove: creationDateIsOutlier
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, deliveryTime
+	Score (current minimum): 12129
+	Score: 12142
+	Change: 13
+Don't Remove: deliveryTime
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, orderWeekday
+	Score (current minimum): 12129
+	Score: 12163
+	Change: 34
+Don't Remove: orderWeekday
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, instantOrder
+	Score (current minimum): 12129
+	Score: 12196
+	Change: 67
+Don't Remove: instantOrder
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, sameItemsOrdered
+	Score (current minimum): 12129
+	Score: 12346
+	Change: 217
+Don't Remove: sameItemsOrdered
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, sameItemsOrderedGreater2
+	Score (current minimum): 12129
+	Score: 12154
+	Change: 25
+Don't Remove: sameItemsOrderedGreater2
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, orderDistinctItems
+	Score (current minimum): 12129
+	Score: 12099
+	Change: -30
+Remove: orderDistinctItems
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, orderDistinctItems, orderVolume
+	Score (current minimum): 12099
+	Score: 12537
+	Change: 438
+Don't Remove: orderVolume
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, orderDistinctItems, baseColor
+	Score (current minimum): 12099
+	Score: 12099
+	Change: 0
+Remove: baseColor
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, orderDistinctItems, baseColor, priceDiscrete
+	Score (current minimum): 12099
+	Score: 12142
+	Change: 43
+Don't Remove: priceDiscrete
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, orderDistinctItems, baseColor, itemPriceLevels
+	Score (current minimum): 12099
+	Score: 12092
+	Change: -7
+Remove: itemPriceLevels
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, orderDistinctItems, baseColor, itemPriceLevels, itemPriceLevelsGreater1
+	Score (current minimum): 12092
+	Score: 12125
+	Change: 33
+Don't Remove: itemPriceLevelsGreater1
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, orderDistinctItems, baseColor, itemPriceLevels, itemDiscount
+	Score (current minimum): 12092
+	Score: 12097
+	Change: 5
+Don't Remove: itemDiscount
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, orderDistinctItems, baseColor, itemPriceLevels, itemCollection
+	Score (current minimum): 12092
+	Score: 12165
+	Change: 73
+Don't Remove: itemCollection
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, orderDistinctItems, baseColor, itemPriceLevels, westGermany
+	Score (current minimum): 12092
+	Score: 12133
+	Change: 41
+Don't Remove: westGermany
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, orderDistinctItems, baseColor, itemPriceLevels, itemReturnRate
+	Score (current minimum): 12092
+	Score: 12553
+	Change: 461
+Don't Remove: itemReturnRate
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, orderDistinctItems, baseColor, itemPriceLevels, colorReturnRate
+	Score (current minimum): 12092
+	Score: 12076
+	Change: -16
+Remove: colorReturnRate
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, orderDistinctItems, baseColor, itemPriceLevels, colorReturnRate, baseColorReturnRate
+	Score (current minimum): 12076
+	Score: 12095
+	Change: 19
+Don't Remove: baseColorReturnRate
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, orderDistinctItems, baseColor, itemPriceLevels, colorReturnRate, sizeReturnRate
+	Score (current minimum): 12076
+	Score: 12107
+	Change: 31
+Don't Remove: sizeReturnRate
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, orderDistinctItems, baseColor, itemPriceLevels, colorReturnRate, manufacturerReturnRate
+	Score (current minimum): 12076
+	Score: 12103
+	Change: 27
+Don't Remove: manufacturerReturnRate
+Excluding: itemID, manufacturerID, salutation, state, holiday, dateOfBirthIsOutlier, orderDistinctItems, baseColor, itemPriceLevels, colorReturnRate, unknownManufacturer
+	Score (current minimum): 12076
+	Score: 12076
+	Change: 0
+Remove: unknownManufacturer
+
+Features Removed:
+                         change
+color                        63
+dateOfBirthMissing           48
+deliveryDateIsOutlier       173
+creationDateIsOutlier        79
+deliveryTime                 13
+orderWeekday                 34
+instantOrder                 67
+sameItemsOrdered            217
+sameItemsOrderedGreater2     25
+orderVolume                 438
+priceDiscrete                43
+itemPriceLevelsGreater1      33
+itemDiscount                  5
+itemCollection               73
+westGermany                  41
+itemReturnRate              461
+baseColorReturnRate          19
+sizeReturnRate               31
+manufacturerReturnRate       27
+
+Features Kept
+                     change
+itemID                  -67
+manufacturerID           -1
+salutation              -74
+state                   -59
+holiday                 -74
+dateOfBirthIsOutlier    -25
+orderDistinctItems      -30
+baseColor                 0
+itemPriceLevels          -7
+colorReturnRate         -16
+unknownManufacturer       0
