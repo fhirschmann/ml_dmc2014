@@ -26,7 +26,7 @@ grid.gbm.M <- expand.grid(
 )
 
 grid.gbm.MMarkus <- expand.grid(
-    shrinkage=c(0.001),
+    shrinkage=c(0.1, 0.001),
     interaction.depth=1:8,
     n.trees=c(180, 200, 220, 240, 260, 280)
 )
@@ -34,7 +34,7 @@ grid.gbm.MMarkus <- expand.grid(
 grid.c50 <- expand.grid(
     model=c("rules", "tree"),
     winnow=c(TRUE, FALSE),
-    trials=30:60#1:100
+    trials=1:20 * 5
 )
 
 # List of stuff to learn
@@ -108,6 +108,17 @@ descs <- list(
         fs.fun=fs.gbm,
         method="gbm",
         tuneGrid=grid.gbm.MMarkus
+    ),
+    
+    c50M10=list(
+        fs.fun=Compose(fs.tree, fs.noCustomer),
+        method="C5.0",
+        tuneGrid=grid.c50
+    ),
+    c50M10=list(
+        fs.fun=fs.tree,
+        method="C5.0",
+        tuneGrid=grid.c50
     ),
     
     # Penalized Multinomial Regression
