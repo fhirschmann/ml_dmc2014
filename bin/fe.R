@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-# Usage: ./bin/fe.R M10 c50
+# Usage: ./bin/fe.R M10 c50 (feature name)
 
 library(C50)
 source("R/data.R")
@@ -7,8 +7,13 @@ source("R/fs.R")
 
 args <- commandArgs(T)
 
-s <- args[[1]] # M10, M11
-a <- args[[2]] # c50
+a <- args[[1]] # c50
+s <- args[[2]] # M10 M11
+if (length(args) > 2) {
+    only <- args[[3]]
+} else {
+    only <- NA
+}
 
 if (s %in% c("M10", "M20", "M30")) {
     fsx <- fs.noCustomer
@@ -24,7 +29,12 @@ t <- fsx(fs.tree(dt.dmc[[s]]$test))
 #t <- t[1:10, ]
 
 exclude <- c()
-keep <- c("returnShipment", "size")
+if (is.na(only)) {
+    keep <- c("returnShipment", "size")    
+} else {
+    keep <- setdiff(colnames(m), only)
+}
+message(paste("Always keeping", paste(keep, collapse=", ")))
 
 if (a == "c50") {
     fuck <- function(dt) {
