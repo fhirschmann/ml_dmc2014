@@ -11,13 +11,16 @@ a <- args[[2]] # c50
 
 if (s %in% c("M10", "M20", "M30")) {
     fsx <- fs.noCustomer
-    message("Removing Customer Features")
+    message("Removing Customer Feature")
 } else {
     fsx <- identity
 }
 
 m <- fsx(fs.tree(dt.dmc[[s]]$train))
 t <- fsx(fs.tree(dt.dmc[[s]]$test))
+
+#m <- m[1:100, ]
+#t <- t[1:10, ]
 
 exclude <- c()
 keep <- c("returnShipment", "size")
@@ -36,6 +39,9 @@ message(paste("Always Keep", paste(keep, collapse=", ")))
 message("All Features:")
 message(paste("\t Score", score.min))
 
+removed <- c()
+kept <- c()
+
 for (f in colnames(m)) {
     if (!f %in% keep) {
         exclude2 <- c(exclude, f)
@@ -43,13 +49,23 @@ for (f in colnames(m)) {
         
         score <- fuck(m[!colnames(m) %in% exclude2])
         message(paste("\tScore (current minimum):", score.min))
-        message(paste("\tScore: ", score))
+        message(paste("\tScore:", score))
+        message(paste("\tChange:", score - score.min))
         if (score <= score.min) {
             exclude <- c(exclude, f)
             message(paste("Remove:", f))
+            removed[[f]] <- score - score.min
             score.min <- score
         } else {
             message(paste("Don't Remove:", f))
+            kept[[f]] <- score - score.min
         }
     }
 }
+
+message("")
+message("Features Removed:")
+data.frame(change=unlist(kept))
+message("")
+message("Features Kept")
+data.frame(change=removed)
