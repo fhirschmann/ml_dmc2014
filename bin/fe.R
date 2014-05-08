@@ -3,6 +3,7 @@
 #   i.e. ./bin/fe.R c50 M10 itemID
 
 source("R/data.R")
+source("R/dmc.R")
 source("R/fs.R")
 
 args <- commandArgs(T)
@@ -23,13 +24,9 @@ if (s %in% c("M10", "M20", "M30")) {
 }
 m <- dt.dmc[[s]]$train
 m <- m[m$deliveryDateMissing == "no", ]
-m <- fsx(fs.tree(m))
-m$deliveryDateMissing <- NULL
 
 t <- dt.dmc[[s]]$test
 t <- t[t$deliveryDateMissing == "no", ]
-t <- fsx(fs.tree(t))
-t$deliveryDateMissing <- NULL
 
 #m <- m[m$deliveryDateMissing == "no", ]
 #m <- m[m$deliveryDateMissing == "no", ]
@@ -46,6 +43,10 @@ if (is.na(only)) {
 message(paste("Always keeping", paste(keep, collapse=", ")))
 
 if (a == "c50") {
+    m <- fsx(fs.tree(m))
+    t <- fsx(fs.tree(t))
+    t$deliveryDateMissing <- NULL
+    t$deliveryDateMissing <- NULL
     require("C50")
     fuck <- function(dt) {
         fit <- C5.0(returnShipment ~ ., data=dt)
@@ -56,10 +57,11 @@ if (a == "c50") {
     require("gbm")
     require("plyr")
     fuck <- function(dt) {
-        dt$returnShipment <- revalue(dt$returnShipment, c("yes"="1", "no"="0"))
-        fit <- gbm(returnShipment ~ ., data=dt, shrinkage=0.1, interaction.depth=1, n.trees=20)
-        preds <- revalue(predict(fit, t), c("1"="yes", "0"="no"))
-        dmc.score(preds, t$returnShipment)
+        fs <- Compose(fsx, fs.tree)
+        new.test <- t[colnames(t) %in% colnames(dt)]
+        fit <- dmctrain(data=list(train=dt, test=new.test), data.name = s, fs.fun = fs, verbose = F,
+                       keep.data = F, method='gbm', tuneGrid=expand.grid(shrinkage=c(0.1), interaction.depth=1, n.trees=20))
+        fit$bestResult$score
     }
 }
 
