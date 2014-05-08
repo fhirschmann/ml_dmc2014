@@ -47,6 +47,10 @@ if ("-m" %in% args) {
     desc$data <- list(train=desc$data$train[sample(nrow(desc$data$train), 100), ],
                       test=desc$data$test[sample(nrow(desc$data$test), 10), ])
     desc$save.path <- "models.tiny"
+} else if ("-x" %in% args) {
+    desc$data <- list(train=desc$data$train[sample(nrow(desc$data$train), 100000), ],
+                      test=desc$data$test[sample(nrow(desc$data$test), 10000), ])
+    desc$save.path <- "models.x"
 }
 
 desc$data.name <- args[[2]]
