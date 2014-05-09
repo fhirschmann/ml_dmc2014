@@ -119,12 +119,20 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
         if (verbose) message("Results and Predictions")
         
         res$pred <- pred
-        
+            
         stem <- file.path(save.path, paste(name, data.name, sep="_"))
         saveRDS(res[c("results", "bestResults", "method", "label")],
                 file=paste(stem, "_res.RData", sep=""))
-        write.table(extractPreds.dmctrain(res), file=paste(stem, "_pred.txt", sep=""),
+        
+        pred2 <- extractPreds.dmctrain(res)
+        
+        write.table(pred2[c("orderItemID", "prediction")], file=paste(stem, "_pred.txt", sep=""),
                     quote=F, row.names=F, sep=";")
+        
+        if ("yes" %in% colnames(pred2)) {
+            write.table(pred2[c("orderItemID", "yes")], file=paste(stem, "_prob.txt", sep=""),
+                        quote=F, row.names=F, sep=";", col.names=c("orderItemID", "prediction"))
+        }
         
         if (save.model) {
             res$model <- model
@@ -137,13 +145,23 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
 }
 
 extractPreds.dmctrain <- function(train) {
+    require(plyr)
+    
     best <- caret.best(train)
     
     pred <- rbind(best[c("orderItemID", "pred")],
                   data.frame(orderItemID=train$skippedOrderItemID,
                              pred=rep("no", length(train$skippedOrderItemID))))
+    
     pred$pred <- dmc.convertPreds(pred$pred)
-    names(pred) <- c("orderItemID", "prediction")
+    
+    if ("yes" %in% colnames(best)) {
+        pred <- join(pred, best[c("orderItemID", "yes")], by="orderItemID")
+        pred[is.na(pred$yes), c("yes")] <- 0
+        colnames(pred) <- c("orderItemID", "prediction", "yes")
+    } else {
+        names(pred) <- c("orderItemID", "prediction")        
+    }
     pred[order(pred$orderItemID), ]
 }
 
