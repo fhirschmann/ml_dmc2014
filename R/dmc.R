@@ -126,6 +126,7 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
         
         pred2 <- extractPreds.dmctrain(res)
         
+        options(scipen=500)
         write.table(pred2[c("orderItemID", "prediction")], file=paste(stem, "_pred.txt", sep=""),
                     quote=F, row.names=F, sep=";")
         
