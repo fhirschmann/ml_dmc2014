@@ -6,8 +6,12 @@ library(vcd)
 library(zoo)
 
 args <- commandArgs(T)
+schatti <- F
 
 source("R/feat.R")
+
+if (schatti)
+    source("R/featSchatti.R")
 
 # Read in the Data
 dt.na.strings <- c("NA", "", "??", "?")
@@ -115,6 +119,11 @@ message("Adding Features to the Train and Test Set")
 dt.train <- add.features(dt.train)
 dt.test <- add.features(dt.test)
 
+if (schatti) {
+    dt.train <- add.features.schatti(dt.train)
+    dt.test <- add.features.schatti(dt.test)
+}
+
 dt.dmc.ids <- list(test=list(), train=list())
 if (length(args) > 0) {
     build <- unlist(args)
@@ -140,6 +149,11 @@ dt.merged <- rbind(dt.train[, !names(dt.train) %in% c("returnShipment"), with=F]
 message("Adding Features that can be computed on ALL data")
 dt.train <- add.features.all(dt.train, dt.merged)
 dt.test <- add.features.all(dt.test, dt.merged)
+
+if (schatti) {
+    dt.train <- add.features.schatti.all(dt.train)
+    dt.test <- add.features.schatti.all(dt.test)
+}
 
 message("Creating M sets")
 
