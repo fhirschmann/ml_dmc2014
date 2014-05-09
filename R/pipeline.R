@@ -120,21 +120,21 @@ descs <- list(
     rrfGC=list(
         fs.fun=fs.rf,
         method="RRFglobal",
-        tuneLength=3#8
+        tuneLength=2#8
     ),
     
     # Support Vector Machine (Polynomial Kernel)
     svmPolyC=list(
         fs.fun=fs.rf,
         method="svmPoly",
-        tuneLength=3#7
+        tuneLength=2#7
     ),
     
     # Bagged Cart
     treebagC=list(
         fs.fun=fs.tree,
         method="treebag",
-        tuneLength=3
+        tuneLength=2
     ),
     fda=list(
         fs.fun=fs.nn,
