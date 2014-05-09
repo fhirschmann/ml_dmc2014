@@ -211,16 +211,6 @@ add.features.all <- function(to, from) {
     dt.to <- join(dt.to, orderDates[, c("orderTimeNext", "orderDate", "orderTimePrev", "customerID"), with=F],
                   by=c("customerID", "orderDate"))
     
-    # Add an index column representhing the n'th order the customer has placed
-    orderDates[, , by=c("customerID")]
-    
-    #orderDates[, customerNextOrderDate := orderDates[orderDate$customerID == customerID & customerNumOrder == .which + 1, ]$orderDate, by=c("customerID"), which=T]
-    
-    
-    
-    # Shift by one row
-    
-    
     # favorite color
     dt.from[, customerFavoriteColor := names(which.max(table(itemColor))), by=c('customerID')]
     dt.from$customerFavoriteColor <- as.factor(dt.from$customerFavoriteColor)
