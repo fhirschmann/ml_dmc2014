@@ -210,7 +210,7 @@ descs <- list(
     svmLinear=list(
         fs.fun=fs.rf,
         method="svmLinear",
-        tuneLength=5
+        tuneLength=3
     ),
     ctree=list(
         fs.fun=fs.tree,
