@@ -22,8 +22,7 @@ delayedAssign("dt.mini", subset(dt.train, week(orderDate) == 6))
 delayedAssign("dt.tiny", subset(dt.mini, wday(orderDate) == 1))
 
 # Merged Train/Test Data; this is mostly useful for plotting
-delayedAssign("dt.merged", rbind(data.frame(dt.train, group="train"),
-                                 data.frame(dt.test, group="test", returnShipment=NA)))
+delayedAssign("dt.merged", rbind(dt.train[, !names(dt.train) %in% c("returnShipment"), with=F], dt.test))
 
 delayedAssign("dt.dmc.small", sapply(dt.dmc, function(x) list(train=head(x$train, 20000), test=head(x$test, 2000)),
                                      simplify=F))
