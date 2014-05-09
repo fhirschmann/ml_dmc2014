@@ -101,7 +101,7 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
     
     pred <- join(pred, map, by="rowIndex")
     
-    res <- list(results=results, bestResults=bestResults, pred=pred,
+    res <- list(results=results, bestResults=bestResults,
                 bestTune=model$bestTune, method=model$method,
                 label=getModelInfo(model$method, regex=F)[[1]]$label,
                 skippedOrderItemID=orderItemID[which(!test.idx)])
@@ -114,7 +114,7 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
         saveRDS(res[c("results", "bestResults", "method", "label")],
                 file=paste(stem, "_res.RData", sep=""))
         write.table(extractPreds.dmctrain(res), file=paste(stem, "_pred.txt", sep=""),
-                    quote=F, row.names=F, sep=";")    
+                    quote=F, row.names=F, sep=";")
         
         if (save.model) {
             res$model <- model
