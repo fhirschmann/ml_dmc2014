@@ -63,6 +63,15 @@ fs.svm <- function(dt) {
     dt2
 }
 
+fs.stat <- function(dt) {
+    require(randomForest)
+    
+    dt2 <- fs.noDiscrete(fs.all(dt))
+    dt2 <- na.roughfix(dt2)
+    
+    dt2
+}
+
 fs.gbm <- function(dt) {
     dt2 <- fs.tree(dt)
     

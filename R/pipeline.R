@@ -62,6 +62,36 @@ descs <- list(
         control=C5.0Control(earlyStopping=T)
     ),
     
+    earthC=list(
+        fs.fun=fs.stat,
+        method="earth",
+        tuneLength=5
+    ),
+    
+    mlpC=list(
+        fs.fun=fs.stat,
+        method="mlp",
+        tuneLength=4
+    ),
+        
+    dsaC=list(
+        fs.fun=fs.stat,
+        method="partDSA",
+        tuneLength=3
+    ),
+    
+    pdaC=list(
+        fs.fun=fs.stat,
+        method="pda",
+        tuneLength=4
+    ),
+    
+    rdaC=list(
+        fs.fun=fs.stat,
+        method="rocc",
+        tuneLength=1
+    ),
+    
     # C5.0 with Probabilities
     c50CP=list(
         fs.fun=fs.tree,
