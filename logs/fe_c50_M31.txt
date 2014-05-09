@@ -1,0 +1,297 @@
+Loading required package: methods
+Always keeping returnShipment, size
+Loading required package: stringr
+Loading required package: C50
+Loading required package: plyr
+
+Attaching package: ‘plyr’
+
+The following object is masked from ‘package:lubridate’:
+
+    here
+
+Always Keep returnShipment, size
+All Features:
+	 Score 8411
+Excluding: salutation
+	Score (current minimum): 8411
+	Score: 8414
+	Change: 3
+Don't Remove: salutation
+Excluding: dateOfBirthIsOutlier
+	Score (current minimum): 8411
+	Score: 8421
+	Change: 10
+Don't Remove: dateOfBirthIsOutlier
+Excluding: orderInstant
+	Score (current minimum): 8411
+	Score: 8423
+	Change: 12
+Don't Remove: orderInstant
+Excluding: orderNumDistinctItemsGreater1
+	Score (current minimum): 8411
+	Score: 8435
+	Change: 24
+Don't Remove: orderNumDistinctItemsGreater1
+Excluding: orderWeekday
+	Score (current minimum): 8411
+	Score: 8411
+	Change: 0
+Remove: orderWeekday
+Excluding: orderWeekday, orderSumPrices
+	Score (current minimum): 8411
+	Score: 8412
+	Change: 1
+Don't Remove: orderSumPrices
+Excluding: orderWeekday, customerNumItemsOrdered
+	Score (current minimum): 8411
+	Score: 8411
+	Change: 0
+Remove: customerNumItemsOrdered
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete
+	Score (current minimum): 8411
+	Score: 8395
+	Change: -16
+Remove: customerAgeAtOrderTimeDiscrete
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor
+	Score (current minimum): 8395
+	Score: 8366
+	Change: -29
+Remove: itemColor
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, customerState
+	Score (current minimum): 8366
+	Score: 8371
+	Change: 5
+Don't Remove: customerState
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemColorReturnRate
+	Score (current minimum): 8366
+	Score: 8463
+	Change: 97
+Don't Remove: itemColorReturnRate
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID
+	Score (current minimum): 8366
+	Score: 8361
+	Change: -5
+Remove: itemID
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, orderItemNumSameItemsOrderedGreater1
+	Score (current minimum): 8361
+	Score: 8369
+	Change: 8
+Don't Remove: orderItemNumSameItemsOrderedGreater1
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, manufacturerID
+	Score (current minimum): 8361
+	Score: 8381
+	Change: 20
+Don't Remove: manufacturerID
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, orderNumDistinctItems
+	Score (current minimum): 8361
+	Score: 8366
+	Change: 5
+Don't Remove: orderNumDistinctItems
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, orderNumItems
+	Score (current minimum): 8361
+	Score: 8439
+	Change: 78
+Don't Remove: orderNumItems
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate
+	Score (current minimum): 8361
+	Score: 8359
+	Change: -2
+Remove: itemSizeReturnRate
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, customerNumOrders
+	Score (current minimum): 8359
+	Score: 8378
+	Change: 19
+Don't Remove: customerNumOrders
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, itemDiscount
+	Score (current minimum): 8359
+	Score: 8389
+	Change: 30
+Don't Remove: itemDiscount
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, customerAccountAgeAtOrderTimeDiscrete
+	Score (current minimum): 8359
+	Score: 8374
+	Change: 15
+Don't Remove: customerAccountAgeAtOrderTimeDiscrete
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, itemBaseColor
+	Score (current minimum): 8359
+	Score: 8384
+	Change: 25
+Don't Remove: itemBaseColor
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, customerMoneySpent
+	Score (current minimum): 8359
+	Score: 8384
+	Change: 25
+Don't Remove: customerMoneySpent
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, customerAccountAgeDiscrete
+	Score (current minimum): 8359
+	Score: 8373
+	Change: 14
+Don't Remove: customerAccountAgeDiscrete
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, itemReturnRate
+	Score (current minimum): 8359
+	Score: 8601
+	Change: 242
+Don't Remove: itemReturnRate
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, itemCollection
+	Score (current minimum): 8359
+	Score: 8378
+	Change: 19
+Don't Remove: itemCollection
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, orderDeliveryTime
+	Score (current minimum): 8359
+	Score: 8400
+	Change: 41
+Don't Remove: orderDeliveryTime
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, customerItemIsFavoriteBaseColor
+	Score (current minimum): 8359
+	Score: 8370
+	Change: 11
+Don't Remove: customerItemIsFavoriteBaseColor
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, itemPriceRange
+	Score (current minimum): 8359
+	Score: 8367
+	Change: 8
+Don't Remove: itemPriceRange
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, customerFavoriteColor
+	Score (current minimum): 8359
+	Score: 8425
+	Change: 66
+Don't Remove: customerFavoriteColor
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, customerReturnRate
+	Score (current minimum): 8359
+	Score: 9210
+	Change: 851
+Don't Remove: customerReturnRate
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, orderSumPrice
+	Score (current minimum): 8359
+	Score: 8364
+	Change: 5
+Don't Remove: orderSumPrice
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, dateOfBirthMissing
+	Score (current minimum): 8359
+	Score: 8358
+	Change: -1
+Remove: dateOfBirthMissing
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, dateOfBirthMissing, manufacturerReturnRate
+	Score (current minimum): 8358
+	Score: 8360
+	Change: 2
+Don't Remove: manufacturerReturnRate
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, dateOfBirthMissing, itemPriceLevels
+	Score (current minimum): 8358
+	Score: 8341
+	Change: -17
+Remove: itemPriceLevels
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, dateOfBirthMissing, itemPriceLevels, customerID
+	Score (current minimum): 8341
+	Score: 8341
+	Change: 0
+Remove: customerID
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, dateOfBirthMissing, itemPriceLevels, customerID, itemPriceDiscrete
+	Score (current minimum): 8341
+	Score: 8335
+	Change: -6
+Remove: itemPriceDiscrete
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, dateOfBirthMissing, itemPriceLevels, customerID, itemPriceDiscrete, deliveryDateIsOutlier
+	Score (current minimum): 8335
+	Score: 8359
+	Change: 24
+Don't Remove: deliveryDateIsOutlier
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, dateOfBirthMissing, itemPriceLevels, customerID, itemPriceDiscrete, customerWestGerman
+	Score (current minimum): 8335
+	Score: 8356
+	Change: 21
+Don't Remove: customerWestGerman
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, dateOfBirthMissing, itemPriceLevels, customerID, itemPriceDiscrete, itemSize
+	Score (current minimum): 8335
+	Score: 8461
+	Change: 126
+Don't Remove: itemSize
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, dateOfBirthMissing, itemPriceLevels, customerID, itemPriceDiscrete, itemPriceLevelsGreater1
+	Score (current minimum): 8335
+	Score: 8343
+	Change: 8
+Don't Remove: itemPriceLevelsGreater1
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, dateOfBirthMissing, itemPriceLevels, customerID, itemPriceDiscrete, creationDateIsOutlier
+	Score (current minimum): 8335
+	Score: 8345
+	Change: 10
+Don't Remove: creationDateIsOutlier
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, dateOfBirthMissing, itemPriceLevels, customerID, itemPriceDiscrete, customerItemIsFavoriteColor
+	Score (current minimum): 8335
+	Score: 8344
+	Change: 9
+Don't Remove: customerItemIsFavoriteColor
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, dateOfBirthMissing, itemPriceLevels, customerID, itemPriceDiscrete, orderItemNumSameItemsOrdered
+	Score (current minimum): 8335
+	Score: 8333
+	Change: -2
+Remove: orderItemNumSameItemsOrdered
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, dateOfBirthMissing, itemPriceLevels, customerID, itemPriceDiscrete, orderItemNumSameItemsOrdered, customerFavoriteBaseColor
+	Score (current minimum): 8333
+	Score: 8354
+	Change: 21
+Don't Remove: customerFavoriteBaseColor
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, dateOfBirthMissing, itemPriceLevels, customerID, itemPriceDiscrete, orderItemNumSameItemsOrdered, itemBaseColorReturnRate
+	Score (current minimum): 8333
+	Score: 8323
+	Change: -10
+Remove: itemBaseColorReturnRate
+Excluding: orderWeekday, customerNumItemsOrdered, customerAgeAtOrderTimeDiscrete, itemColor, itemID, itemSizeReturnRate, dateOfBirthMissing, itemPriceLevels, customerID, itemPriceDiscrete, orderItemNumSameItemsOrdered, itemBaseColorReturnRate, holiday
+	Score (current minimum): 8323
+	Score: 8358
+	Change: 35
+Don't Remove: holiday
+
+Features Kept:
+                                      change
+salutation                                 3
+dateOfBirthIsOutlier                      10
+orderInstant                              12
+orderNumDistinctItemsGreater1             24
+orderSumPrices                             1
+customerState                              5
+itemColorReturnRate                       97
+orderItemNumSameItemsOrderedGreater1       8
+manufacturerID                            20
+orderNumDistinctItems                      5
+orderNumItems                             78
+customerNumOrders                         19
+itemDiscount                              30
+customerAccountAgeAtOrderTimeDiscrete     15
+itemBaseColor                             25
+customerMoneySpent                        25
+customerAccountAgeDiscrete                14
+itemReturnRate                           242
+itemCollection                            19
+orderDeliveryTime                         41
+customerItemIsFavoriteBaseColor           11
+itemPriceRange                             8
+customerFavoriteColor                     66
+customerReturnRate                       851
+orderSumPrice                              5
+manufacturerReturnRate                     2
+deliveryDateIsOutlier                     24
+customerWestGerman                        21
+itemSize                                 126
+itemPriceLevelsGreater1                    8
+creationDateIsOutlier                     10
+customerItemIsFavoriteColor                9
+customerFavoriteBaseColor                 21
+holiday                                   35
+
+Features Removed
+                               change
+orderWeekday                        0
+customerNumItemsOrdered             0
+customerAgeAtOrderTimeDiscrete    -16
+itemColor                         -29
+itemID                             -5
+itemSizeReturnRate                 -2
+dateOfBirthMissing                 -1
+itemPriceLevels                   -17
+customerID                          0
+itemPriceDiscrete                  -6
+orderItemNumSameItemsOrdered       -2
+itemBaseColorReturnRate           -10
