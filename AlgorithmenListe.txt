@@ -1,0 +1,41 @@
+Feature Selection:
+
+TODO:
+
+
+DONE:
+C50C
+
+
+
+
+
+
+
+
+
+
+
+
+==============================
+
+Parameter Tuning:
+
+TODO:
+linearSvm - simon
+
+
+DONE:
+gbmCP - markus
+
+
+
+
+
+
+
+
+
+==============================
+
+Komplett abgehakt:
