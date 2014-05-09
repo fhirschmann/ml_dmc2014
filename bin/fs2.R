@@ -12,15 +12,17 @@ data <- readRDS("data.dmc.RData")[[data.name]]
 data.samp <- list(train=data$train[sample(nrow(data$train), 2000), ],
                   test=data$test[sample(nrow(data$test), 100), ])
 
-
+message("erster train")
 exclude <- c() # greedy
-train <- dmctrain(data.samp, data.name, fs.all, method="C5.0",
+train <- dmctrain(data.samp, data.name, fs.tree, method="C5.0",
                   save.path=NULL, verbose=F,
                   tuneGrid=expand.grid(trials=1, winnow=F, model="tree"))
 acc.max <- train$bestResults$accuracy
 rm(train)
 
 str(train)
+
+message("und looos")
 
 for (p in colnames(data$train)) {    
     train <- dmctrain(data.samp, data.name, function(x) x[!names(x) %in% c(exclude, p)], method="C5.0",
