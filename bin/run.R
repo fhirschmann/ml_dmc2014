@@ -53,6 +53,16 @@ if ("-m" %in% args) {
     desc$save.path <- "models.x"
 }
 
+if("-fewermonths" %in% args) {
+    desc$data$train$month <- ((year(desc$data$train$orderDate) - 2012) * 12 + month(desc$data$train$orderDate)) - 3
+    desc$data$train <- desc$data$train[desc$data$train$month != 3 
+                                       & desc$data$train$month != 4 
+                                       & desc$data$train$month != 7
+                                       & desc$data$train$month != 8, ]
+    desc$data$train$month <- NULL
+    desc$save.path <- "models.fewermonths"
+}
+
 desc$data.name <- args[[2]]
 desc$name <- args[[1]]
 
