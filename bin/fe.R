@@ -15,8 +15,8 @@ if (length(args) > 2) {
 } else {
     only <- NA
 }
-
-if (s %in% c("M10", "M20", "M30")) {
+noCustomer <- s %in% c("M10", "M20", "M30")
+if (noCustomer) {
     fsx <- fs.noCustomer
     message("Removing Customer Feature")
 } else {
@@ -45,7 +45,7 @@ message(paste("Always keeping", paste(keep, collapse=", ")))
 if (a == "c50") {
     m <- fsx(fs.tree(m))
     t <- fsx(fs.tree(t))
-    t$deliveryDateMissing <- NULL
+    m$deliveryDateMissing <- NULL
     t$deliveryDateMissing <- NULL
     require("C50")
     fuck <- function(dt) {
@@ -75,6 +75,11 @@ removed <- c()
 kept <- c()
 
 cols <- colnames(m)
+cols <- cols[!cols %in% c('orderItemID', 'orderDate', 'orderDeliveryDate', 'dateOfBirth', 'creationDate', 'customerFirstOrderDate', 'deliveryDateMissing')]
+if (noCustomer) {
+    cols <- cols[!cols %in% c( 'customerID', 'customerMoneySpent', 'customerItemIsFavoriteBaseColor', 'customerFavoriteBaseColor', 'customerItemIsFavoriteColor', 'customerFavoriteColor', 'customerNumOrders', 'customerAccountAge', 'customerAccountAgeAtOrderTime', 'customerAgeAtOrderTimeDiscrete', 'customerAccountAgeAtOrderTimeDiscrete', 'customerAccountAgeDiscrete', 'customerNumItemsOrdered', 'customerReturnRate', 'customerTotalOrderVolume')]
+}
+
 for (f in sample(cols, length(cols))) {
     if (!f %in% keep) {
         exclude2 <- c(exclude, f)
