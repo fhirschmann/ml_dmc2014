@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rsync -avz dmc@srv:~/models/* models/
+rsync --update -avz dmc@srv:~/models/* models/
