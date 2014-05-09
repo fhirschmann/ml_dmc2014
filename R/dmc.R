@@ -116,9 +116,10 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
         write.table(extractPreds.dmctrain(res), file=paste(stem, "_pred.txt", sep=""),
                     quote=F, row.names=F, sep=";")    
         
-        if (save.model)
+        if (save.model) {
             res$model <- model
             saveRDS(res, file=paste(stem, ".RData", sep=""))
+        }
     }
     
     class(res) <- "dmctrain"
