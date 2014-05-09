@@ -106,9 +106,10 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
                 label=getModelInfo(model$method, regex=F)[[1]]$label,
                 skippedOrderItemID=orderItemID[which(!test.idx)])
     
-        
     if (!is.null(save.path)) {
         if (verbose) message("Results and Predictions")
+        
+        res$pred <- pred
         
         stem <- file.path(save.path, paste(name, data.name, sep="_"))
         saveRDS(res[c("results", "bestResults", "method", "label")],
