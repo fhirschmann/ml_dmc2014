@@ -12,5 +12,5 @@ for (n in names(dt.dmc)) {
 
     write.arff(test, paste(n, "_test.arff", sep=""))
     write.arff(test[test$deliveryDateMissing == "no", ],
-               paste("arff/", "_noDDmissing_test.arff", sep=""))
+               paste("arff/", n, "_noDDmissing_test.arff", sep=""))
 }
