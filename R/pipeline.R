@@ -29,7 +29,7 @@ descs <- list(
     # Stuff to run on the Cluster: Postfix with 'C'
     
     # GBM
-    gbmC=list(keep.data=F,
+    gbmC=list(
         fs.fun=fs.gbm,
         method="gbm",
         tuneGrid=grid.gbm
