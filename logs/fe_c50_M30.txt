@@ -1,0 +1,226 @@
+Loading required package: methods
+Removing Customer Feature
+Always keeping returnShipment, size
+Loading required package: stringr
+Loading required package: C50
+Loading required package: plyr
+
+Attaching package: ‘plyr’
+
+The following object is masked from ‘package:lubridate’:
+
+    here
+
+Always Keep returnShipment, size
+All Features:
+	 Score 4396
+Excluding: customerState
+	Score (current minimum): 4396
+	Score: 4386
+	Change: -10
+Remove: customerState
+Excluding: customerState, orderWeekday
+	Score (current minimum): 4386
+	Score: 4389
+	Change: 3
+Don't Remove: orderWeekday
+Excluding: customerState, dateOfBirthMissing
+	Score (current minimum): 4386
+	Score: 4359
+	Change: -27
+Remove: dateOfBirthMissing
+Excluding: customerState, dateOfBirthMissing, orderSumPrices
+	Score (current minimum): 4359
+	Score: 4361
+	Change: 2
+Don't Remove: orderSumPrices
+Excluding: customerState, dateOfBirthMissing, itemColorReturnRate
+	Score (current minimum): 4359
+	Score: 4363
+	Change: 4
+Don't Remove: itemColorReturnRate
+Excluding: customerState, dateOfBirthMissing, holiday
+	Score (current minimum): 4359
+	Score: 4349
+	Change: -10
+Remove: holiday
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1
+	Score (current minimum): 4349
+	Score: 4337
+	Change: -12
+Remove: orderNumDistinctItemsGreater1
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman
+	Score (current minimum): 4337
+	Score: 4324
+	Change: -13
+Remove: customerWestGerman
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, orderNumItems
+	Score (current minimum): 4324
+	Score: 4356
+	Change: 32
+Don't Remove: orderNumItems
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemPriceRange
+	Score (current minimum): 4324
+	Score: 4341
+	Change: 17
+Don't Remove: itemPriceRange
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize
+	Score (current minimum): 4324
+	Score: 4309
+	Change: -15
+Remove: itemSize
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemReturnRate
+	Score (current minimum): 4309
+	Score: 4377
+	Change: 68
+Don't Remove: itemReturnRate
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemDiscount
+	Score (current minimum): 4309
+	Score: 4310
+	Change: 1
+Don't Remove: itemDiscount
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor
+	Score (current minimum): 4309
+	Score: 4276
+	Change: -33
+Remove: itemColor
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, itemBaseColorReturnRate
+	Score (current minimum): 4276
+	Score: 4290
+	Change: 14
+Don't Remove: itemBaseColorReturnRate
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, itemPriceDiscrete
+	Score (current minimum): 4276
+	Score: 4314
+	Change: 38
+Don't Remove: itemPriceDiscrete
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, dateOfBirthIsOutlier
+	Score (current minimum): 4276
+	Score: 4284
+	Change: 8
+Don't Remove: dateOfBirthIsOutlier
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, orderInstant
+	Score (current minimum): 4276
+	Score: 4278
+	Change: 2
+Don't Remove: orderInstant
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, manufacturerID
+	Score (current minimum): 4276
+	Score: 4303
+	Change: 27
+Don't Remove: manufacturerID
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, orderNumDistinctItems
+	Score (current minimum): 4276
+	Score: 4290
+	Change: 14
+Don't Remove: orderNumDistinctItems
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, orderSumPrice
+	Score (current minimum): 4276
+	Score: 4287
+	Change: 11
+Don't Remove: orderSumPrice
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, itemBaseColor
+	Score (current minimum): 4276
+	Score: 4288
+	Change: 12
+Don't Remove: itemBaseColor
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, itemSizeReturnRate
+	Score (current minimum): 4276
+	Score: 4275
+	Change: -1
+Remove: itemSizeReturnRate
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, itemSizeReturnRate, itemPriceLevels
+	Score (current minimum): 4275
+	Score: 4281
+	Change: 6
+Don't Remove: itemPriceLevels
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, itemSizeReturnRate, itemID
+	Score (current minimum): 4275
+	Score: 4281
+	Change: 6
+Don't Remove: itemID
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, itemSizeReturnRate, salutation
+	Score (current minimum): 4275
+	Score: 4311
+	Change: 36
+Don't Remove: salutation
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, itemSizeReturnRate, orderItemNumSameItemsOrderedGreater1
+	Score (current minimum): 4275
+	Score: 4281
+	Change: 6
+Don't Remove: orderItemNumSameItemsOrderedGreater1
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, itemSizeReturnRate, itemPriceLevelsGreater1
+	Score (current minimum): 4275
+	Score: 4273
+	Change: -2
+Remove: itemPriceLevelsGreater1
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, itemSizeReturnRate, itemPriceLevelsGreater1, itemCollection
+	Score (current minimum): 4273
+	Score: 4307
+	Change: 34
+Don't Remove: itemCollection
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, itemSizeReturnRate, itemPriceLevelsGreater1, creationDateIsOutlier
+	Score (current minimum): 4273
+	Score: 4279
+	Change: 6
+Don't Remove: creationDateIsOutlier
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, itemSizeReturnRate, itemPriceLevelsGreater1, manufacturerReturnRate
+	Score (current minimum): 4273
+	Score: 4294
+	Change: 21
+Don't Remove: manufacturerReturnRate
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, itemSizeReturnRate, itemPriceLevelsGreater1, deliveryDateIsOutlier
+	Score (current minimum): 4273
+	Score: 4442
+	Change: 169
+Don't Remove: deliveryDateIsOutlier
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, itemSizeReturnRate, itemPriceLevelsGreater1, orderDeliveryTime
+	Score (current minimum): 4273
+	Score: 4302
+	Change: 29
+Don't Remove: orderDeliveryTime
+Excluding: customerState, dateOfBirthMissing, holiday, orderNumDistinctItemsGreater1, customerWestGerman, itemSize, itemColor, itemSizeReturnRate, itemPriceLevelsGreater1, orderItemNumSameItemsOrdered
+	Score (current minimum): 4273
+	Score: 4308
+	Change: 35
+Don't Remove: orderItemNumSameItemsOrdered
+
+Features Kept:
+                                     change
+orderWeekday                              3
+orderSumPrices                            2
+itemColorReturnRate                       4
+orderNumItems                            32
+itemPriceRange                           17
+itemReturnRate                           68
+itemDiscount                              1
+itemBaseColorReturnRate                  14
+itemPriceDiscrete                        38
+dateOfBirthIsOutlier                      8
+orderInstant                              2
+manufacturerID                           27
+orderNumDistinctItems                    14
+orderSumPrice                            11
+itemBaseColor                            12
+itemPriceLevels                           6
+itemID                                    6
+salutation                               36
+orderItemNumSameItemsOrderedGreater1      6
+itemCollection                           34
+creationDateIsOutlier                     6
+manufacturerReturnRate                   21
+deliveryDateIsOutlier                   169
+orderDeliveryTime                        29
+orderItemNumSameItemsOrdered             35
+
+Features Removed
+                              change
+customerState                    -10
+dateOfBirthMissing               -27
+holiday                          -10
+orderNumDistinctItemsGreater1    -12
+customerWestGerman               -13
+itemSize                         -15
+itemColor                        -33
+itemSizeReturnRate                -1
+itemPriceLevelsGreater1           -2
