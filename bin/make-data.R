@@ -85,7 +85,31 @@ dt.test$color <- as.character(dt.test$color)
 dt.test[is.na(dt.test$color), c("color")] <- "MISSING"
 dt.test$color <- as.factor(dt.test$color)
 
-# DON'T SWITCH THESE TWO
+rename <- function(dt2) {
+    ## price -> itemPrice
+    dt2$itemPrice <- dt2$price
+    dt2$price <- NULL
+    
+    ## color -> itemColor
+    dt2$itemColor <- dt2$color
+    dt2$color <- NULL
+    
+    ## size -> itemSize
+    dt2$itemSize <- droplevels(as.factor(toupper(dt2$size)))
+    dt2$size <- NULL
+    
+    ## Delivery Date
+    dt2$orderDeliveryDate <- dt2$deliveryDate
+    dt2$deliveryDate <- NULL
+    
+    ## State
+    dt2$customerState <- dt2$state
+    dt2$state <- NULL
+    dt2
+}
+
+dt.train <- rename(dt.train)
+dt.test <- rename(dt.test)
 
 message("Adding Features to the Train and Test Set")
 dt.train <- add.features(dt.train)

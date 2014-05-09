@@ -6,7 +6,7 @@ fs.all <- function(dt) {
     dt2$orderDate <- NULL
     
     # Use deliveryTime
-    dt2$deliveryDate <- NULL
+    dt2$orderDeliveryDate <- NULL
     
     # Use customerAge
     dt2$dateOfBirth <- NULL
@@ -26,21 +26,18 @@ fs.noCustomer <- function(dt) {
     
     dt2$customerID <- NULL
     dt2$customerMoneySpent <- NULL
-    dt2$customerItemIsFavoriteBaseColor <- NULL
-    dt2$customerFavoriteBaseColor <- NULL
-    dt2$customerItemIsFavoriteColor <- NULL
-    dt2$customerFavoriteColor <- NULL
-    dt2$customerNumOrders <- NULL
-    dt2$customerAccountAge <- NULL
-    dt2$customerAccountAgeAtOrderTime <- NULL
-    dt2$customerAgeAtOrderTimeDiscrete <- NULL
-    dt2$customerAccountAgeAtOrderTimeDiscrete <- NULL
-    dt2$customerAccountAgeDiscrete <- NULL
     
-    # THIS SHOULD NOT BE HERE (rename this)
-    dt2$customerNumItemsOrdered <- NULL
     dt2$customerReturnRate <- NULL
     dt2$customerTotalOrderVolume <- NULL
+    
+    dt2$customerFavoriteColor
+    dt2$customerFavoriteBaseColor
+    
+    dt2$customerItemIsFavoriteBaseColor <- NULL
+    dt2$customerItemIsFavoriteColor <- NULL
+    
+    dt2$customerNumOrders <- NULL
+    dt2$customerNumItemsOrdered <- NULL
     
     dt2
 }
@@ -84,26 +81,9 @@ fs.c50 <- function(dt, customerKnown) {
     dt2 <- fs.tree(dt)
     
     if (customerKnown) {
-        dt2$itemID <- NULL
-        dt2$color <- NULL
-        dt2$sizeReturnRate <- NULL
-        dt2$baseColorReturnRate <- NULL
-        dt2$customerNumItemsOrdered <- NULL
-        dt2$westGermany <- NULL
-        dt2$itemPriceLevelsGreater1 <- NULL
-        dt2$orderWeekday <- NULL
-        dt2$baseColor <- NULL
-        #dt2$customerID <- NULL
+        # Run again on M3
     } else {
-        dt2$itemID <- NULL
-        dt2$sizeReturnRate <- NULL
-        dt2$baseColor <- NULL
-        dt2$colorReturnRate <- NULL
-        dt2$dateOfBirthMissing <- NULL
-        dt2$westGermany <- NULL
-        dt2$unknownManufacturer <- NULL
-        dt2$manufacturerReturnRate <- NULL
-        dt2$baseColorReturnRate <- NULL
+        # Run again on M3
     }
         
     dt2
