@@ -200,6 +200,27 @@ add.features.all <- function(to, from) {
     dt.to <- data.table(to)
     dt.from <- data.table(from[from$deliveryDateMissing == "no", ])
     
+    # Next/Prev order (in days)
+    orderDates <- unique(dt.from[, c("customerID", "orderDate"), with=F])
+    setkeyv(orderDates, c("customerID", "orderDate"))
+    orderDates[, index := 1:.N, by=c("customerID")]
+    orderDates[, orderDateNext := orderDate[index + 1], by=c("customerID")]
+    orderDates[, orderDatePrev := orderDate[index - 1], by=c("customerID")]
+    orderDates$orderTimeNext <- as.integer(orderDates$orderDateNext - orderDates$orderDate)
+    orderDates$orderTimePrev <- as.integer(orderDates$orderDatePrev - orderDates$orderDate)
+    dt.to <- join(dt.to, orderDates[, c("orderTimeNext", "orderDate", "orderTimePrev", "customerID"), with=F],
+                  by=c("customerID", "orderDate"))
+    
+    # Add an index column representhing the n'th order the customer has placed
+    orderDates[, , by=c("customerID")]
+    
+    #orderDates[, customerNextOrderDate := orderDates[orderDate$customerID == customerID & customerNumOrder == .which + 1, ]$orderDate, by=c("customerID"), which=T]
+    
+    
+    
+    # Shift by one row
+    
+    
     # favorite color
     dt.from[, customerFavoriteColor := names(which.max(table(itemColor))), by=c('customerID')]
     dt.from$customerFavoriteColor <- as.factor(dt.from$customerFavoriteColor)
