@@ -108,6 +108,11 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
     
     if (save.details) {
         res$varImp <- try(varImp(model))
+        
+        if (res$method == "gbm") {
+            require(gbm)
+            res$gbm.perf <- gbm.perf(model$finalModel)
+        }
     }
     
     if (!is.null(save.path)) {
