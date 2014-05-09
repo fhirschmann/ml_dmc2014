@@ -34,6 +34,19 @@ t <- t[t$deliveryDateMissing == "no", ]
 #m <- m[1:100, ]
 #t <- t[1:10, ]
 
+cols <- colnames(m)
+cols <- cols[!cols %in% c('orderItemID', 'orderDate', 'orderDeliveryDate', 'dateOfBirth', 'creationDate', 'customerFirstOrderDate', 'deliveryDateMissing')]
+if (noCustomer) {
+    cols <- cols[!cols %in% c( 'customerID', 'customerMoneySpent', 'customerItemIsFavoriteBaseColor', 'customerFavoriteBaseColor', 'customerItemIsFavoriteColor', 'customerFavoriteColor', 'customerNumOrders', 'customerAccountAge', 'customerAccountAgeAtOrderTime', 'customerAgeAtOrderTimeDiscrete', 'customerAccountAgeAtOrderTimeDiscrete', 'customerAccountAgeDiscrete', 'customerNumItemsOrdered', 'customerReturnRate', 'customerTotalOrderVolume')]
+}
+cols <- sample(cols, length(cols))
+
+set.seed(42)
+
+if (a == "gbm") {
+    m <- m[sample(nrow(m), ceiling(0.7 * nrow(m))),]
+}
+
 exclude <- c()
 if (is.na(only)) {
     keep <- c("returnShipment", "size")    
@@ -74,13 +87,8 @@ message(paste("\t Score", score.min))
 removed <- c()
 kept <- c()
 
-cols <- colnames(m)
-cols <- cols[!cols %in% c('orderItemID', 'orderDate', 'orderDeliveryDate', 'dateOfBirth', 'creationDate', 'customerFirstOrderDate', 'deliveryDateMissing')]
-if (noCustomer) {
-    cols <- cols[!cols %in% c( 'customerID', 'customerMoneySpent', 'customerItemIsFavoriteBaseColor', 'customerFavoriteBaseColor', 'customerItemIsFavoriteColor', 'customerFavoriteColor', 'customerNumOrders', 'customerAccountAge', 'customerAccountAgeAtOrderTime', 'customerAgeAtOrderTimeDiscrete', 'customerAccountAgeAtOrderTimeDiscrete', 'customerAccountAgeDiscrete', 'customerNumItemsOrdered', 'customerReturnRate', 'customerTotalOrderVolume')]
-}
 
-for (f in sample(cols, length(cols))) {
+for (f in cols) {
     if (!f %in% keep) {
         exclude2 <- c(exclude, f)
         message(paste("Excluding:", paste(exclude2, collapse=", ")))
