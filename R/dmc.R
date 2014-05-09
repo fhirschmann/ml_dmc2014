@@ -122,7 +122,7 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
             saveRDS(res, file=paste(stem, ".RData", sep=""))
         }
     }
-    
+    rm(model)
     class(res) <- "dmctrain"
     res
 }
