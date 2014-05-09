@@ -13,11 +13,13 @@ for (s in c("M1", "M2", "M3")) {
         
         message(paste("Training", sN))
         
-        customerKnown <- sN %in% c("M10", "M20", "M30")
+        customerKnown <- sN %in% c("M11", "M21", "M31")
         
         train <- dt.dmc[[sN]]$train
         train <- train[train$deliveryDateMissing == "no", ]
         train <- fs.c50(train, customerKnown)
+        if (!customerKnown)
+            train <- fs.noCustomer(train)
         train$deliveryDateMissing <- NULL
         
         test <- dt.dmc[[sN]]$test
@@ -34,5 +36,5 @@ for (s in c("M1", "M2", "M3")) {
         message(paste("Accuracy", 1 - scores[[N+1]] / nrow(dt.dmc[[sN]]$test)))
     }
     message(paste("Score", s, scores[[1]] + scores[[2]]))
-    message(paste("Accuracy", s, 1 - (scores[[1]] + scores[[2]]) / nrow(dt.dmc[[sN]]$test)))
+    message(paste("Accuracy", s, 1 - (scores[[1]] + scores[[2]]) / nrow(dt.dmc[[s]]$test)))
 }
