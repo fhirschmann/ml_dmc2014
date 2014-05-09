@@ -67,3 +67,9 @@ if (!is.null(desc$save.path)) message(paste("Writing to directory", desc$save.pa
 system.time(train <- do.call(dmctrain, desc))
 train[setdiff(names(train), c("model", "pred"))]
 warnings()
+
+# Upload results
+
+if (Sys.getenv("USER") %in% c("io93bafi", "ex66pimo")) {
+    system("./bin/sync-cluster.sh")
+}
