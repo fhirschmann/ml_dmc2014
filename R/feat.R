@@ -73,9 +73,9 @@ add.features <- function(dt) {
     dt2[is.na(dt2$itemDiscount), c("itemDiscount")] <- 0
     
     # Item Collection
-    dt2[dt2$itemID < 1100, c("itemCollection")] <- 1
-    dt2[dt2$itemID >= 1100 & itemID < 2100, c("itemCollection")] <- 2
-    dt2[dt2$itemID >= 2100, c("itemCollection")] <- 3
+    dt2[dt2$itemID < 1478, c("itemCollection")] <- 1
+    dt2[dt2$itemID >= 1478 & itemID < 2358, c("itemCollection")] <- 2
+    dt2[dt2$itemID >= 2358, c("itemCollection")] <- 3
     dt2$itemCollection <- as.factor(dt2$itemCollection)
 
     # West/East Germany
