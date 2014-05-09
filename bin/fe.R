@@ -73,7 +73,7 @@ if (a == "c50") {
         fs <- Compose(fsx, fs.tree)
         new.test <- t[colnames(t) %in% colnames(dt)]
         fit <- dmctrain(data=list(train=dt, test=new.test), data.name = s, fs.fun = fs, verbose = F,
-                       keep.data = F, method='gbm', tuneGrid=expand.grid(shrinkage=c(0.1), interaction.depth=1, n.trees=20))
+                       keep.data = F, method='gbm', tuneGrid=expand.grid(shrinkage=c(0.1), interaction.depth=ifelse(s == 'M30', 4,5), n.trees=220))
         fit$bestResult$score
     }
 }
