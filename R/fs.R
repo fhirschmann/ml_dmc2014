@@ -129,3 +129,31 @@ fs.nb <- function(dt) {
   
   dt2
 }
+
+fs.liblin <- function(dt) {
+  dt2 <- dt
+  dt2$orderItemID <- NULL
+  
+  dt2$orderDate <- NULL
+  
+  # Use deliveryTime
+  dt2$deliveryDate <- NULL
+  
+  # Use customerAge
+  dt2$dateOfBirth <- NULL
+  
+  # Use accountAge
+  dt2$creationDate <- NULL
+  dt2$customerFirstOrderDate <- NULL
+  
+  dt2$customerAgeAtOrderTime <- NULL
+  dt2$dateOfBirthIsOutlier <- NULL
+  dt2$dateOfBirthMissing <- NULL
+  dt2$customerAccountAgeAtOrderTime <-NULL
+  dt2$customerAccountAge <- NULL
+  dt2$customerFavoriteColor <- NULL
+  dt2$colorReturnRate <- NULL
+  dt2$unknownManufacturer <- NULL
+  
+  dt2
+}
