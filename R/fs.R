@@ -30,8 +30,8 @@ fs.noCustomer <- function(dt) {
     dt2$customerReturnRate <- NULL
     dt2$customerTotalOrderVolume <- NULL
     
-    dt2$customerFavoriteColor
-    dt2$customerFavoriteBaseColor
+    dt2$customerFavoriteColor <- NULL
+    dt2$customerFavoriteBaseColor <- NULL
     
     dt2$customerItemIsFavoriteBaseColor <- NULL
     dt2$customerItemIsFavoriteColor <- NULL
