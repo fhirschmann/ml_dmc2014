@@ -184,6 +184,7 @@ dmc.score <- function(pred, obs, na.rm=F) {
 }
 
 dmc.evaluate <- function(dir) {
+    source("eva/R/evaluation.R")
     require(stringr)
     
     files <- list.files(path=dir, pattern=paste(pattern=".*_res.RData", sep=""))
@@ -199,8 +200,8 @@ dmc.evaluate <- function(dir) {
         models[[i]]$name <- names[[i]]
     }
     
-    scores <- matrix(nrow=length(unique(names)), ncol=3)
-    colnames(scores) <- c("M30", "M31", "M3")
+    scores <- matrix(nrow=length(unique(names)), ncol=4)
+    colnames(scores) <- c("M3", "M31+M30=M3", "M30", "M31")
     rownames(scores) <- unique(names)
     
     i <- 0
@@ -210,26 +211,56 @@ dmc.evaluate <- function(dir) {
     }
 
     for (m in rownames(scores)) {
-        scores[m, paste("M3", sep="")] <- scores[m, paste("M30", sep="")] + scores[m, paste("M31", sep="")]
+        scores[m, "M31+M30=M3"] <- scores[m, paste("M30", sep="")] + scores[m, paste("M31", sep="")]
     }
     
     # dput(sapply(dt.dmc, function(x) nrow(x$test)))
-    nrows <- structure(c(69646L, 31007L, 38639L, 38586L, 14745L, 23841L, 38586L, 
-                         12048L, 26538L), .Names = c("M1", "M10", "M11", "M2", "M20", 
-                                                     "M21", "M3", "M30", "M31"))
+    nrows <- structure(c(38586L, 38586L, 12048L, 26538L), .Names = c("M3", "M31+M30=M3", "M30", 
+                                                             "M31"))
     
     accuracies <- scores
-    for (s in colnames(accuracies)) {
-        for (m in rownames(accuracies)) {
-            accuracies[m, s] <- 1 - (scores[m, s] / nrows[[s]])
+    
+    weightedAccuracies <- matrix(nrow=length(unique(names)), ncol=2)
+    colnames(weightedAccuracies) <- c("M3", "M31+M30=M3")
+    rownames(weightedAccuracies) <- unique(names)
+    
+    for (m in rownames(accuracies)) {
+        for (s in colnames(accuracies)) {
+        
+            accuracies[m, s] <- 1 - (scores[m, s] / nrows[s])
+        }
+        m30 <- file.path(dir, paste(m, "_M30_pred.txt", sep=""))
+        m31 <- file.path(dir, paste(m, "_M31_pred.txt", sep=""))
+        m3 <- file.path(dir, paste(m, "_M3_pred.txt", sep=""))
+        
+        if (file.exists(m30) & file.exists(m31)) {
+            preds <- rbind(
+                read.table(m30, sep=";", header=T),
+                read.table(m31, sep=";", header=T)
+            )
+            x <- "M31+M30=M3"
+        } else if (file.exists(m3)) {
+            preds <- read.table(m3, sep=";", header=T)
+            x <- "M3"
+        } else {
+            x <- NA
+        }
+        
+        if (!is.na(x)) {
+            res <- evaluate(preds, "eva/R/gold.RDS", "M3", "eva/R")
+            if (res$accuracy / 100 != accuracies[m, x]) {
+                stop(paste("Accuracies", m, x, "don't match."))
+            }
+            weightedAccuracies[m, x] <- res$accuracyW / 100
         }
     }
+    
     
     #wiki <- data.frame(accuracies[, c("M1", "M2", "M3")])
     #wiki <- data.frame(apply(accuracies[, c("M1", "M2", "M3")], 1,
     #                   function(x) paste("|R|", paste(x, collapse="|"), "|", sep="")))    
     #colnames(wiki) <- "Markup"
-    list(accuracies=accuracies, scores=scores)
+    list(accuracies=accuracies, weightedAccuracies=weightedAccuracies, scores=scores)
 }
 
 dmc.evaluate2 <- function(dir) {
