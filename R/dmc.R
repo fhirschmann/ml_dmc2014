@@ -184,6 +184,8 @@ dmc.score <- function(pred, obs, na.rm=F) {
 }
 
 dmc.evaluate <- function(dir) {
+    require(stringr)
+    
     files <- list.files(path=dir, pattern=paste(pattern=".*_res.RData", sep=""))
     
     models <- sapply(files, function(x) readRDS(file.path(dir, x)), simplify=F)
@@ -197,18 +199,18 @@ dmc.evaluate <- function(dir) {
         models[[i]]$name <- names[[i]]
     }
     
-    scores <- matrix(nrow=length(unique(names)), ncol=9)
-    colnames(scores) <- c("M10", "M11", "M1", "M20", "M21", "M2", "M30", "M31", "M3")
+    scores <- matrix(nrow=length(unique(names)), ncol=3)
+    colnames(scores) <- c("M30", "M31", "M3")
     rownames(scores) <- unique(names)
     
+    i <- 0
     for (m in models) {
-        scores[m$name, m$set] <- models[[1]]$bestResults$score
+        i <- i + 1;
+        scores[m$name, m$set] <- models[[i]]$bestResults$score
     }
 
-    for (i in 1:3) {
-        for (m in rownames(scores)) {
-            scores[m, paste("M", i, sep="")] <- scores[m, paste("M", i, "0", sep="")] + scores[m, paste("M", i, "1", sep="")]
-        }
+    for (m in rownames(scores)) {
+        scores[m, paste("M3", sep="")] <- scores[m, paste("M30", sep="")] + scores[m, paste("M31", sep="")]
     }
     
     # dput(sapply(dt.dmc, function(x) nrow(x$test)))
@@ -223,11 +225,11 @@ dmc.evaluate <- function(dir) {
         }
     }
     
-    wiki <- data.frame(accuracies[, c("M1", "M2", "M3")])
-    wiki <- data.frame(apply(accuracies[, c("M1", "M2", "M3")], 1,
-                       function(x) paste("|R|", paste(x, collapse="|"), "|", sep="")))    
-    colnames(wiki) <- "Markup"
-    list(wiki=wiki, accuracies=accuracies, scores=scores)
+    #wiki <- data.frame(accuracies[, c("M1", "M2", "M3")])
+    #wiki <- data.frame(apply(accuracies[, c("M1", "M2", "M3")], 1,
+    #                   function(x) paste("|R|", paste(x, collapse="|"), "|", sep="")))    
+    #colnames(wiki) <- "Markup"
+    list(accuracies=accuracies, scores=scores)
 }
 
 dmc.evaluate2 <- function(dir) {
