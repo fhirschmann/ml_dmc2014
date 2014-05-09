@@ -65,5 +65,5 @@ if (!is.null(desc$save.path))
 if (!is.null(desc$save.path)) message(paste("Writing to directory", desc$save.path))
 
 system.time(train <- do.call(dmctrain, desc))
-train[c("results", "bestResults", "method", "label")]
+train[setdiff(names(train), c("model", "pred"))]
 warnings()
