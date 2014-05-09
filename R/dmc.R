@@ -106,6 +106,10 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
                 label=getModelInfo(model$method, regex=F)[[1]]$label,
                 skippedOrderItemID=orderItemID[which(!test.idx)])
     
+    if (save.details) {
+        res$varImp <- try(varImp(model))
+    }
+    
     if (!is.null(save.path)) {
         if (verbose) message("Results and Predictions")
         
