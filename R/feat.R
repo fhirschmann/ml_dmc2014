@@ -181,8 +181,8 @@ add.features.otf <- function(to, from) {
     mRR <- unique(dt.from[, c("manufacturerID", "manufacturerReturnRate"), with=F])
     dt.to <- join(dt.to, mRR, by="manufacturerID")
     # treat unknown manufacturers
-    dt.to[, unknownManufacturer := as.factor(ifelse(is.na(manufacturerReturnRate), "yes", "no"))]
-    dt.to[is.na(manufacturerReturnRate), manufacturerReturnRate := 0.52]
+    #dt.to[, unknownManufacturer := as.factor(ifelse(is.na(manufacturerReturnRate), "yes", "no"))]
+    #dt.to[is.na(manufacturerReturnRate), manufacturerReturnRate := 0.52]
 
     dt.to
 }
