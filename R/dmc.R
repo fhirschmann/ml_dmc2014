@@ -5,7 +5,7 @@ source("R/fs.R")
 
 
 dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainControl(), 
-                     save.path=NULL, save.model=FALSE, verbose=T, ...) {
+                     save.path=NULL, save.model=FALSE, save.details=T, verbose=T, ...) {
     require(functional)
     require(caret)
     
@@ -101,10 +101,11 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
     
     pred <- join(pred, map, by="rowIndex")
     
-    res <- list(model=model, results=results, bestResults=bestResults, pred=pred,
+    res <- list(results=results, bestResults=bestResults, pred=pred,
                 bestTune=model$bestTune, method=model$method,
                 label=getModelInfo(model$method, regex=F)[[1]]$label,
                 skippedOrderItemID=orderItemID[which(!test.idx)])
+    
         
     if (!is.null(save.path)) {
         if (verbose) message("Results and Predictions")
@@ -115,7 +116,8 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
         write.table(extractPreds.dmctrain(res), file=paste(stem, "_pred.txt", sep=""),
                     quote=F, row.names=F, sep=";")    
         
-        if (save.model)    
+        if (save.model)
+            res$model <- model
             saveRDS(res, file=paste(stem, ".RData", sep=""))
     }
     
