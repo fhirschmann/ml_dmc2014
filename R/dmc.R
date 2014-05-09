@@ -2,11 +2,11 @@
 source("R/feat.R")
 source("R/utils.R")
 source("R/fs.R")
-library(functional)
 
 
 dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainControl(), 
                      save.path=NULL, save.model=FALSE, verbose=T, ...) {
+    require(functional)
     require(caret)
     
     if (verbose) message("Setting up Data")

@@ -3,7 +3,6 @@ source("R/dmc.R")
 source("R/fs.R")
 source("R/feat.R")
 
-library(functional)
 library(caret)
 library(C50)
 
