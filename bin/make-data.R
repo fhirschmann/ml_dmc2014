@@ -5,6 +5,8 @@ library(lubridate)
 library(vcd)
 library(zoo)
 
+args <- commandArgs(T)
+
 source("R/feat.R")
 
 # Read in the Data
@@ -90,7 +92,12 @@ dt.train <- add.features(dt.train)
 dt.test <- add.features(dt.test)
 
 dt.dmc.ids <- list(test=list(), train=list())
-for (i in c("M1", "M10", "M11", "M2", "M20", "M21", "M3", "M30", "M31")) {
+if (length(args) > 0) {
+    build <- unlist(args)
+} else {
+    build <- c("M1", "M10", "M11", "M2", "M20", "M21", "M3", "M30", "M31")
+}
+for (i in build) {
     dt.dmc.ids$train[[i]] <- as.numeric(as.character(read.csv(paste("eva/", i, "_train.txt", sep=""))$orderItemID))
     dt.dmc.ids$test[[i]] <- as.numeric(as.character(read.csv(paste("eva/", i, "_test.txt", sep=""))$orderItemID))
 }
