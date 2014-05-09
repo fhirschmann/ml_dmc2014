@@ -71,6 +71,44 @@ descs <- list(
         control=C5.0Control(earlyStopping=T)
     ),
     
+    C50T1=list(
+        fs.fun=fs.c50,
+        method="C5.0",
+        tuneGrid=expand.grid(trials=1:5, winnow=F, model="rules"),
+        control=C5.0Control(CF=0.1)
+    ),
+    C50T2=list(
+        fs.fun=fs.c50,
+        method="C5.0",
+        tuneGrid=expand.grid(trials=1:5, winnow=F, model="rules"),
+        control=C5.0Control(CF=0.2)
+    ),
+    C50T3=list(
+        fs.fun=fs.c50,
+        method="C5.0",
+        tuneGrid=expand.grid(trials=1:5, winnow=F, model="rules"),
+        control=C5.0Control(CF=0.3)
+    ),
+    C50T4=list(
+        fs.fun=fs.c50,
+        method="C5.0",
+        tuneGrid=expand.grid(trials=1:5, winnow=F, model="rules"),
+        control=C5.0Control(CF=0.4)
+    ),
+    C50T5=list(
+        fs.fun=fs.c50,
+        method="C5.0",
+        tuneGrid=expand.grid(trials=1:5, winnow=F, model="rules"),
+        control=C5.0Control(CF=0.5)
+    ),
+    C50T6=list(
+        fs.fun=fs.c50,
+        method="C5.0",
+        tuneGrid=expand.grid(trials=1:5, winnow=F, model="rules"),
+        control=C5.0Control(CF=0.6)
+    ),
+    
+    
     # Penalized Multinomial Regression
     mnC=list(
         fs.fun=fs.rf,
