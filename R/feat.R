@@ -11,7 +11,7 @@ add.features <- function(dt) {
     dt2$orderWeekday <- as.ordered(as.factor(lubridate::wday(dt2$orderDate, label=T, abbr=F)))
     
     # Instant Order
-    dt2$instantOrder <- as.factor(ifelse(dt2$creationDate == dt2$orderDate, "yes", "no"))
+    dt2$orderInstant <- as.factor(ifelse(dt2$creationDate == dt2$orderDate, "yes", "no"))
     
     # Customer age in Years (at order time)
     dt2$customerAgeAtOrderTime <- as.numeric((dt2$orderDate - dt2$dateOfBirth) / 365)
