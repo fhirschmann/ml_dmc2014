@@ -78,10 +78,17 @@ fs.tree <- function(dt) {
 fs.c50 <- function(dt, customerKnown) {
     dt2 <- fs.tree(dt)
     
+    dt2$itemColor <- NULL
+    dt2$itemSizeReturnRate <- NULL
+    dt2$dateOfBirthMissing <- NULL
+    
     if (customerKnown) {
-        # Run again on M3
+        
     } else {
         # Run again on M3
+        dt2$customerState <- NULL
+        dt2$itemSize <- NULL
+        dt2$customerWestGerman <- NULL
     }
         
     dt2
