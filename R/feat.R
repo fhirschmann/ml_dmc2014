@@ -204,10 +204,10 @@ add.features.all <- function(to, from) {
     orderDates <- unique(dt.from[, c("customerID", "orderDate"), with=F])
     setkeyv(orderDates, c("customerID", "orderDate"))
     orderDates[, index := 1:.N, by=c("customerID")]
-    orderDates[, orderDateNext := orderDate[index + 1], by=c("customerID")]
-    orderDates[, orderDatePrev := orderDate[index - 1], by=c("customerID")]
-    orderDates$orderTimeNext <- as.integer(orderDates$orderDateNext - orderDates$orderDate)
-    orderDates$orderTimePrev <- as.integer(orderDates$orderDatePrev - orderDates$orderDate)
+    orderDates[, orderDateNext := as.Date(orderDate[index + 1]), by=c("customerID")]
+    orderDates[, orderDatePrev := as.Date(orderDate[index - 1]), by=c("customerID")]
+    orderDates$orderTimeNext <- as.integer(as.Date(orderDates$orderDateNext) - as.Date(orderDates$orderDate))
+    orderDates$orderTimePrev <- as.integer(as.Date(orderDates$orderDatePrev) - as.Date(orderDates$orderDate))
     dt.to <- join(dt.to, orderDates[, c("orderTimeNext", "orderDate", "orderTimePrev", "customerID"), with=F],
                   by=c("customerID", "orderDate"))
     
