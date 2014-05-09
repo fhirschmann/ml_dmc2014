@@ -32,10 +32,6 @@ add.features <- function(dt) {
     # Total number of items ordered
     dt2[, customerNumItemsOrdered := .N, by=c("customerID")]
     
-    # Total number of distinct items ordered
-    dt2[, orderDistinctItems := length(unique(itemID)), by=c("customerID", "orderDate")]
-    dt2$orderDistinctItemsGreater1 <- as.factor(ifelse(dt2$orderDistinctItems > 1, "yes", "no"))
-    
     # Total number of orders
     dt2[, customerNumOrders := length(unique(orderDate)), by=c("customerID")]
     
@@ -47,7 +43,11 @@ add.features <- function(dt) {
     dt2[, orderVolume := sum(price), by=c("customerID", "orderDate")]
 
     # size of order
-    dt2[, orderSize := length(orderItemID), by=c("customerID", "orderDate")]
+    dt2[, orderNumItems := length(orderItemID), by=c("customerID", "orderDate")]
+    
+    # Total number of distinct items ordered
+    dt2[, orderDistinctItems := length(unique(itemID)), by=c("customerID", "orderDate")]
+    dt2$orderDistinctItemsGreater1 <- as.factor(ifelse(dt2$orderDistinctItems > 1, "yes", "no"))
     
     # Total volume of customer's order
     dt2[, customerTotalOrderVolume := sum(price), by=c("customerID")]
@@ -70,7 +70,6 @@ add.features <- function(dt) {
     
     # Item Discount
     dt2[, itemDiscount := 1 - price / max(price), by=c("itemID", "size")]
-    
     dt2[is.na(dt2$itemDiscount), c("itemDiscount")] <- 0
     
     # Item Collection
