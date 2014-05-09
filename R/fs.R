@@ -43,7 +43,7 @@ fs.noCustomer <- function(dt) {
 }
 
 fs.noDiscrete <- function(dt) {
-    rm <- names(unlist(sapply(colnames(dt2),
+    rm <- names(unlist(sapply(colnames(dt),
                               function(x) as.logical(grep("Discrete", x)), simplify=T)))
     dt[setdiff(colnames(dt), rm)]
 }
@@ -59,9 +59,7 @@ fs.onlyDiscrete <- function(dt) {
 
 fs.svm <- function(dt) {
     dt2 <- fs.noDiscrete(fs.all(dt))
-    
-    dt2$size <- NULL
-    
+
     dt2
 }
 
