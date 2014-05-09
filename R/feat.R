@@ -66,7 +66,7 @@ add.features <- function(dt) {
     dt2$itemPriceLevelsGreater1 <- as.factor(ifelse(dt2$itemPriceLevels > 1, "yes", "no"))
     
     # Price Range
-    #dt2[, itemPriceRange := 1 - (max(price) / min(price)) / max(price)]
+    dt2[, itemPriceRange := 1 - (max(price) - min(price)) / (max(price) + 1), by=c("itemID")]
     
     # Item Discount
     dt2[, itemDiscount := 1 - price / max(price), by=c("itemID", "size")]
