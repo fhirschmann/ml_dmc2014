@@ -157,6 +157,12 @@ descs <- list(
         tuneGrid=grid.earthC
     ),
     
+    avNNet=list(
+        fs.fun=fs.nn,
+        MaxNWts=20000,
+        method="avNNet"
+    ),
+    
     mlpC=list(
         fs.fun=fs.stat,
         method="mlp",
