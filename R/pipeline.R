@@ -103,7 +103,7 @@ descs <- list(
     pdaC=list(
         fs.fun=fs.stat,
         method="pda",
-        tuneLength=4
+        tuneLength=10
     ),
     
     rdaC=list(
