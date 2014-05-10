@@ -5,6 +5,7 @@ add.features <- function(dt) {
     # Place features that can be computed over the entire data set here.
     #
     require(plyr)
+    require(Hmisc)
     dt2 <- data.table(dt)
     
     # Order: Attributes specific to an order (possibly grouped by customerID, orderDate)
@@ -57,6 +58,24 @@ add.features <- function(dt) {
     dt2[, itemDiscount := 1 - itemPrice / max(itemPrice), by=c("itemID", "itemSize")]
     dt2[is.na(dt2$itemDiscount), c("itemDiscount")] <- 0
     
+#     # Item Size Type
+#     dt2$itemSizeIsAllDigits <- "no"
+#     dt2[all.digits(as.character(dt2$itemSize)), c("itemSizeIsAllDigits")] <- "yes"
+#     dt2$itemSizeIsAllDigits <- as.factor(dt2$itemSizeIsAllDigits)
+#     
+#     dt2$itemSizeIsOneDigit <- dt2$itemSizeIsAllDigits
+#     dt2[dt2$itemSizeIsAllDigits == "yes" & nchar(as.character(dt2$itemSize)) != 1, c("itemSizeIsOneDigit")] <- "no"
+#     
+#     dt2$itemSizeIsTwoDigits <- dt2$itemSizeIsAllDigits
+#     dt2[dt2$itemSizeIsAllDigits == "yes" & nchar(as.character(dt2$itemSize)) != 2, c("itemSizeIsTwoDigits")] <- "no"
+#     
+#     dt2$itemSizeIsFourDigits <- dt2$itemSizeIsAllDigits
+#     dt2[dt2$itemSizeIsFourDigits == "yes" & nchar(as.character(dt2$itemSize)) != 4, c("itemSizeIsFourDigits")] <- "no"
+#     
+#     dt2$itemSizeIsStandardSize <- "no"
+#     dt2[as.character(dt2$itemSize) %in% c("M", "S", "XL", "XS", "XXL", "XXXL", "L"), c("itemSizeIsStandardSize")] <- "yes"
+#     dt2$itemSizeIsStandardSize <- as.factor(dt2$itemSizeIsStandardSize)
+
     # Item Collection
     dt2[dt2$itemID < 1478, c("itemCollection")] <- 1
     dt2[dt2$itemID >= 1478 & itemID < 2358, c("itemCollection")] <- 2
