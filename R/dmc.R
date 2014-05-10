@@ -24,6 +24,9 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
     
     data <- fs.all(rbind(data$train[train.idx, ], data$test[test.idx, ]))
     
+    if (any(data$deliveryDateMissing == "yes"))
+        error("Instances with missing delivery Dates used for training")
+    
     customer <- data.name %in% c("M11", "M21", "M31")
     
     if (!customer) {
