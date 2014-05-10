@@ -8,6 +8,8 @@ source("R/fs.R")
 
 args <- commandArgs(T)
 
+if (file.exists("config_fe.R")) source("config_fe.R")
+
 a <- args[[1]] # c50
 s <- args[[2]] # M10 M11
 if (length(args) > 2) {
