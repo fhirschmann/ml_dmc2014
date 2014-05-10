@@ -101,6 +101,7 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
     pred <- join(pred, map, by="rowIndex")
     
     res <- list(results=results, bestResults=bestResults,
+                user=Sys.getenv("USER"), time=Sys.time(),
                 bestTune=model$bestTune, method=model$method,
                 label=getModelInfo(model$method, regex=F)[[1]]$label,
                 skippedOrderItemID=orderItemID[which(!test.idx)])
