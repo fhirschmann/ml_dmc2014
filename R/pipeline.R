@@ -44,7 +44,7 @@ descs <- list(
             winnow=F,
             trials=30
         )
-    )
+    ),
     
     # Stuff to run on the Cluster: Postfix with 'C'
     
