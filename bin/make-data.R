@@ -153,10 +153,10 @@ message("Adding Features that can be computed on ALL data")
 dt.train <- add.features.all(dt.train, dt.merged)
 dt.test <- add.features.all(dt.test, dt.merged)
 
-if (schatti) {
-    dt.train <- add.features.schatti.all(dt.train)
-    dt.test <- add.features.schatti.all(dt.test)
-}
+# if (schatti) {
+#     dt.train <- add.features.schatti.all(dt.train)
+#     dt.test <- add.features.schatti.all(dt.test)
+# }
 
 message("Creating M sets")
 
