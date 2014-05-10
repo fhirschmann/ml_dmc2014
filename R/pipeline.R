@@ -30,8 +30,22 @@ grid.c50 <- expand.grid(
     trials=c(1, 1:50 * 2)
 )
 
+
 # List of stuff to learn
 descs <- list(
+    # Final (tuned) Descriptions
+    
+    ## C5.0 on M10
+    c50FM10=list(
+        fs.fun=fs.c50,
+        method="C5.0",
+        tuneGrid=expand.grid(
+            model="rules",
+            winnow=F,
+            trials=30
+        )
+    )
+    
     # Stuff to run on the Cluster: Postfix with 'C'
     
     # GBM
