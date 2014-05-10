@@ -42,6 +42,18 @@ grid.gbmS4 <- expand.grid(
     n.trees=c(300,400,500)
 )
 
+grid.gbmS5 <- expand.grid(
+    shrinkage=c(0.01),
+    interaction.depth=7,
+    n.trees=c(200, 300,400,500)
+)
+
+grid.gbmS6 <- expand.grid(
+    shrinkage=c(0.01),
+    interaction.depth=2:5,
+    n.trees=c(200, 300,400,500)
+)
+
 grid.c50 <- expand.grid(
     model=c("rules", "tree"),
     winnow=c(T, F),
@@ -101,6 +113,20 @@ descs <- list(
         fs.fun=fs.gbm,
         method="gbm",
         tuneGrid=grid.gbmS4,
+		trControl=ctrl.probs
+    ),
+	
+	gbmCs5=list(
+        fs.fun=fs.gbm,
+        method="gbm",
+        tuneGrid=grid.gbmS5,
+		trControl=ctrl.probs
+    ),
+	
+	gbmCs6=list(
+        fs.fun=fs.gbm,
+        method="gbm",
+        tuneGrid=grid.gbmS6,
 		trControl=ctrl.probs
     ),
     
