@@ -28,6 +28,9 @@ add.features <- function(dt) {
     dt2[, orderItemNumSameItemsOrdered := .N, by=c("itemID", "customerID", "orderDate")]
     dt2$orderItemNumSameItemsOrderedGreater1 <- as.factor(ifelse(dt2$orderItemNumSameItemsOrdered > 1, "yes", "no"))
     
+    dt2[, orderItemNumSameItemsOrderedColor := .N, by=c("itemID", "customerID", "orderDate", "itemColor")]
+    dt2[, orderItemNumSameItemsOrderedSize := .N, by=c("itemID", "customerID", "orderDate", "itemSize")]
+    
     # Total number of distinct items ordered
     dt2[, orderNumDistinctItems := length(unique(itemID)), by=c("customerID", "orderDate")]
     dt2$orderNumDistinctItemsGreater1 <- as.factor(ifelse(dt2$orderNumDistinctItems > 1, "yes", "no"))
@@ -228,6 +231,14 @@ add.features.all <- function(to, from) {
     dt.to <- join(dt.to, customerFavoriteBaseColor, by=c("customerID"))
     dt.to$customerItemIsFavoriteBaseColor <- as.factor(ifelse(
         as.character(dt.to$customerFavoriteBaseColor) == as.character(dt.to$itemBaseColor), "yes", "no"))
+    
+    # favorite size
+    dt.from[, customerFavoriteSize := names(which.max(table(itemSize))), by=c('customerID')]
+    dt.from$customerFavoriteSize <- as.factor(dt.from$customerFavoriteSize)
+    customerFavoriteSize <- unique(dt.from[, c("customerID", "customerFavoriteSize"), with=F])
+    dt.to <- join(dt.to, customerFavoriteSize, by=c("customerID"))
+    dt.to$customerItemIsFavoriteSize <- as.factor(ifelse(
+        as.character(dt.to$customerFavoriteSize) == as.character(dt.to$itemSize), "yes", "no"))
     
     dt.to
 }
