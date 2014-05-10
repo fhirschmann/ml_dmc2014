@@ -168,6 +168,9 @@ dt.dmc <- foreach(i=names(dt.dmc.ids$train)) %dopar% {
         train=add.features.otf(dt.train[train.ids, ], dt.train[-(test.ids), ]),
         test=add.features.otf(dt.train[test.ids, ], dt.train[-(test.ids), ]))
 }
+
+dt.test <- add.features.otf(dt.test, dt.train)
+
 names(dt.dmc) <- names(dt.dmc.ids$train)
 
 nas <- function(x) which(is.na(dt.train), T)
