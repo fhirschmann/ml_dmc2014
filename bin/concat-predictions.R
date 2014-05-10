@@ -24,4 +24,4 @@ preds <- rbind(
 
 options(scipen=100)
 
-write.table(preds, dest, sep=";", quote=F, include.rownames=F)
+write.table(preds, dest, sep=";", quote=F, row.names=F)
