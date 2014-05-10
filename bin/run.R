@@ -80,6 +80,6 @@ warnings()
 
 # Upload results
 
-if ((Sys.getenv("USER") %in% c("io93bafi", "ex66pimo")) | (Sys.info()["nodename"] == "ip-172-31-37-90")) {
+if ((Sys.getenv("USER") %in% c("io93bafi", "ex66pimo")) | (Sys.info()["nodename"] == "ip-172-31-7-33")) {
     system("./bin/sync-cluster.sh")
 }
