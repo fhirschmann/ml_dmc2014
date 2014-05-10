@@ -108,7 +108,8 @@ descs <- list(
     pdaC=list(
         fs.fun=fs.stat,
         method="pda",
-        tuneLength=10
+        tuneLength=5,
+        trControl=ctrl.probs,
     ),
     
     rdaC=list(
