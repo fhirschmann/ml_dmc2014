@@ -72,8 +72,17 @@ fs.stat <- function(dt) {
     dt2
 }
 
-fs.gbm <- function(dt) {
+fs.gbm <- function(dt, customerKnown) {
     dt2 <- fs.tree(dt)
+
+    if (customerKnown) {
+
+    } else {
+        dt2$salutation <- NULL
+        dt2$itemSizeReturnRate <- NULL
+        dt2$customerState <- NULL
+        dt2$orderNumDistinctItems <- NULL
+    }
     
     dt2
 }
