@@ -37,7 +37,6 @@ fs.noCustomer <- function(dt) {
     dt2$customerItemIsFavoriteColor <- NULL
     
     dt2$customerNumOrders <- NULL
-    dt2$customerNumItemsOrdered <- NULL
     
     dt2
 }
