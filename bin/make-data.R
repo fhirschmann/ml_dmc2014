@@ -4,9 +4,12 @@ library(plyr)
 library(lubridate)
 library(vcd)
 library(zoo)
+library(foreach)
 
 args <- commandArgs(T)
 schatti <- F
+
+if (file.exists("config_mkdata.R")) source("config_mkdata.R")
 
 source("R/feat.R")
 
@@ -157,15 +160,15 @@ if (schatti) {
 
 message("Creating M sets")
 
-dt.dmc <- list()
-for (i in names(dt.dmc.ids$train)) {
+dt.dmc <- foreach(i=names(dt.dmc.ids$train)) %dopar% {
     message(paste("Creating Data Set", i))
     train.ids <- dt.dmc.ids$train[[i]]
     test.ids <- dt.dmc.ids$test[[i]]
-    dt.dmc[[i]] <- list(
+    list(
         train=add.features.otf(dt.train[train.ids, ], dt.train[-(test.ids), ]),
         test=add.features.otf(dt.train[test.ids, ], dt.train[-(test.ids), ]))
 }
+names(dt.dmc) <- names(dt.dmc.ids$train)
 
 nas <- function(x) which(is.na(dt.train), T)
 
