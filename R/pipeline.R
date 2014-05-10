@@ -27,7 +27,7 @@ grid.gbmS <- expand.grid(
 grid.c50 <- expand.grid(
     model=c("rules", "tree"),
     winnow=c(T, F),
-    trials=c(1, 1:50 * 2)
+    trials=c(1, 1:10 * 10)
 )
 
 
