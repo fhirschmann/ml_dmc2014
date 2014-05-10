@@ -81,5 +81,5 @@ warnings()
 # Upload results
 
 if ((Sys.getenv("USER") %in% c("io93bafi", "ex66pimo")) | (Sys.info()["nodename"] %in% c("ip-172-31-7-33", "ip-172-31-16-9"))) {
-    #system("./bin/sync-cluster.sh")
+    system("./bin/sync-cluster.sh")
 }
