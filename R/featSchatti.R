@@ -40,9 +40,6 @@ add.features.schatti <- function(dt) {
     category <- data.table(read.table("task/itemManuCategory.txt", sep=";"))
     categorySize <- data.table(read.table("task/itemManuCategoryPlusSize.txt", sep=";"))
     
-    transformShoes <- data.table(read.table("task/size_transforming_Shoes_FR_2_Shoes_UK.txt", sep=";"))
-    transformClothes2Tops <- data.table(read.table("task/size_transforming_TopsShoes2Clothes.txt", sep=";"))
-    
     dt2 <- join(dt2, category, by=c("manufacturerID", "itemID"))
     dt2 <- join(dt2, categorySize, by=c("manufacturerID", "itemID", "itemSize"))
     setnames(dt2,(ncol(dt2)-2),"spalte1")
@@ -74,6 +71,10 @@ add.features.schatti.all <- function(dt, alldata) {
     #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MEIN ZEUG %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     #alldata <- rbind(data.frame(dt.train), data.frame(dt.test, returnShipment=NA))
     #d2end <- dt.train
+    
+    #laden der beiden size transform tabellen
+    transformShoes <- data.table(read.table("task/size_transforming_Shoes_FR_2_Shoes_UK.txt", sep=";"))
+    transformClothes2Tops <- data.table(read.table("task/size_transforming_TopsShoes2Clothes.txt", sep=";"))
     
     #hier wird erstmal der Output ignoriert
     alldata<-dt.merged <- rbind(data.frame(dt.train), data.frame(dt.test, returnShipment=NA))
