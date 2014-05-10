@@ -20,8 +20,8 @@ grid.gbm <- expand.grid(
 
 grid.c50 <- expand.grid(
     model=c("rules", "tree"),
-    winnow=F,
-    trials=1:20 * 3
+    winnow=c(T, F),
+    trials=c(1, 1:50 * 2)
 )
 
 # List of stuff to learn
@@ -59,7 +59,7 @@ descs <- list(
         fs.fun=fs.c50,
         method="C5.0",
         tuneGrid=grid.c50,
-        control=C5.0Control(earlyStopping=T)
+        control=C5.0Control(earlyStopping=F)
     ),
     
     earthC=list(
