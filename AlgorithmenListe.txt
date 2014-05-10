@@ -23,6 +23,7 @@ Parameter Tuning:
 
 TODO:
 linearSvm - simon
+earthC - simon
 
 
 DONE:
@@ -39,3 +40,5 @@ gbmCP - markus
 ==============================
 
 Komplett abgehakt:
+
+rda <- zu schlecht

@@ -30,6 +30,11 @@ grid.c50 <- expand.grid(
     trials=c(1, 1:10 * 10)
 )
 
+grid.earthC <- expand.grid(
+	degree=c(1,2),
+	nprune=c(5,7,8,9,10,12,15)
+)
+
 
 # List of stuff to learn
 descs <- list(
@@ -85,7 +90,7 @@ descs <- list(
     earthC=list(
         fs.fun=fs.stat,
         method="earth",
-        tuneLength=5
+        tuneGrid=grid.earthC
     ),
     
     mlpC=list(
