@@ -324,7 +324,7 @@ descs <- list(
     svmPolyC=list(
         fs.fun=fs.rf,
         method="svmPoly",
-        tuneLength=3,
+        tuneLength=4,
     ),
     
     # Bagged Cart
