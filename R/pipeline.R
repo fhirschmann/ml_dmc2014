@@ -130,7 +130,7 @@ descs <- list(
         ),
         trControl=ctrl.probs
     ),
-    bearthM30=list(
+    bearthM31=list(
         fs.fun=fs.stat,
         method="bagEarth",
         tuneGrid=expand.grid(
