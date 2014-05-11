@@ -154,7 +154,8 @@ descs <- list(
     earthC=list(
         fs.fun=fs.stat,
         method="earth",
-        tuneGrid=grid.earthC
+        tuneGrid=grid.earthC,
+        ctrl=ctrl.probs
     ),
     
     bagEarthC=list(
@@ -166,6 +167,7 @@ descs <- list(
     gamboost=list(
         fs.fun=fs.stat,
         tuneLength=6,
+        ctrl=ctrl.probs,
         method="gamboost"
         
     ),
@@ -179,6 +181,7 @@ descs <- list(
     rrlda=list(
         fs.fun=fs.stat,
         tuneLength=2,
+        ctrl=ctrl.probs,
         method="rrlda"
     ),
     
