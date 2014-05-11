@@ -3,7 +3,6 @@ source("R/feat.R")
 source("R/utils.R")
 source("R/fs.R")
 
-
 dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainControl(), 
                      save.path=NULL, save.model=FALSE, save.details=T, verbose=T, ...) {
     require(functional)
@@ -72,7 +71,7 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
     set.seed(42)
     model <- caret::train(returnShipment ~ ., data=data,
                           trControl=trControl, na.action=na.pass, metric="score",
-                          maximize=F, ...)
+                          maximize=F, final.fun=add.features.otf, ...)
     
     if (verbose) message("Model trained. Calculating results")
     
