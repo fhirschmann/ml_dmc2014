@@ -25,14 +25,18 @@ message(paste("Using", f0.file, "to predict unknown customers."))
 f1.fit <- readRDS(f1.file)
 f0.fit <- readRDS(f0.file)
 
-f1.pred <- predict(f1$model, dt.dmc$F1$test)
-f0.pred <- predict(f0$model, dt.dmc$F0$test)
+f1.dt <- dt.dmc$F1$test
+f0.dt <- dt.dmc$F0$test
 
-dt.f1 <- dt.dmc$F1$test
-dt.f0 <- dt.dmc$F0$test
+message("Predicting known customers")
+f1.pred <- predict(f1.fit, f1.dt)
+f1.dt$prediction <- f1.pred
+message(paste("Predicted", length(f1.pred), "out of", nrow(f1.dt), "instances"))
 
-dt.f1$prediction <- predict(f1.fit, dt.f1)
-dt.f0$prediction <- predict(f0.fit, dt.f0)
+message("Predicting unknown customers")
+f0.pred <- predict(f0.fit, f0.dt)
+f0.dt$prediction <- f0.pred
+message(paste("Predicted", length(f0.pred), "out of", nrow(f0.dt), "instances"))
 
 dt.f1[dt.f1$deliveryDateMissing == "yes", c("prediction")] <- "no"
 dt.f0[dt.f0$deliveryDateMissing == "yes", c("prediction")] <- "no"
