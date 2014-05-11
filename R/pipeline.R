@@ -212,14 +212,6 @@ descs <- list(
         trControl=ctrl.probs
     ),
     
-    # C5.0
-    c50C=list(
-        fs.fun=fs.c50,
-        method="C5.0",
-        tuneGrid=grid.c50,
-        control=C5.0Control(earlyStopping=F)
-    ),
-    
     earthC=list(
         fs.fun=fs.stat,
         method="earth",
@@ -313,15 +305,6 @@ descs <- list(
         fs.fun=fs.stat,
         method="rocc",
         tuneLength=1
-    ),
-    
-    # C5.0 with Probabilities
-    c50CP=list(
-        fs.fun=fs.tree,
-        method="C5.0",
-        tuneGrid=grid.c50,
-        trControl=ctrl.probs,
-        control=C5.0Control(earlyStopping=T)
     ),
     
     C50T1=list(
