@@ -71,7 +71,7 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
     set.seed(42)
     model <- caret::train(returnShipment ~ ., data=data,
                           trControl=trControl, na.action=na.pass, metric="score",
-                          maximize=F)
+                          maximize=F, ...)
     
     if (verbose) message("Model trained. Calculating results")
     
