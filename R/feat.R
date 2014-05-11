@@ -276,6 +276,7 @@ add.features.all <- function(to, from) {
     cdr[customerDiscountRate>=temp[4],customerDiscountTendency:= "High"]
     cdr[customerDiscountRate<=temp[2],customerDiscountTendency:= "Low"]
     cdr[is.na(customerDiscountTendency), customerDiscountTendency := "Neutral"]
+    cdr$customerDiscountTendency <- as.factor(cdr$customerDiscountTendency)
     cdr[,customerDiscountRate:=NULL]
     dt.to <- join(dt.to, cdr, by=c("customerID"))
     
