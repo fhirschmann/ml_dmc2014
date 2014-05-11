@@ -65,21 +65,23 @@ add.features.schatti.all <- function(dt, alldata) {
     # Hier können Features hinzugefügt werden, die auf der Gesamtmenge aller verfügbaren
     # Daten berechnet werden sollen (alldata) und dem aktuellen Datenset (dt) hinzugefügt
     # werden sollen.
-    d2end <-dt
-    nrow.before <- nrow(dt2)
+    d2end <-data.table(dt)
+    nrow.before <- nrow(d2end)
     
     #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MEIN ZEUG %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    #alldata <- rbind(data.frame(dt.train), data.frame(dt.test, returnShipment=NA))
-    #d2end <- dt.train
-    
+    d2end <- dt
+    #d2end <- dt.train #####
+    #d2end <- dt.test #####
     #laden der beiden size transform tabellen
     transformShoes <- data.table(read.table("task/size_transforming_Shoes_FR_2_Shoes_UK.txt", sep=";"))
     transformClothes2Tops <- data.table(read.table("task/size_transforming_TopsShoes2Clothes.txt", sep=";"))
+    transformClothes1 <- data.table(read.table("task/size_transforming_2Clothes1.txt", sep=";"))
+    transformClothes2 <- data.table(read.table("task/size_transforming_2Clothes2.txt", sep=";"))
     
     #hier wird erstmal der Output ignoriert
-    alldata<-dt.merged <- rbind(data.frame(dt.train), data.frame(dt.test, returnShipment=NA))
+    #alldata <- rbind(data.frame(dt.train), data.frame(dt.test, returnShipment=NA)) ####
     dt2 <- data.table(alldata)
-    
+    rm(alldata)
     #ACHTUNG: habe itemReturnRate neu gemacht
     
     dt2hold<-dt2[returnShipment=="no" & deliveryDateMissing=="no"]
@@ -90,90 +92,126 @@ add.features.schatti.all <- function(dt, alldata) {
     dt2[, customerFavCategoryBuy := names(which.max(table(itemCategory))), by=c('customerID')]
     customerFavCategoryBuy <- unique(dt2[, c("customerID","customerFavCategoryBuy"), with=F])
     d2end <- join(d2end, customerFavCategoryBuy, by=c("customerID"))
+    rm(customerFavCategoryBuy)
     
     # customer favorite specific Category all
     dt2[, customerFavSpeciCategoryBuy := names(which.max(table(itemSpecificCategory))), by=c('customerID')]
     customerFavSpeciCategoryBuy <- unique(dt2[, c("customerID","customerFavSpeciCategoryBuy"), with=F])
     d2end <- join(d2end, customerFavSpeciCategoryBuy, by=c("customerID"))
+    rm(customerFavSpeciCategoryBuy)
     
     # customer favorite Category buy & hold
     dt2hold[, customerFavCategoryHold := names(which.max(table(itemCategory))), by=c('customerID')]
     customerFavCategoryHold <- unique(dt2hold[, c("customerID","customerFavCategoryHold"), with=F])
     d2end <- join(d2end, customerFavCategoryHold, by=c("customerID"))
+    rm(customerFavCategoryHold)
     
     # customer favorite specific Category buy & hold
     dt2hold[, customerFavSpeciCategoryHold := names(which.max(table(itemSpecificCategory))), by=c('customerID')]
     customerFavSpeciCategoryHold <- unique(dt2hold[, c("customerID","customerFavSpeciCategoryHold"), with=F])
     d2end <- join(d2end, customerFavSpeciCategoryHold, by=c("customerID"))
+    rm(customerFavSpeciCategoryHold)
     
     # customer favorite Category buy & return
     dt2return[, customerFavCategoryReturn := names(which.max(table(itemCategory))), by=c('customerID')]
     customerFavCategoryReturn <- unique(dt2return[, c("customerID","customerFavCategoryReturn"), with=F])
     d2end <- join(d2end, customerFavCategoryReturn, by=c("customerID"))
+    rm(customerFavCategoryReturn)
     
     # customer favorite specific Category buy & return
     dt2return[, customerFavSpeciCategoryReturn := names(which.max(table(itemSpecificCategory))), by=c('customerID')]
-    customerFavSpeciCategoryReturn <- unique(dt2return[, c("customerID","customerFavCategoryReturn"), with=F])
+    customerFavSpeciCategoryReturn <- unique(dt2return[, c("customerID","customerFavSpeciCategoryReturn"), with=F])
     d2end <- join(d2end, customerFavSpeciCategoryReturn, by=c("customerID"))
+    rm(customerFavSpeciCategoryReturn)
     
     # customer favorite sizes buy & hold; by itemCategory, itemSpecificCategory and itemSizeGroup
     dt2hold[, customerSizeHold := names(which.max(table(itemSize))), by=c('customerID','itemCategory','itemSpecificCategory','itemSizeGroup')]
     customerSizeHold <- unique(dt2hold[, c("customerID","itemCategory","itemSpecificCategory","itemSizeGroup","customerSizeHold"), with=F])
     d2end <- join(d2end, customerSizeHold, c("customerID","itemCategory","itemSpecificCategory","itemSizeGroup"))
+    rm(customerSizeHold)
     
     # customer shoe size FR
     temp<-dt2hold[itemSizeGroup=="FR"]
     temp[, customerShoeSizeFR := names(which.max(table(itemSize))), by=c('customerID')]
     customerShoeSizeFR <- unique(temp[, c("customerID","customerShoeSizeFR"), with=F])
     d2end <- join(d2end, customerShoeSizeFR, by=c("customerID"))
+    rm(customerShoeSizeFR)
     
     # customer shoe size UK
     temp<-dt2hold[itemSizeGroup=="UK"]
     temp[, customerShoeSizeUK := names(which.max(table(itemSize))), by=c('customerID')]
     customerShoeSizeUK <- unique(temp[, c("customerID","customerShoeSizeUK"), with=F])
     d2end <- join(d2end, customerShoeSizeUK, by=c("customerID"))
+    rm(customerShoeSizeUK)
     
     # customer Top size
     temp<-dt2hold[itemSizeGroup=="International"]
     temp[, customerTopSize := names(which.max(table(itemSize))), by=c('customerID')]
     customerTopSize <- unique(temp[, c("customerID","customerTopSize"), with=F])
     d2end <- join(d2end, customerTopSize, by=c("customerID"))
+    rm(customerTopSize)
     
     # customer clothes size
     temp<-dt2hold[itemSpecificCategory=="womensClothes"]
-    temp[, customerClothesSize := names(which.max(table(itemSize))), by=c('customerID')]
-    customerClothesSize <- unique(temp[, c("customerID","customerClothesSize"), with=F])
-    d2end <- join(d2end, customerClothesSize, by=c("customerID"))
+    temp[, customerClothesSize1 := names(which.max(table(itemSize))), by=c('customerID')]
+    customerClothesSize1 <- unique(temp[, c("customerID","customerClothesSize1"), with=F])
+    d2end <- join(d2end, customerClothesSize1, by=c("customerID"))
+    d2end[!is.na(customerClothesSize1),customerClothesSize2:=customerClothesSize1]
+    d2end[!is.na(customerClothesSize1),customerClothesSizeDistinct:="yes"]
+    rm(customerClothesSize1)
     
     #auffüllen der sizes über Referenztabellen ^^
     #shoes
     #UK to FR
-    temp<-d2end[is.na(customerShoeSizeFR)]
+    temp<-d2end[is.na(customerShoeSizeFR),list(customerID,customerShoeSizeFR, customerShoeSizeUK)]
     temp<-join(temp,transformShoes, by=c("customerShoeSizeUK"))
-    customerShoeSizeFR <- unique(temp[, c("customerID","customerShoeSizeFR"), with=F])
+    setnames(temp,(ncol(temp)-1),"quelleSpalte")
+    customerShoeSizeFR <- unique(temp[, c("customerID","quelleSpalte"), with=F])
     d2end <- join(d2end, customerShoeSizeFR, by=c("customerID"))
+    d2end[!is.na(quelleSpalte),customerShoeSizeFR:=quelleSpalte]
+    d2end[,quelleSpalte:=NULL]
+    rm(customerShoeSizeFR)
     #FR to UK
-    temp<-d2end[is.na(customerShoeSizeUK)]
+    temp<-d2end[is.na(customerShoeSizeUK),list(customerID,customerShoeSizeFR, customerShoeSizeUK)]
     temp<-join(temp,transformShoes, by=c("customerShoeSizeFR"))
-    customerShoeSizeUK <- unique(temp[, c("customerID","customerShoeSizeUK"), with=F])
+    setnames(temp,(ncol(temp)-1),"quelleSpalte")
+    customerShoeSizeUK <- unique(temp[, c("customerID","quelleSpalte"), with=F])
     d2end <- join(d2end, customerShoeSizeUK, by=c("customerID"))
-    
+    d2end[!is.na(quelleSpalte),customerShoeSizeUK:=quelleSpalte]
+    d2end[,quelleSpalte:=NULL]
+    rm(customerShoeSizeUK)
     #clothes2tops
-    temp<-d2end[is.na(customerTopSize)]
-    temp<-join(temp,transformClothes2Tops, by=c("customerClothesSize"))
-    customerTopSize <- unique(temp[, c("customerID","customerTopSize"), with=F])
+    temp<-d2end[is.na(customerTopSize),list(customerID,customerClothesSize1,customerTopSize)]
+    temp<-join(temp,transformClothes2Tops, by=c("customerClothesSize1"))
+    setnames(temp,(ncol(temp)),"quelleSpalte")
+    customerTopSize <- unique(temp[, c("customerID","quelleSpalte"), with=F])
     d2end <- join(d2end, customerTopSize, by=c("customerID"))
-    
+    d2end[!is.na(quelleSpalte),customerTopSize:=quelleSpalte]
+    d2end[,quelleSpalte:=NULL]
+    rm(customerTopSize)
     #das ist schon jetzt bissel spekulativer
     #tops2clothes
-    temp<-d2end[is.na(customerClothesSize) & !is.na(customerShoeSizeUK) & !is.na(customerTopSize)]
+    temp<-d2end[is.na(customerClothesSize1) & !is.na(customerShoeSizeUK) & !is.na(customerTopSize), list(customerID,customerClothesSize1,customerClothesSize1,customerTopSize,customerShoeSizeUK)]
     temp<-join(temp,transformShoes, by=c("customerShoeSizeUK"))
-    temp<-join(temp,transformClothes2Tops, by=c("shoeIndiz"))
-    customerClothesSize <- unique(temp[, c("customerID","customerClothesSize"), with=F])
+    temp<-join(temp,transformClothes1, by=c("shoeIndiz","customerTopSize"))
+    temp<-join(temp,transformClothes2, by=c("shoeIndiz","customerTopSize"))
+    customerClothesSize <- unique(temp[, c("customerID","clothesSize1","clothesSize2"), with=F])
+    customerClothesSize[,customerClothesDistinct:="no"]
+    rm(temp)
     d2end <- join(d2end, customerClothesSize, by=c("customerID"))
+    setnames(d2end,(ncol(d2end)),"quelleSpalte")
+    d2end[!is.na(clothesSize1),customerClothesSize1:=as.factor(clothesSize1)]
+    d2end[!is.na(clothesSize2),customerClothesSize2:=as.factor(clothesSize2)]
+    d2end[,clothesSize1:=NULL]
+    d2end[,clothesSize2:=NULL]
+    d2end[,quelleSpalte:=NULL]
+    rm(customerClothesSize)
     
-    
-    
+#     dt.tr<-d2end
+#     dt.te<-d2end
+#     dt.train<-dt.tr
+#     dt.test<-dt.te
+#     rm(d2end)
     #wie oft der customer insgesamt die size bestellt hat
     # FEATURE: orderItemNumSameItemsOrdered
     
@@ -227,9 +265,35 @@ add.features.schatti.all <- function(dt, alldata) {
     
     
     
+    
+    
+    #%%%%%Analyse Zeugs%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+#     #ist immer salutation und item distinct?
+#     # ja: dann bleibt alles wie es ist
+#     # nein: alle Kategorien und Sizes müssen getrennt werden
+#     temp<-dt.train[,.N,by=list(customerID, salutation)]
+#     temp<-temp[,.N,by=customerID]
+#     nrow(temp[N==1]) #59754
+#     nrow(temp[N>1])  #0
+#     #=>Eindeutig
+    
+#     #Attribut: ist Size für FavHold Artikel eindeutig?
+#     temp<-dt.train[,list(orderItemID,customerID,itemSize,itemSpecificCategory,
+#                          customerFavSpeciCategoryHold,
+#                          customerFavSpeciCategoryReturn,
+#                          customerSizeHold)]    
+#  
+ 
+#     temp<-dt.test[order(customerID, orderDate, decreasing=FALSE)]
+#     
+#     
+#     rm(temp)
+#     #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
     # Don't remove the next lines
-    nrow.after <- nrow(dt2end)
+    nrow.after <- nrow(d2end)
     if (nrow.before != nrow.after)
         stop("Something went wrong with the join. :(")
-    dt2end
+    d2end
 }
