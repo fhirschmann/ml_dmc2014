@@ -112,6 +112,9 @@ fs.c50 <- function(dt, customerKnown) {
         dt2$customerState <- NULL
         dt2$itemSize <- NULL
         dt2$customerWestGerman <- NULL
+        dt2$holiday <- NULL
+        dt2$orderItemNumSameItemsOrderedColor <- NULL
+        dt2$itemPriceRange
     }
         
     dt2
