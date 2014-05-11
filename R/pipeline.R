@@ -317,7 +317,7 @@ descs <- list(
     rrfGC=list(
         fs.fun=fs.rf,
         method="RRFglobal",
-        tuneLength=2#8
+        tuneLength=6
     ),
     
     # Support Vector Machine (Polynomial Kernel)
