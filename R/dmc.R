@@ -147,6 +147,25 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
     res
 }
 
+dmc.tunecut <- function(prob, steps=1:1000 * 0.001, return.best=F) {
+    require(plyr)
+    require(data.table)
+    
+    comp <- join(prob, dt.train[, c("orderItemID", "returnShipment"), with=F], by="orderItemID")
+    
+    res <- data.frame(sapply(steps,
+                  function(x)
+                      dmc.score(as.factor(ifelse(comp$prediction >= x, "yes", "no")), comp$returnShipment),
+                  simplify=T))
+    colnames(res) <- c("score")
+    rownames(res) <- steps
+    res$acc <- 1 - res$score / nrow(prob)
+    res$best <- ifelse(res$acc == max(res$acc), "*", "")
+    
+    res
+
+}
+
 extractPreds.dmctrain <- function(train) {
     require(plyr)
     
