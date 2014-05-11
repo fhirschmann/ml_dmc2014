@@ -68,7 +68,7 @@ grid.gbmS52 <- expand.grid(
 
 grid.gbmS6 <- expand.grid(
     shrinkage=c(0.01),
-    interaction.depth=2:5,
+    interaction.depth=4:5,
     n.trees=c(200, 300,400,500)
 )
 
