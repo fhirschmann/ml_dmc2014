@@ -13,8 +13,7 @@ if (file.exists("config_mkdata.R")) source("config_mkdata.R")
 
 source("R/feat.R")
 
-if (schatti)
-    source("R/featSchatti.R")
+source("R/featSchatti.R")
 
 # Read in the Data
 dt.na.strings <- c("NA", "", "??", "?")
@@ -119,13 +118,11 @@ dt.train <- rename(dt.train)
 dt.test <- rename(dt.test)
 
 message("Adding Features to the Train and Test Set")
+
+dt.train <- add.features.schatti(dt.train)
+dt.test <- add.features.schatti(dt.test)
 dt.train <- add.features(dt.train)
 dt.test <- add.features(dt.test)
-
-if (schatti) {
-    dt.train <- add.features.schatti(dt.train)
-    dt.test <- add.features.schatti(dt.test)
-}
 
 dt.dmc.ids <- list(test=list(), train=list())
 if (length(args) > 0) {

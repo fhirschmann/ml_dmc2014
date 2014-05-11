@@ -178,6 +178,10 @@ add.features.otf <- function(to, from) {
     # treat unknown items
     #dt.to[, unknownItem := as.factor(ifelse(is.na(itemReturnRate), "yes", "no"))]
     #dt.to[is.na(itemReturnRate), itemReturnRate := 0.52]
+    
+    dt.from[, itemCategoryReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("itemCategory")]
+    itemCategoryRetRate <- unique(dt.from[, c("itemCategory", "itemCategoryReturnRate"), with=F])
+    dt.to <- join(dt.to, itemCategoryRetRate, by=c("itemCategory"))
 
     ## colorReturnRate
     dt.from[, itemColorReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("itemColor")]
