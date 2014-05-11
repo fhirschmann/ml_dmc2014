@@ -4,6 +4,7 @@ library(plyr)
 
 source("R/data.R")
 source("R/fs.R")
+source("R/utils.R")
 
 train <- dt.dmc$M31$train
 test <- dt.dmc$M31$test
@@ -17,11 +18,14 @@ test$customerID <- as.factor(test$customerID)
 train <- fs.c50(train, T)
 test <- fs.c50(test, T)
 
-train <- train[1:200, ]
+#train <- train[1:200, ]
+
+train <- addlevels(train, test)
+test <- addlevels(test, train)
         
 fit <- C5.0(returnShipment ~ ., data=train)
 
-preds <- predict(fit, test), c("yes"="1", "no"="0")
+preds <- predict(fit, test)
 
 score <- dmc.score(preds, test$returnShipment)
 message(score)
