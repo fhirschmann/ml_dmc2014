@@ -134,13 +134,13 @@ if (length(args) > 0) {
                "BAG_19","BAG_20")
 }
 for (i in build) {
-    dt.dmc.ids$train[[paste(gsub("_",".",i),".0")]] <- as.numeric(as.character(read.csv(paste("eva/", i, "_M3_train.txt", sep=""))$orderItemID))
-    dt.dmc.ids$test[[paste(gsub("_",".",i),".0")]] <- as.numeric(as.character(read.csv(paste("eva/M30_test.txt", sep=""))$orderItemID))
+    dt.dmc.ids$train[[paste(gsub("_",".",i),".0",sep="")]] <- as.numeric(as.character(read.csv(paste("eva/", i, "_M3_train.txt", sep=""))$orderItemID))
+    dt.dmc.ids$test[[paste(gsub("_",".",i),".0",sep="")]] <- as.numeric(as.character(read.csv(paste("eva/M30_test.txt", sep=""))$orderItemID))
 }
 
 for (i in build) {
-  dt.dmc.ids$train[[paste(gsub("_",".",i),".1")]] <- as.numeric(as.character(read.csv(paste("eva/", i, "_M3_train.txt", sep=""))$orderItemID))
-  dt.dmc.ids$test[[paste(gsub("_",".",i),".1")]] <- as.numeric(as.character(read.csv(paste("eva/M31_test.txt", sep=""))$orderItemID))
+  dt.dmc.ids$train[[paste(gsub("_",".",i),".1",sep="")]] <- as.numeric(as.character(read.csv(paste("eva/", i, "_M3_train.txt", sep=""))$orderItemID))
+  dt.dmc.ids$test[[paste(gsub("_",".",i),".1",sep="")]] <- as.numeric(as.character(read.csv(paste("eva/M31_test.txt", sep=""))$orderItemID))
 }
 
 c1 <- unique(union(dt.dmc.ids$train$T1, dt.dmc.ids$test$T1))
