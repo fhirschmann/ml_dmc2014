@@ -212,13 +212,6 @@ descs <- list(
         trControl=ctrl.probs
     ),
     
-    earthC=list(
-        fs.fun=fs.stat,
-        method="earth",
-        tuneGrid=grid.earthC,
-        trControl=ctrl.probs
-    ),
-    
     bagEarthC=list(
         fs.fun=fs.stat,
         tuneGrid=grid.earthC,
