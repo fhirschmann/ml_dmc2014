@@ -75,7 +75,9 @@ fs.gbm <- function(dt, customerKnown) {
     dt2 <- fs.tree(dt)
 
     if (customerKnown) {
-
+        dt2$customerItemIsFavoriteColor <- NULL
+        dt2$customerID <- NULL
+        dt2$itemColorReturnRate <- NULL
     } else {
         dt2$salutation <- NULL
         dt2$itemSizeReturnRate <- NULL
