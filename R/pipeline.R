@@ -199,7 +199,7 @@ descs <- list(
     
     bagEarthC=list(
         fs.fun=fs.stat,
-        tuneLength=6,
+        tuneGrid=grid.earthC,
         method="bagEarth"
     ),
     
@@ -343,6 +343,7 @@ descs <- list(
     rrfGC=list(
         fs.fun=fs.rf,
         method="RRFglobal",
+        trControl=ctrl.probs,
         tuneLength=6
     ),
     
