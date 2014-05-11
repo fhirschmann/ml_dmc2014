@@ -3,5 +3,173 @@ Removing Customer Feature
 Always keeping returnShipment, size
 Loading required package: stringr
 Loading required package: C50
+Loading required package: plyr
 
-Execution halted
+Attaching package: ‘plyr’
+
+The following object is masked from ‘package:lubridate’:
+
+    here
+
+Always Keep returnShipment, size
+All Features:
+	 Score 4213
+Excluding: orderNumDistinctItemsGreater1
+	Score (current minimum): 4213
+	Score: 4235
+	Change: 22
+Don't Remove: orderNumDistinctItemsGreater1
+Excluding: itemPriceLevels
+	Score (current minimum): 4213
+	Score: 4223
+	Change: 10
+Don't Remove: itemPriceLevels
+Excluding: dateOfBirthMissing
+	Score (current minimum): 4213
+	Score: 4206
+	Change: -7
+Don't Remove: dateOfBirthMissing
+Excluding: itemReturnRate
+	Score (current minimum): 4213
+	Score: 4176
+	Change: -37
+Remove: itemReturnRate
+Excluding: itemReturnRate, orderNumItems
+	Score (current minimum): 4176
+	Score: 4170
+	Change: -6
+Don't Remove: orderNumItems
+Excluding: itemReturnRate, customerState
+	Score (current minimum): 4176
+	Score: 4211
+	Change: 35
+Don't Remove: customerState
+Excluding: itemReturnRate, customerWestGerman
+	Score (current minimum): 4176
+	Score: 4180
+	Change: 4
+Don't Remove: customerWestGerman
+Excluding: itemReturnRate, itemID
+	Score (current minimum): 4176
+	Score: 4183
+	Change: 7
+Don't Remove: itemID
+Excluding: itemReturnRate, itemColorReturnRate
+	Score (current minimum): 4176
+	Score: 4184
+	Change: 8
+Don't Remove: itemColorReturnRate
+Excluding: itemReturnRate, dateOfBirthIsOutlier
+	Score (current minimum): 4176
+	Score: 4180
+	Change: 4
+Don't Remove: dateOfBirthIsOutlier
+Excluding: itemReturnRate, itemSizeGroup
+	Score (current minimum): 4176
+	Score: 4179
+	Change: 3
+Don't Remove: itemSizeGroup
+Excluding: itemReturnRate, itemItemColorReturnRate
+	Score (current minimum): 4176
+	Score: 4336
+	Change: 160
+Don't Remove: itemItemColorReturnRate
+Excluding: itemReturnRate, orderDeliveryTime
+	Score (current minimum): 4176
+	Score: 4177
+	Change: 1
+Don't Remove: orderDeliveryTime
+Excluding: itemReturnRate, orderSumPrice
+	Score (current minimum): 4176
+	Score: 4182
+	Change: 6
+Don't Remove: orderSumPrice
+Excluding: itemReturnRate, itemPriceLevelsGreater1
+	Score (current minimum): 4176
+	Score: 4182
+	Change: 6
+Don't Remove: itemPriceLevelsGreater1
+Excluding: itemReturnRate, orderItemNumSameItemsOrderedSize
+	Score (current minimum): 4176
+	Score: 4183
+	Change: 7
+Don't Remove: orderItemNumSameItemsOrderedSize
+Excluding: itemReturnRate, orderNumDistinctItems
+	Score (current minimum): 4176
+	Score: 4179
+	Change: 3
+Don't Remove: orderNumDistinctItems
+Excluding: itemReturnRate, itemCategory
+	Score (current minimum): 4176
+	Score: 4180
+	Change: 4
+Don't Remove: itemCategory
+Excluding: itemReturnRate, manufacturerID
+	Score (current minimum): 4176
+	Score: 4181
+	Change: 5
+Don't Remove: manufacturerID
+Excluding: itemReturnRate, orderWeekday
+	Score (current minimum): 4176
+	Score: 4175
+	Change: -1
+Don't Remove: orderWeekday
+Excluding: itemReturnRate, itemCategoryReturnRate
+	Score (current minimum): 4176
+	Score: 4171
+	Change: -5
+Don't Remove: itemCategoryReturnRate
+Excluding: itemReturnRate, itemPriceRange
+	Score (current minimum): 4176
+	Score: 4146
+	Change: -30
+Remove: itemPriceRange
+Excluding: itemReturnRate, itemPriceRange, itemSize
+	Score (current minimum): 4146
+	Score: 4198
+	Change: 52
+Don't Remove: itemSize
+Excluding: itemReturnRate, itemPriceRange, orderItemNumSameItemsOrderedColor
+	Score (current minimum): 4146
+	Score: 4129
+	Change: -17
+Remove: orderItemNumSameItemsOrderedColor
+Excluding: itemReturnRate, itemPriceRange, orderItemNumSameItemsOrderedColor, holiday
+	Score (current minimum): 4129
+	Score: 4093
+	Change: -36
+Remove: holiday
+Excluding: itemReturnRate, itemPriceRange, orderItemNumSameItemsOrderedColor, holiday, deliveryDateIsOutlier
+	Score (current minimum): 4093
+	Score: 4228
+	Change: 135
+Don't Remove: deliveryDateIsOutlier
+Excluding: itemReturnRate, itemPriceRange, orderItemNumSameItemsOrderedColor, holiday, orderSumPrices
+	Score (current minimum): 4093
+	Score: 4095
+	Change: 2
+Don't Remove: orderSumPrices
+Excluding: itemReturnRate, itemPriceRange, orderItemNumSameItemsOrderedColor, holiday, orderTimePrev
+	Score (current minimum): 4093
+	Score: 4129
+	Change: 36
+Don't Remove: orderTimePrev
+Excluding: itemReturnRate, itemPriceRange, orderItemNumSameItemsOrderedColor, holiday, itemBaseColor
+	Score (current minimum): 4093
+	Score: 4093
+	Change: 0
+Don't Remove: itemBaseColor
+Excluding: itemReturnRate, itemPriceRange, orderItemNumSameItemsOrderedColor, holiday, itemDiscount
+	Score (current minimum): 4093
+	Score: 4103
+	Change: 10
+Don't Remove: itemDiscount
+Excluding: itemReturnRate, itemPriceRange, orderItemNumSameItemsOrderedColor, holiday, itemPriceDiscrete
+	Score (current minimum): 4093
+	Score: 4088
+	Change: -5
+Don't Remove: itemPriceDiscrete
+Excluding: itemReturnRate, itemPriceRange, orderItemNumSameItemsOrderedColor, holiday, customerItemIsFavoriteSize
+
+ *** caught segfault ***
+address (nil), cause 'unknown'
