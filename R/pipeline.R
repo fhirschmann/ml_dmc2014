@@ -44,7 +44,7 @@ grid.gbmS31 <- expand.grid(
 
 grid.gbmS4 <- expand.grid(
     shrinkage=c(0.001),
-    interaction.depth=2:5,
+    interaction.depth=5,
     n.trees=c(300,400,500)
 )
 
