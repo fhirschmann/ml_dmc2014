@@ -14,12 +14,8 @@ test <- test[test$deliveryDateMissing == "no", ]
 
 train$customerID <-as.factor(train$customerID)
 test$customerID <- as.factor(test$customerID)
-length(levels(train$customerID))
-length(levels(test$customerID))
-setdiff(levels(test$customerID), levels(train$customerID))
 
-str(train)
-str(test)
+levels(train$customerID) <- c(levels(train$customerID), levels(test$customerID))
 
 train <- fs.c50(train, T)
 test <- fs.c50(test, T)
