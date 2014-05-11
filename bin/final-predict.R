@@ -3,7 +3,7 @@
 #   ./bin/final-predict.R models/ c50 pred.txt
 source("R/data.R")
 library(caret)
-library(c50)
+library(C50)
 library(earth)
 library(plyr)
 
@@ -16,8 +16,8 @@ out <- args[[3]]
 sp <- "M3"
 # sp <- "F"
 
-f1.file <- paste(file.path(dir, paste(name, "_", sp, "1", ".RData")))
-f0.file <- paste(file.path(dir, paste(name, "_", sp, "0", ".RData")))
+f1.file <- file.path(dir, paste(name, "_", sp, "1", ".RData", sep=""))
+f0.file <- file.path(dir, paste(name, "_", sp, "0", ".RData", sep=""))
 
 message(paste("Using", f1.file, "to predict known customers."))
 message(paste("Using", f0.file, "to predict unknown customers."))
