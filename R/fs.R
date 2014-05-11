@@ -22,6 +22,9 @@ fs.all <- function(dt) {
 }
 
 fs.noCustomer <- function(dt) {
+    message("")
+    message("EXCLUDING CUSTOMER FEATURES (UNKNOWN)")
+    message("")
     dt2 <- dt
     
     dt2$customerID <- NULL
