@@ -189,6 +189,11 @@ add.features.otf <- function(to, from) {
     dt.to <- join(dt.to, cRR, by=c("itemColor"))
     #dt.to[, unknownColor := as.factor(ifelse(is.na(colorReturnRate), "yes", "no"))]
     #dt.to[is.na(colorReturnRate), colorReturnRate := 0.52]
+    
+    ## itemColorReturnRate
+    dt.from[, itemItemColorReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("itemID","itemBaseColor")]
+    itemColorRetRate <- unique(dt.from[, c("itemID","itemBaseColor", "itemItemColorReturnRate"), with=F])
+    dt.to <- join(dt.to, itemColorRetRate, by=c("itemID","itemBaseColor"))
 
     ## baseColorReturnRate
     dt.from[, itemBaseColorReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("itemBaseColor")]
@@ -263,21 +268,16 @@ add.features.all <- function(to, from) {
     dt.to$customerItemIsFavoriteSize <- as.factor(ifelse(
         as.character(dt.to$customerFavoriteSize) == as.character(dt.to$itemSize), "yes", "no"))
     
-    ## itemColorReturnRate
-    dt.from[, itemColorReturnRate := lsmooth(sum(returnShipment == "yes"), .N), by=c("itemID","itemBaseColor")]
-    itemColorRetRate <- unique(dt.from[, c("itemID","itemBaseColor", "itemColorReturnRate"), with=F])
-    dt.to <- join(dt.to, itemColorRetRate, by=c("itemID","itemBaseColor"))
-    
     ## customerDiscountRate & tendency Kundenneugung reduzierte Ware zu bestellen
-    dt.from[, customerDiscountRate := lsmooth(sum(itemPriceRange>0 & itemDiscount>0), .N), by=c("customerID")]
-    customerDiscountRate <- unique(dt.from[, c("customerID", "customerDiscountRate"), with=F])
-    temp<-quantile(customerDiscountRate$customerDiscountRate)
+    dt.from[, customerDiscountRate := lsmooth(sum(itemPriceRange > 0 & itemDiscount > 0), .N, mean=0.5), by=c("customerID")]
+    cdr <- unique(dt.from[, c("customerID", "customerDiscountRate"), with=F])
+    temp<-quantile(cdr$customerDiscountRate)
     #<=25% quantile-> low; >=75 quantile->high; neutral sonst 
-    customerDiscountRate[customerDiscountRate>=temp[4],customerDiscountTendency:= "High"]
-    customerDiscountRate[customerDiscountRate<=temp[2],customerDiscountTendency:= "Low"]
-    customerDiscountRate[is.na(customerDiscountTendency), customerDiscountTendency:= "Neutral"]
-    customerDiscountRate[,customerDiscountRate:=NULL]
-    dt.to <- join(dt.to, customerDiscountRate, by=c("customerID"))
+    cdr[customerDiscountRate>=temp[4],customerDiscountTendency:= "High"]
+    cdr[customerDiscountRate<=temp[2],customerDiscountTendency:= "Low"]
+    cdr[is.na(customerDiscountTendency), customerDiscountTendency := "Neutral"]
+    cdr[,customerDiscountRate:=NULL]
+    dt.to <- join(dt.to, cdr, by=c("customerID"))
     
     dt.to
 }
