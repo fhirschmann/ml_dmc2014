@@ -99,6 +99,17 @@ descs <- list(
         )
     ),
     
+    ## C5.0 on M11
+    c50FM11=list(
+        fs.fun=fs.c50,
+        method="C5.0",
+        tuneGrid=expand.grid(
+            model="rules",
+            winnow=F,
+            trials=40
+        )
+    ),
+    
     # Stuff to run on the Cluster: Postfix with 'C'
     
     # GBM
