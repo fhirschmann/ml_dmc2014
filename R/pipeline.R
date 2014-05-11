@@ -54,6 +54,18 @@ grid.gbmS5 <- expand.grid(
     n.trees=c(200, 300,400,500)
 )
 
+grid.gbmS51 <- expand.grid(
+    shrinkage=c(0.01),
+    interaction.depth=5:6,
+    n.trees=c(400,500)
+)
+
+grid.gbmS52 <- expand.grid(
+    shrinkage=c(0.01),
+    interaction.depth=7,
+    n.trees=c(600,800)
+)
+
 grid.gbmS6 <- expand.grid(
     shrinkage=c(0.01),
     interaction.depth=2:5,
@@ -133,6 +145,20 @@ descs <- list(
         fs.fun=fs.gbm,
         method="gbm",
         tuneGrid=grid.gbmS5,
+		trControl=ctrl.probs
+    ),
+	
+	gbmCs51=list(
+        fs.fun=fs.gbm,
+        method="gbm",
+        tuneGrid=grid.gbmS51,
+		trControl=ctrl.probs
+    ),
+	
+	gbmCs52=list(
+        fs.fun=fs.gbm,
+        method="gbm",
+        tuneGrid=grid.gbmS52,
 		trControl=ctrl.probs
     ),
 	
