@@ -14,6 +14,12 @@ test <- test[test$deliveryDateMissing == "no", ]
 
 train$customerID <-as.factor(train$customerID)
 test$customerID <- as.factor(test$customerID)
+length(levels(train$customerID))
+length(levels(test$customerID))
+setdiff(levels(test$customerID), levels(train$customerID))
+
+str(train)
+str(test)
 
 train <- fs.c50(train, T)
 test <- fs.c50(test, T)
@@ -24,6 +30,7 @@ train <- addlevels(train, test)
 test <- addlevels(test, train)
         
 fit <- C5.0(returnShipment ~ ., data=train)
+saveRDS(fit, "fit.RData")
 
 preds <- predict(fit, test)
 
