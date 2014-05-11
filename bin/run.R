@@ -51,6 +51,9 @@ if ("-m" %in% args) {
     desc$data <- list(train=desc$data$train[sample(nrow(desc$data$train), 100000), ],
                       test=desc$data$test[sample(nrow(desc$data$test), 10000), ])
     desc$save.path <- "models.x"
+} else if (length(args) > 2) {
+    library(doMC)
+    registerDoMC(as.integer(args[[3]]))
 }
 
 if("-fewermonths" %in% args) {
