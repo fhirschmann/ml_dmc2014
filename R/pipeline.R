@@ -77,24 +77,24 @@ descs <- list(
     # Final (tuned) Descriptions
     
     ## C5.0 on M30
-    c50FM30=list(
+    c50M30=list(
         fs.fun=fs.c50,
         method="C5.0",
         tuneGrid=expand.grid(
             model="rules",
             winnow=F,
-            trials=c(28, 29, 30, 31)
+            trials=c(20, 25, 28, 30, 32, 40)
         )
     ),
     
     ## C5.0 on 3M31
-    c50FM31=list(
+    c50M31=list(
         fs.fun=fs.c50,
         method="C5.0",
         tuneGrid=expand.grid(
             model="rules",
             winnow=F,
-            trials=c(38, 39, 40, 41)
+            trials=c(20, 25, 38, 39, 40, 45, 50)
         )
     ),
     
@@ -130,6 +130,8 @@ descs <- list(
     ),
     
     # Stuff to run on the Cluster: Postfix with 'C'
+    
+
     
     # GBM
     gbmC=list(
