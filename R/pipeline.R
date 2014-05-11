@@ -157,6 +157,61 @@ descs <- list(
         tuneGrid=grid.earthC
     ),
     
+    bagEarthC=list(
+        fs.fun=fs.stat,
+        tuneLength=6,
+        method="bagEarth"
+    ),
+    
+    gamboost=list(
+        fs.fun=fs.stat,
+        tuneLength=6,
+        method="gamboost"
+        
+    ),
+    
+    ctree2=list(
+        fs.fun=fs.tree,
+        tuneLength=3,
+        method="ctree"
+    ),
+    
+    rrlda=list(
+        fs.fun=fs.stat,
+        tuneLength=2,
+        method="rrlda"
+    ),
+    
+    RSimca=list(
+        fs.fun=fs.stat,
+        tuneLength=2,
+        method="RSimca"
+    ),
+    
+    nh=list(
+        fs.fun=fs.tree,
+        tuneLength=3,
+        method="nodeHarvest"
+    ),
+    
+    ORFlog=list(
+        fs.fun=fs.rf,
+        tuneLength=2,
+        method="ORFlog"
+    ),
+    
+    cforest=list(
+        fs.fun=fs.rf,
+        method="cforest",
+        tuneLength=4
+    ),
+    
+    bagFDAC=list(
+        fs.fun=fs.stat,
+        tuneLength=6,
+        method="earth"
+    ),
+    
     avNNet=list(
         fs.fun=fs.nn,
         MaxNWts=20000,
