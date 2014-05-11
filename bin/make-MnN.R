@@ -26,5 +26,5 @@ write.csv(dt.dmc$M2$test[!m2.known, c("orderItemID"), drop=F], file="eva/M20_tes
 write.csv(dt.dmc$M3$test[m3.known, c("orderItemID"), drop=F], file="eva/M31_test.txt", row.names=F)
 write.csv(dt.dmc$M3$test[!m3.known, c("orderItemID"), drop=F], file="eva/M30_test.txt", row.names=F)
 
-write.csv(dt.test[test.known, c("orderItemID"), drop=F], file="eva/all1_test.txt", row.names=F)
-write.csv(dt.test[!test.known, c("orderItemID"), drop=F], file="eva/all0_test.txt", row.names=F)
+write.csv(dt.test[test.known, c("orderItemID"), drop=F], file="eva/F1_test.txt", row.names=F)
+write.csv(dt.test[!test.known, c("orderItemID"), drop=F], file="eva/F0_test.txt", row.names=F)
