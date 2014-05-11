@@ -40,6 +40,7 @@ fs.noCustomer <- function(dt) {
     
     dt2$customerFavoriteSize <- NULL
     dt2$customerItemIsFavoriteSize <- NULL
+    dt$customerDiscountTendency <- NULL
     
     dt2
 }
