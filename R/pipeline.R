@@ -83,7 +83,7 @@ descs <- list(
         tuneGrid=expand.grid(
             model="rules",
             winnow=F,
-            trials=c(20, 25, 28, 30, 32, 40)
+            trials=c(20, 25, 28, 30, 32, 35, 40)
         )
     ),
     
@@ -104,7 +104,7 @@ descs <- list(
         method="earth",
         tuneGrid=expand.grid(
             degree=2,
-            nprune=c(5, 7, 9, 12, 15)
+            nprune=7:14
         ),
         trControl=ctrl.probs
     ),
@@ -115,24 +115,31 @@ descs <- list(
         method="earth",
         tuneGrid=expand.grid(
             degree=2,
-            nprune=c(14, 15, 16, 20)
+            nprune=14:20
         ),
         trControl=ctrl.probs
     ),
     
     ## Bagged MARS on M10
-    bearthFM30=list(
+    bearthM30=list(
         fs.fun=fs.stat,
         method="bagEarth",
         tuneGrid=expand.grid(
             degree=2,
-            nprune=9
+            nprune=7:14
+        ),
+        trControl=ctrl.probs
+    ),
+    bearthM30=list(
+        fs.fun=fs.stat,
+        method="bagEarth",
+        tuneGrid=expand.grid(
+            degree=2,
+            nprune=14:20
         )
     ),
     
     # Stuff to run on the Cluster: Postfix with 'C'
-    
-
     
     # GBM
     gbmC=list(
