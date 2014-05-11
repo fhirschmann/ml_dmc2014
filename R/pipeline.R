@@ -99,7 +99,7 @@ descs <- list(
     ),
     
     ## MARS on M30
-    earthFM30=list(
+    earthM30=list(
         fs.fun=fs.stat,
         method="earth",
         tuneGrid=expand.grid(
@@ -110,7 +110,7 @@ descs <- list(
     ),
     
     ## MARS on M11
-    earthFM31=list(
+    earthM31=list(
         fs.fun=fs.stat,
         method="earth",
         tuneGrid=expand.grid(
