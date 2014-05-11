@@ -147,11 +147,16 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
     res
 }
 
+dmc.joinreal <- function(pred) {
+    require(plyr)
+    join(pred, dt.train[, c("orderItemID", "returnShipment"), with=F], by="orderItemID")
+}
+
 dmc.tunecut <- function(prob, steps=1:1000 * 0.001, return.best=F) {
     require(plyr)
     require(data.table)
     
-    comp <- join(prob, dt.train[, c("orderItemID", "returnShipment"), with=F], by="orderItemID")
+    comp <- dmc.joinreal(prob)
     
     res <- data.frame(sapply(steps,
                   function(x)
