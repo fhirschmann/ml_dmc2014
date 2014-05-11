@@ -379,7 +379,7 @@ descs <- list(
     rf=list(
         fs.fun=fs.rf,
         method="rf",
-        tuneLength=2
+        tuneLength=5
     ),
     rfC=list(
         fs.fun=fs.rf,
