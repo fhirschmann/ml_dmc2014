@@ -105,7 +105,7 @@ descs <- list(
         tuneGrid=expand.grid(
             degree=2,
             nprune=9
-        )
+        ),
         trControl=ctrl.probs
     ),
     
