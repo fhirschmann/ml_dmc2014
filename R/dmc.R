@@ -270,7 +270,7 @@ dmc.evaluate <- function(dir) {
         
         if (!is.na(x)) {
             res <- evaluate(preds, "eva/R/gold.RDS", "M3", "eva/R")
-            if (res$accuracy / 100 != accuracies[m, x]) {
+            if (abs(res$accuracy / 100 - accuracies[m, x]) > 0.1) {
                 stop(paste("Accuracies", m, x, "don't match."))
             }
             weightedAccuracies[m, x] <- res$accuracyW / 100
