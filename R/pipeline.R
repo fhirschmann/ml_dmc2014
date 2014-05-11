@@ -212,12 +212,6 @@ descs <- list(
         trControl=ctrl.probs
     ),
     
-    bagEarthC=list(
-        fs.fun=fs.stat,
-        tuneGrid=grid.earthC,
-        method="bagEarth"
-    ),
-    
     gamboost=list(
         fs.fun=fs.stat,
         tuneLength=6,
