@@ -119,7 +119,7 @@ descs <- list(
             nrune=9
         ),
         trControl=ctrl.probs
-    )
+    ),
     
     # Stuff to run on the Cluster: Postfix with 'C'
     
