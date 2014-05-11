@@ -76,8 +76,8 @@ grid.gbmS6 <- expand.grid(
 descs <- list(
     # Final (tuned) Descriptions
     
-    ## C5.0 on M10
-    c50FM10=list(
+    ## C5.0 on M30
+    c50FM30=list(
         fs.fun=fs.c50,
         method="C5.0",
         tuneGrid=expand.grid(
@@ -87,8 +87,8 @@ descs <- list(
         )
     ),
     
-    ## C5.0 on M11
-    c50FM11=list(
+    ## C5.0 on 3M31
+    c50FM31=list(
         fs.fun=fs.c50,
         method="C5.0",
         tuneGrid=expand.grid(
@@ -98,8 +98,8 @@ descs <- list(
         )
     ),
     
-    ## MARS on M10
-    earthFM10=list(
+    ## MARS on M30
+    earthFM30=list(
         fs.fun=fs.stat,
         method="earth",
         tuneGrid=expand.grid(
@@ -110,7 +110,7 @@ descs <- list(
     ),
     
     ## MARS on M11
-    earthFM11=list(
+    earthFM31=list(
         fs.fun=fs.stat,
         method="earth",
         tuneGrid=expand.grid(
@@ -120,7 +120,7 @@ descs <- list(
     ),
     
     ## Bagged MARS on M10
-    bearthFM10=list(
+    bearthFM30=list(
         fs.fun=fs.stat,
         method="bagEarth",
         tuneGrid=expand.grid(
