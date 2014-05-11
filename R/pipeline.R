@@ -238,14 +238,14 @@ descs <- list(
     
     rrlda=list(
         fs.fun=fs.stat,
-        tuneLength=2,
+        tuneLength=6,
         trControl=ctrl.probs,
         method="rrlda"
     ),
     
     RSimca=list(
         fs.fun=fs.stat,
-        tuneLength=2,
+        tuneLength=6,
         method="RSimca"
     ),
     
@@ -294,7 +294,7 @@ descs <- list(
     pdaC=list(
         fs.fun=fs.stat,
         method="pda",
-        tuneLength=5,
+        tuneLength=7,
         trControl=ctrl.probs
     ),
     
@@ -302,43 +302,6 @@ descs <- list(
         fs.fun=fs.stat,
         method="rocc",
         tuneLength=1
-    ),
-    
-    C50T1=list(
-        fs.fun=fs.c50,
-        method="C5.0",
-        tuneGrid=expand.grid(trials=1:5, winnow=F, model="rules"),
-        control=C5.0Control(CF=0.1)
-    ),
-    C50T2=list(
-        fs.fun=fs.c50,
-        method="C5.0",
-        tuneGrid=expand.grid(trials=1:5, winnow=F, model="rules"),
-        control=C5.0Control(CF=0.2)
-    ),
-    C50T3=list(
-        fs.fun=fs.c50,
-        method="C5.0",
-        tuneGrid=expand.grid(trials=1:5, winnow=F, model="rules"),
-        control=C5.0Control(CF=0.3)
-    ),
-    C50T4=list(
-        fs.fun=fs.c50,
-        method="C5.0",
-        tuneGrid=expand.grid(trials=1:5, winnow=F, model="rules"),
-        control=C5.0Control(CF=0.4)
-    ),
-    C50T5=list(
-        fs.fun=fs.c50,
-        method="C5.0",
-        tuneGrid=expand.grid(trials=1:5, winnow=F, model="rules"),
-        control=C5.0Control(CF=0.5)
-    ),
-    C50T6=list(
-        fs.fun=fs.c50,
-        method="C5.0",
-        tuneGrid=expand.grid(trials=1:5, winnow=F, model="rules"),
-        control=C5.0Control(CF=0.6)
     ),
     
     
@@ -361,7 +324,7 @@ descs <- list(
     svmPolyC=list(
         fs.fun=fs.rf,
         method="svmPoly",
-        tuneLength=2#7
+        tuneLength=3,
     ),
     
     # Bagged Cart
@@ -439,7 +402,8 @@ descs <- list(
     ),
     treebag=list(
         fs.fun=fs.rf,
-        method="treebag"
+        method="treebag",
+        tuneLength=5
     ),
     svmLinear=list(
         fs.fun=fs.rf,
@@ -448,7 +412,8 @@ descs <- list(
     ),
     ctree=list(
         fs.fun=fs.tree,
-        method="ctree"
+        method="ctree",
+        tuneLength=5
     ),
     cforest=list(
         fs.fun=fs.rf,
