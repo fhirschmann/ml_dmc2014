@@ -116,7 +116,8 @@ descs <- list(
         tuneGrid=expand.grid(
             degree=2,
             nprune=c(14, 15, 16, 20)
-        )
+        ),
+        trControl=ctrl.probs
     ),
     
     ## Bagged MARS on M10
