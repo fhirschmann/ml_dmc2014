@@ -110,6 +110,17 @@ descs <- list(
         )
     ),
     
+    ## MARS on M10
+    earthFM10=list(
+        fs.fun=fs.stat,
+        method="earth",
+        tuneGrid=expand.grid(
+            degree=2,
+            nrune=9
+        ),
+        trControl=ctrl.probs
+    )
+    
     # Stuff to run on the Cluster: Postfix with 'C'
     
     # GBM
