@@ -7,6 +7,7 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
                      save.path=NULL, save.model=FALSE, save.details=T, verbose=T, ...) {
     require(functional)
     require(caret)
+    require(stringr)
     
     if (verbose) message("Setting up Data")
 
@@ -26,7 +27,7 @@ dmctrain <- function(data, data.name, fs.fun, name="unknown", trControl=trainCon
     if (any(data$deliveryDateMissing == "yes"))
         error("Instances with missing delivery Dates used for training")
     
-    customer <- data.name %in% c("M11", "M21", "M31")
+    customer <- str_sub(data.name, -1, -1) == "1"
     
     if (!customer) {
         message("Removing Customer Features")
