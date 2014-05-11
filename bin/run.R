@@ -52,6 +52,7 @@ if ("-m" %in% args) {
                       test=desc$data$test[sample(nrow(desc$data$test), 10000), ])
     desc$save.path <- "models.x"
 } else if (length(args) > 2) {
+    message(paste("Enabling", args[[3]], "cores"))
     library(doMC)
     registerDoMC(as.integer(args[[3]]))
 }
