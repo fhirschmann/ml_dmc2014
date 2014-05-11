@@ -96,17 +96,18 @@ for (f in cols) {
         message(paste("Excluding:", paste(exclude2, collapse=", ")))
         
         score <- fuck(m[!colnames(m) %in% exclude2])
+        change <- score - score.min
         message(paste("\tScore (current minimum):", score.min))
         message(paste("\tScore:", score))
-        message(paste("\tChange:", score - score.min))
-        if (score <= score.min) {
+        message(paste("\tChange:", change))
+        if (change < -12) {
             exclude <- c(exclude, f)
             message(paste("Remove:", f))
-            removed[[f]] <- score - score.min
+            removed[[f]] <- change
             score.min <- score
         } else {
             message(paste("Don't Remove:", f))
-            kept[[f]] <- score - score.min
+            kept[[f]] <- change
         }
     }
 }
