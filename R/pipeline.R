@@ -72,18 +72,6 @@ grid.gbmS6 <- expand.grid(
     n.trees=c(200, 300,400,500)
 )
 
-grid.c50 <- expand.grid(
-    model=c("rules", "tree"),
-    winnow=c(T, F),
-    trials=c(1, 1:10 * 10)
-)
-
-grid.earthC <- expand.grid(
-	degree=c(1,2),
-	nprune=c(5,7,8,9,10,12,15)
-)
-
-
 # List of stuff to learn
 descs <- list(
     # Final (tuned) Descriptions
@@ -95,7 +83,7 @@ descs <- list(
         tuneGrid=expand.grid(
             model="rules",
             winnow=F,
-            trials=30
+            trials=c(28, 29, 30, 31)
         )
     ),
     
@@ -106,7 +94,7 @@ descs <- list(
         tuneGrid=expand.grid(
             model="rules",
             winnow=F,
-            trials=40
+            trials=c(38, 39, 40, 41)
         )
     ),
     
@@ -116,9 +104,29 @@ descs <- list(
         method="earth",
         tuneGrid=expand.grid(
             degree=2,
-            nrune=9
-        ),
+            nprune=9
+        )
         trControl=ctrl.probs
+    ),
+    
+    ## MARS on M11
+    earthFM11=list(
+        fs.fun=fs.stat,
+        method="earth",
+        tuneGrid=expand.grid(
+            degree=2,
+            nprune=c(14, 15, 16, 20)
+        )
+    ),
+    
+    ## Bagged MARS on M10
+    bearthFM10=list(
+        fs.fun=fs.stat,
+        method="bagEarth",
+        tuneGrid=expand.grid(
+            degree=2,
+            nprune=9
+        )
     ),
     
     # Stuff to run on the Cluster: Postfix with 'C'
