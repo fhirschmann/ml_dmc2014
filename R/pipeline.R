@@ -157,7 +157,7 @@ descs <- list(
         method="earth",
         tuneGrid=expand.grid(
             degree=2,
-            nprune=7:14
+            nprune=12
         ),
         trControl=ctrl.probs
     ),
@@ -168,7 +168,7 @@ descs <- list(
         method="earth",
         tuneGrid=expand.grid(
             degree=2,
-            nprune=14:20
+            nprune=18
         ),
         trControl=ctrl.probs
     ),
