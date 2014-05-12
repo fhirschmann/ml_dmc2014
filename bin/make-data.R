@@ -166,27 +166,17 @@ dt.dmc <- foreach(i=names(dt.dmc.ids$train)) %dopar% {
         test=add.features.otf(dt.train[test.ids, ], dt.train[-(test.ids), ]))
 }
 
-dt.dmc$M30
 
-dt.dmc$M30 <- list(
-    train=dt.train[dt.dmc.ids$train[["M30"]],],
-    test=dt.test[dt.dmc.ids$test[["M30"]],]
-)
-dt.dmc$M31 <- list(
-    train=dt.train[dt.dmc.ids$train[["M31"]],],
-    test=dt.test[dt.dmc.ids$test[["M31"]],]
-)
-
-test.known <- dt.test$customerID %in% unique(dt.train$customerID)
 message("")
 message("CREATING FINAL DATA SET")
 message("")
 message(paste("Known in FINAL TEST SET:", sum(test.known) / length(test.known)))
 message("")
 
-dt.train <- add.features.otf(dt.train, dt.train)
 dt.test <- add.features.otf(dt.test, dt.train)
+test.known <- dt.test$customerID %in% unique(dt.train$customerID)
 
+test.known <- dt.test$customerID %in% unique(dt.train$customerID)
 dt.dmc$F0 <- list(
     train=dt.train,
     test=dt.test[!test.known]
@@ -203,13 +193,15 @@ dt.dmc$F1 <- list(
 dt.dmc$F0$test$returnShipment <- c("yes", "no")
 dt.dmc$F0$test$returnShipment <- as.factor(dt.dmc$F0$test$returnShipment)
 dt.dmc$F1$test$returnShipment <- c("yes", "no")
-dt.dmc$F1$test$returnShipment <- as.factor(dt.dmc$F0$test$returnShipment)
+dt.dmc$F0$test$returnShipment <- as.factor(dt.dmc$F0$test$returnShipment)
 
 message(paste("There are", nrow(dt.dmc$F0$train), "in F0 TRAIN and", nrow(dt.dmc$F0$test), "in F0 TEST"))
 message("")
 message(paste("There are", nrow(dt.dmc$F1$train), "in F1 TRAIN and", nrow(dt.dmc$F1$test), "in F1 TEST"))
 message("")
 message("PLEASE TRIPLE CHECK THE DATA SETS")
+
+names(dt.dmc) <- names(dt.dmc.ids$train)
 
 nas <- function(x) which(is.na(dt.train), T)
 
