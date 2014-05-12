@@ -387,7 +387,7 @@ descs <- list(
     ),
     
     avNNet=list(
-        fs.fun=fs.nn,
+        fs.fun=fs.stat,
         MaxNWts=20000,
         method="avNNet"
     ),
