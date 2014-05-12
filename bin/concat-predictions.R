@@ -12,15 +12,18 @@ probs <- "-p" %in% args
 suffix <- if ("-p" %in% args) "_prob" else "_pred"
 
 p1 <- args[[1]]
+message(paste("Using", p1))
 p2 <- args[[2]]
-dest <- args[[3]]
+message(paste("Using", p2))
 
-#p1 <- paste(file.path(dir, paste(name, "_", "M30", suffix, ".txt", sep="")))
-#p2 <- paste(file.path(dir, paste(name, "_", "M31", suffix, ".txt", sep="")))
+dest <- args[[3]]
 
 preds <- rbind(
     read.table(p1, sep=";", header=T),
     read.table(p2, sep=";", header=T))
+preds <- preds[order(preds$orderItemID), ]
+if (!all(preds$orderItemID == min(preds$orderItemID):max(preds$orderItemID)))
+    warning("OrderItemIDs are not a continuous range!")
 
 options(scipen=100)
 
