@@ -121,6 +121,14 @@ descs <- list(
 		tuneGrid=grid.svmRadialCost
 	),
     
+    pda=list(
+        fs.fun=fs.stat,
+        method="pda",
+        preProcess=c("center", "scale"),
+        tuneGrid=expand.grid(lambda=1),
+        trControl=ctrl.probs
+    ),
+    
     ## C5.0 on M30
     c50M30=list(
         fs.fun=fs.c50,
@@ -381,13 +389,6 @@ descs <- list(
         fs.fun=fs.stat,
         method="partDSA",
         tuneLength=3
-    ),
-    
-    pdaC=list(
-        fs.fun=fs.stat,
-        method="pda",
-        tuneLength=7,
-        trControl=ctrl.probs
     ),
     
     rdaC=list(
