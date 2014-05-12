@@ -31,7 +31,16 @@ if (is.null(desc)) stop(paste("Unknown Description. Available:",
                               paste(names(descs), collapse=", ")))
 desc <- list.update(common.desc, descs[[args[[1]]]])
 
-desc$data <- readRDS("data.dmc.RData")[[args[[2]]]]
+if("-B" %in% args) {
+	##for bag evaluation only:
+	delayedAssign("dt.train", readRDS("bagdata.train.RData"))
+	delayedAssign("dt.test", readRDS("bagdata.test.RData"))
+	delayedAssign("dt.dmc", readRDS("bagdata.dmc.RData"))
+	delayedAssign("dt.dmc.ids", readRDS("bagdata.dmc.ids.RData"))
+}
+
+desc$data <- dt.dmc[[args[[2]]]]
+
 if (is.null(desc$data)) stop("Unknown Data Set")
 
 set.seed(42)
