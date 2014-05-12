@@ -218,7 +218,7 @@ descs <- list(
         tuneGrid=grid.gbmS31,
 		trControl=ctrl.probs
     ),
-	
+
 	gbmCs4=list(
         fs.fun=fs.gbm,
         method="gbm",
@@ -254,6 +254,25 @@ descs <- list(
 		trControl=ctrl.probs
     ),
     
+    gbmCMx0=list(
+        fs.fun=fs.gbm,
+        method="gbm",
+        tuneGrid=expand.grid(
+            shrinkage=c(0.01),
+            interaction.depth=7,
+            n.trees=500
+            )
+    ),
+    gbmCMx0=list(
+        fs.fun=fs.gbm,
+        method="gbm",
+        tuneGrid=expand.grid(
+            shrinkage=c(0.01),
+            interaction.depth=8,
+            n.trees=550
+            )
+    ),
+
     nb=list(
       fs.fun=fs.nb,
       method="nb",
@@ -266,7 +285,27 @@ descs <- list(
         tuneGrid=grid.gbm,
         trControl=ctrl.probs
     ),
-    
+    gbmCPMx0=list(
+        fs.fun=fs.gbm,
+        method="gbm",
+        tuneGrid=expand.grid(
+            shrinkage=c(0.01),
+            interaction.depth=7,
+            n.trees=500
+            ),
+        trControl=ctrl.probs
+    ),
+    gbmCPMx0=list(
+        fs.fun=fs.gbm,
+        method="gbm",
+        tuneGrid=expand.grid(
+            shrinkage=c(0.01),
+            interaction.depth=8,
+            n.trees=550
+            ),
+        trControl=ctrl.probs
+    ),
+
     gamboost=list(
         fs.fun=fs.stat,
         tuneLength=6,
