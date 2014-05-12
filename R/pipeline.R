@@ -278,16 +278,16 @@ descs <- list(
 		trControl=ctrl.probs
     ),
     
-    gbmCMx0=list(
+    gbmM30=list(
         fs.fun=fs.gbm,
         method="gbm",
         tuneGrid=expand.grid(
             shrinkage=c(0.01),
             interaction.depth=7,
-            n.trees=500
+            n.trees=c(500, 600, 700, 800)
             )
     ),
-    gbmCMx1=list(
+    gbmM31=list(
         fs.fun=fs.gbm,
         method="gbm",
         tuneGrid=expand.grid(
