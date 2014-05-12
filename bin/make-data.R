@@ -166,7 +166,6 @@ dt.dmc <- foreach(i=names(dt.dmc.ids$train)) %dopar% {
         test=add.features.otf(dt.train[test.ids, ], dt.train[-(test.ids), ]))
 }
 
-test.known <- dt.test$customerID %in% unique(dt.train$customerID)
 
 message("")
 message("CREATING FINAL DATA SET")
@@ -174,23 +173,33 @@ message("")
 message(paste("Known in FINAL TEST SET:", sum(test.known) / length(test.known)))
 message("")
 
+dt.test <- add.features.otf(dt.test, dt.train)
+test.known <- dt.test$customerID %in% unique(dt.train$customerID)
+
 test.known <- dt.test$customerID %in% unique(dt.train$customerID)
 dt.dmc$F0 <- list(
-    train=add.features.otf(dt.train, dt.train),
-    test=add.features.otf(dt.test[!test.known], dt.train)
+    train=dt.train,
+    test=dt.test[!test.known]
 )
 dt.dmc$F1 <- list(
-    train=add.features.otf(dt.train, dt.train),
-    test=add.features.otf(dt.test[test.known], dt.train)
+    train=dt.train,
+    test=dt.test[test.known]
 )
+
+# We add a fake prediction of "yes", "no to the test data because
+# caret always expects a test set. DO NOT TUNE AGAINST THIS TEST SET.
+# All we are interested in is the prediction for the train set. The
+# resulting model is worthless, but that doesn't matter.
+dt.dmc$F0$test$returnShipment <- c("yes", "no")
+dt.dmc$F0$test$returnShipment <- as.factor(dt.dmc$F0$test$returnShipment)
+dt.dmc$F1$test$returnShipment <- c("yes", "no")
+dt.dmc$F0$test$returnShipment <- as.factor(dt.dmc$F0$test$returnShipment)
 
 message(paste("There are", nrow(dt.dmc$F0$train), "in F0 TRAIN and", nrow(dt.dmc$F0$test), "in F0 TEST"))
 message("")
 message(paste("There are", nrow(dt.dmc$F1$train), "in F1 TRAIN and", nrow(dt.dmc$F1$test), "in F1 TEST"))
 message("")
 message("PLEASE TRIPLE CHECK THE DATA SETS")
-
-dt.test <- add.features.otf(dt.test, dt.train)
 
 names(dt.dmc) <- names(dt.dmc.ids$train)
 
