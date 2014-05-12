@@ -90,10 +90,13 @@ descs <- list(
 	
 	ensemble=list(
 		fs.fun=fs.ensemble,
-		method="pda",
+		method="C5.0",
 		preProcess=c("center", "scale"),
-        tuneGrid=expand.grid(lambda=1),
-        trControl=ctrl.probs
+        tuneGrid=expand.grid(
+            model="rules",
+            winnow=F,
+            trials=20
+        )
 	),
 	
     pda=list(
