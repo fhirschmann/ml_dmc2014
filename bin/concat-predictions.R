@@ -12,11 +12,12 @@ probs <- "-p" %in% args
 suffix <- if ("-p" %in% args) "_prob" else "_pred"
 
 dir <- args[[1]]
-name <- args[[2]]
-dest <- args[[3]]
+p1 <- args[[2]]
+p2 <- args[[3]]
+dest <- args[[4]]
 
-p1 <- paste(file.path(dir, paste(name, "_", "M30", suffix, ".txt", sep="")))
-p2 <- paste(file.path(dir, paste(name, "_", "M31", suffix, ".txt", sep="")))
+#p1 <- paste(file.path(dir, paste(name, "_", "M30", suffix, ".txt", sep="")))
+#p2 <- paste(file.path(dir, paste(name, "_", "M31", suffix, ".txt", sep="")))
 
 preds <- rbind(
     read.table(p1, sep=";", header=T),
