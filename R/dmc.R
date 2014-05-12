@@ -233,7 +233,8 @@ dmc.evaluate <- function(dir) {
     source("eva/R/evaluation.R")
     require(stringr)
     
-    files <- list.files(path=dir, pattern=paste(pattern=".*_res.RData", sep=""))
+    files <- list.files(path=dir, pattern=paste(pattern=".*M30.*_res.RData", sep=""))
+    files <- files[!grepl("_F", files)]
     
     models <- sapply(files, function(x) readRDS(file.path(dir, x)), simplify=F)
     sets <- sapply(str_split(files, "_"), function(x) x[[2]])
