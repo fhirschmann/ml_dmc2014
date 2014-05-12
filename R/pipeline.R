@@ -46,7 +46,7 @@ descs <- list(
             trials=40
         )
     ),
-    c50M31=list(
+    c50M3150=list(
         fs.fun=fs.c50,
         method="C5.0",
         tuneGrid=expand.grid(
