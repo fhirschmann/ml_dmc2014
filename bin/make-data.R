@@ -201,8 +201,6 @@ message(paste("There are", nrow(dt.dmc$F1$train), "in F1 TRAIN and", nrow(dt.dmc
 message("")
 message("PLEASE TRIPLE CHECK THE DATA SETS")
 
-names(dt.dmc) <- names(dt.dmc.ids$train)
-
 nas <- function(x) which(is.na(dt.train), T)
 
 na <- list(
