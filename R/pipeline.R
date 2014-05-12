@@ -78,6 +78,12 @@ grid.gbm <- expand.grid(
     interaction.depth=5:10
 )
 
+grid.gbm2 <- expand.grid(
+    shrinkage=c(0.05),
+    n.trees=c(400, 500, 600, 700, 800),
+    interaction.depth=7
+)
+
 # List of stuff to learn
 descs <- list(
     # Final (tuned) Descriptions
@@ -185,6 +191,13 @@ descs <- list(
         tuneGrid=grid.gbm,
         trControl=ctrl.probs
     ),
+    
+	gbm2=list(
+	    fs.fun=fs.gbm,
+	    method="gbm",
+	    tuneGrid=grid.gbm2,
+	    trControl=ctrl.probs
+	),
     
     gbmCs=list(
         fs.fun=fs.gbm,
