@@ -12,8 +12,8 @@ test <- dt.dmc$M31$test
 train <- train[train$deliveryDateMissing == "no", ]
 test <- test[test$deliveryDateMissing == "no", ]
 
-train$customerID <-as.factor(train$customerID)
-test$customerID <- as.factor(test$customerID)
+#train$customerID <-as.factor(train$customerID)
+#test$customerID <- as.factor(test$customerID)
 
 levels(train$customerID) <- c(levels(train$customerID), levels(test$customerID))
 

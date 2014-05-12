@@ -3,4 +3,34 @@ Always keeping returnShipment, size
 Loading required package: stringr
 Loading required package: C50
 
-Execution halted
+Attaching package: ‘plyr’
+
+The following object is masked from ‘package:lubridate’:
+
+    here
+
+Always Keep returnShipment, size
+All Features:
+	 Score 8265
+Excluding: customerItemIsFavoriteSize
+	Score (current minimum): 8265
+	Score: 8260
+	Change: -5
+Don't Remove: customerItemIsFavoriteSize
+Excluding: orderNumItems
+	Score (current minimum): 8265
+	Score: 8287
+	Change: 22
+Don't Remove: orderNumItems
+Excluding: itemPrice
+
+ *** caught segfault ***
+address 0x23f800018, cause 'memory not mapped'
+
+Traceback:
+ 1: .C("C50", as.character(namesString), as.character(dataString),     as.character(costString), as.logical(control$subset), as.logical(rules),     as.integer(control$bands), as.integer(trials), as.logical(control$winnow),     as.double(control$sample), as.integer(control$seed), as.integer(control$noGlobalPruning),     as.double(control$CF), as.integer(control$minCases), as.logical(control$fuzzyThreshold),     as.logical(control$earlyStopping), tree = character(1), rules = character(1),     output = character(1), PACKAGE = "C50")
+ 2: C5.0.default(x = m, y = y, weights = wt, ...)
+ 3: C5.0.formula(returnShipment ~ ., data = dt)
+ 4: C5.0(returnShipment ~ ., data = dt)
+ 5: fuck(m[!colnames(m) %in% exclude2])
+aborting ...
