@@ -245,7 +245,7 @@ fs.ensemble <- function(dt) {
     }
   }
   
-  toJoin <- fs.c50(toJoin)
+  toJoin <- fs.c50(toJoin,FALSE)
   
 
   toJoin
