@@ -128,7 +128,7 @@ dt.dmc.ids <- list(test=list(), train=list())
 if (length(args) > 0) {
     build <- unlist(args)
 } else {
-    build <- c("M3", "M30", "M31")
+    build <- c("M30", "M31")
 }
 for (i in build) {
     dt.dmc.ids$train[[i]] <- as.numeric(as.character(read.csv(paste("eva/", i, "_train.txt", sep=""))$orderItemID))
@@ -165,6 +165,30 @@ dt.dmc <- foreach(i=names(dt.dmc.ids$train)) %dopar% {
         train=add.features.otf(dt.train[train.ids, ], dt.train[-(test.ids), ]),
         test=add.features.otf(dt.train[test.ids, ], dt.train[-(test.ids), ]))
 }
+
+test.known <- dt.test$customerID %in% unique(dt.train$customerID)
+
+message("")
+message("CREATING FINAL DATA SET")
+message("")
+message(paste("Known in FINAL TEST SET:", sum(test.known) / length(test.known)))
+message("")
+
+test.known <- dt.test$customerID %in% unique(dt.train$customerID)
+dt.dmc$F0 <- list(
+    train=add.features.otf(dt.train, dt.train),
+    test=add.features.otf(dt.test[!test.known], dt.train)
+)
+dt.dmc$F1 <- list(
+    train=add.features.otf(dt.train, dt.train),
+    test=add.features.otf(dt.test[test.known], dt.train)
+)
+
+message(paste("There are", nrow(dt.dmc$F0$train), "in F0 TRAIN and", nrow(dt.dmc$F0$test), "in F0 TEST"))
+message("")
+message(paste("There are", nrow(dt.dmc$F1$train), "in F1 TRAIN and", nrow(dt.dmc$F1$test), "in F1 TEST"))
+message("")
+message("PLEASE TRIPLE CHECK THE DATA SETS")
 
 dt.test <- add.features.otf(dt.test, dt.train)
 
