@@ -98,6 +98,16 @@ descs <- list(
         )
 	),
 	
+	earthSimon=list(
+		fs.fun=fs.simon,
+        method="earth",
+        tuneGrid=expand.grid(
+            degree=2,
+            nprune=12
+        ),
+        trControl=ctrl.probs
+	),
+	
     pda=list(
         fs.fun=fs.stat,
         method="pda",

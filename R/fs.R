@@ -159,6 +159,42 @@ fs.nb <- function(dt) {
   dt2
 }
 
+fs.simon <- function(dt) {
+  dt2 <- dt
+  dt2$itemID <- NULL
+  dt2$manufacturerID <- NULL
+  dt2$customerID <- NULL
+  dt2$salutation <- NULL
+  dt2$holiday <- NULL
+  dt2$dateOfBirthMissing <- NULL
+  d2$dateOfBirthIsOutlier <- NULL
+  dt2$deliveryDateIsOutlier <- NULL
+  dt2$creationDateIsOutlier <- NULL
+  dt2$customerState <- NULL
+  dt2$orderDeliveryTime <- NULL
+  dt2$orderWeekday <- NULL
+  dt2$orderInstant <- NULL
+  dt2$customerAgeAtOrderTime <- NULL
+  dt2$customerAgeAtOrderTimeDiscrete <- NULL
+  dt2$customerAccountAgeAtOrderTime <- NULL
+  dt2$customerAccountAgeAtOrderTimeDiscrete <- NULL
+  dt2$customerAccountAge <- NULL
+  dt2$customerAccountAgeDiscrete <- NULL
+  dt2$customerWestGerman <- NULL
+  dt2$customerFavoriteColor <- NULL
+  dt2$customerItemIsFavoriteColor <- NULL
+  dt2$itemItemColorReturnRate <- NULL
+  dt2$itemColorReturnRate <- NULL
+  
+  dt2 <- fs.stat(dt2)
+  
+  dt2
+  
+  
+
+  
+}
+
 fs.ensemble <- function(dt) {
   
   library(plyr)
