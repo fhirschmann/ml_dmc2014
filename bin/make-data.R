@@ -193,7 +193,7 @@ dt.dmc$F1 <- list(
 dt.dmc$F0$test$returnShipment <- c("yes", "no")
 dt.dmc$F0$test$returnShipment <- as.factor(dt.dmc$F0$test$returnShipment)
 dt.dmc$F1$test$returnShipment <- c("yes", "no")
-dt.dmc$F0$test$returnShipment <- as.factor(dt.dmc$F0$test$returnShipment)
+dt.dmc$F1$test$returnShipment <- as.factor(dt.dmc$F0$test$returnShipment)
 
 message(paste("There are", nrow(dt.dmc$F0$train), "in F0 TRAIN and", nrow(dt.dmc$F0$test), "in F0 TEST"))
 message("")
