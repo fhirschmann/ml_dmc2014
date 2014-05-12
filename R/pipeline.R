@@ -88,11 +88,12 @@ grid.gbm2 <- expand.grid(
 descs <- list(
     # Final (tuned) Descriptions
 	
-	## random forest with integrated feature selection
-	boruta=list(
-		fs.fun=fs.rf,
-		method="Boruta",
-		tuneLenght=3
+	ensemble=list(
+		fs.fun=fs.ensemble,
+		method="pda",
+		preProcess=c("center", "scale"),
+        tuneGrid=expand.grid(lambda=1),
+        trControl=ctrl.probs
 	),
 	
     pda=list(

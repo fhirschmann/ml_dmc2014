@@ -159,30 +159,93 @@ fs.nb <- function(dt) {
   dt2
 }
 
-fs.liblin <- function(dt) {
-  dt2 <- dt
-  dt2$orderItemID <- NULL
+fs.ensemble <- function(dt) {
   
-  dt2$orderDate <- NULL
+  library(plyr)
   
-  # Use deliveryTime
-  dt2$deliveryDate <- NULL
+  ###put all prediction txt reads here:
+  ##all __0 (customerUnknown) here:
+  #M__:
+  delayedAssign("c50M30tr", read.table("ens/c50C_M30_pred.txt", sep=";", header=T, col.names=c("orderItemID", "c50")))
+  delayedAssign("pdaM30tr", read.table("ens/pdaC_M30_prob.txt", sep=";", header=T, col.names=c("orderItemID", "pda")))
+  delayedAssign("gbmM30tr", read.table("ens/gbmCs5_M30_prob.txt", sep=";", header=T, col.names=c("orderItemID", "gbm")))
   
-  # Use customerAge
-  dt2$dateOfBirth <- NULL
+  #F__:
   
-  # Use accountAge
-  dt2$creationDate <- NULL
-  dt2$customerFirstOrderDate <- NULL
+  #B__:
   
-  dt2$customerAgeAtOrderTime <- NULL
-  dt2$dateOfBirthIsOutlier <- NULL
-  dt2$dateOfBirthMissing <- NULL
-  dt2$customerAccountAgeAtOrderTime <-NULL
-  dt2$customerAccountAge <- NULL
-  dt2$customerFavoriteColor <- NULL
-  dt2$colorReturnRate <- NULL
-  dt2$unknownManufacturer <- NULL
+  ##all __1 (customerKnown) here:
+  #M__:
   
-  dt2
+  #F__:
+  
+  #B__:
+  
+  
+  ###end prediction txt reads
+  
+  ##insert delayedAssign objects here accordingly:
+  ens <- list(
+    M0=list(
+      c50M30tr,
+      pdaM30tr,
+      gbmM30tr
+    ),
+    M1=list(
+      
+    ),
+    F0=list(
+    ),
+    F1=list(
+    ),
+    B0=list(
+    ),
+    B1=list(
+    )
+  )
+  
+  library(stringr)
+  objName <- args[[2]]
+  objName <- tolower(objName)
+  lastChar <- str_sub(objName, start=-1)
+  firstChar <- str_sub(objName, end=1)
+
+  toJoin <- dt
+  
+  if(firstChar == "m") {
+    if(lastChar == "1"){
+      for(i in ens$M1) {
+        toJoin <- join(toJoin, i)
+      }
+      
+    } else {
+      for(i in ens$M0) {
+        toJoin <- join(toJoin, i)
+      }
+    }    
+  } else if(firstChar == "f"){
+    if(lastChar == "1"){
+      for(i in ens$F1) {
+        toJoin <- join(toJoin, i)
+      }
+    } else {
+      for(i in ens$F0) {
+        toJoin <- join(toJoin, i)
+      }
+    }
+  } else { #is b
+    if(lastChar == "1"){
+      for(i in ens$B1) {
+        toJoin <- join(toJoin, i)
+      }
+    } else {
+      for(i in ens$B0) {
+        toJoin <- join(toJoin, i)
+      }
+    }
+  }
+  
+
+  toJoin
+
 }
