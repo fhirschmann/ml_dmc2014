@@ -72,14 +72,11 @@ grid.gbmS6 <- expand.grid(
     n.trees=c(200, 300,400,500)
 )
 
-grid.svmRadial <- expand.grid(
-	C=c(2^-5,2^-4,2^-3,2^-2,2^-1,1,2^1,2^2,2^3,2^4,2^5,2^6,2^7),
-	sigma=c(2^2,2^1,1,2^-1,2^-2,2^-3,2^-4,2^-5,2^-6,2^-7,2^-8,2^-9)
+grid.gbm <- expand.grid(
+    shrinkage=c(0.001),
+    n.trees=c(400, 500, 600, 700, 800, 900, 1000),
+    interaction.depth=5:10
 )
-	
-grid.svmRadialCost <- expand.grid(
-	C=c(2^-5,2^-4,2^-3,2^-2,2^-1,1,2^1,2^2,2^3,2^4,2^5,2^6,2^7,0.1,0.01,0.001,0.0001,0.0005,0.005)
-	)
 
 # List of stuff to learn
 descs <- list(
@@ -211,10 +208,11 @@ descs <- list(
     # Stuff to run on the Cluster: Postfix with 'C'
     
     # GBM
-    gbmC=list(
+    gbm=list(
         fs.fun=fs.gbm,
         method="gbm",
-        tuneGrid=grid.gbm
+        tuneGrid=grid.gbm,
+        trControl=ctrl.probs
     ),
     
     gbmCs=list(
