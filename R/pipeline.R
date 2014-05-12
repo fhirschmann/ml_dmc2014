@@ -91,7 +91,6 @@ descs <- list(
 	ensemble=list(
 		fs.fun=fs.ensemble,
 		method="C5.0",
-		preProcess=c("center", "scale"),
         tuneGrid=expand.grid(
             model="rules",
             winnow=F,
