@@ -180,6 +180,14 @@ descs <- list(
         method="bagEarth",
         tuneGrid=expand.grid(
             degree=2,
+            nprune=7:14
+        )
+    ),
+    bearthM30=list(
+        fs.fun=fs.stat,
+        method="bagEarth",
+        tuneGrid=expand.grid(
+            degree=2,
             nprune=14:20
         )
     ),
