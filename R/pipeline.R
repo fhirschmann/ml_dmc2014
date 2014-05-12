@@ -46,6 +46,15 @@ descs <- list(
             trials=40
         )
     ),
+    c50M31=list(
+        fs.fun=fs.c50,
+        method="C5.0",
+        tuneGrid=expand.grid(
+            model="rules",
+            winnow=F,
+            trials=50
+        )
+    ),
     ## MARS on M30
     earthM30=list(
         fs.fun=fs.stat,
