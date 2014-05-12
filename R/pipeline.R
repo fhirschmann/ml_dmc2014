@@ -417,10 +417,6 @@ descs <- list(
         fs.fun=fs.tree,
         method="JRip"
     ),
-    svmLinear=list(
-        fs.fun=fs.svm,
-        method="svmLinear"
-    ),
     rf=list(
         fs.fun=fs.rf,
         method="rf",
