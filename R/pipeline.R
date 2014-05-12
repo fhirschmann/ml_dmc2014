@@ -139,6 +139,31 @@ descs <- list(
         fs.fun=fs.stat,
         tuneLength=2,
         method="mlp"
+    ),
+    elm=list(
+        fs.fun=fs.stat,
+        tuneLength=2,
+        method="elm"
+    ),
+    pls=list(
+        fs.fun=fs.stat,
+        tuneLength=2,
+        method="kernelpls"
+    ),
+    pam=list(
+        fs.fun=fs.stat,
+        tuneLength=2,
+        method="pam"
+    ),
+    pda=list(
+        fs.fun=fs.stat,
+        tuneLength=2,
+        method="pda"
+    ),
+    rbf=list(
+        fs.fun=fs.stat,
+        tuneLength=2,
+        method="rbf"
     )
 )
 
