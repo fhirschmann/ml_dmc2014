@@ -167,6 +167,7 @@ dt.dmc <- foreach(i=names(dt.dmc.ids$train)) %dopar% {
 }
 
 
+test.known <- dt.test$customerID %in% unique(dt.train$customerID)
 message("")
 message("CREATING FINAL DATA SET")
 message("")
@@ -175,7 +176,6 @@ message("")
 
 dt.train <- add.features.otf(dt.train, dt.train)
 dt.test <- add.features.otf(dt.test, dt.train)
-test.known <- dt.test$customerID %in% unique(dt.train$customerID)
 
 dt.dmc$F0 <- list(
     train=dt.train,
