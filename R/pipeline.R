@@ -108,6 +108,14 @@ descs <- list(
         trControl=ctrl.probs
 	),
 	
+	pdaSimon=list(
+        fs.fun=fs.simon,
+        method="pda",
+        preProcess=c("center", "scale"),
+        tuneGrid=expand.grid(lambda=1),
+        trControl=ctrl.probs
+    ),
+	
     pda=list(
         fs.fun=fs.stat,
         method="pda",
