@@ -173,10 +173,10 @@ message("")
 message(paste("Known in FINAL TEST SET:", sum(test.known) / length(test.known)))
 message("")
 
+dt.test <- add.features.otf(dt.train, dt.train)
 dt.test <- add.features.otf(dt.test, dt.train)
 test.known <- dt.test$customerID %in% unique(dt.train$customerID)
 
-test.known <- dt.test$customerID %in% unique(dt.train$customerID)
 dt.dmc$F0 <- list(
     train=dt.train,
     test=dt.test[!test.known]
