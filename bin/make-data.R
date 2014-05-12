@@ -166,11 +166,16 @@ dt.dmc <- foreach(i=names(dt.dmc.ids$train)) %dopar% {
         test=add.features.otf(dt.train[test.ids, ], dt.train[-(test.ids), ]))
 }
 
-dt.dmc$M30$train <- dt.dmc.ids$train$M30
-dt.dmc$M30$test <- dt.dmc.ids$test$M30
+dt.dmc$M30
 
-dt.dmc$M31$train <- dt.dmc.ids$train$M31
-dt.dmc$M31$test <- dt.dmc.ids$test$M31
+dt.dmc$M30 <- list(
+    train=dt.train[dt.dmc.ids$train[["M30"]],],
+    test=dt.test[dt.dmc.ids$test[["M30"]],]
+)
+dt.dmc$M31 <- list(
+    train=dt.train[dt.dmc.ids$train[["M31"]],],
+    test=dt.test[dt.dmc.ids$test[["M31"]],]
+)
 
 test.known <- dt.test$customerID %in% unique(dt.train$customerID)
 message("")
