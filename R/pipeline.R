@@ -169,12 +169,17 @@ descs <- list(
         tuneGrid=expand.grid(
             degree=2,
             nprune=14:20
+<<<<<<< HEAD
         ),
         trControl=ctrl.probs
+=======
+        )
+>>>>>>> extend pipeline
     ),
     
     ## Bagged MARS on M10
     bearthM30=list(
+<<<<<<< HEAD
         fs.fun=fs.stat,
         method="bagEarth",
         tuneGrid=expand.grid(
