@@ -21,7 +21,7 @@ ens <- list(
 
 m30 <- join(join(join(ens$M30$c50, ens$M30$pda), ens$M30$gbm), dt.dmc$M30$test)
 #m30$returnShipment <- revalue(m30$returnShipment, c("yes"=0, "no"=1))
-m30.orderItemID <- m30$orderItemIDachs
+m30.orderItemID <- m30$orderItemID
 m30$orderItemID <- NULL
 
 fit <- train(returnShipment ~ c50 + gbm + pda, data=m30, method="svmPoly")
