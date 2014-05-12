@@ -134,6 +134,11 @@ descs <- list(
         fs.fun=fs.stat,
         MaxNWts=20000,
         method="avNNet"
+    ),
+    mlp=list(
+        fs.fun=fs.stat,
+        tuneLength=2,
+        method="mlp"
     )
 )
 
