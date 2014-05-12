@@ -72,9 +72,54 @@ grid.gbmS6 <- expand.grid(
     n.trees=c(200, 300,400,500)
 )
 
+grid.svmRadial <- expand.grid(
+	C=c(2^-5,2^-4,2^-3,2^-2,2^-1,1,2^1,2^2,2^3,2^4,2^5,2^6,2^7),
+	sigma=c(2^2,2^1,1,2^-1,2^-2,2^-3,2^-4,2^-5,2^-6,2^-7,2^-8,2^-9)
+)
+	
+grid.svmRadialCost <- expand.grid(
+	C=c(2^-5,2^-4,2^-3,2^-2,2^-1,1,2^1,2^2,2^3,2^4,2^5,2^6,2^7,0.1,0.01,0.001,0.0001,0.0005,0.005)
+	)
+
 # List of stuff to learn
 descs <- list(
     # Final (tuned) Descriptions
+	
+	## random forest with integrated feature selection
+	boruta=list(
+		fs.fun=fs.rf,
+		method="Boruta",
+		tuneLenght=3
+	),
+	
+	## svms: least squares versions
+	lssvmLinear=list( ## doesnt work atm
+		fs.fun=fs.stat,
+		method="lssvmLinear",
+		preProcess=c("center","scale"),
+		tuneLength=33
+	),
+	
+	svmLinear=list(
+        fs.fun=fs.stat,
+        method="svmLinear",
+		preProcess=c("center","scale"),
+        tuneGrid=grid.svmRadialCost
+    ),
+	
+	svmRadial=list( 
+		fs.fun=fs.stat,
+		method="svmRadial",
+		preProcess=c("center","scale"),
+		tuneGrid=grid.svmRadial
+	),
+	
+	svmRadialCost=list(
+		fs.fun=fs.stat,
+		method="svmRadialCost",
+		preProcess=c("center","scale"),
+		tuneGrid=grid.svmRadialCost
+	),
     
     ## C5.0 on M30
     c50M30=list(
@@ -405,11 +450,7 @@ descs <- list(
         method="treebag",
         tuneLength=5
     ),
-    svmLinear=list(
-        fs.fun=fs.rf,
-        method="svmLinear",
-        tuneLength=3
-    ),
+    
     ctree=list(
         fs.fun=fs.tree,
         method="ctree",
