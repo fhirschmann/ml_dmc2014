@@ -147,7 +147,7 @@ descs <- list(
         tuneGrid=expand.grid(
             model="rules",
             winnow=F,
-            trials=c(20, 25, 38, 39, 40, 45, 50)
+            trials=40
         )
     ),
     
