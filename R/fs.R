@@ -167,7 +167,7 @@ fs.simon <- function(dt) {
   dt2$salutation <- NULL
   dt2$holiday <- NULL
   dt2$dateOfBirthMissing <- NULL
-  d2$dateOfBirthIsOutlier <- NULL
+  dt2$dateOfBirthIsOutlier <- NULL
   dt2$deliveryDateIsOutlier <- NULL
   dt2$creationDateIsOutlier <- NULL
   dt2$customerState <- NULL
