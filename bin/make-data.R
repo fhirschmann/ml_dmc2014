@@ -165,25 +165,25 @@ dt.dmc <- foreach(i=names(dt.dmc.ids$train)) %dopar% {
         train=add.features.otf(dt.train[train.ids, ], dt.train[-(test.ids), ]),
         test=add.features.otf(dt.train[test.ids, ], dt.train[-(test.ids), ]))
 }
-
+names(dt.dmc) <- names(dt.dmc.ids$train)
 
 message("")
 message("CREATING FINAL DATA SET")
 message("")
+
+test.known <- dt.test$customerID %in% unique(dt.train$customerID)
+
 message(paste("Known in FINAL TEST SET:", sum(test.known) / length(test.known)))
 message("")
 
-dt.test <- add.features.otf(dt.test, dt.train)
-test.known <- dt.test$customerID %in% unique(dt.train$customerID)
 
-test.known <- dt.test$customerID %in% unique(dt.train$customerID)
 dt.dmc$F0 <- list(
-    train=dt.train,
-    test=dt.test[!test.known]
+    train=add.features.otf(dt.train, dt.train),
+    test=add.features.otf(dt.test[!test.known], dt.train)
 )
 dt.dmc$F1 <- list(
-    train=dt.train,
-    test=dt.test[test.known]
+    train=add.features.otf(dt.train, dt.train),
+    test=add.features.otf(dt.test[test.known], dt.train)
 )
 
 # We add a fake prediction of "yes", "no to the test data because
@@ -192,6 +192,7 @@ dt.dmc$F1 <- list(
 # resulting model is worthless, but that doesn't matter.
 dt.dmc$F0$test$returnShipment <- c("yes", "no")
 dt.dmc$F0$test$returnShipment <- as.factor(dt.dmc$F0$test$returnShipment)
+
 dt.dmc$F1$test$returnShipment <- c("yes", "no")
 dt.dmc$F0$test$returnShipment <- as.factor(dt.dmc$F0$test$returnShipment)
 
@@ -201,7 +202,6 @@ message(paste("There are", nrow(dt.dmc$F1$train), "in F1 TRAIN and", nrow(dt.dmc
 message("")
 message("PLEASE TRIPLE CHECK THE DATA SETS")
 
-names(dt.dmc) <- names(dt.dmc.ids$train)
 
 nas <- function(x) which(is.na(dt.train), T)
 
