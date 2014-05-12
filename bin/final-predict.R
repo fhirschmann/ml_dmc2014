@@ -8,19 +8,19 @@ library(earth)
 library(plyr)
 
 args <- commandArgs(T)
-dir <- args[[1]]
-name <- args[[2]]
 out <- args[[3]]
 
 # Comment this out for the final predictions
-sp <- "M3"
+#sp <- "M3"
 # sp <- "F"
 
 f1.file <- file.path(dir, paste(name, "_", sp, "1", ".RData", sep=""))
 f0.file <- file.path(dir, paste(name, "_", sp, "0", ".RData", sep=""))
 
-message(paste("Using", f1.file, "to predict known customers."))
-message(paste("Using", f0.file, "to predict unknown customers."))
+#message(paste("Using", f1.file, "to predict known customers."))
+#message(paste("Using", f0.file, "to predict unknown customers."))
+f0.file <- args[[1]]
+f1.file <- args[[2]]
 
 f1.fit <- readRDS(f1.file)
 f0.fit <- readRDS(f0.file)
