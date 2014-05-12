@@ -263,13 +263,13 @@ descs <- list(
             n.trees=500
             )
     ),
-    gbmCMx0=list(
+    gbmCMx1=list(
         fs.fun=fs.gbm,
         method="gbm",
         tuneGrid=expand.grid(
             shrinkage=c(0.01),
             interaction.depth=8,
-            n.trees=550
+            n.trees=c(500, 550, 600, 650)
             )
     ),
 
@@ -295,13 +295,13 @@ descs <- list(
             ),
         trControl=ctrl.probs
     ),
-    gbmCPMx0=list(
+    gbmCPMx1=list(
         fs.fun=fs.gbm,
         method="gbm",
         tuneGrid=expand.grid(
             shrinkage=c(0.01),
             interaction.depth=8,
-            n.trees=550
+            n.trees=c(500, 550, 600, 650)
             ),
         trControl=ctrl.probs
     ),
