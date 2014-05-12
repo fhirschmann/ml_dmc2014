@@ -280,6 +280,7 @@ descs <- list(
     
     gbmM30=list(
         fs.fun=fs.gbm,
+        n.cores=4,
         method="gbm",
         tuneGrid=expand.grid(
             shrinkage=c(0.01),
@@ -289,6 +290,7 @@ descs <- list(
     ),
     gbmM31=list(
         fs.fun=fs.gbm,
+        n.cores=4,
         method="gbm",
         tuneGrid=expand.grid(
             shrinkage=c(0.01),
