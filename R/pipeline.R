@@ -89,35 +89,6 @@ descs <- list(
 		tuneLenght=3
 	),
 	
-	## svms: least squares versions
-	lssvmLinear=list( ## doesnt work atm
-		fs.fun=fs.stat,
-		method="lssvmLinear",
-		preProcess=c("center","scale"),
-		tuneLength=33
-	),
-	
-	svmLinear=list(
-        fs.fun=fs.stat,
-        method="svmLinear",
-		preProcess=c("center","scale"),
-        tuneGrid=grid.svmRadialCost
-    ),
-	
-	svmRadial=list( 
-		fs.fun=fs.stat,
-		method="svmRadial",
-		preProcess=c("center","scale"),
-		tuneGrid=grid.svmRadial
-	),
-	
-	svmRadialCost=list(
-		fs.fun=fs.stat,
-		method="svmRadialCost",
-		preProcess=c("center","scale"),
-		tuneGrid=grid.svmRadialCost
-	),
-    
     pda=list(
         fs.fun=fs.stat,
         method="pda",
