@@ -75,6 +75,20 @@ descs <- list(
         ),
         trControl=ctrl.probs
     ),	
+    elmM30=list(
+        tuneGrid=expand.grid(
+            nhid=157,
+            actfun="purelin"
+        ),
+        method="elm"
+    ),
+    elmM31=list(
+        tuneGrid=expand.grid(
+            nhid=167,
+            actfun="purelin"
+        ),
+        method="elm"
+    ),
 	ensemble=list(
 		fs.fun=fs.ensemble,
 		method="C5.0",
