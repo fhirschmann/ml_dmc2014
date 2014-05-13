@@ -109,7 +109,8 @@ fs.c50 <- function(dt, customerKnown) {
     dt2$dateOfBirthMissing <- NULL
     
     if (customerKnown) {
-        
+        dt2$customerAccountAgeAtOrderTimeDiscrete <- NULL
+        dt2$customerState <- NULL
     } else {
         # Run again on M3
         dt2$customerState <- NULL
