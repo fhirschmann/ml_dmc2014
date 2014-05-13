@@ -152,7 +152,7 @@ descs <- list(
     ),
     elm=list(
         fs.fun=fs.stat,
-        tuneLength=50,
+        tuneLength=200,
         method="elm"
     ),
     pls=list(
