@@ -187,6 +187,10 @@ descs <- list(
         tuneLength=200,
         method="elm"
     ),
+    j48=list(
+        tuneLength=4,
+        method="J48"
+    ),
     pls=list(
         fs.fun=fs.stat,
         tuneLength=2,
