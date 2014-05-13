@@ -167,6 +167,11 @@ descs <- list(
         fs.fun=fs.stat,
         method="stepLDA"
     ),
+    xyf=list(
+        fs.fun=fs.stat,
+        method="xyf",
+        tuneLenght=2
+    ),
     mlp=list(
         fs.fun=fs.stat,
         tuneLength=2,
