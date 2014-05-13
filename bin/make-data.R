@@ -202,6 +202,7 @@ message(paste("There are", nrow(dt.dmc$F1$train), "in F1 TRAIN and", nrow(dt.dmc
 message("")
 message("PLEASE TRIPLE CHECK THE DATA SETS")
 
+dt.test <- add.features.otf(dt.test, dt.train)
 
 nas <- function(x) which(is.na(dt.train), T)
 
