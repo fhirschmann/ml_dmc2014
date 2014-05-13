@@ -163,6 +163,10 @@ descs <- list(
         MaxNWts=20000,
         method="avNNet"
     ),
+    stepLDA=list(
+        fs.fun=fs.stat,
+        method="stepLDA"
+    ),
     mlp=list(
         fs.fun=fs.stat,
         tuneLength=2,
