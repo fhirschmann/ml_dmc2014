@@ -120,7 +120,17 @@ descs <- list(
 	    tuneGrid=grid.gbm2,
 	    trControl=ctrl.probs
 	),
-    gbmM30s005=list(
+    gbmM31=list(
+        fs.fun=fs.gbm,
+        method="gbm",
+        tuneGrid=expand.grid(
+            shrinkage=0.01,
+            interaction.depth=8,
+            n.trees=550
+        ),
+        trControl=ctrl.probs
+    ),
+    gbmM30=list(
         fs.fun=fs.gbm,
         method="gbm",
         tuneGrid=expand.grid(
