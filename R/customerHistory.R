@@ -29,11 +29,14 @@ yesorno <- function(customer, item, order) {
   str("incoming")
   str(customer)
  # message("laosdaosdoas")
+ ##wenn customer bekannt ..
   if(customer %in% customerList) {
+    ##wenn noch nicht bekannte ordersession des customers (festgestellt über orderdate)
     if(!(order %in% customerOrderList[[customer]])) {
       customerOrderList[[customer]] <<- c(customerOrderList[[customer]], order)
       customerSession[[customer]] <<- NULL
     }
+    ##wenn item bereits gekauft und das nicht in dieser session, dann TRUE
     if(!(item %in% customerSession[[customer]]) & (item %in% customerItemList[[customer]])) {
       customerSession[[customer]] <<- c(customerSession[[customer]], item)
       TRUE
@@ -46,6 +49,8 @@ yesorno <- function(customer, item, order) {
       FALSE
     }
   } else {
+    ##customer ist neu: 
+    #eintrag in customerlist anlegen, itemlist anlegen, session anlegen, orderhistory anlegen
     str(item)
     str("and the list")
     str(customerItemList)
