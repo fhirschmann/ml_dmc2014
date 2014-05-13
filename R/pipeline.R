@@ -172,6 +172,11 @@ descs <- list(
         method="xyf",
         tuneLenght=2
     ),
+    vbmpRadial=list(
+        fs.fun=fs.stat,
+        method="vbmpRadial",
+        tuneLength=3
+    ),
     mlp=list(
         fs.fun=fs.stat,
         tuneLength=2,
