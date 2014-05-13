@@ -128,7 +128,7 @@ dt.dmc.ids <- list(test=list(), train=list())
 if (length(args) > 0) {
     build <- unlist(args)
 } else {
-    build <- c("M30", "M31")
+    build <- c("M3", "M30", "M31")
 }
 for (i in build) {
     dt.dmc.ids$train[[i]] <- as.numeric(as.character(read.csv(paste("eva/", i, "_train.txt", sep=""))$orderItemID))
