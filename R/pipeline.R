@@ -31,7 +31,7 @@ descs <- list(
         method="C5.0",
         tuneGrid=expand.grid(
             model=c("rules", "tree"),
-            winnow=(F, T),
+            winnow=c(F, T),
             trials=c(1, 1:20 * 5)
         )
     ),
