@@ -26,6 +26,15 @@ grid.gbm2 <- expand.grid(
 
 # List of stuff to learn
 descs <- list(
+    c50=list(
+        fs.fun=fs.c50,
+        method="C5.0",
+        tuneGrid=expand.grid(
+            model=c("rules", "tree"),
+            winnow=(F, T),
+            trials=c(1, 1:20 * 5)
+        )
+    ),
     ## C5.0 on M30
     c50M30=list(
         fs.fun=fs.c50,
