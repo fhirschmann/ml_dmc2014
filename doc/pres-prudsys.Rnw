@@ -1,0 +1,65 @@
+\documentclass[color=usenames,dvipsnames]{beamer}
+\usetheme{Amsterdam}
+
+\usepackage{amsmath}
+\usepackage[mathletters]{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{pifont}
+
+\title{Data Mining Cup 2014}
+\subtitle{TU\_Darmstadt\_2 Report}
+\author{Fabian Hirschmann, Simon Holthausen, Michael Markert, Christoph Schatton}
+\institute{Technische Universität Darmstadt}
+\date{July 2014}
+
+%\setbeamercovered{transparent}
+\setbeamertemplate{navigation symbols}{}
+
+
+\begin{document}
+\begin{frame}{}
+  \titlepage
+\end{frame}
+
+%\begin{frame}
+%\frametitle{Table of Contents}
+%\tableofcontents
+%\end{frame}
+
+\section{Intro}
+\begin{frame}{Data Mining Cup 2014: A Team Effort!}
+    \begin{minipage}[t]{0.49\columnwidth}
+    Igor Achieser\\
+    Marc-André Bär\\
+    Markus Brandt\\
+    Prof.~Dr.~Johannes Fürnkranz\\
+    Fabian Hirschmann\\
+    Simon Holthausen\\
+    Patryk Hopner\\
+    Dr.~Frederik Janssen\\
+    Mirko Köhler
+    \end{minipage}
+    \begin{minipage}[t]{0.49\columnwidth}
+    Suiteng Lu\\
+    Michael Markert\\
+    Eneldo Loza Mencía\\
+    Thomas Pignede\\
+    Elvir Sabic\\
+    Christoph Schatton\\
+    Svenja Stark\\
+    Michael Stahn\\    
+    Christian Wirth
+    \end{minipage}
+\end{frame}
+
+\section{Data Analysis}
+
+
+\section{Questions}
+\begin{frame}{Questions}
+    \Large Questions? Anyone?
+\end{frame}
+
+\end{document}
