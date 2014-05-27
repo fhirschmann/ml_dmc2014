@@ -1,0 +1,341 @@
+
+C5.0 [Release 2.07 GPL Edition]  	Wed May 14 13:26:26 2014
+-------------------------------
+
+Class specified by attribute `outcome'
+
+Read 38586 cases (451 attributes) from undefined.data
+
+Rules:
+
+Rule 1: (33/2, lift 1.9)
+	M3_group1_randomforest_confidence.txt <= 0.657
+	willOrderAgaintrue <= 0
+	orderInstantyes <= 0
+	orderItemNumSameItemsOrderedColor > 1
+	orderTimePrev > -117
+	customerFavoriteBaseColorwhite > 0
+	->  class 0  [0.914]
+
+Rule 2: (5153/550, lift 1.8)
+	M3_group1_randomforest_confidence.txt <= 0.254
+	M3_group3_gbm_confidence.txt <= 0.4487033
+	deliveryDateIsOutlieryes <= 0
+	->  class 0  [0.893]
+
+Rule 3: (53/6, lift 1.8)
+	M3_group1_randomforest_confidence.txt > 0.657
+	deliveryDateIsOutlieryes > 0
+	customerAgeAtOrderTimeDiscrete(45,50] <= 0
+	customerAccountAgeDiscrete(0.2,0.4] <= 0
+	->  class 0  [0.873]
+
+Rule 4: (241/30, lift 1.8)
+	M3_group3_gbm_confidence.txt <= 0.4487033
+	willOrderAgaintrue <= 0
+	orderItemNumSameItemsOrderedColor > 1
+	orderItemNumSameItemsOrderedSize > 2
+	customerFavoriteColorred <= 0
+	->  class 0  [0.872]
+
+Rule 5: (494/71, lift 1.8)
+	M3_group3_gbm_confidence.txt <= 0.4487033
+	willOrderAgaintrue > 0
+	deliveryDateIsOutlieryes <= 0
+	customerNumItemsOrdered > 14
+	customerItemIsFavoriteSizeyes > 0
+	->  class 0  [0.855]
+
+Rule 6: (464/84, lift 1.7)
+	deliveryDateIsOutlieryes > 0
+	->  class 0  [0.818]
+
+Rule 7: (7915/1492, lift 1.7)
+	M3_group1_randomforest_confidence.txt <= 0.365
+	M3_group3_gbm_confidence.txt <= 0.4487033
+	willOrderAgaintrue <= 0
+	->  class 0  [0.811]
+
+Rule 8: (132/26, lift 1.6)
+	M3_group1_randomforest_confidence.txt <= 0.657
+	itemSpecificCategoryunisexTops > 0
+	->  class 0  [0.799]
+
+Rule 9: (175/35, lift 1.6)
+	M3_group1_randomforest_confidence.txt <= 0.657
+	orderedEarliertrue <= 0
+	willOrderAgaintrue <= 0
+	itemSize36 <= 0
+	customerAgeAtOrderTimeDiscrete(40,45] <= 0
+	customerFavoriteColorocher > 0
+	customerFavoriteSizeXXL <= 0
+	->  class 0  [0.797]
+
+Rule 10: (625/134, lift 1.6)
+	M3_group1_randomforest_confidence.txt <= 0.657
+	willOrderAgaintrue <= 0
+	itemSize36 <= 0
+	orderItemNumSameItemsOrderedColor <= 1
+	orderNumDistinctItems <= 3
+	itemPriceDiscrete[10,20) > 0
+	customerFavoriteColorocher <= 0
+	->  class 0  [0.785]
+
+Rule 11: (5397/1391, lift 1.5)
+	M3_group3_gbm_confidence.txt <= 0.4487033
+	willOrderAgaintrue <= 0
+	orderNumItems <= 3
+	orderItemNumSameItemsOrderedColor <= 1
+	->  class 0  [0.742]
+
+Rule 12: (2073/536, lift 1.5)
+	M3_group3_MARS_confidence.txt <= 0.5905381
+	orderedEarliertrue > 0
+	->  class 0  [0.741]
+
+Rule 13: (12213/3365, lift 1.5)
+	M3_group1_randomforest_confidence.txt <= 0.643
+	M3_group3_gbm_confidence.txt <= 0.4487033
+	willOrderAgaintrue <= 0
+	orderItemNumSameItemsOrderedColor <= 1
+	->  class 0  [0.724]
+
+Rule 14: (233/64, lift 1.5)
+	M3_group1_confidence.txt <= 0.585
+	M3_group3_pda_confidence.txt <= 0.8235617
+	willOrderAgaintrue <= 0
+	itemSize36 <= 0
+	orderItemNumSameItemsOrderedColor <= 1
+	customerAccountAgeDiscrete(0.6,0.8] > 0
+	customerItemIsFavoriteColoryes > 0
+	->  class 0  [0.723]
+
+Rule 15: (2000/571, lift 1.5)
+	M3_group1_randomforest_confidence.txt <= 0.657
+	orderedEarliertrue > 0
+	willOrderAgaintrue <= 0
+	itemSize36 <= 0
+	itemSpecificCategoryunisexTops <= 0
+	orderSumPrices <= 787.85
+	orderItemNumSameItemsOrderedColor <= 1
+	->  class 0  [0.714]
+
+Rule 16: (10694/3290, lift 1.4)
+	M3_group1_confidence.txt <= 0.585
+	M3_group1_randomforest_confidence.txt <= 0.657
+	M3_group3_pda_confidence.txt <= 0.8235617
+	willOrderAgaintrue <= 0
+	itemSize36 <= 0
+	itemSizeS <= 0
+	orderItemNumSameItemsOrderedColor <= 1
+	customerAccountAgeDiscrete(0.6,0.8] <= 0
+	orderTimeNext <= 22
+	customerFavoriteColorocher <= 0
+	->  class 0  [0.692]
+
+Rule 17: (266/82, lift 1.4)
+	orderedEarliertrue > 0
+	orderItemNumSameItemsOrderedColor <= 1
+	customerNumItemsOrdered <= 5
+	->  class 0  [0.690]
+
+Rule 18: (15, lift 1.8)
+	M3_group3_gbm_confidence.txt <= 0.4487033
+	willOrderAgaintrue > 0
+	deliveryDateIsOutlieryes > 0
+	orderNumItems > 5
+	->  class 1  [0.941]
+
+Rule 19: (17/1, lift 1.7)
+	M3_group1_randomforest_confidence.txt > 0.365
+	orderItemNumSameItemsOrderedColor > 1
+	orderItemNumSameItemsOrderedSize > 2
+	customerFavoriteColorred > 0
+	->  class 1  [0.895]
+
+Rule 20: (876/145, lift 1.6)
+	M3_group4_confidence.txt > 0
+	willOrderAgaintrue > 0
+	deliveryDateIsOutlieryes <= 0
+	itemBaseColorgreen <= 0
+	customerAccountAgeDiscrete(0.2,0.4] <= 0
+	customerAccountAgeDiscrete(1.4,1.6] <= 0
+	customerAccountAgeDiscrete(1.6,1.8] <= 0
+	customerItemIsFavoriteSizeyes <= 0
+	->  class 1  [0.834]
+
+Rule 21: (859/148, lift 1.6)
+	M3_group4_confidence.txt > 0
+	willOrderAgaintrue > 0
+	deliveryDateIsOutlieryes <= 0
+	customerAccountAgeDiscrete(0.8,1] <= 0
+	customerNumItemsOrdered <= 14
+	->  class 1  [0.827]
+
+Rule 22: (1319/228, lift 1.6)
+	M3_group3_gbm_confidence.txt > 0.4487033
+	orderedEarliertrue <= 0
+	willOrderAgaintrue > 0
+	orderItemNumSameItemsOrderedSize <= 2
+	->  class 1  [0.827]
+
+Rule 23: (57/10, lift 1.6)
+	M3_group1_randomforest_confidence.txt > 0.643
+	M3_group3_gbm_confidence.txt <= 0.4487033
+	willOrderAgaintrue <= 0
+	deliveryDateIsOutlieryes <= 0
+	orderNumItems > 3
+	orderItemNumSameItemsOrderedColor <= 1
+	->  class 1  [0.814]
+
+Rule 24: (156/34, lift 1.5)
+	M3_group3_gbm_confidence.txt > 0.4487033
+	orderedEarliertrue > 0
+	deliveryDateIsOutlieryes <= 0
+	orderSumPrices > 787.85
+	orderItemNumSameItemsOrderedColor <= 1
+	customerAccountAgeDiscrete(0.2,0.4] <= 0
+	->  class 1  [0.778]
+
+Rule 25: (4186/934, lift 1.5)
+	M3_group3_gbm_confidence.txt > 0.4487033
+	salutationMr <= 0
+	deliveryDateIsOutlieryes <= 0
+	itemSpecificCategoryunisexTops <= 0
+	orderItemNumSameItemsOrderedColor > 1
+	customerFavoriteBaseColorwhite <= 0
+	->  class 1  [0.777]
+
+Rule 26: (9915/2308, lift 1.5)
+	M3_group1_confidence.txt > 0.561
+	M3_group1_randomforest_confidence.txt > 0.657
+	M3_group3_gbm_confidence.txt > 0.4487033
+	deliveryDateIsOutlieryes <= 0
+	customerNumItemsOrdered > 5
+	->  class 1  [0.767]
+
+Rule 27: (4615/1122, lift 1.5)
+	M3_group1_randomforest_confidence.txt > 0.365
+	deliveryDateIsOutlieryes <= 0
+	orderItemNumSameItemsOrderedColor > 1
+	orderItemNumSameItemsOrderedSize <= 2
+	->  class 1  [0.757]
+
+Rule 28: (133/32, lift 1.5)
+	M3_group1_randomforest_confidence.txt <= 0.657
+	M3_group3_gbm_confidence.txt > 0.4487033
+	itemSize36 > 0
+	->  class 1  [0.756]
+
+Rule 29: (4265/1111, lift 1.4)
+	M3_group1_randomforest_confidence.txt > 0.365
+	salutationMr <= 0
+	orderedEarliertrue <= 0
+	deliveryDateIsOutlieryes <= 0
+	itemPriceDiscrete[50,60) <= 0
+	customerNumItemsOrdered > 2
+	manufacturerReturnRate > 0.6081165
+	->  class 1  [0.739]
+
+Rule 30: (2314/620, lift 1.4)
+	M3_group4_confidence.txt > 0
+	willOrderAgaintrue > 0
+	deliveryDateIsOutlieryes <= 0
+	->  class 1  [0.732]
+
+Rule 31: (5007/1341, lift 1.4)
+	M3_group1_randomforest_confidence.txt > 0.365
+	salutationMr <= 0
+	orderedEarliertrue <= 0
+	deliveryDateIsOutlieryes <= 0
+	customerNumItemsOrdered > 2
+	manufacturerReturnRate > 0.6081165
+	->  class 1  [0.732]
+
+Rule 32: (2616/817, lift 1.3)
+	M3_group3_gbm_confidence.txt > 0.4487033
+	orderedEarliertrue <= 0
+	orderItemNumSameItemsOrderedSize <= 2
+	itemBaseColorblue <= 0
+	itemCollection3 <= 0
+	customerWestGermanno <= 0
+	customerItemIsFavoriteColoryes <= 0
+	customerFavoriteBaseColorblue <= 0
+	customerFavoriteSizeS <= 0
+	->  class 1  [0.688]
+
+Rule 33: (20992/6851, lift 1.3)
+	M3_group3_gbm_confidence.txt > 0.4487033
+	orderedEarliertrue <= 0
+	deliveryDateIsOutlieryes <= 0
+	itemSpecificCategoryunisexTops <= 0
+	->  class 1  [0.674]
+
+Default class: 0
+
+
+Evaluation on training data (38586 cases):
+
+	        Rules     
+	  ----------------
+	    No      Errors
+
+	    33 11173(29.0%)   <<
+
+
+	   (a)   (b)    <-classified as
+	  ----  ----
+	 12243  6585    (a): class 0
+	  4588 15170    (b): class 1
+
+
+	Attribute usage:
+
+	 94.71%	M3_group3_gbm_confidence.txt
+	 80.37%	M3_group1_randomforest_confidence.txt
+	 76.47%	deliveryDateIsOutlieryes
+	 63.47%	orderedEarliertrue
+	 61.00%	itemSpecificCategoryunisexTops
+	 54.68%	orderItemNumSameItemsOrderedColor
+	 54.01%	M3_group1_confidence.txt
+	 49.66%	willOrderAgaintrue
+	 35.88%	customerNumItemsOrdered
+	 32.31%	itemSize36
+	 28.79%	customerFavoriteColorocher
+	 28.32%	M3_group3_pda_confidence.txt
+	 28.32%	customerAccountAgeDiscrete(0.6,0.8]
+	 27.71%	itemSizeS
+	 27.71%	orderTimeNext
+	 21.85%	salutationMr
+	 21.24%	orderItemNumSameItemsOrderedSize
+	 14.17%	orderNumItems
+	 12.98%	manufacturerReturnRate
+	 11.05%	itemPriceDiscrete[50,60)
+	 10.93%	customerFavoriteBaseColorwhite
+	  7.38%	customerItemIsFavoriteColoryes
+	  6.78%	itemBaseColorblue
+	  6.78%	itemCollection3
+	  6.78%	customerWestGermanno
+	  6.78%	customerFavoriteBaseColorblue
+	  6.78%	customerFavoriteSizeS
+	  6.00%	M3_group4_confidence.txt
+	  5.59%	orderSumPrices
+	  5.37%	M3_group3_MARS_confidence.txt
+	  3.55%	customerItemIsFavoriteSizeyes
+	  2.78%	customerAccountAgeDiscrete(0.2,0.4]
+	  2.27%	itemBaseColorgreen
+	  2.27%	customerAccountAgeDiscrete(1.4,1.6]
+	  2.27%	customerAccountAgeDiscrete(1.6,1.8]
+	  2.23%	customerAccountAgeDiscrete(0.8,1]
+	  1.62%	orderNumDistinctItems
+	  1.62%	itemPriceDiscrete[10,20)
+	  0.67%	customerFavoriteColorred
+	  0.45%	customerAgeAtOrderTimeDiscrete(40,45]
+	  0.45%	customerFavoriteSizeXXL
+	  0.14%	customerAgeAtOrderTimeDiscrete(45,50]
+	  0.09%	orderInstantyes
+	  0.09%	orderTimePrev
+
+
+Time: 19.1 secs
+
