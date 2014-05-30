@@ -339,3 +339,41 @@ Evaluation on training data (38586 cases):
 
 Time: 19.1 secs
 
+
+
+
+
+all features:
+
+[1] "M3_group1_confidence.txt"              "M3_group1_randomforest_confidence.txt"
+ [3] "M3_group3_gbm_confidence.txt"          "M3_group3_MARS_confidence.txt"        
+ [5] "M3_group3_pda_confidence.txt"          "M3_group4_confidence.txt"             
+ [7] "returnShipment"                        "itemID"                               
+ [9] "manufacturerID"                        "customerID"                           
+[11] "salutation"                            "holiday"                              
+[13] "orderedEarlier"                        "willOrderAgain"                       
+[15] "dateOfBirthIsOutlier"                  "deliveryDateIsOutlier"                
+[17] "creationDateIsOutlier"                 "itemSize"                             
+[19] "itemCategory"                          "itemSpecificCategory"                 
+[21] "itemSizeGroup"                         "orderDeliveryTime"                    
+[23] "orderWeekday"                          "orderInstant"                         
+[25] "orderSumPrices"                        "orderNumItems"                        
+[27] "orderItemNumSameItemsOrdered"          "orderItemNumSameItemsOrderedGreater1" 
+[29] "orderItemNumSameItemsOrderedColor"     "orderItemNumSameItemsOrderedSize"     
+[31] "orderNumDistinctItems"                 "orderNumDistinctItemsGreater1"        
+[33] "orderSumPrice"                         "itemBaseColor"                        
+[35] "itemPriceDiscrete"                     "itemPriceLevels"                      
+[37] "itemPriceLevelsGreater1"               "itemPriceRange"                       
+[39] "itemDiscount"                          "itemCollection"                       
+[41] "customerAgeAtOrderTimeDiscrete"        "customerAccountAgeDiscrete"           
+[43] "customerNumItemsOrdered"               "customerNumOrders"                    
+[45] "customerWestGerman"                    "orderTimeNext"                        
+[47] "orderTimePrev"                         "customerFavoriteColor"                
+[49] "customerItemIsFavoriteColor"           "customerFavoriteBaseColor"            
+[51] "customerItemIsFavoriteBaseColor"       "customerFavoriteSize"                 
+[53] "customerItemIsFavoriteSize"            "customerDiscountTendency"             
+[55] "customerMoneySpent"                    "customerReturnRate"                   
+[57] "itemReturnRate"                        "itemCategoryReturnRate"               
+[59] "itemColorReturnRate"                   "itemItemColorReturnRate"              
+[61] "itemBaseColorReturnRate"               "manufacturerReturnRate"               
+[63] "known"        
