@@ -43,3 +43,21 @@ lbls2 <- as.Date(c("2012-04-01", "2012-05-01", "2012-06-01", "2012-07-01", "2012
 axis(1, lbls2, lbls)
 
 dev.off()
+png("doc/pres_c50.png", width=9, height=7, units="in", res=300, bg="transparent")
+
+
+c501 <- read.csv("doc/c50_M31.csv")
+c500 <- read.csv("doc/c50_M30.csv")
+
+c501 <- c501[c501$model == "tree" & c501$winnow == F, ]
+c500 <- c500[c500$model == "tree" & c500$winnow == F, ]
+
+plot(c500$trials, c500$accuracy, type="l", main="Parameter Tuning (C5.0)",
+     xlab="Boosting Iterations", ylab="Accuracy", col="blue", ylim=c(min(c500$accuracy), max(c501$accuracy)))
+lines(c501$trials, c501$accuracy, col="red")
+legend(75, 0.675, c("New Customer", "Known Customer"), lty=c(1, 1), col=c("blue", "red"))
+points(20, 0.6560425, col="blue")
+text(30, 0.660, "20 Iterations", col="blue")
+points(40, 0.6929686, col="red")
+text(50, 0.69, "40 Iterations", col="red")
+dev.off()
