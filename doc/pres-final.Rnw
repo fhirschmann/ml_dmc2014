@@ -47,6 +47,7 @@ opts_knit$set(root.dir="../")
 library(data.table)
 library(xtable)
 library(plyr)
+library(zoo)
 @
 
 \begin{document}
@@ -106,6 +107,25 @@ library(plyr)
     <<results="asis">>=
     print(xtable(data[1:10, c("itemID", "price", "priceDiscrete"),
                       with=F]))
+    @
+\end{frame}
+
+\begin{frame}[fragile]{Feature Engineering with R: Last Order Date}
+    \scriptsize
+    Group by \texttt{customerID} and shift \texttt{orderDate} in each group by 1:
+    <<echo=F>>=
+    data$orderDate <- as.Date(data$orderDate)
+    @
+    <<results="hide", echo=T, warning=F>>=
+    orderDates <- unique(data[, c("customerID", "orderDate"), with=F])
+    setkeyv(orderDates, c("customerID", "orderDate"))
+    orderDates[, orderDatePrev := as.Date(c(NA, head(orderDate, -1))),
+               by=c("customerID")]
+    @
+    <<results="asis", warning=F>>=
+    orderDates$orderDate <- as.character(orderDates$orderDate)
+    orderDates$orderDatePrev <- as.character(orderDates$orderDatePrev)
+    print(xtable(orderDates[1000:1010, ]), include.rownames=F)
     @
 \end{frame}
 
