@@ -1,0 +1,68 @@
+\documentclass[color=usenames,dvipsnames]{beamer}
+\usetheme{Amsterdam}
+
+\usepackage{amsmath}
+\usepackage[mathletters]{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage{tikz}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{pifont}
+\usepackage{bibentry}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{multicol}
+\usepackage{caption}
+\usepackage{wasysym}
+
+% frame numbers in short title
+\newcommand*{\oldshorttitle}{}
+\let\oldshorttitle\insertshorttitle
+\renewcommand*{\insertshorttitle}{
+  \oldshorttitle\hfill
+  \insertframenumber\,/\,\inserttotalframenumber
+}
+
+\newcommand{\neutranie}{\tikz[baseline=-0.75ex,black]{
+    \draw circle (2mm);
+\node[fill,circle,inner sep=0.5pt] (left eye) at (135:0.8mm) {};
+\node[fill,circle,inner sep=0.5pt] (right eye) at (45:0.8mm) {};
+\draw (-135:0.9mm) -- (-45:0.9mm);
+    }
+}
+\title{Data Mining Cup 2014}
+\subtitle{Group \texttt{R} Report}
+\author{Fabian Hirschmann, Simon Holthausen, Simon Holthausen, Christoph Schatton}
+\institute{Technische Universität Darmstadt}
+\date{June 17\textsuperscript{th}, 2014}
+\newcommand{\gcheck}{\textcolor{green}{\ding{52}}}
+\newcommand{\rballot}{\textcolor{red}{\ding{55}}}
+
+%\setbeamercovered{transparent}
+\setbeamertemplate{navigation symbols}{}
+
+<<setup, echo=F, message=F, include=FALSE>>=
+opts_chunk$set(echo=F, breaklines=T, fig.path="figure-final/")
+opts_knit$set(root.dir="../")
+@
+
+\begin{document}
+\begin{frame}{}
+  \titlepage
+\end{frame}
+
+%\begin{frame}
+%\frametitle{Table of Contents}
+%\tableofcontents
+%\end{frame}
+
+\section{Introduction}
+
+\section{R}
+
+\section{Questions}
+\begin{frame}{Questions}
+    \Large Questions? Anyone?
+\end{frame}
+
+\end{document}
