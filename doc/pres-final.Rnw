@@ -110,7 +110,7 @@ library(zoo)
     @
 \end{frame}
 
-\begin{frame}[fragile]{Feature Engineering with R: Last Order Date}
+\begin{frame}[fragile]{Feature Engineering with R: Previous Order Date}
     \scriptsize
     Group by \texttt{customerID} and shift \texttt{orderDate} in each group by 1:
     <<echo=F>>=
