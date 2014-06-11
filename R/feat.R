@@ -236,7 +236,8 @@ add.features.all <- function(to, from) {
     setkeyv(orderDates, c("customerID", "orderDate"))
     orderDates[, index := 1:.N, by=c("customerID")]
     orderDates[, orderDateNext := as.Date(orderDate[index + 1]), by=c("customerID")]
-    orderDates[, orderDatePrev := as.Date(orderDate[index - 1]), by=c("customerID")]
+    orderDates[, orderDatePrev := c(NA, head(orderDate, -1)), by=c("customerID")]
+    #orderDates[, orderDatePrev := as.Date(orderDate[index - 1]), by=c("customerID")]
     orderDates$orderTimeNext <- as.integer(as.Date(orderDates$orderDateNext) - as.Date(orderDates$orderDate))
     orderDates$orderTimePrev <- as.integer(as.Date(orderDates$orderDatePrev) - as.Date(orderDates$orderDate))
     dt.to <- join(dt.to, orderDates[, c("orderTimeNext", "orderDate", "orderTimePrev", "customerID"), with=F],
