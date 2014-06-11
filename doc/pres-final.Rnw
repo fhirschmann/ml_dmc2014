@@ -44,6 +44,9 @@
 <<setup, echo=F, message=F, include=FALSE>>=
 opts_chunk$set(echo=F, breaklines=T, fig.path="figure-final/")
 opts_knit$set(root.dir="../")
+library(data.table)
+library(xtable)
+library(plyr)
 @
 
 \begin{document}
@@ -59,6 +62,60 @@ opts_knit$set(root.dir="../")
 \section{Introduction}
 
 \section{R}
+\begin{frame}{The R Language}
+    \begin{itemize}
+        \item We are no tool junkies!
+        \item R allows rapid feature engineering and testing
+        \item Wide variety of ML algorithms available
+        \item New packages often featured in the Journal of Statistical Software (peer reviewed; open access)
+        \item Runs on Hadoop
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Feature Engineering with R}
+    \scriptsize
+    Read in data:
+    <<echo=T>>=
+    data <- data.table(read.table("task/orders_train.txt", sep=";", header=T))
+    @
+    Make a \LaTeX\, table:
+    <<results="asis", echo=T, tidy=F>>=
+    print(xtable(data[1:10, c("itemID", "customerID", "price"), with=F]))
+    @
+\end{frame}
+
+\begin{frame}[fragile]{Feature Engineering with R: Sum of Prices}
+    \scriptsize
+    Group by \texttt{customerID} and \texttt{orderDate} and apply \texttt{sum}
+    to each group:
+    <<results="hide", echo=T>>=
+    data[, orderSumPrices := sum(price), by=c("customerID", "orderDate")]
+    @
+    <<results="asis">>=
+    print(xtable(data[1:10, c("orderDate", "customerID", "price", "orderSumPrices"),
+                      with=F]))
+    @
+\end{frame}
+
+\begin{frame}[fragile]{Feature Engineering with R: Discretize Price}
+    \scriptsize
+    Assign each price to an interval:
+    <<results="hide", echo=T>>=
+    data$priceDiscrete <- cut(data$price, c(0, 1:20 * 10, Inf), left=T, right=F)
+    @
+    <<results="asis">>=
+    print(xtable(data[1:10, c("itemID", "price", "priceDiscrete"),
+                      with=F]))
+    @
+\end{frame}
+
+\section{Feedback}
+\begin{frame}{Feedback}
+    \begin{itemize}
+        \item We had lots of fun, thanks!
+        \item Define test set sooner
+    \end{itemize}
+\end{frame}
 
 \section{Questions}
 \begin{frame}{Questions}
