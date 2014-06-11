@@ -125,7 +125,7 @@ library(zoo)
     <<results="asis", warning=F>>=
     orderDates$orderDate <- as.character(orderDates$orderDate)
     orderDates$orderDatePrev <- as.character(orderDates$orderDatePrev)
-    print(xtable(orderDates[1000:1010, ]), include.rownames=F)
+    print(xtable(orderDates[1:10 ]), include.rownames=F)
     @
 \end{frame}
 
