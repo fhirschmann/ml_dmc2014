@@ -141,7 +141,9 @@ library(zoo)
 
 \section{Questions}
 \begin{frame}{Questions}
+  \begin{center}
     \Large Questions? Anyone?
+  \end{center}
 \end{frame}
 
 \end{document}
