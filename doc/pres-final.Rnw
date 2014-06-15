@@ -14,6 +14,7 @@
 \usepackage{multicol}
 \usepackage{caption}
 \usepackage{wasysym}
+\usepackage{ulem}
 
 % frame numbers in short title
 \newcommand*{\oldshorttitle}{}
@@ -61,6 +62,51 @@ library(zoo)
 %\end{frame}
 
 \section{Introduction}
+
+\section{Analysis}
+
+\section{Feature Selection}
+
+\newcommand{\inpractice}[1]{\only<2>{\textcolor{red}{#1}}}
+\begin{frame}{Feature Selection in \only<1>{Theory} \only<2>{\sout{Theory} \textcolor{red}{Practice}}}
+  \begin{itemize}
+  \item Requirements
+    \begin{itemize}
+    \item fast \inpractice{over night and hope it finishes in time ...}
+    \item representative \inpractice{we'll just draw a sample and hope for the best ...}
+    \end{itemize}
+  \item Tools
+    \begin{itemize}
+    \item redundancies, statistical measures, \( \dots \) \inpractice{different learners learn different}
+    \item variable importance, e.g. C5.0 \inpractice{nice but ...}
+    \item run \& compare actual scores \inpractice{yes, we need real differences!}
+    \end{itemize}
+  \item Time Line
+    \begin{enumerate}
+    \item Feature Engineering \inpractice{1, 4, 6}
+    \item Feature Selection \inpractice{3, 5}
+    \item Algorithm Tuning \inpractice{2, 5, 7}
+    \end{enumerate}
+  \item run each feature combination \inpractice{greedy approach and hope for the best}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Feature Selection Lessons Learned}
+  \begin{itemize}
+  \item test with final parameters
+    \begin{itemize}
+    \item example GBM: parameter interaction depths influences the selection
+      \begin{itemize}
+      \item but also needs a higher tree count \( \rightarrow \) slow \& memory intensive
+      \end{itemize}
+    \end{itemize}
+  \item it really needs to be fast
+    \begin{itemize}
+    \item GBM took \(> 20 \) h per data set
+    \end{itemize}
+  \item incremental testing new features is awesome (and saves time)
+  \end{itemize}
+\end{frame}
 
 \section{R}
 \begin{frame}{The R Language}
