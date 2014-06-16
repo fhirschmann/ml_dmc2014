@@ -89,7 +89,7 @@ library(zoo)
 	\end{table}
 	Missing values in \%. Attributes with no missing values are not shown.
 	
-	\begin{block} {solution}
+	\begin{block} {setting}
 		\renewcommand{\arraystretch}{1.5}
 		\begin{tabular}{l l c l}
 			\footnotesize
@@ -716,6 +716,8 @@ library(zoo)
   \item C5.0 profits heavily from feature selection, SGB not so much
   \end{itemize}
 \end{frame}
+
+\section{R}
 
 \begin{frame}{The R Language}
     \begin{itemize}
