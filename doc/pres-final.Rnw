@@ -358,7 +358,7 @@ customerID & orderDate & orderDatePrev & orderTimePrev \\
 \begin{frame}{Feature Engineering: Feature Constuction}
 	\begin{tabular}{c l}
 		Type\\
-		{\usebeamercolor[fg]{structure} \textbf{I}} & features computed over the entire data set (unsupervised)\\
+		{\usebeamercolor[fg]{structure} \textbf{I}} & features computed over the entire data set\\
 			& \begin{tikzpicture}[scale=0.4]
 					\fill[red,opacity=0.7] (0,0) ellipse (1 and 0.55);
 					\draw [->](1.25,0) -- (2.25,0);
@@ -369,7 +369,7 @@ customerID & orderDate & orderDatePrev & orderTimePrev \\
 					\fill[blue,opacity=0.7] (9.5,0) ellipse (0.5cm and 0.55cm);
 				\end{tikzpicture}\\[0.5em]
 		{\usebeamercolor[fg]{structure} \textbf{II}} & features computed based on training set and added \\
-			& to another set (supervised)\\
+			& to another set\\
 			& \begin{tikzpicture}[scale=0.4]
 					\fill[red,opacity=0.7] (0,0) ellipse (1 and 0.55);
 					\draw [->](1.25,0) -- (2.25,0);
@@ -380,7 +380,7 @@ customerID & orderDate & orderDatePrev & orderTimePrev \\
 					\fill[blue,opacity=0.7] (10,0) ellipse (0.5cm and 0.55cm);
 				\end{tikzpicture}\\[0.5em]
     {\usebeamercolor[fg]{structure} \textbf{III}} & features computed based on ALL available data and added\\
-			& to another set (unsupervised)\\[0.5em]
+			& to another set\\[0.5em]
 			& \begin{tikzpicture}[scale=0.4]
 					\fill[red,opacity=0.7] (0,0) ellipse (1 and 0.55);
 					\draw[font=\sf] (1.5,0) node {+};
@@ -550,7 +550,8 @@ customerID & orderDate & orderDatePrev & orderTimePrev \\
 		\end{kframe}
 		\end{knitrout}
 		Additional: unknownItem = \{"yes", "no"\}
-    
+	\end{frame}		
+  \begin{frame}{Feature Engineering: Feature Constuction Type II (Cont.)}
 		\begin{table}[ht]
 		\centering
 		\footnotesize
@@ -560,8 +561,8 @@ customerID & orderDate & orderDatePrev & orderTimePrev \\
 			\hline
 			1 & 2657 & 41 & no & 0.6030928\\
 			2 & 2759 & 40 & no & 0.4604167\\
-			2 & 2657 & 40 & no & 0.6064909\\
-			3 & 2387 & 5+ & yes & 0.5200000\\
+			3 & 2657 & 40 & no & 0.6064909\\
+			4 & 2387 & 5+ & yes & 0.5200000\\
 			5 & 2637 & S & no & 0.5098039\\
 			 \hline
 		\end{tabular}
@@ -695,9 +696,9 @@ customerID & orderDate & orderDatePrev & orderTimePrev \\
 		\item \textbf{Dimension tables}:\\
 			e.g. Date; Year $\leftarrow$ week of year $\leftarrow$ day 
 		\item \textbf{Case Studies}:\\
-			e.g. customer is having an order for one$\mid$some item(s) having same$\mid$different sizes with same$\mid$different color(s) 
+			e.g. customer is having an order for one|some item(s) having same|different sizes with same|different color(s) 
 		\item \textbf{What-if scenarios}:\\
-			e.g. If item doesn't$\mid$does fit but customer likes$\mid$dislikes the design, what does he do?
+			e.g. If item doesn't|does fit but customer likes|dislikes the design, what does he do?
 		\item \textbf{Brainstorming}:\\
 			screening every single attribute and bundles
 	\end{itemize}
@@ -879,10 +880,6 @@ customerID & orderDate & orderDatePrev & orderTimePrev \\
   \item incremental testing new features is awesome (and saves time)
   \item C5.0 profits heavily from feature selection, SGB not so much
   \end{itemize}
-\end{frame}
-
-\begin{frame}{Data Sampling}
-    something about our sampling work
 \end{frame}
 
 \section{Feedback}
