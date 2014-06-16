@@ -61,12 +61,22 @@ library(zoo)
 %\tableofcontents
 %\end{frame}
 
-\section{Introduction}
+\section{Intro}
 
-\section{Data Analysis}
-\begin{frame}{Data Analysis}
-    \scriptsize
-    main analysis results
+
+\begin{frame}
+\frametitle{Timeline}
+    \includegraphics[scale=0.45]{timeline1.png}
+\end{frame}
+
+\begin{frame}
+\frametitle{Timeline}
+    \includegraphics[scale=0.45]{timeline2.png}
+\end{frame}
+
+\begin{frame}
+\frametitle{Timeline}
+	\includegraphics[scale=0.45]{timeline3.png}
 \end{frame}
 
 \section{Pre-Processing}
@@ -474,26 +484,6 @@ library(zoo)
 		\end{flushright}
 		
 	{\usebeamercolor[fg]{structure} \textbf{Feature}}: Days Customer Setting Next/Prev Order (in days)
-    \begin{knitrout}
-		\scriptsize
-		\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-		\begin{alltt}
-		\hlstd{orderTimeNext} \hlkwb{<-} \hlkwd{as.integer}(\hlkwd{as.Date}(orderDateNext) - \hlkwd{as.Date}(orderDate))
-		\end{alltt}
-		\end{kframe}
-		\end{knitrout}
-    \begin{knitrout}
-		\scriptsize
-		\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-		\begin{alltt}
-		\hlstd{orderTimePrev} \hlkwb{<-} \hlkwd{as.integer}(\hlkwd{as.Date}(orderDatePrev) - \hlkwd{as.Date}(orderDate))
-		\end{alltt}
-		\end{kframe}
-		\end{knitrout}
-		\begin{flushright}
-			\scriptsize
-			$\checkmark$ {\usebeamercolor[fg]{structure} \textbf{FEATURE}}: orderTimeNext, orderTimePrev
-		\end{flushright}
 \end{frame}
 
 
@@ -717,6 +707,67 @@ library(zoo)
   \end{itemize}
 \end{frame}
 
+\section{Tuning}
+
+\begin{frame}
+\frametitle{Tuning - Parameters}
+	\begin{itemize}
+	\item C5.0
+	\begin{itemize}
+		\item model: rules / tree
+		\item winnow: true / false
+		\item trials: int
+	\end{itemize}
+	\item Stochastic Gradient Boosting
+	\begin{itemize}
+		\item shrinkage: double
+		\item trees: int
+		\item interactiondepth: int
+	\end{itemize}
+	\item For both: more parametertuning possible
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Tuning - Theory}
+	\begin{itemize}
+	\item C5.0
+	\begin{itemize}
+		\item more trials $\rightarrow$ better
+		\item winnowing $\rightarrow$ depends
+		\item rules $\rightarrow$ takes more time (conversion after learning step)
+	\end{itemize}
+	\item Stochastic Gradient Boosting
+	\begin{itemize}
+		\item shrinkage $\rightarrow$ less = better
+		\item problem: less shrinkage needs more trees to be good
+		\item trees $\rightarrow$ more = better
+		\item interactiondepth $\rightarrow$ depends
+	\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Tuning - Practice in DMC}
+	\begin{itemize}
+	\item C5.0
+	\begin{itemize}
+		\item more trials $\rightarrow$ better
+		\item computing time increases linearly, not worth it beyond 100 trials
+		\item less than 100 trials $\rightarrow$ rules better, else tree
+		\item overall accuracy increase: about 0,5\%
+	\end{itemize}
+	\item Stochastic Gradient Boosting
+	\begin{itemize}
+		\item shrinkage $\rightarrow$ 0.001 minimum, more not computable in time
+		\item trees $\rightarrow$ around 300
+		\item interactiondepth $\rightarrow$ 5-7
+		\item overall accuracy increase: about 1\%
+	\end{itemize}
+	\item For both: more parametertuning possible
+	\end{itemize}
+\end{frame}
+
 \section{R}
 
 \begin{frame}{The R Language}
@@ -791,7 +842,13 @@ library(zoo)
 \begin{frame}{Feedback}
     \begin{itemize}
         \item We had lots of fun, thanks!
-        \item Define test set sooner
+        \item Define final test set sooner
+        \begin{itemize}
+            \item Multitude of test sets (T, X) required re-training and re-selection
+            of features
+            \item Led to less time for actual tuning
+        \end{itemize}
+        \item Final test set questionable (holiday impact, time range)
     \end{itemize}
 \end{frame}
 
