@@ -74,6 +74,160 @@ library(zoo)
     \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]{Feature Engineering with R}
+    \scriptsize
+    Read in data:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{data} \hlkwb{<-} \hlkwd{data.table}\hlstd{(}\hlkwd{read.table}\hlstd{(}\hlstr{"task/orders_train.txt"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{";"}\hlstd{,} \hlkwc{header} \hlstd{= T))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+    Make a \LaTeX\, table:
+\begin{kframe}
+\begin{alltt}
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(data[}\hlnum{1}\hlopt{:}\hlnum{10}\hlstd{,} \hlkwd{c}\hlstd{(}\hlstr{"itemID"}\hlstd{,} \hlstr{"customerID"}\hlstd{,} \hlstr{"price"}\hlstd{),} \hlkwc{with}\hlstd{=F]))}
+\end{alltt}
+\end{kframe}% latex table generated in R 3.0.3 by xtable 1.7-3 package
+% Sun Jun 15 14:17:50 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+  \hline
+ & itemID & customerID & price \\ 
+  \hline
+1 & 186 & 794 & 69.90 \\ 
+  2 &  71 & 794 & 69.95 \\ 
+  3 &  71 & 794 & 69.95 \\ 
+  4 &  22 & 808 & 39.90 \\ 
+  5 & 151 & 825 & 29.90 \\ 
+  6 & 598 & 825 & 89.90 \\ 
+  7 &  15 & 825 & 129.90 \\ 
+  8 &  32 & 850 & 21.90 \\ 
+  9 &  32 & 850 & 21.90 \\ 
+  10 &  57 & 850 & 39.90 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+\end{frame}
+
+\begin{frame}[fragile]{Feature Engineering with R: Sum of Prices}
+    \scriptsize
+    Group by \texttt{customerID} and \texttt{orderDate} and apply \texttt{sum}
+    to each group:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{data[,} \hlkwd{`:=`}\hlstd{(orderSumPrices,} \hlkwd{sum}\hlstd{(price)),} \hlkwc{by} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"customerID"}\hlstd{,} \hlstr{"orderDate"}\hlstd{)]}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+% latex table generated in R 3.0.3 by xtable 1.7-3 package
+% Sun Jun 15 14:17:50 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlrrr}
+  \hline
+ & orderDate & customerID & price & orderSumPrices \\ 
+  \hline
+1 & 2012-04-01 & 794 & 69.90 & 209.80 \\ 
+  2 & 2012-04-01 & 794 & 69.95 & 209.80 \\ 
+  3 & 2012-04-01 & 794 & 69.95 & 209.80 \\ 
+  4 & 2012-04-02 & 808 & 39.90 & 39.90 \\ 
+  5 & 2012-04-02 & 825 & 29.90 & 249.70 \\ 
+  6 & 2012-04-02 & 825 & 89.90 & 249.70 \\ 
+  7 & 2012-04-02 & 825 & 129.90 & 249.70 \\ 
+  8 & 2012-04-02 & 850 & 21.90 & 533.30 \\ 
+  9 & 2012-04-02 & 850 & 21.90 & 533.30 \\ 
+  10 & 2012-04-02 & 850 & 39.90 & 533.30 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+\end{frame}
+
+\begin{frame}[fragile]{Feature Engineering with R: Discretize Price}
+    \scriptsize
+    Assign each price to an interval:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{data}\hlopt{$}\hlstd{priceDiscrete} \hlkwb{<-} \hlkwd{cut}\hlstd{(data}\hlopt{$}\hlstd{price,} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{20} \hlopt{*} \hlnum{10}\hlstd{,} \hlnum{Inf}\hlstd{),} \hlkwc{left} \hlstd{= T,} \hlkwc{right} \hlstd{= F)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+% latex table generated in R 3.0.3 by xtable 1.7-3 package
+% Sun Jun 15 14:17:50 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrl}
+  \hline
+ & itemID & price & priceDiscrete \\ 
+  \hline
+1 & 186 & 69.90 & [60,70) \\ 
+  2 &  71 & 69.95 & [60,70) \\ 
+  3 &  71 & 69.95 & [60,70) \\ 
+  4 &  22 & 39.90 & [30,40) \\ 
+  5 & 151 & 29.90 & [20,30) \\ 
+  6 & 598 & 89.90 & [80,90) \\ 
+  7 &  15 & 129.90 & [120,130) \\ 
+  8 &  32 & 21.90 & [20,30) \\ 
+  9 &  32 & 21.90 & [20,30) \\ 
+  10 &  57 & 39.90 & [30,40) \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+\end{frame}
+
+\begin{frame}[fragile]{Feature Engineering with R: Previous Order Date}
+    \scriptsize
+    Group by \texttt{customerID} and shift \texttt{orderDate} in each group by 1:
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{orderDates} \hlkwb{<-} \hlkwd{unique}\hlstd{(data[,} \hlkwd{c}\hlstd{(}\hlstr{"customerID"}\hlstd{,} \hlstr{"orderDate"}\hlstd{),} \hlkwc{with} \hlstd{= F])}
+\hlkwd{setkeyv}\hlstd{(orderDates,} \hlkwd{c}\hlstd{(}\hlstr{"customerID"}\hlstd{,} \hlstr{"orderDate"}\hlstd{))}
+\hlstd{orderDates[,} \hlkwd{`:=`}\hlstd{(orderDatePrev,} \hlkwd{as.Date}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{NA}\hlstd{,} \hlkwd{head}\hlstd{(orderDate,} \hlopt{-}\hlnum{1}\hlstd{)))),} \hlkwc{by} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"customerID"}\hlstd{)]}
+\hlstd{orderDates}\hlopt{$}\hlstd{orderTimePrev} \hlkwb{<-} \hlstd{orderDates}\hlopt{$}\hlstd{orderDatePrev} \hlopt{-} \hlstd{orderDates}\hlopt{$}\hlstd{orderDate}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+% latex table generated in R 3.0.3 by xtable 1.7-3 package
+% Sun Jun 15 14:18:11 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{rllr}
+  \hline
+customerID & orderDate & orderDatePrev & orderTimePrev \\ 
+  \hline
+  6 & 2012-04-19 &  &  \\ 
+    6 & 2012-04-25 & 2012-04-19 &  -6 \\ 
+    6 & 2012-09-23 & 2012-04-25 & -151 \\ 
+    6 & 2012-10-06 & 2012-09-23 & -13 \\ 
+    6 & 2013-01-11 & 2012-10-06 & -97 \\ 
+    9 & 2012-08-01 &  &  \\ 
+    9 & 2012-08-10 & 2012-08-01 &  -9 \\ 
+    9 & 2012-12-31 & 2012-08-10 & -143 \\ 
+    9 & 2013-01-09 & 2012-12-31 &  -9 \\ 
+    9 & 2013-01-18 & 2013-01-09 &  -9 \\ 
+   \hline
+\end{tabular}
+\end{table}
+\end{frame}
+
+
 \section{Data Analysis}
 \begin{frame}{Data Analysis}
     \scriptsize
