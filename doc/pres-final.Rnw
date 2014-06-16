@@ -63,7 +63,625 @@ library(zoo)
 
 \section{Introduction}
 
-\section{Analysis}
+\section{R}
+\begin{frame}{The R Language}
+    \begin{itemize}
+        \item We are no tool junkies!
+        \item R allows rapid feature engineering and testing
+        \item Wide variety of ML algorithms available
+        \item New packages often featured in the Journal of Statistical Software (peer reviewed; open access)
+        \item Runs on Hadoop
+    \end{itemize}
+\end{frame}
+
+\section{Data Analysis}
+\begin{frame}{Data Analysis}
+    \scriptsize
+    main analysis results
+\end{frame}
+
+\section{Pre-Processing}
+\begin{frame}{Data Cleaning}
+    Missing values
+	
+	\scriptsize
+	\begin{table}[ht]
+	\centering
+	\footnotesize
+    \begin{tabular}{l r r}
+        \hline
+        Attribute & Train & Test \\
+        \hline
+        color & 0.0297 & 0.0000 \\
+        dateOfBirth & 10.1620 & 10.3220 \\
+        deliveryDate & 8.1936 & 8.5230 \\
+        \hline
+    \end{tabular}
+	\end{table}
+	Missing values in \%. Attributes with no missing values are not shown.
+	
+	\begin{block} {solution}
+		\renewcommand{\arraystretch}{1.5}
+		\begin{tabular}{l l c l}
+			\footnotesize
+			\texttt{color} & NA & $\rightarrow$ & "MISSING"\\
+      \texttt{dateOfBirth}		&	\{"1949-11-19"\} & $\rightarrow$ & NA\\
+															&	\{(year(orderDate) - year(dateOfBirth)) $>$ 85\} & $\rightarrow$ & NA\\
+															& \{(year(orderDate) - year(dateOfBirth)) $<$ 19\} & $\rightarrow$ & NA\\
+			\texttt{deliveryDate} & deliveryDate - orderDate $<$ 0 & $\rightarrow$ & NA\\ 
+    \end{tabular}
+	\end{block}
+
+	\begin{flushright}
+		$\checkmark$ {\usebeamercolor[fg]{structure} \textbf{FEATURE}}: dateOfBirthIsOutlier = \{"yes", "no"\}
+		
+		$\checkmark$ {\usebeamercolor[fg]{structure} \textbf{FEATURE}}: deliveryDateIsOutlier = \{"yes", "no"\}
+	\end{flushright}
+\end{frame}
+
+\begin{frame}{Feature Engineering}
+    \begin{itemize}
+        \item Feature Transformation
+					\begin{itemize}
+						\item numerization
+						\item standardization
+						\item discretization
+					\end{itemize}
+        \item Feature Constuction
+            \begin{itemize}
+                \item supervised 
+                \item unsupervised
+								\item data: whole set vs subset
+            \end{itemize}
+        \item Feature Subset Selection
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Feature Engineering: Feature Transformation}
+	\begin{block}{Basis} Convert given attributes to classes: "Date", "integer", "factor";\\ e.g. "size"="factor"
+	\end{block}
+	
+	\begin{itemize}
+		\item \textbf{numerization}
+		\item \textbf{standardization}
+		
+		e.g. map each color to its basic color in a function: unsupervised
+		\begin{table}[ht]
+		\centering
+		\footnotesize
+		\begin{tabular}{rrl}
+			\hline
+			& itemColor & itemBaseColor\\
+			\hline
+			1 & denim & blue\\
+			2 & ocher & brown\\
+			3 & curry & yellow\\
+			4 & green & green\\
+			5 & black & black\\
+			\hline
+		\end{tabular}
+		\end{table}
+		
+		\# colors = 88 $\rightarrow$ \# basic colors = 10
+		\scriptsize
+		\begin{flushright}
+			$\checkmark$ {\usebeamercolor[fg]{structure} \textbf{FEATURE}}: itemBaseColor
+		\end{flushright}
+	\end{itemize}
+\end{frame}
+		
+\begin{frame}{Feature Engineering: Feature Transformation (Cont.)}
+	\begin{itemize}
+		\item \textbf{discretization}
+		
+		e.g. assign each price to an interval: unsupervised and equal-width
+
+		\begin{table}[ht]
+		\centering
+		\footnotesize
+		\begin{tabular}{rrrl}
+			\hline
+			& itemID & price & itemPriceDiscrete \\ 
+			\hline
+			1 & 186 & 69.90 & [60,70) \\ 
+			2 &  71 & 69.95 & [60,70) \\ 
+			3 &  71 & 69.95 & [60,70) \\ 
+			4 &  22 & 39.90 & [30,40) \\ 
+			5 &  15 & 129.90 & [120,130) \\ 
+			 \hline
+		\end{tabular}
+		\end{table}
+		\# prices = 383 $\rightarrow$ \# discrete prices = 21
+		\scriptsize
+		\begin{flushright}
+			$\checkmark$ {\usebeamercolor[fg]{structure} \textbf{FEATURE}}: itemPriceDiscrete
+		\end{flushright}
+	\end{itemize}
+	\begin{flushright}... many other constucted features discretized
+	\end{flushright}
+\end{frame}
+
+\begin{frame}{Feature Engineering: Feature Constuction}
+	\begin{tabular}{c l}
+		Type\\
+		{\usebeamercolor[fg]{structure} \textbf{I}} & features computed over the entire data set (unsupervised)\\
+			& \begin{tikzpicture}[scale=0.4]
+					\fill[red,opacity=0.7] (0,0) ellipse (1 and 0.55);
+					\draw [->](1.25,0) -- (2.25,0);
+					\fill[red,opacity=0.7] (3.5,0) ellipse (1 and 0.55);
+					
+					\fill[blue,opacity=0.7] (7,0) ellipse (0.5cm and 0.55cm);
+					\draw [->](7.75,0) -- (8.75,0);
+					\fill[blue,opacity=0.7] (9.5,0) ellipse (0.5cm and 0.55cm);
+				\end{tikzpicture}\\[0.5em]
+		{\usebeamercolor[fg]{structure} \textbf{II}} & features computed based on training set and added \\
+			& to another set (supervised)\\
+			& \begin{tikzpicture}[scale=0.4]
+					\fill[red,opacity=0.7] (0,0) ellipse (1 and 0.55);
+					\draw [->](1.25,0) -- (2.25,0);
+					\fill[red,opacity=0.7] (3.5,0) ellipse (1 and 0.55);
+					
+					\fill[red,opacity=0.7] (7,0) ellipse (1cm and 0.55cm);
+					\draw [->](8.25,0) -- (9.25,0);
+					\fill[blue,opacity=0.7] (10,0) ellipse (0.5cm and 0.55cm);
+				\end{tikzpicture}\\[0.5em]
+    {\usebeamercolor[fg]{structure} \textbf{III}} & features computed based on ALL available data and added\\
+			& to another set (unsupervised)\\[0.5em]
+			& \begin{tikzpicture}[scale=0.4]
+					\fill[red,opacity=0.7] (0,0) ellipse (1 and 0.55);
+					\draw[font=\sf] (1.5,0) node {+};
+					\fill[blue,opacity=0.7] (2.5,0) ellipse (0.5cm and 0.55cm);
+					\draw [->](3.25,0) -- (4.25,0);
+					\fill[red,opacity=0.7] (5.5,0) ellipse (1 and 0.55);
+					
+					\fill[red,opacity=0.7] (11,0) ellipse (1 and 0.55);
+					\draw[font=\sf] (12.5,0) node {+};
+					\fill[blue,opacity=0.7] (13.5,0) ellipse (0.5cm and 0.55cm);
+					\draw [->](14.25,0) -- (15.25,0);
+					\fill[blue,opacity=0.7] (16,0) ellipse (0.5cm and 0.55cm);
+				\end{tikzpicture}\\[0.5em]
+	\end{tabular}
+	\vspace{1.5em}
+	\begin{flushright}
+		\begin{tikzpicture}[scale=0.7]
+		\fill[red,opacity=0.7] (0,0) ellipse (1cm and 0.55cm);
+		\fill[blue,opacity=0.7] (2,0) ellipse (0.5cm and 0.55cm);
+		\draw[font=\sf] (0,0) node {train};
+		\draw[font=\sf] (2,0) node {test};
+		\draw[font=\sf] (-2,0) node {data:};
+		%\draw [->,very thick](4.5,1.1) -- (5.8,2.5);
+	\end{tikzpicture}
+	\end{flushright}
+\end{frame}
+
+
+\begin{frame}{Feature Engineering: Feature Constuction Type I}
+		
+		{\usebeamercolor[fg]{structure} \textbf{Feature}}: Numer of Items in One Order
+		
+		\begin{knitrout}
+		\scriptsize
+		\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+		\begin{alltt}
+		dt[, orderNumItems \hlkwd{:=} \hlkwd{length}(orderItemID), \hlkwc{by}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"customerID"}, \hlstr{"orderDate"}\hlstd{),}]
+		\end{alltt}
+		\end{kframe}
+		\end{knitrout}
+		\begin{table}[ht]
+		\centering
+		\footnotesize
+		\begin{tabular}{rrrrl}
+			\hline
+			orderItemID & orderDate & itemID & customerID & orderNumItems \\ 
+			\hline
+			1 & 2012-04-01 & 186 & 794 & 3 \\
+			2 & 2012-04-01 & 71 & 794 & 3 \\
+			3 & 2012-04-01 & 71 & 794 & 3 \\
+			4 & 2012-04-02 & 22 & 808 & 1 \\
+			5 & 2012-04-02 & 38 & 877 & 2 \\
+			6 & 2012-04-02 & 38 &	877 & 2 \\		
+			 \hline
+		\end{tabular}
+		\end{table}
+		\begin{flushright}
+			\scriptsize
+			$\checkmark$ {\usebeamercolor[fg]{structure} \textbf{FEATURE}}: orderNumItems
+		\end{flushright}
+\end{frame}
+
+\begin{frame}[fragile]{Feature Engineering: Feature Constuction Type I (Cont.)}
+		
+		{\usebeamercolor[fg]{structure} \textbf{Feature}}: Mapping of Size Chart Information to Items
+		\small
+		\begin{block}{Basis} analysis of distribution of \texttt{manufacturerID}, \texttt{itemID}, \texttt{itemSize}, \texttt{salutation}
+		\end{block}
+		
+		\textbf{Bottom-up Discretization}: hierarchical labeling of itemIDs through majority votes using structural context
+		\begin{flushright}
+			e.g. women's shoe sizes: continuous, 36-42 and peak on size 38 or 39 
+		\end{flushright}
+		\begin{table}[ht]
+		\centering
+		\tiny %\footnotesize
+		\begin{tabular}{rrrlll}
+			\hline
+			& size range & annotation & itemCategory & itemSpecificCategory & itemSizeGroup \\ 
+			\hline
+			1 & [36, 42] & continuous, peak: 38, 39 & shoes & womensShoes & FR \\
+			2 & [41, 48] & continuous, peak: 43, 44 & shoes & mensShoes & FR \\
+			3 & {4+, 5+} & check single values & shoes & womensShoes & UK \\
+			4 & {140, 154, 164} & check single values & kids & kidsClothes & normalSizes\\
+			5 & & four-digit number & pants & mensPants & normalSizes\\
+			6 & {"S", "M", "L"} & saluation = "Mrs" (maj.) & tops & womensTops & International\\
+			39 & & item, manuf. voting & & & \\
+			40 & & manual single value check & & & \\
+			 \hline
+		\end{tabular}
+		\end{table}
+		\begin{flushright}
+			\scriptsize
+			$\checkmark$ {\usebeamercolor[fg]{structure} \textbf{FEATURE}}: itemCategory, itemSpecificCategory, itemSizeGroup
+		\end{flushright}
+\end{frame}
+		
+\begin{frame}[fragile]{Feature Engineering: Feature Constuction Type I (Cont.)}
+\scriptsize
+\begin{tabular}{rlllr}
+			\hline
+			& itemCategory &  itemSpecificCategory & itemSizeGroup & \#\\
+			\hline
+ 1 &  accessories &                 belts  &   normalSizes &     60\\
+ 2 &  accessories &        mensAccessories &       unSized &     75\\
+ 3 &  accessories &      unisexAccessories &       unSized &     36\\
+ 4 &  accessories &      womensAccessories &       unSized &  28380\\
+\hline
+ 5 &      clothes &          womensClothes &    largeSizes &    282\\
+ 6 &      clothes &          womensClothes &   normalSizes &  43472\\
+ 7 &      clothes &          womensClothes &    shortSizes &   3308\\
+\hline
+ 8 &         kids &            kidsClothes &   normalSizes &   1745\\
+\hline
+ 9 &        pants &              mensPants &   normalSizes &    253\\
+10 &        pants &            womensPants &    normalSize &   8769\\
+\hline
+11 &        shoes &              mensShoes &            FR &   1097\\
+12 &        shoes &              mensShoes &            UK &      1\\
+13 &        shoes & mensShoesLess50Percent &            FR &   2928\\
+14 &        shoes & mensShoesMore50Percent &            FR &     99\\
+15 &        shoes &                  other &            UK &      4\\
+16 &        shoes &            unisexShoes &            FR &     59\\
+17 &        shoes &            unisexShoes &            UK &   1329\\
+18 &        shoes &            womensShoes &            FR & 139839\\
+19 &        shoes &            womensShoes &            UK &  21265\\
+\hline
+20 &         tops &               mensTops & International &     37\\
+21 &         tops &             unisexTops & International &   1194\\
+22 &         tops &             womensTops & International & 276938\\
+			\hline
+		\end{tabular}  
+\end{frame}
+		
+\begin{frame}{Feature Engineering: Feature Constuction Type II}
+	\small
+	\begin{block}{Laplace smoothing}
+	$lsmooth(x, N, \alpha=1, mean=0.52)=\frac{x + \alpha}{N + (\alpha / mean)}$,
+		\scriptsize
+		\vspace{0.5em}
+		\begin{tabular}{l l}
+		x: count of observations with class i &
+    N: count of all observations\\
+    $\alpha$: smoothing parameter &
+    mean: mean of class i observations
+		\end{tabular}
+	\end{block}
+		
+		{\usebeamercolor[fg]{structure} \textbf{Feature}}: Return Rate of Item and Size
+		
+		Known items:
+		\begin{knitrout}
+		\scriptsize
+		\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+		\begin{alltt}
+		itemReturnRate \hlkwd{:=} lsmooth(\hlkwd{sum}(returnShipment \hlstd{==} "yes"), .N), \hlkwc{by}=\hlkwd{c}\hlstd{(}\hlstr{"itemID"}, \hlstr{"itemSize"}\hlstd{),}]
+		\end{alltt}
+		\end{kframe}
+		\end{knitrout}
+		Unknown items:
+		\begin{knitrout}
+		\scriptsize
+		\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+		\begin{alltt}
+		itemReturnRate \hlkwd{:=} \hlnum{0.52}
+		\end{alltt}
+		\end{kframe}
+		\end{knitrout}
+		Additional: unknownItem = \{"yes", "no"\}
+    
+		\begin{table}[ht]
+		\centering
+		\footnotesize
+		\begin{tabular}{rrrrl}
+			\hline
+			& itemID & itemSize & unknownItem & itemReturnRate \\ 
+			\hline
+			1 & 2657 & 41 & no & 0.6030928\\
+			2 & 2759 & 40 & no & 0.4604167\\
+			2 & 2657 & 40 & no & 0.6064909\\
+			3 & 2387 & 5+ & yes & 0.5200000\\
+			5 & 2637 & S & no & 0.5098039\\
+			 \hline
+		\end{tabular}
+		\end{table}
+		\begin{flushright}
+			\scriptsize
+			$\checkmark$ {\usebeamercolor[fg]{structure} \textbf{FEATURE}}: itemReturnRate, unknownItem
+		\end{flushright}
+\end{frame}		
+\begin{frame}{Feature Engineering: Feature Constuction Type II (Cont.)}
+		
+		{\usebeamercolor[fg]{structure} \textbf{Feature}}: Customer Favorite Category Buy \& Hold
+		\begin{knitrout}
+		\scriptsize
+		\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+		\begin{alltt}
+		\hlstd{customerFavCategoryHold} \hlkwb{<-} \hlkwd{unique}(dt2hold[, \hlkwd{c}\hlstd{(}\hlstr{"customerID"},\hlstr{"customerFavCategoryHold"}\hlstd{),} \hlkwc{with}=\hlstd{= F])}
+		\end{alltt}
+		\end{kframe}
+		\end{knitrout}
+		\begin{flushright}
+			\scriptsize
+			$\checkmark$ {\usebeamercolor[fg]{structure} \textbf{FEATURE}}: customerFavCategoryHold
+		\end{flushright}
+		
+		{\usebeamercolor[fg]{structure} \textbf{Feature}}: Customer Shoe Size FR Buy \& Hold
+    \begin{knitrout}
+		\scriptsize
+		\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+		\begin{alltt}
+		\hlstd{customerShoeSizeFR} \hlkwb{<-} \hlkwd{unique}(dt2hold[, \hlkwd{c}\hlstd{(}\hlstr{"customerID"},
+		\hlstr{"customerShoeSizeFR"}\hlstd{),} \hlkwc{with}\hlstd{=}\hlstd{= F])}
+		\end{alltt}
+		\end{kframe}
+		\end{knitrout}
+		\begin{flushright}
+			\scriptsize
+			$\checkmark$ {\usebeamercolor[fg]{structure} \textbf{FEATURE}}: customerShoeSizeFR
+			
+		\vspace{2.5em}
+    other: customerShoeSizeUK, customerTopSize, 
+		
+		customerClothesSize1, customerClothesSize2
+		\end{flushright}
+\end{frame}		
+
+\begin{frame}{Feature Engineering: Feature Constuction Type III}
+
+	{\usebeamercolor[fg]{structure} \textbf{Feature}}: Customer Tendency for Buying Discounted Items 
+		\begin{knitrout}
+		\scriptsize
+		\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+		\begin{alltt}
+		dt[, customerDiscountRate \hlkwd{:=} lsmooth(\hlkwd{sum}(itemPriceRange > \hlnum{0} \& itemDiscount > \hlnum{0}), .N, mean=\hlnum{0.5}), \hlkwc{by}\hlstd{=}\hlkwd{c}(\hlstr{"customerID"})]
+		\end{alltt}
+		\end{kframe}
+		\end{knitrout}
+		\begin{table}[ht]
+		\centering
+		\footnotesize
+		\begin{tabular}{rl}
+			\hline
+			customerDiscountRateRange & customerDiscountTendency \\ 
+			\hline
+			$<=25\%$ quantile & "low"\\
+			$>=75\%$ quantile & "high"\\ 
+			else & "neutral"\\
+			 \hline
+		\end{tabular}
+		\end{table}
+		\begin{flushright}
+			\scriptsize
+			$\checkmark$ {\usebeamercolor[fg]{structure} \textbf{FEATURE}}: customerDiscountTendency
+		\end{flushright}
+		
+	{\usebeamercolor[fg]{structure} \textbf{Feature}}: Days Customer Setting Next/Prev Order (in days)
+    \begin{knitrout}
+		\scriptsize
+		\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+		\begin{alltt}
+		\hlstd{orderTimeNext} \hlkwb{<-} \hlkwd{as.integer}(\hlkwd{as.Date}(orderDateNext) - \hlkwd{as.Date}(orderDate))
+		\end{alltt}
+		\end{kframe}
+		\end{knitrout}
+    \begin{knitrout}
+		\scriptsize
+		\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+		\begin{alltt}
+		\hlstd{orderTimePrev} \hlkwb{<-} \hlkwd{as.integer}(\hlkwd{as.Date}(orderDatePrev) - \hlkwd{as.Date}(orderDate))
+		\end{alltt}
+		\end{kframe}
+		\end{knitrout}
+		\begin{flushright}
+			\scriptsize
+			$\checkmark$ {\usebeamercolor[fg]{structure} \textbf{FEATURE}}: orderTimeNext, orderTimePrev
+		\end{flushright}
+\end{frame}
+
+
+\begin{frame}{Feature Engineering: Additional ideas}
+	\scriptsize
+		\begin{block}{fill up NA's in customer sizes with reference tables}
+    \begin{itemize}
+			\item shoes
+			\begin{itemize}
+				\item UK to FR
+				\item FR to UK
+			\end{itemize}
+			\item clothes
+			\begin{itemize}
+				\item clothes to tops
+				\item tops to clothes
+			\end{itemize}
+		\end{itemize}
+		\end{block}
+    
+		\begin{block}{add additional idicators and return rates}
+		\begin{itemize}
+			\item orderedItemSizeIdentical
+			\item customerReturnRateInHisShoeFRSize
+			\item customerReturnRateInHisShoeUKSize
+			\item customerReturnRateInHisTopSize
+			\item customerReturnRateInHisClothes1Size
+			\item customerReturnRateInHisSizes
+		\end{itemize}
+		\end{block}
+\end{frame}
+
+\begin{frame}{Feature Engineering: Lessons Learned}
+	\begin{itemize}
+		\item \textbf{Dimension tables}:\\
+			e.g. Date; Year $\leftarrow$ week of year $\leftarrow$ day 
+		\item \textbf{Case Studies}:\\
+			e.g. customer is having an order for one$\mid$some item(s) having same$\mid$different sizes with same$\mid$different color(s) 
+		\item \textbf{What-if scenarios}:\\
+			e.g. If item doesn't$\mid$does fit but customer likes$\mid$dislikes the design, what does he do?
+		\item \textbf{Brainstorming}:\\
+			screening every single attribute and bundles
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Feature Engineering: Overview Features Type I}
+	\scriptsize
+	\begin{tabular}{l l}
+			\begin{tabular}{l}
+				\textbf{Attributes specific to an item}\\
+				\hline
+				{\usebeamercolor[fg]{structure} \textbf{itemBaseColor}} $\checkmark$\\
+				{\usebeamercolor[fg]{structure} \textbf{itemPriceDiscrete}} $\checkmark$\\
+				itemPriceLevels\\
+				itemPriceLevelsGreater1\\
+				itemPriceRange\\
+				itemDiscount\\
+				itemCollection\\
+				{\usebeamercolor[fg]{structure} \textbf{itemCategory}} $\checkmark$\\
+				{\usebeamercolor[fg]{structure} \textbf{itemSpecificCategory}} $\checkmark$\\
+				{\usebeamercolor[fg]{structure} \textbf{itemSizeGroup}} $\checkmark$\\
+				\\
+				\textbf{Attributes specific to a customer}\\
+				\hline
+				customerAgeAtOrderTime\\
+				customerAgeAtOrderTimeDiscrete\\
+				customerAccountAgeAtOrderTime\\
+				customerAccountAgeAtOrderTimeDiscrete\\
+				customerAccountAge\\
+				customerAccountAgeDiscrete\\
+				customerNumItemsOrdered\\
+				customerNumOrders\\
+				customerFirstOrderDate\\
+			\end{tabular}
+			&
+			\begin{tabular}{l}
+					\textbf{Attributes specific to a state}\\
+					\hline
+					westGerman\\
+					\\
+					\textbf{Attributes specific to an order}\\
+					\hline
+					{\usebeamercolor[fg]{structure} \textbf{orderNumItems}} $\checkmark$\\
+					orderDeliveryTime\\
+					orderWeekday\\
+					orderInstant\\
+					orderSumPrices\\
+					orderItemNumSameItemsOrdered\\
+					orderItemNumSameItemsOrderedGreater1\\
+					orderItemNumSameItemsOrderedColor\\
+					orderItemNumSameItemsOrderedSize\\
+					orderNumDistinctItems\\
+					orderNumDistinctItemsGreater1\\
+					orderSumPrice\\
+			\end{tabular}
+	\end{tabular}
+\end{frame}
+\begin{frame}{Feature Engineering: Overview Features Type II}
+		\scriptsize
+		\begin{tabular}{l l}
+			\begin{tabular}{l}
+				\textbf{Attributes specific to an item}\\
+				\hline
+				{\usebeamercolor[fg]{structure} \textbf{itemReturnRate}} $\checkmark$\\
+				{\usebeamercolor[fg]{structure} \textbf{unknownItem}} $\checkmark$\\
+				itemColorReturnRate\\
+				unknownColor\\
+				\\
+				\textbf{Attributes specific to a category}\\
+				\hline
+				itemCategoryRetRate\\
+				\\
+				\textbf{Attributes specific to a color}\\
+				\hline
+				itemBaseColorReturnRate\\
+				unknownFewColor\\
+				\\
+				\textbf{Attributes specific to a size}\\
+				\hline
+				itemSizeReturnRate\\
+				\\
+				\textbf{Attributes specific to a manufacturer}\\
+				\hline
+				manufacturerReturnRate\\
+				unknownManufacturer\\
+			\end{tabular}
+			&
+			\begin{tabular}{l}
+				\textbf{Attributes specific to a customer}\\
+				\hline
+				customerMoneySpent\\
+				customerRetRate\\
+				{\usebeamercolor[fg]{structure} \textbf{customerFavCategoryHold}} $\checkmark$\\
+				customerFavSpeciCategoryHold\\
+				customerFavCategoryReturn\\
+				customerFavSpeciCategoryReturn\\
+				customerSizeHold\\
+				{\usebeamercolor[fg]{structure} \textbf{customerShoeSizeFR}} $\checkmark$\\
+				customerShoeSizeUK\\
+				customerTopSize\\
+				customerClothesSize1\\
+				customerClothesSize2\\
+			\end{tabular}\\
+	\end{tabular}
+\end{frame}
+\begin{frame}{Feature Engineering: Overview Feature Type III}
+	\scriptsize
+		\begin{tabular}{l}
+			\textbf{Attributes specific to a customer}\\
+			\hline
+			customerFavCategoryBuy\\
+			customerFavSpeciCategoryBuy\\
+			{\usebeamercolor[fg]{structure} \textbf{customerDiscountTendency}} $\checkmark$\\
+			customerFavoriteColor\\
+			customerItemIsFavoriteColor\\
+			customerFavoriteBaseColor\\
+			customerItemIsFavoriteBaseColor\\
+			customerFavoriteSize\\ 
+			customerItemIsFavoriteSize\\
+			{\usebeamercolor[fg]{structure} \textbf{orderTimeNext}} $\checkmark$\\
+			{\usebeamercolor[fg]{structure} \textbf{orderTimePrev}} $\checkmark$\\
+		\end{tabular}
+		\normalsize
+		\begin{tabular}{rr}
+			& \# Features\\
+			Basis & 11\\
+			{\usebeamercolor[fg]{structure} \textbf{I}} & 32\\
+			{\usebeamercolor[fg]{structure} \textbf{II}} & 22\\
+			{\usebeamercolor[fg]{structure} \textbf{III}} & 11\\
+			\hline
+			Sum & 76\\
+		\end{tabular}
+\end{frame}
+
+
+%\begin{frame}{Feature Engineering: Feature Subset Selection}%
+%		something about subset selection
+%\end{frame}
 
 \section{Feature Selection}
 
@@ -108,73 +726,8 @@ library(zoo)
   \end{itemize}
 \end{frame}
 
-\section{R}
-\begin{frame}{The R Language}
-    \begin{itemize}
-        \item We are no tool junkies!
-        \item R allows rapid feature engineering and testing
-        \item Wide variety of ML algorithms available
-        \item New packages often featured in the Journal of Statistical Software (peer reviewed; open access)
-        \item Runs on Hadoop
-    \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Feature Engineering with R}
-    \scriptsize
-    Read in data:
-    <<echo=T>>=
-    data <- data.table(read.table("task/orders_train.txt", sep=";", header=T))
-    @
-    Make a \LaTeX\, table:
-    <<results="asis", echo=T, tidy=F>>=
-    print(xtable(data[1:10, c("itemID", "customerID", "price"), with=F]))
-    @
-\end{frame}
-
-\begin{frame}[fragile]{Feature Engineering with R: Sum of Prices}
-    \scriptsize
-    Group by \texttt{customerID} and \texttt{orderDate} and apply \texttt{sum}
-    to each group:
-    <<results="hide", echo=T>>=
-    data[, orderSumPrices := sum(price), by=c("customerID", "orderDate")]
-    @
-    <<results="asis">>=
-    print(xtable(data[1:10, c("orderDate", "customerID", "price", "orderSumPrices"),
-                      with=F]))
-    @
-\end{frame}
-
-\begin{frame}[fragile]{Feature Engineering with R: Discretize Price}
-    \scriptsize
-    Assign each price to an interval:
-    <<results="hide", echo=T>>=
-    data$priceDiscrete <- cut(data$price, c(0, 1:20 * 10, Inf), left=T, right=F)
-    @
-    <<results="asis">>=
-    print(xtable(data[1:10, c("itemID", "price", "priceDiscrete"),
-                      with=F]))
-    @
-\end{frame}
-
-\begin{frame}[fragile]{Feature Engineering with R: Previous Order Date}
-    \scriptsize
-    Group by \texttt{customerID} and shift \texttt{orderDate} in each group by 1:
-    <<echo=F>>=
-    data$orderDate <- as.Date(data$orderDate)
-    @
-    <<results="hide", echo=T, warning=F>>=
-    orderDates <- unique(data[, c("customerID", "orderDate"), with=F])
-    setkeyv(orderDates, c("customerID", "orderDate"))
-    orderDates[, orderDatePrev := as.Date(c(NA, head(orderDate, -1))),
-               by=c("customerID")]
-    orderDates$orderTimePrev <- orderDates$orderDatePrev - orderDates$orderDate
-    @
-    <<results="asis", warning=F>>=
-    orderDates$orderDate <- as.character(orderDates$orderDate)
-    orderDates$orderDatePrev <- as.character(orderDates$orderDatePrev)
-    orderDates$orderTimePrev <- as.integer(orderDates$orderTimePrev)
-    print(xtable(orderDates[1:10 ]), include.rownames=F)
-    @
+\begin{frame}{Data Sampling}
+    something about our sampling work
 \end{frame}
 
 \section{Feedback}
