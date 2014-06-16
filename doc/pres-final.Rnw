@@ -877,6 +877,7 @@ customerID & orderDate & orderDatePrev & orderTimePrev \\
     \item GBM took \(> 20 \) h per data set
     \end{itemize}
   \item incremental testing new features is awesome (and saves time)
+  \item C5.0 profits heavily from feature selection, SGB not so much
   \end{itemize}
 \end{frame}
 
