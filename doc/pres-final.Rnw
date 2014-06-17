@@ -126,7 +126,7 @@ library(zoo)
 						\item standardization
 						\item discretization
 					\end{itemize}
-        \item Feature Constuction
+        \item Feature Construction
             \begin{itemize}
                 \item supervised 
                 \item unsupervised
@@ -196,11 +196,11 @@ library(zoo)
 			$\checkmark$ {\usebeamercolor[fg]{structure} \textbf{FEATURE}}: itemPriceDiscrete
 		\end{flushright}
 	\end{itemize}
-	\begin{flushright}... many other constucted features discretized
+	\begin{flushright}... many other constructed features discretized
 	\end{flushright}
 \end{frame}
 
-\begin{frame}{Feature Engineering: Feature Constuction}
+\begin{frame}{Feature Engineering: Feature Construction}
 	\begin{tabular}{c l}
 		Type\\
 		{\usebeamercolor[fg]{structure} \textbf{I}} & features computed over the entire data set\\
@@ -254,7 +254,7 @@ library(zoo)
 \end{frame}
 
 
-\begin{frame}{Feature Engineering: Feature Constuction Type I}
+\begin{frame}{Feature Engineering: Feature Construction Type I}
 		
 		{\usebeamercolor[fg]{structure} \textbf{Feature}}: Numer of Items in One Order
 		
@@ -288,7 +288,7 @@ library(zoo)
 		\end{flushright}
 \end{frame}
 
-\begin{frame}[fragile]{Feature Engineering: Feature Constuction Type I (Cont.)}
+\begin{frame}[fragile]{Feature Engineering: Feature Construction Type I (Cont.)}
 		
 		{\usebeamercolor[fg]{structure} \textbf{Feature}}: Mapping of Size Chart Information to Items
 		\small
@@ -323,7 +323,7 @@ library(zoo)
 		\end{flushright}
 \end{frame}
 		
-\begin{frame}[fragile]{Feature Engineering: Feature Constuction Type I (Cont.)}
+\begin{frame}[fragile]{Feature Engineering: Feature Construction Type I (Cont.)}
 \scriptsize
 \begin{tabular}{rlllr}
 			\hline
@@ -360,7 +360,7 @@ library(zoo)
 		\end{tabular}  
 \end{frame}
 		
-\begin{frame}{Feature Engineering: Feature Constuction Type II}
+\begin{frame}{Feature Engineering: Feature Construction Type II}
 	\small
 	\begin{block}{Laplace smoothing}
 	$lsmooth(x, N, \alpha=1, mean=0.52)=\frac{x + \alpha}{N + (\alpha / mean)}$,
@@ -396,7 +396,7 @@ library(zoo)
 		\end{knitrout}
 		Additional: unknownItem = \{"yes", "no"\}
 	\end{frame}		
-  \begin{frame}{Feature Engineering: Feature Constuction Type II (Cont.)}
+  \begin{frame}{Feature Engineering: Feature Construction Type II (Cont.)}
 		\begin{table}[ht]
 		\centering
 		\footnotesize
@@ -417,7 +417,7 @@ library(zoo)
 			$\checkmark$ {\usebeamercolor[fg]{structure} \textbf{FEATURE}}: itemReturnRate, unknownItem
 		\end{flushright}
 \end{frame}		
-\begin{frame}{Feature Engineering: Feature Constuction Type II (Cont.)}
+\begin{frame}{Feature Engineering: Feature Construction Type II (Cont.)}
 		
 		{\usebeamercolor[fg]{structure} \textbf{Feature}}: Customer Favorite Category Buy \& Hold
 		\begin{knitrout}
@@ -454,7 +454,7 @@ library(zoo)
 		\end{flushright}
 \end{frame}		
 
-\begin{frame}{Feature Engineering: Feature Constuction Type III}
+\begin{frame}{Feature Engineering: Feature Construction Type III}
 
 	{\usebeamercolor[fg]{structure} \textbf{Feature}}: Customer Tendency for Buying Discounted Items 
 		\begin{knitrout}
